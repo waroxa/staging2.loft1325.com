@@ -1,0 +1,370 @@
+AWSTATS DATA FILE 7.7 (build 20161204)
+# If you remove this file, all statistics for date 202510 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.staging2.loft1325.com.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2004                
+POS_TIME 2686                
+POS_VISITOR 12771               
+POS_DAY 13946               
+POS_DOMAIN 3255                
+POS_LOGIN 3549                
+POS_ROBOT 3704                
+POS_WORMS 3913                
+POS_EMAILSENDER 4044                
+POS_EMAILRECEIVER 4187                
+POS_SESSION 14220               
+POS_SIDER 14367               
+POS_FILETYPES 4322                
+POS_DOWNLOADS 4452                
+POS_OS 4500                
+POS_BROWSER 4600                
+POS_SCREENSIZE 4908                
+POS_UNKNOWNREFERER 4982                
+POS_UNKNOWNREFERERBROWSER 5069                
+POS_ORIGIN 5151                
+POS_SEREFERRALS 5284                
+POS_PAGEREFS 5428                
+POS_SEARCHWORDS 5576                
+POS_KEYWORDS 5728                
+POS_MISC 2350                
+POS_ERRORS 5787                
+POS_CLUSTER 3405                
+POS_SIDER_404 5905                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20251101092926 149 45876 20747897257379
+FirstTime 20251002234306
+LastTime 20251024072326
+LastUpdate 20251102044123 149 148 0 0 0
+TotalVisits 28                  
+TotalUnique 28                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 28                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+WindowsMediaPlayerSupport 0 0 0
+RealPlayerSupport 0 0 0
+JavascriptDisabled 0 0 0
+FlashSupport 0 0 0
+AddToFavourites 0 8 0
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+DirectorSupport 0 0 0
+TotalMisc 0 0 0
+PDFSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 0 0 0
+1 1 1 62111 0 0 0
+2 3 4 187066 1 2 48
+3 0 0 0 0 0 0
+4 1 2 62844 1 2 48
+5 0 0 0 0 0 0
+6 1 2 62841 1 2 48
+7 1 1 62111 0 0 0
+8 0 0 0 0 0 0
+9 3 5 139357 1 3 53
+10 3 3 100682 68 69 1008626
+11 1 1 245445 1 2 48
+12 2 2 321796 1 2 48
+13 0 0 0 2 2 62114
+14 0 0 0 0 0 0
+15 7 8 269233 1 2 48
+16 4 4 135599 0 0 0
+17 0 0 0 4 4 124223
+18 6 7 506264 10 16 168020
+19 0 0 0 0 0 0
+20 0 0 0 0 0 0
+21 0 0 0 0 1 47
+22 0 0 0 0 0 0
+23 1 1 62114 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 6
+us 28 31 1866092
+ca 2 4 125685
+nl 1 1 62111
+gb 1 2 62841
+fi 1 2 38623
+ru 1 1 62111
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 2
+checker 3 186265 20251019171257 0
+bot[\s_+:,\.\;\/\\-] 2 94 20251017105914 2
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 4
+php 3 8058 0 0
+png 6 4380 0 0
+html 31 1820459 0 0
+js 1 384566 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 3
+win10 4 3
+macosx 20 19
+linux 17 12
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 13
+chrome137.0.0.0 2 1
+chrome125.0.6422.114 1 1
+chrome135.0.0.0 7 6
+firefox136.0 2 2
+chrome101.0.4951.64 1 1
+firefox134.0 2 2
+chrome139.0.0.0 8 4
+chrome124.0.0.0 7 7
+chrome131.0.0.0 1 1
+firefox120.0 4 4
+chrome117.0.0.0 3 3
+chrome118.0.0.0 1 1
+firefox139.0 2 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 0
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 28 30
+From1 0 0
+From2 0 0
+From3 0 0
+From4 6 11
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 4
+404 72 1176503
+499 1 0
+301 18 336
+302 3 0
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 70
+/https%3A/staging2.loft1325.com/wp-json/oembed/1.0/embed%3Furl%3Dhttps%3A/staging2.loft1325.com/ 1 -
+/https%3A/fonts.googleapis.com/css%3Ffamily%3DOpen%2BSans%3A300%2C400%2C700%26ver%3D6.8.1 1 -
+/https%3A/staging2.loft1325.com/remboursements/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/woocommerce/assets/client/blocks/wc-blocks.css%3Fver%3Dwc-9.8.3 1 -
+/login/wp-admin/js/password-strength-meter.js 1 https://staging2.loft1325.com/login/wp-admin//js//password-strength-meter.js
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/lib/animations/styles/fadeIn.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/google-fonts/css/opensans.css%3Fver%3D1758569472 1 -
+/%23 1 -
+/login/wp-includes/js/dist/a11y.js 1 https://staging2.loft1325.com/login/wp-includes//js//dist//a11y.js
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/frontend.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInRight.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/reglements/ 1 -
+/https%3A/staging2.loft1325.com/wp-json/oembed/1.0/embed%3Furl%3Dhttps%3A/staging2.loft1325.com/%26format%3Dxml 1 -
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/google-fonts/css/roboto.css%3Fver%3D1758569475 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/nd-booking/assets/css/style.css%3Fver%3D6.8.1 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-social-icons.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/en/ 1 -
+/https%3A/staging2.loft1325.com/nd-booking-pages/nd-booking-search/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-google_maps.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor-pro/assets/css/frontend.min.css%3Fver%3D3.21.3 1 -
+/https%3A/staging2.loft1325.com/rooms/penthouse/ 1 -
+/https%3A/staging2.loft1325.com/guide-tv-utilisation-et-depannage-2025/ 1 -
+/https%3A/staging2.loft1325.com/service-pages/forfaits-splash-moi/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-image-box.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/translatepress-multilingual/assets/css/trp-floater-language-switcher.css%3Fver%3D2.8.0 1 -
+/https%3A/staging2.loft1325.com/comments/feed/ 1 -
+/https%3A/staging2.loft1325.com/about-pages/a-propos/ 1 -
+/login/wp-admin/js/user-profile.js 1 https://staging2.loft1325.com/login/wp-admin//js//user-profile.js
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/google-fonts/css/poppins.css%3Fver%3D1758569470 1 -
+/https%3A/staging2.loft1325.com/ 1 -
+/https%3A/fonts.googleapis.com/css%3Ffamily%3DPoppins%3A300%2C400%2C700%26ver%3D6.8.1 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver%3D6.0.6 1 -
+/https%3A/staging2.loft1325.com/contact-pages/contact/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/conditionals/apple-webkit.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/nd-elements/css/style.css%3Fver%3D6.8.1 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/wp-loft-booking-plugin/assets/css/custom-loft-style.css%3Fver%3D6.8.1 1 -
+/https%3A/staging2.loft1325.com/gallery-pages/gallery-01/ 1 -
+/https%3A/staging2.loft1325.com/liste-des-chaines-de-television-disponibles-pour-les-residents-des-lofts-2025/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-divider.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/ameliabooking/public/css/frontend/elementor.css%3Fver%3D7.8.2 1 -
+/https%3A/staging2.loft1325.com/inner-pages/faq/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css%3Fver%3D9.8.3 1 -
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/css/post-11055.css%3Fver%3D1758569469 1 -
+/https%3A/staging2.loft1325.com/service-pages/forfaits-aventure/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/lib/animations/styles/e-animation-shrink.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/service-pages/forfait-le-romantique/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/css/post-9.css%3Fver%3D1758569468 1 -
+/https%3A/staging2.loft1325.com/rooms/occupation-simple/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/revslider/public/assets/css/rs6.css%3Fver%3D6.5.21 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInLeft.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/nd-booking/addons/elementor/search/css/jquery-ui-datepicker.css%3Fver%3D6.8.1 1 -
+/app/ 3 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/pdf-poster/dist/public.css%3Fver%3D2.2.1 1 -
+/https%3A/staging2.loft1325.com/wp-content/themes/marina/style.css%3Fver%3D2.3 1 -
+/https%3A/staging2.loft1325.com/certificat-enregistrement-ctiq/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css%3Fver%3D9.8.3 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/woocommerce/assets/css/woocommerce.css%3Fver%3D9.8.3 1 -
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/css/post-10814.css%3Fver%3D1758569475 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-image.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/service-pages/forfaits-touki-suite/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/woocommerce/assets/css/brands.css%3Fver%3D9.8.3 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInUp.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/rooms/occupation-double/ 1 -
+/https%3A/staging2.loft1325.com/wp-json/ 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/elementor/assets/css/widget-heading.min.css%3Fver%3D3.28.4 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/nd-shortcodes/css/style.css%3Fver%3D6.8.1 1 -
+/https%3A/staging2.loft1325.com/wp-json/wp/v2/pages/11055 1 -
+/https%3A/staging2.loft1325.com/wp-content/plugins/translatepress-multilingual/assets/css/trp-language-switcher.css%3Fver%3D2.8.0 1 -
+/https%3A/staging2.loft1325.com/wp-content/uploads/elementor/css/post-10848.css%3Fver%3D1758569475 1 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 28
+34.1.20.182 6 7 506264 20251022181137
+103.196.9.26 2 2 38571 20251017101456
+149.57.180.61 1 1 62114 20251003021348
+91.196.152.148 1 1 245445 20251017113129
+159.89.40.65 1 1 30200 20251004153203
+193.138.7.139 1 2 38623 20251017095952
+149.57.180.196 1 1 62111 20251023010803
+138.197.90.142 1 2 62841 20251021091149
+104.236.71.191 1 1 32384 20251004161534
+178.62.98.150 1 2 62841 20251018022454
+103.4.250.228 1 1 37893 20251017095316
+142.93.176.188 1 1 28819 20251004160439
+149.57.180.63 1 1 62111 20251023022945
+159.203.103.45 1 1 37833 20251004154534
+91.196.152.146 1 1 283915 20251017123027
+34.91.82.5 1 1 62111 20251017104605
+159.203.124.190 1 1 37881 20251004121348
+138.197.101.184 1 1 37881 20251004160636
+159.65.163.163 1 1 33155 20251004153414
+68.183.201.184 1 2 62841 20251019061043
+149.57.180.121 1 1 62114 20251002234306
+143.198.29.234 1 1 30344 20251004155707
+137.184.2.26 1 2 62844 20251004152024
+80.64.24.66 1 1 62111 20251024072326
+164.90.131.94 1 1 38278 20251004154614
+142.93.188.102 1 1 36579 20251004153557
+143.198.35.232 1 2 62844 20251004045719
+138.197.5.246 1 1 36515 20251004160249
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 10
+20251002 1 1 62114 1
+20251003 1 1 62114 1
+20251004 13 15 505557 13
+20251017 7 8 706558 6
+20251018 1 2 62841 1
+20251019 1 2 62841 1
+20251021 1 2 62841 1
+20251022 6 7 506264 1
+20251023 2 2 124222 2
+20251024 1 1 62111 1
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 1
+0s-30s 28
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 12
+/ 21 1515674 19 17
+/wp-login.php 3 8058 0 1
+/rooms/penthouse/ 1 37833 1 1
+/gallery-pages/gallery-01/ 1 32384 1 1
+/en/ 1 38278 1 1
+/contact-pages/contact/ 1 30344 1 1
+/reglements/ 1 28819 1 1
+/rooms/occupation-simple/ 1 36579 1 1
+/rooms/occupation-double/ 1 36515 1 1
+/about-pages/a-propos/ 1 33155 1 1
+/remboursements/ 1 30200 1 1
+/https%3A/staging2.loft1325.com/feed/ 1 678 0 1
+END_SIDER

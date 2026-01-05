@@ -1,0 +1,5810 @@
+# Translation of Yoast - Local SEO in English (Canada)
+# This file is distributed under the same license as the Yoast - Local SEO package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-09-20 13:18:27+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.0-rc.1\n"
+"Language: en_CA\n"
+"Project-Id-Version: Yoast - Local SEO\n"
+
+#. Plugin URI of the plugin
+#: local-seo.php
+msgid "http://yoa.st/4fj"
+msgstr "http://yoa.st/4fj"
+
+#: classes/class-frontend.php:311
+msgid "Pitcairn Islands"
+msgstr "Pitcairn Islands"
+
+#: classes/class-frontend.php:281
+msgid "Republic of Moldova"
+msgstr "Republic of Moldova"
+
+#: classes/admin/class-map-settings.php:175 classes/class-metaboxes.php:1257
+#: classes/class-taxonomy.php:75
+msgid "The custom marker should be 100x100px. If the image exceeds those dimensions it could (partially) cover the info popup."
+msgstr "The custom marker should be 100x100px. If the image exceeds those dimensions, it could (partially) cover the info popup."
+
+#: src/presenters/geo/abstract-geo-tag-presenter.php:37
+msgid "The Locations_Repository argument has been deprecated, please provide a location object instead."
+msgstr "The Locations Repository argument has been deprecated, please provide a location object instead."
+
+#: includes/wpseo-local-functions.php:1617
+msgctxt "The email address for use in the dummy address in the block preview"
+msgid "info@youremail.com"
+msgstr "info@youremail.com"
+
+#: includes/wpseo-local-functions.php:1616
+msgctxt "The phone number for use in the dummy address in the block preview"
+msgid "1234567890"
+msgstr "(123) 456-7890"
+
+#. translators: %s extends to the chosen unit system: km or mi
+#: classes/class-metaboxes.php:2421
+msgid "Search radius (in %s)"
+msgstr "Search radius (in %s)"
+
+#: classes/class-metaboxes.php:2058 classes/class-metaboxes.php:2461
+#: widgets/widget-show-map.php:253
+msgid "Zoom level:"
+msgstr "Zoom level:"
+
+#: classes/class-metaboxes.php:2055 classes/class-metaboxes.php:2458
+#: widgets/widget-show-map.php:242
+msgid "Height:"
+msgstr "Height:"
+
+#: classes/class-metaboxes.php:2052 classes/class-metaboxes.php:2455
+#: widgets/widget-show-map.php:230
+msgid "Width:"
+msgstr "Width:"
+
+#: classes/admin/class-opening-hours.php:163
+msgid "This is the default setting for all locations and can be overridden per location."
+msgstr "This is the default setting for all locations and can be overridden per location."
+
+#. translators: 1: expands to a link opening tag; 2: expands to a link closing
+#. tag
+#: classes/admin/class-admin.php:477
+msgid "A zipcode and country need to be set for structured data to work properly. %1$sLearn more about the importance of structured data.%2$s"
+msgstr "A postal code and country are required to be set for structured data to work properly. %1$sLearn more about the importance of structured data.%2$s"
+
+#: classes/admin/class-opening-hours.php:167
+msgid "Learn more about shared opening hours"
+msgstr "Learn more about shared opening hours"
+
+#: classes/class-metaboxes.php:958
+msgid "This location contains shared opening hours. You can override each setting after checking the 'Override' checkbox."
+msgstr "This location contains shared opening hours. You can override each setting after checking the 'Override' checkbox."
+
+#: classes/admin/class-opening-hours.php:171
+msgid "Locations inherit shared opening hours "
+msgstr "Locations inherit shared opening hours"
+
+#: classes/admin/class-general-settings.php:595
+msgid "Locations inherit shared business info"
+msgstr "Locations inherit shared business information"
+
+#: classes/admin/class-general-settings.php:591
+msgid "Learn more about shared business info"
+msgstr "Learn more about shared business information"
+
+#: classes/admin/class-general-settings.php:575
+msgid "Learn more about the primary location"
+msgstr "Learn more about the primary location"
+
+#. translators: %1$s expands to Local SEO, %2$s is a link start tag to the
+#. Opening hours tab, %3$s is the link closing tag.
+#: classes/class-metaboxes.php:2709
+msgid "You've chosen to hide opening hours for your locations. You can change this on the %2$sOpening hours tab%3$s of the %1$s settings."
+msgstr "You've chosen to hide opening hours for your locations. You can change this on the %2$sOpening hours tab%3$s of the %1$s settings."
+
+#. translators: 1: Link start tag to a yoast.com page about structured data, 2:
+#. Link closing tag.
+#: classes/admin/class-admin.php:500
+msgid "An Organization name and logo need to be set for structured data to work properly. %1$sLearn more about the importance of structured data.%2$s"
+msgstr "A company name and logo need to be set for structured data to work properly. %1$sLearn more about the importance of structured data.%2$s"
+
+#. translators: %1$s extends to the anchor opening tag '<a
+#. href="https://yoa.st/gm-api-browser-key" target="_blank">', %2$s closes that
+#. tag.
+#: classes/admin/class-api-settings.php:111
+msgid "For more information on how to create and set your Google Maps API key, %1$scheck our Yoast help center%2$s."
+msgstr "For more information on how to create and set your Google Maps API key, %1$scheck our Yoast help center%2$s."
+
+#: classes/class-core.php:43 classes/class-metaboxes.php:2333
+#: classes/class-opening-hours.php:95 includes/ajax-functions.php:16
+msgid "Monday"
+msgstr "Monday"
+
+#: classes/class-core.php:44 classes/class-metaboxes.php:2334
+#: classes/class-opening-hours.php:96 includes/ajax-functions.php:17
+msgid "Tuesday"
+msgstr "Tuesday"
+
+#: classes/class-core.php:45 classes/class-metaboxes.php:2335
+#: classes/class-opening-hours.php:97 includes/ajax-functions.php:18
+msgid "Wednesday"
+msgstr "Wednesday"
+
+#: classes/class-core.php:46 classes/class-metaboxes.php:2336
+#: classes/class-opening-hours.php:98 includes/ajax-functions.php:19
+msgid "Thursday"
+msgstr "Thursday"
+
+#: classes/class-core.php:47 classes/class-metaboxes.php:2337
+#: classes/class-opening-hours.php:99 includes/ajax-functions.php:20
+msgid "Friday"
+msgstr "Friday"
+
+#: classes/class-core.php:48 classes/class-metaboxes.php:2338
+#: classes/class-opening-hours.php:100 includes/ajax-functions.php:21
+msgid "Saturday"
+msgstr "Saturday"
+
+#: classes/class-core.php:49 classes/class-metaboxes.php:2332
+#: classes/class-opening-hours.php:94 includes/ajax-functions.php:22
+msgid "Sunday"
+msgstr "Sunday"
+
+#: classes/admin/class-general-settings.php:632
+#: classes/admin/class-general-settings.php:645
+msgid "Address format"
+msgstr "Address format"
+
+#: classes/admin/class-general-settings.php:281 classes/class-metaboxes.php:497
+msgid "Business type"
+msgstr "Business type"
+
+#: classes/admin/class-general-settings.php:291 classes/class-metaboxes.php:512
+msgid "Business address"
+msgstr "Business address"
+
+#: classes/admin/class-general-settings.php:306 classes/class-metaboxes.php:516
+msgid "Business city"
+msgstr "Business city"
+
+#: classes/admin/class-general-settings.php:315 classes/class-metaboxes.php:518
+msgid "Business state"
+msgstr "Business state"
+
+#: classes/admin/class-general-settings.php:329 classes/class-metaboxes.php:527
+msgid "Business zipcode"
+msgstr "Business zipcode"
+
+#: classes/admin/class-general-settings.php:338 classes/class-metaboxes.php:529
+msgid "Business country"
+msgstr "Business country"
+
+#: classes/class-metaboxes.php:530
+msgid "Choose your country"
+msgstr "Choose your country"
+
+#: classes/admin/class-general-settings.php:415 classes/class-metaboxes.php:601
+msgid "Business fax"
+msgstr "Business fax"
+
+#: classes/admin/class-opening-hours.php:113
+#: classes/admin/class-opening-hours.php:114 classes/class-metaboxes.php:304
+#: classes/class-metaboxes.php:1588
+msgid "Opening hours"
+msgstr "Opening hours"
+
+#: classes/admin/class-opening-hours.php:343 classes/class-metaboxes.php:986
+msgid "Use 24h format"
+msgstr "Use 24h format"
+
+#: classes/admin/class-opening-hours.php:245 classes/class-metaboxes.php:1016
+msgid "I have two sets of opening hours per day"
+msgstr "I have two sets of opening hours per day"
+
+#: src/tools/import.php:412
+msgid "Upload CSV"
+msgstr "Upload CSV"
+
+#: src/tools/import.php:415
+msgid "Comma"
+msgstr "Comma"
+
+#: src/tools/import.php:416
+msgid "Semicolon"
+msgstr "Semicolon"
+
+#: src/tools/import.php:413
+msgid "Column separator"
+msgstr "Column separator"
+
+#: classes/admin/class-admin.php:342
+msgid "CSV import of locations for Local Search"
+msgstr "CSV import of locations for Local Search"
+
+#: classes/admin/options/class-options.php:86
+msgid "Locations"
+msgstr "Locations"
+
+#: classes/admin/options/class-options.php:85
+#: woocommerce/shipping/includes/location-costs-table.php:25
+msgid "Location"
+msgstr "Location"
+
+#: classes/class-metaboxes.php:498
+msgid "Choose your business type"
+msgstr "Choose your business type"
+
+#: classes/admin/class-general-settings.php:377 classes/class-metaboxes.php:557
+msgid "Latitude"
+msgstr "Latitude"
+
+#: classes/admin/class-general-settings.php:386 classes/class-metaboxes.php:559
+msgid "Longitude"
+msgstr "Longitude"
+
+#: classes/class-metaboxes.php:788
+msgid "This address is a postal address (not a physical location)"
+msgstr "This address is a postal address (not a physical location)"
+
+#: classes/class-metaboxes.php:2546 classes/class-metaboxes.php:2633
+msgid "Your title does not contain your location's city, you should really add that."
+msgstr "Your title does not contain your location's city, you should really add that."
+
+#: classes/class-metaboxes.php:2552 classes/class-metaboxes.php:2634
+msgid "Your title contains your location's city, well done!"
+msgstr "Your title contains your location's city, well done!"
+
+#: classes/class-metaboxes.php:2559 classes/class-metaboxes.php:2635
+msgid "Your URL does not contain your location's city, you should really add that."
+msgstr "Your URL does not contain your location's city, you should really add that."
+
+#: classes/class-metaboxes.php:2565 classes/class-metaboxes.php:2636
+msgid "Your URL contains your location's city, well done!"
+msgstr "Your URL contains your location's city, well done!"
+
+#: classes/class-frontend.php:141
+msgid "Afghanistan"
+msgstr "Afghanistan"
+
+#: classes/class-frontend.php:142
+msgid "Albania"
+msgstr "Albania"
+
+#: classes/class-frontend.php:143
+msgid "Algeria"
+msgstr "Algeria"
+
+#: classes/class-frontend.php:144
+msgid "Andorra"
+msgstr "Andorra"
+
+#: classes/class-frontend.php:145
+msgid "Angola"
+msgstr "Angola"
+
+#: classes/class-frontend.php:146
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#: classes/class-frontend.php:147
+msgid "Antarctica"
+msgstr "Antarctica"
+
+#: classes/class-frontend.php:148
+msgid "Antigua and Barbuda"
+msgstr "Antigua and Barbuda"
+
+#: classes/class-frontend.php:149
+msgid "Argentina"
+msgstr "Argentina"
+
+#: classes/class-frontend.php:150
+msgid "Armenia"
+msgstr "Armenia"
+
+#: classes/class-frontend.php:151
+msgid "Aruba"
+msgstr "Aruba"
+
+#: classes/class-frontend.php:152
+msgid "Australia"
+msgstr "Australia"
+
+#: classes/class-frontend.php:153
+msgid "Austria"
+msgstr "Austria"
+
+#: classes/class-frontend.php:154
+msgid "Azerbaijan"
+msgstr "Azerbaijan"
+
+#: classes/class-frontend.php:155
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#: classes/class-frontend.php:156
+msgid "Bahrain"
+msgstr "Bahrain"
+
+#: classes/class-frontend.php:157
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+#: classes/class-frontend.php:158
+msgid "Barbados"
+msgstr "Barbados"
+
+#: classes/class-frontend.php:159
+msgid "Belarus"
+msgstr "Belarus"
+
+#: classes/class-frontend.php:161
+msgid "Belgium"
+msgstr "Belgium"
+
+#: classes/class-frontend.php:162
+msgid "Belize"
+msgstr "Belize"
+
+#: classes/class-frontend.php:163
+msgid "Benin"
+msgstr "Benin"
+
+#: classes/class-frontend.php:164
+msgid "Bermuda"
+msgstr "Bermuda"
+
+#: classes/class-frontend.php:165
+msgid "Bhutan"
+msgstr "Bhutan"
+
+#: classes/class-frontend.php:166
+msgid "Bolivia"
+msgstr "Bolivia"
+
+#: classes/class-frontend.php:168
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnia and Herzegovina"
+
+#: classes/class-frontend.php:169
+msgid "Botswana"
+msgstr "Botswana"
+
+#: classes/class-frontend.php:170
+msgid "Bouvet Island"
+msgstr "Bouvet Island"
+
+#: classes/class-frontend.php:171
+msgid "Brazil"
+msgstr "Brazil"
+
+#: classes/class-frontend.php:172
+msgid "British Indian Ocean Territory"
+msgstr "British Indian Ocean Territory"
+
+#: classes/class-frontend.php:174
+msgid "Brunei"
+msgstr "Brunei"
+
+#: classes/class-frontend.php:175
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+#: classes/class-frontend.php:176
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: classes/class-frontend.php:177
+msgid "Burundi"
+msgstr "Burundi"
+
+#: classes/class-frontend.php:178
+msgid "Cambodia"
+msgstr "Cambodia"
+
+#: classes/class-frontend.php:179
+msgid "Cameroon"
+msgstr "Cameroon"
+
+#: classes/class-frontend.php:180
+msgid "Canada"
+msgstr "Canada"
+
+#: classes/class-frontend.php:181
+msgid "Cape Verde"
+msgstr "Cape Verde"
+
+#: classes/class-frontend.php:182
+msgid "Cayman Islands"
+msgstr "Cayman Islands"
+
+#: classes/class-frontend.php:183
+msgid "Central African Republic"
+msgstr "Central African Republic"
+
+#: classes/class-frontend.php:184
+msgid "Chad"
+msgstr "Chad"
+
+#: classes/class-frontend.php:185
+msgid "Chile"
+msgstr "Chile"
+
+#: classes/class-frontend.php:186
+msgid "China"
+msgstr "China"
+
+#: classes/class-frontend.php:187
+msgid "Christmas Island"
+msgstr "Christmas Island"
+
+#: classes/class-frontend.php:188
+msgid "Cocos (Keeling) Islands"
+msgstr "Cocos (Keeling) Islands"
+
+#: classes/class-frontend.php:189
+msgid "Colombia"
+msgstr "Colombia"
+
+#: classes/class-frontend.php:190
+msgid "Comoros"
+msgstr "Comoros"
+
+#: classes/class-frontend.php:193
+msgid "Cook Islands"
+msgstr "Cook Islands"
+
+#: classes/class-frontend.php:194
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#: classes/class-frontend.php:196
+msgid "Cuba"
+msgstr "Cuba"
+
+#: classes/class-frontend.php:198
+msgid "Cyprus"
+msgstr "Cyprus"
+
+#: classes/class-frontend.php:199
+msgid "Czech Republic"
+msgstr "Czech Republic"
+
+#: classes/class-frontend.php:200
+msgid "Denmark"
+msgstr "Denmark"
+
+#: classes/class-frontend.php:201
+msgid "Djibouti"
+msgstr "Djibouti"
+
+#: classes/class-frontend.php:202
+msgid "Dominica"
+msgstr "Dominica"
+
+#: classes/class-frontend.php:203
+msgid "Dominican Republic"
+msgstr "Dominican Republic"
+
+#: classes/class-frontend.php:204
+msgid "Ecuador"
+msgstr "Ecuador"
+
+#: classes/class-frontend.php:205
+msgid "Egypt"
+msgstr "Egypt"
+
+#: classes/class-frontend.php:206
+msgid "El Salvador"
+msgstr "El Salvador"
+
+#: classes/class-frontend.php:207
+msgid "Equatorial Guinea"
+msgstr "Equatorial Guinea"
+
+#: classes/class-frontend.php:208
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#: classes/class-frontend.php:209
+msgid "Estonia"
+msgstr "Estonia"
+
+#: classes/class-frontend.php:210
+msgid "Ethiopia"
+msgstr "Ethiopia"
+
+#: classes/class-frontend.php:212
+msgid "Faroe Islands"
+msgstr "Faroe Islands"
+
+#: classes/class-frontend.php:213
+msgid "Fiji"
+msgstr "Fiji"
+
+#: classes/class-frontend.php:214
+msgid "Finland"
+msgstr "Finland"
+
+#: classes/class-frontend.php:215
+msgid "France"
+msgstr "France"
+
+#: classes/class-frontend.php:216
+msgid "French Guiana"
+msgstr "French Guiana"
+
+#: classes/class-frontend.php:217
+msgid "French Polynesia"
+msgstr "French Polynesia"
+
+#: classes/class-frontend.php:218
+msgid "French Southern Territories"
+msgstr "French Southern Territories"
+
+#: classes/class-frontend.php:219
+msgid "Gabon"
+msgstr "Gabon"
+
+#: classes/class-frontend.php:220
+msgid "Gambia"
+msgstr "Gambia"
+
+#: classes/class-frontend.php:221
+msgid "Georgia"
+msgstr "Georgia"
+
+#: classes/class-frontend.php:222
+msgid "Germany"
+msgstr "Germany"
+
+#: classes/class-frontend.php:223
+msgid "Ghana"
+msgstr "Ghana"
+
+#: classes/class-frontend.php:224
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: classes/class-frontend.php:225
+msgid "Greece"
+msgstr "Greece"
+
+#: classes/class-frontend.php:226
+msgid "Greenland"
+msgstr "Greenland"
+
+#: classes/class-frontend.php:227
+msgid "Grenada"
+msgstr "Grenada"
+
+#: classes/class-frontend.php:228
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+#: classes/class-frontend.php:229
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: classes/class-frontend.php:231
+msgid "Guinea"
+msgstr "Guinea"
+
+#: classes/class-frontend.php:232
+msgid "Guinea-Bissau"
+msgstr "Guinea-Bissau"
+
+#: classes/class-frontend.php:233
+msgid "Guyana"
+msgstr "Guyana"
+
+#: classes/class-frontend.php:234
+msgid "Haiti"
+msgstr "Haiti"
+
+#: classes/class-frontend.php:236
+msgid "Honduras"
+msgstr "Honduras"
+
+#: classes/class-frontend.php:237
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: classes/class-frontend.php:238
+msgid "Hungary"
+msgstr "Hungary"
+
+#: classes/class-frontend.php:239
+msgid "Iceland"
+msgstr "Iceland"
+
+#: classes/class-frontend.php:240
+msgid "India"
+msgstr "India"
+
+#: classes/class-frontend.php:241
+msgid "Indonesia"
+msgstr "Indonesia"
+
+#: classes/class-frontend.php:242
+msgid "Iran"
+msgstr "Iran"
+
+#: classes/class-frontend.php:243
+msgid "Iraq"
+msgstr "Iraq"
+
+#: classes/class-frontend.php:245
+msgid "Israel"
+msgstr "Israel"
+
+#: classes/class-frontend.php:246
+msgid "Italy"
+msgstr "Italy"
+
+#: classes/class-frontend.php:248
+msgid "Jamaica"
+msgstr "Jamaica"
+
+#: classes/class-frontend.php:249
+msgid "Japan"
+msgstr "Japan"
+
+#: classes/class-frontend.php:251
+msgid "Jordan"
+msgstr "Jordan"
+
+#: classes/class-frontend.php:252
+msgid "Kazakhstan"
+msgstr "Kazakhstan"
+
+#: classes/class-frontend.php:253
+msgid "Kenya"
+msgstr "Kenya"
+
+#: classes/class-frontend.php:254
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: classes/class-frontend.php:255
+msgid "Kuwait"
+msgstr "Kuwait"
+
+#: classes/class-frontend.php:256
+msgid "Kyrgyzstan"
+msgstr "Kyrgyzstan"
+
+#: classes/class-frontend.php:257
+msgid "Laos"
+msgstr "Laos"
+
+#: classes/class-frontend.php:258
+msgid "Latvia"
+msgstr "Latvia"
+
+#: classes/class-frontend.php:259
+msgid "Lebanon"
+msgstr "Lebanon"
+
+#: classes/class-frontend.php:260
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: classes/class-frontend.php:261
+msgid "Liberia"
+msgstr "Liberia"
+
+#: classes/class-frontend.php:262
+msgid "Libya"
+msgstr "Libya"
+
+#: classes/class-frontend.php:263
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: classes/class-frontend.php:264
+msgid "Lithuania"
+msgstr "Lithuania"
+
+#: classes/class-frontend.php:265
+msgid "Luxembourg"
+msgstr "Luxembourg"
+
+#: classes/class-frontend.php:267
+msgid "Macedonia"
+msgstr "Macedonia"
+
+#: classes/class-frontend.php:268
+msgid "Madagascar"
+msgstr "Madagascar"
+
+#: classes/class-frontend.php:269
+msgid "Malawi"
+msgstr "Malawi"
+
+#: classes/class-frontend.php:270
+msgid "Malaysia"
+msgstr "Malaysia"
+
+#: classes/class-frontend.php:271
+msgid "Maldives"
+msgstr "Maldives"
+
+#: classes/class-frontend.php:272
+msgid "Mali"
+msgstr "Mali"
+
+#: classes/class-frontend.php:273
+msgid "Malta"
+msgstr "Malta"
+
+#: classes/class-frontend.php:274
+msgid "Marshall Islands"
+msgstr "Marshall Islands"
+
+#: classes/class-frontend.php:275
+msgid "Martinique"
+msgstr "Martinique"
+
+#: classes/class-frontend.php:276
+msgid "Mauritania"
+msgstr "Mauritania"
+
+#: classes/class-frontend.php:277
+msgid "Mauritius"
+msgstr "Mauritius"
+
+#: classes/class-frontend.php:278
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: classes/class-frontend.php:279
+msgid "Mexico"
+msgstr "Mexico"
+
+#: classes/class-frontend.php:280
+msgid "Micronesia"
+msgstr "Micronesia"
+
+#: classes/class-frontend.php:282
+msgid "Monaco"
+msgstr "Monaco"
+
+#: classes/class-frontend.php:283
+msgid "Mongolia"
+msgstr "Mongolia"
+
+#: classes/class-frontend.php:285
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: classes/class-frontend.php:286
+msgid "Morocco"
+msgstr "Morocco"
+
+#: classes/class-frontend.php:287
+msgid "Mozambique"
+msgstr "Mozambique"
+
+#: classes/class-frontend.php:289
+msgid "Namibia"
+msgstr "Namibia"
+
+#: classes/class-frontend.php:290
+msgid "Nauru"
+msgstr "Nauru"
+
+#: classes/class-frontend.php:291
+msgid "Nepal"
+msgstr "Nepal"
+
+#: classes/class-frontend.php:292
+msgid "Netherlands"
+msgstr "Netherlands"
+
+#: classes/class-frontend.php:293
+msgid "Netherlands Antilles"
+msgstr "Netherlands Antilles"
+
+#: classes/class-frontend.php:294
+msgid "New Caledonia"
+msgstr "New Caledonia"
+
+#: classes/class-frontend.php:295
+msgid "New Zealand"
+msgstr "New Zealand"
+
+#: classes/class-frontend.php:296
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: classes/class-frontend.php:297
+msgid "Niger"
+msgstr "Niger"
+
+#: classes/class-frontend.php:298
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: classes/class-frontend.php:299
+msgid "Niue"
+msgstr "Niue"
+
+#: classes/class-frontend.php:300
+msgid "Norfolk Island"
+msgstr "Norfolk Island"
+
+#: classes/class-frontend.php:301
+msgid "North Korea"
+msgstr "North Korea"
+
+#: classes/class-frontend.php:302
+msgid "Norway"
+msgstr "Norway"
+
+#: classes/class-frontend.php:303
+msgid "Oman"
+msgstr "Oman"
+
+#: classes/class-frontend.php:304
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#: classes/class-frontend.php:306
+msgid "Panama"
+msgstr "Panama"
+
+#: classes/class-frontend.php:307
+msgid "Papua New Guinea"
+msgstr "Papua New Guinea"
+
+#: classes/class-frontend.php:308
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: classes/class-frontend.php:309
+msgid "Peru"
+msgstr "Peru"
+
+#: classes/class-frontend.php:310
+msgid "Philippines"
+msgstr "Philippines"
+
+#: classes/class-frontend.php:312
+msgid "Poland"
+msgstr "Poland"
+
+#: classes/class-frontend.php:313
+msgid "Portugal"
+msgstr "Portugal"
+
+#: classes/class-frontend.php:314
+msgid "Qatar"
+msgstr "Qatar"
+
+#: classes/class-frontend.php:316
+msgid "Reunion"
+msgstr "Reunion"
+
+#: classes/class-frontend.php:317
+msgid "Romania"
+msgstr "Romania"
+
+#: classes/class-frontend.php:318
+msgid "Russia"
+msgstr "Russia"
+
+#: classes/class-frontend.php:319
+msgid "Rwanda"
+msgstr "Rwanda"
+
+#: classes/class-frontend.php:322
+msgid "Saint Helena"
+msgstr "Saint Helena"
+
+#: classes/class-frontend.php:323
+msgid "Saint Kitts and Nevis"
+msgstr "Saint Kitts and Nevis"
+
+#: classes/class-frontend.php:324
+msgid "Saint Lucia"
+msgstr "Saint Lucia"
+
+#: classes/class-frontend.php:327
+msgid "Saint Pierre and Miquelon"
+msgstr "Saint Pierre and Miquelon"
+
+#: classes/class-frontend.php:328
+msgid "Saint Vincent and the Grenadines"
+msgstr "Saint Vincent and the Grenadines"
+
+#: classes/class-frontend.php:329
+msgid "San Marino"
+msgstr "San Marino"
+
+#: classes/class-frontend.php:320
+msgid "São Tomé and Príncipe"
+msgstr "São Tomé and Príncipe"
+
+#: classes/class-frontend.php:330
+msgid "Saudi Arabia"
+msgstr "Saudi Arabia"
+
+#: classes/class-frontend.php:331
+msgid "Senegal"
+msgstr "Senegal"
+
+#: classes/class-frontend.php:333
+msgid "Seychelles"
+msgstr "Seychelles"
+
+#: classes/class-frontend.php:334
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#: classes/class-frontend.php:335
+msgid "Singapore"
+msgstr "Singapore"
+
+#: classes/class-frontend.php:337
+msgid "Slovenia"
+msgstr "Slovenia"
+
+#: classes/class-frontend.php:338
+msgid "Solomon Islands"
+msgstr "Solomon Islands"
+
+#: classes/class-frontend.php:339
+msgid "Somalia"
+msgstr "Somalia"
+
+#: classes/class-frontend.php:340
+msgid "South Africa"
+msgstr "South Africa"
+
+#: classes/class-frontend.php:342
+msgid "South Korea"
+msgstr "South Korea"
+
+#: classes/class-frontend.php:344
+msgid "Spain"
+msgstr "Spain"
+
+#: classes/class-frontend.php:345
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: classes/class-frontend.php:346
+msgid "Sudan"
+msgstr "Sudan"
+
+#: classes/class-frontend.php:347
+msgid "Suriname"
+msgstr "Suriname"
+
+#: classes/class-frontend.php:348
+msgid "Svalbard and Jan Mayen"
+msgstr "Svalbard and Jan Mayen"
+
+#: classes/class-frontend.php:349
+msgid "Swaziland"
+msgstr "Swaziland"
+
+#: classes/class-frontend.php:350
+msgid "Sweden"
+msgstr "Sweden"
+
+#: classes/class-frontend.php:351
+msgid "Switzerland"
+msgstr "Switzerland"
+
+#: classes/class-frontend.php:352
+msgid "Syria"
+msgstr "Syria"
+
+#: classes/class-frontend.php:353
+msgid "Taiwan"
+msgstr "Taiwan"
+
+#: classes/class-frontend.php:354
+msgid "Tajikistan"
+msgstr "Tajikistan"
+
+#: classes/class-frontend.php:355
+msgid "Tanzania"
+msgstr "Tanzania"
+
+#: classes/class-frontend.php:356
+msgid "Thailand"
+msgstr "Thailand"
+
+#: classes/class-frontend.php:358
+msgid "Togo"
+msgstr "Togo"
+
+#: classes/class-frontend.php:359
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: classes/class-frontend.php:360
+msgid "Tonga"
+msgstr "Tonga"
+
+#: classes/class-frontend.php:361
+msgid "Trinidad and Tobago"
+msgstr "Trinidad and Tobago"
+
+#: classes/class-frontend.php:362
+msgid "Tunisia"
+msgstr "Tunisia"
+
+#: classes/class-frontend.php:363
+msgid "Turkey"
+msgstr "Turkey"
+
+#: classes/class-frontend.php:364
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+#: classes/class-frontend.php:365
+msgid "Turks and Caicos Islands"
+msgstr "Turks and Caicos Islands"
+
+#: classes/class-frontend.php:366
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: classes/class-frontend.php:367
+msgid "Uganda"
+msgstr "Uganda"
+
+#: classes/class-frontend.php:368
+msgid "Ukraine"
+msgstr "Ukraine"
+
+#: classes/class-frontend.php:369
+msgid "United Arab Emirates"
+msgstr "United Arab Emirates"
+
+#: classes/class-frontend.php:372
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#: classes/class-frontend.php:373
+msgid "Uzbekistan"
+msgstr "Uzbekistan"
+
+#: classes/class-frontend.php:374
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: classes/class-frontend.php:376
+msgid "Venezuela"
+msgstr "Venezuela"
+
+#: classes/class-frontend.php:377
+msgid "Vietnam"
+msgstr "Vietnam"
+
+#: classes/class-frontend.php:379
+msgid "Western Sahara"
+msgstr "Western Sahara"
+
+#: classes/class-frontend.php:380
+msgid "Western Samoa"
+msgstr "Western Samoa"
+
+#: classes/class-frontend.php:381
+msgid "Yemen"
+msgstr "Yemen"
+
+#: classes/class-frontend.php:382
+msgid "Zambia"
+msgstr "Zambia"
+
+#: includes/wpseo-local-functions.php:78
+msgid "Phone"
+msgstr "Phone"
+
+#: includes/wpseo-local-functions.php:86
+msgid "Fax"
+msgstr "Fax"
+
+#: includes/wpseo-local-functions.php:626
+msgid "Route"
+msgstr "Route"
+
+#: includes/wpseo-local-functions.php:640
+msgid "Your location"
+msgstr "Your location"
+
+#: classes/admin/class-map-settings.php:202 classes/class-storelocator.php:101
+#: includes/ajax-functions.php:144 includes/wpseo-local-functions.php:425
+msgid "Show route"
+msgstr "Show route"
+
+#: includes/wpseo-local-functions.php:793
+#: includes/wpseo-local-functions.php:1017
+msgid "Closed"
+msgstr "Closed"
+
+#: includes/wpseo-local-functions.php:798
+msgid "and"
+msgstr "and"
+
+#: widgets/widget-show-address.php:27
+msgid "WP SEO - Show Address"
+msgstr "WP SEO - Show Address"
+
+#: widgets/widget-location-open-closed.php:146
+#: widgets/widget-show-address.php:198
+#: widgets/widget-show-locations-by-category.php:113
+#: widgets/widget-show-map.php:165 widgets/widget-show-openinghours.php:154
+#: widgets/widget-storelocator-form.php:144
+msgid "Title:"
+msgstr "Title:"
+
+#: classes/class-metaboxes.php:1975 classes/class-metaboxes.php:2162
+#: classes/class-metaboxes.php:2317 widgets/widget-location-open-closed.php:158
+#: widgets/widget-show-address.php:211 widgets/widget-show-map.php:198
+#: widgets/widget-show-openinghours.php:168
+msgid "Location:"
+msgstr "Location:"
+
+#: classes/admin/class-admin.php:309 classes/admin/class-admin.php:317
+#: classes/class-metaboxes.php:279 widgets/widget-location-open-closed.php:174
+#: widgets/widget-show-address.php:221 widgets/widget-show-map.php:200
+#: widgets/widget-show-openinghours.php:170
+msgid "Select a location"
+msgstr "Select a location"
+
+#: classes/class-metaboxes.php:2239 classes/class-metaboxes.php:2489
+#: widgets/widget-show-address.php:241
+msgid "Show country"
+msgstr "Show country"
+
+#: classes/class-metaboxes.php:2236 classes/class-metaboxes.php:2486
+#: widgets/widget-show-address.php:242
+msgid "Show state"
+msgstr "Show state"
+
+#: classes/class-metaboxes.php:2242 classes/class-metaboxes.php:2492
+#: widgets/widget-show-address.php:243
+msgid "Show phone number"
+msgstr "Show phone number"
+
+#: classes/class-metaboxes.php:2272 widgets/widget-show-address.php:253
+msgid "Show opening hours"
+msgstr "Show opening hours"
+
+#: widgets/widget-show-address.php:255
+msgid "Show address one line"
+msgstr "Show address one line"
+
+#: widgets/widget-show-map.php:24
+msgid "Shows Google Map of your location"
+msgstr "Shows Google Map of your location"
+
+#: widgets/widget-show-map.php:27
+msgid "WP SEO - Show Map"
+msgstr "WP SEO - Show Map"
+
+#: widgets/widget-show-map.php:172
+msgid "Choose to show all your locations in the map, otherwise just pick one in the selectbox below"
+msgstr "Choose to show all your locations in the map, otherwise just pick one in the selectbox below"
+
+#: widgets/widget-show-map.php:186
+msgid "Show all locations"
+msgstr "Show all locations"
+
+#: classes/admin/class-map-settings.php:102
+#: classes/admin/class-map-settings.php:103 widgets/widget-show-map.php:221
+msgid "Maps settings"
+msgstr "Maps settings"
+
+#: classes/class-metaboxes.php:2105 widgets/widget-show-map.php:270
+msgid "Show route planner"
+msgstr "Show route planner"
+
+#: widgets/widget-show-openinghours.php:35
+msgid "WP SEO - Show Opening hours"
+msgstr "WP SEO - Show Opening hours"
+
+#: classes/admin/class-general-settings.php:421 classes/class-metaboxes.php:615
+msgid "Business email"
+msgstr "Business email"
+
+#: classes/admin/class-advanced-settings.php:104
+#: classes/admin/class-advanced-settings.php:105
+msgid "Advanced settings"
+msgstr "Advanced settings"
+
+#: classes/admin/class-map-settings.php:152
+msgid "Default map style"
+msgstr "Default map style"
+
+#: classes/admin/class-map-settings.php:145 classes/class-metaboxes.php:2026
+#: classes/class-metaboxes.php:2431
+msgid "Hybrid"
+msgstr "Hybrid"
+
+#: classes/admin/class-map-settings.php:146 classes/class-metaboxes.php:2027
+#: classes/class-metaboxes.php:2432
+msgid "Satellite"
+msgstr "Satellite"
+
+#: classes/admin/class-map-settings.php:147 classes/class-metaboxes.php:2025
+#: classes/class-metaboxes.php:2430
+msgid "Roadmap"
+msgstr "Roadmap"
+
+#: classes/admin/class-map-settings.php:148 classes/class-metaboxes.php:2028
+#: classes/class-metaboxes.php:2433
+msgid "Terrain"
+msgstr "Terrain"
+
+#: classes/admin/class-map-settings.php:202
+msgid "\"Show route\" label"
+msgstr "\"Show route\" label"
+
+#. translators: %s expands to the location of the WPSEO upload dir.
+#: src/tools/import.php:102
+msgid "Sorry, there was an error while uploading the CSV file.<br>Please make sure the %s directory is writable (chmod 777)."
+msgstr "Sorry, there was an error while uploading the CSV file.<br>Please make sure the %s directory is writable (chmod 777)."
+
+#: classes/class-metaboxes.php:2285
+msgid "Insert address"
+msgstr "Insert address"
+
+#: classes/class-metaboxes.php:1658 classes/class-metaboxes.php:1734
+#: classes/class-metaboxes.php:1808
+msgid "Please select a location"
+msgstr "Please select a location"
+
+#: classes/class-metaboxes.php:2156
+msgid "Insert Address"
+msgstr "Insert Address"
+
+#: classes/class-metaboxes.php:2233
+msgid "Show address on one line"
+msgstr "Show address on one line"
+
+#: classes/class-metaboxes.php:2248 classes/class-metaboxes.php:2498
+#: widgets/widget-show-address.php:245
+msgid "Show fax number"
+msgstr "Show fax number"
+
+#: classes/class-metaboxes.php:2251 classes/class-metaboxes.php:2501
+msgid "Show email"
+msgstr "Show email"
+
+#: classes/class-metaboxes.php:2275 classes/class-metaboxes.php:2352
+#: widgets/widget-show-address.php:254 widgets/widget-show-openinghours.php:221
+msgid "Hide closed days"
+msgstr "Hide closed days"
+
+#: classes/class-metaboxes.php:2133 classes/class-metaboxes.php:2288
+#: classes/class-metaboxes.php:2365 classes/class-metaboxes.php:2512
+msgid "Cancel"
+msgstr "Cancel"
+
+#: classes/class-metaboxes.php:1969
+msgid "Insert Google Map"
+msgstr "Insert Google Map"
+
+#: classes/class-metaboxes.php:282
+msgid "All locations"
+msgstr "All locations"
+
+#: classes/class-metaboxes.php:2060 classes/class-metaboxes.php:2463
+msgid "Auto"
+msgstr "Auto"
+
+#: classes/class-metaboxes.php:2021 classes/class-metaboxes.php:2425
+msgid "Map style"
+msgstr "Map style"
+
+#: classes/class-metaboxes.php:2111
+msgid "Show state in info-popup"
+msgstr "Show state in info-popup"
+
+#: classes/class-metaboxes.php:2114
+msgid "Show country in info-popup"
+msgstr "Show country in info-popup"
+
+#: classes/class-metaboxes.php:2130
+msgid "Insert map"
+msgstr "Insert map"
+
+#: classes/class-metaboxes.php:2311
+msgid "Insert Opening Hours"
+msgstr "Insert Opening Hours"
+
+#: classes/class-metaboxes.php:2362
+msgid "Insert opening hours"
+msgstr "Insert opening hours"
+
+#: classes/class-frontend.php:321
+msgid "Saint Barthélemy"
+msgstr "Saint Barthélemy"
+
+#: includes/wpseo-local-functions.php:90
+msgid "Email"
+msgstr "Email"
+
+#: widgets/widget-location-open-closed.php:178
+#: widgets/widget-show-address.php:223 widgets/widget-show-map.php:202
+#: widgets/widget-show-openinghours.php:172
+msgid "Use current location"
+msgstr "Use current location"
+
+#: widgets/widget-show-address.php:246
+msgid "Show email address"
+msgstr "Show email address"
+
+#: classes/class-metaboxes.php:2280 classes/class-metaboxes.php:2357
+#: widgets/widget-show-address.php:281 widgets/widget-show-openinghours.php:245
+msgid "Extra comment"
+msgstr "Extra comment"
+
+#. translators: %s extends to the upload directory
+#: src/tools/import.php:430
+msgid "Make sure the %s directory is writeable."
+msgstr "Make sure the %s directory is writeable."
+
+#: src/tools/import.php:421
+msgid "This CSV is exported by the SimpleMap plugin"
+msgstr "This CSV is exported by the SimpleMap plugin"
+
+#. translators: %s extends to <a
+#. href="mailto:support@yoast.com">support@yoast.com</a>
+#: classes/admin/class-general-settings.php:650
+msgid "A lot of countries have their own address format. Please choose one that matches yours. If you have something completely different, please let us know via %s."
+msgstr "A lot of countries have their own address format. Please choose one that matches yours. If you have something completely different, please let us know via %s."
+
+#: classes/admin/class-map-settings.php:194
+msgid "Number of results"
+msgstr "Number of results"
+
+#: classes/admin/class-map-settings.php:193
+msgid "Store locator settings"
+msgstr "Store locator settings"
+
+#: classes/admin/class-advanced-settings.php:223
+msgid "Locations category base"
+msgstr "Locations category base"
+
+#: woocommerce/shipping/includes/category-costs-table.php:18
+msgid "Location category"
+msgstr "Location category"
+
+#: classes/class-metaboxes.php:470
+msgid "Copy data from another location:"
+msgstr "Copy data from another location:"
+
+#: classes/class-metaboxes.php:471
+msgid "Choose your location"
+msgstr "Choose your location"
+
+#: src/tools/import.php:426
+msgid "Note"
+msgstr "Note"
+
+#: classes/class-metaboxes.php:476
+msgid "selecting a location will overwrite all data below. If you accidently selected a location, just refresh the page and make sure you don't save it."
+msgstr "selecting a location will overwrite all data below. If you accidently selected a location, just refresh the page and make sure you don't save it."
+
+#: classes/admin/class-general-settings.php:447
+#: includes/wpseo-local-functions.php:94
+msgid "URL"
+msgstr "URL"
+
+#: classes/class-metaboxes.php:1584
+msgid "Map"
+msgstr "Map"
+
+#: classes/class-metaboxes.php:1586
+msgid "Address"
+msgstr "Address"
+
+#: classes/class-metaboxes.php:2390 classes/class-metaboxes.php:2509
+msgid "Insert Store locator"
+msgstr "Insert Store locator"
+
+#: classes/class-metaboxes.php:1591
+msgid "Store locator"
+msgstr "Store locator"
+
+#: classes/class-metaboxes.php:2117
+msgid "Show URL in info-popup"
+msgstr "Show URL in info-popup"
+
+#: classes/class-metaboxes.php:2245 classes/class-metaboxes.php:2495
+msgid "Show 2nd phone number"
+msgstr "Show 2nd phone number"
+
+#: classes/class-metaboxes.php:2254 classes/class-metaboxes.php:2504
+#: widgets/widget-show-address.php:247
+msgid "Show URL"
+msgstr "Show URL"
+
+#: classes/class-metaboxes.php:2395
+#: js/src/blocks/store-locator/components/StoreLocator.js:114
+msgid "Show Map with the search results"
+msgstr "Show Map with the search results"
+
+#: classes/class-metaboxes.php:2426
+msgid "Please specify below how the search results should look like."
+msgstr "Please specify below how the search results should look like."
+
+#: classes/class-storelocator.php:175
+msgid "within"
+msgstr "within"
+
+#: classes/class-storelocator.php:203
+msgid "Filter by category"
+msgstr "Filter by category"
+
+#: classes/class-storelocator.php:217 widgets/widget-storelocator-form.php:92
+msgid "Search"
+msgstr "Search"
+
+#. translators: %d extends to the number of found locations in the radius
+#: classes/class-storelocator.php:272
+msgid "%d result has been found"
+msgid_plural "%d results have been found"
+msgstr[0] "%d result has been found"
+msgstr[1] "%d results have been found"
+
+#: classes/class-storelocator.php:279 classes/class-storelocator.php:300
+msgid "No results found"
+msgstr "No results found"
+
+#: classes/class-storelocator.php:371
+msgid "No valid coordinates. We cannot complete the search."
+msgstr "No valid coordinates. We cannot complete the search."
+
+#: widgets/widget-show-address.php:244
+msgid "Show second phone number"
+msgstr "Show second phone number"
+
+#: widgets/widget-show-map.php:267
+msgid "Show state in info-window"
+msgstr "Show state in info-window"
+
+#: widgets/widget-show-map.php:268
+msgid "Show country in info-window"
+msgstr "Show country in info-window"
+
+#: widgets/widget-show-map.php:269
+msgid "Show URL in info-window"
+msgstr "Show URL in info-window"
+
+#: classes/admin/class-general-settings.php:403 classes/class-metaboxes.php:573
+msgid "Business phone"
+msgstr "Business phone"
+
+#: classes/admin/class-general-settings.php:409 classes/class-metaboxes.php:587
+msgid "2nd Business phone"
+msgstr "2nd Business phone"
+
+#. translators: %1$s extends to link opening tag; %2$s closes the tag
+#: src/tools/import.php:409
+msgid "View the %1$sdocumentation%2$s to check what format of the CSV file should be."
+msgstr "View the %1$sdocumentation%2$s to check what format of the CSV file should be."
+
+#: src/tools/import.php:426
+msgid "The Geocoding API is limited to 2,500 queries a day, so when you have large CSV files, with no coordinates, cut them in pieces of 2,500 rows and import them one a day. Indeed, it's not funny. It's reality."
+msgstr "The Geocoding API is limited to 2,500 queries a day, so when you have large CSV files, with no coordinates, cut them in pieces of 2,500 rows and import them one a day. Indeed, it's not funny. It's reality."
+
+#: includes/wpseo-local-functions.php:82
+msgid "Secondary phone"
+msgstr "Secondary phone"
+
+#: classes/class-metaboxes.php:2203
+msgid "Order by:"
+msgstr "Order by:"
+
+#: classes/class-metaboxes.php:2207
+msgid "Alphabetical"
+msgstr "Alphabetical"
+
+#: classes/class-metaboxes.php:2213
+msgid "Order:"
+msgstr "Order:"
+
+#: classes/class-metaboxes.php:2217
+msgid "Ascending"
+msgstr "Ascending"
+
+#: classes/class-metaboxes.php:2219
+msgid "Descending"
+msgstr "Descending"
+
+#: classes/class-metaboxes.php:2410
+#: js/src/blocks/store-locator/components/StoreLocator.js:145
+msgid "Show radius to limit your search"
+msgstr "Show radius to limit your search"
+
+#: includes/wpseo-local-functions.php:646
+msgid "No route could be calculated."
+msgstr "No route could be calculated."
+
+#. translators: %1$s resolves to Yoast SEO, %2$s resolves to Local SEO
+#: local-seo.php:274
+msgid "Please upgrade the %1$s plugin to the latest version to allow the %2$s module to work."
+msgstr "Please upgrade the %1$s plugin to the latest version to allow the %2$s module to work."
+
+#: widgets/widget-storelocator-form.php:21
+msgid "Shows form to search the nearest store. Will submit to the page which contains the store locator."
+msgstr "Shows form to search the nearest store. Will submit to the page which contains the store locator."
+
+#: widgets/widget-storelocator-form.php:24
+msgid "WP SEO - Store locator form"
+msgstr "WP SEO - Store locator form"
+
+#: widgets/widget-storelocator-form.php:156
+msgid "Search label:"
+msgstr "Search label:"
+
+#: widgets/widget-storelocator-form.php:186
+msgid "Select the page where your store locator shortcode is added. This is the page where the form is submitted to."
+msgstr "Select the page where your store locator shortcode is added. This is the page where the form is submitted to."
+
+#: widgets/widget-storelocator-form.php:194
+msgid "Select a page"
+msgstr "Select a page"
+
+#. Description of the plugin
+#: local-seo.php
+msgid "This Local SEO module adds all the needed functionality to get your site ready for Local Search Optimization"
+msgstr "This Local SEO module adds all the needed functionality to get your site ready for Local Search Optimization"
+
+#. Author of the plugin
+#: local-seo.php
+msgid "Team Yoast and Arjan Snaterse"
+msgstr "Team Yoast and Arjan Snaterse"
+
+#: classes/class-metaboxes.php:2227 widgets/widget-show-address.php:239
+msgid "Hide business name"
+msgstr "Hide business name"
+
+#: classes/admin/class-map-settings.php:157 classes/class-metaboxes.php:1247
+#: classes/class-taxonomy.php:62
+msgid "Custom marker"
+msgstr "Custom marker"
+
+#: classes/admin/class-map-settings.php:166 classes/class-metaboxes.php:1251
+#: classes/class-taxonomy.php:70
+msgid "Set custom marker image"
+msgstr "Set custom marker image"
+
+#: classes/admin/class-map-settings.php:168 classes/class-metaboxes.php:1253
+#: classes/class-taxonomy.php:71
+msgid "Remove marker"
+msgstr "Remove marker"
+
+#. translators: %s extends to Location opening hours from per week day
+#. translators: %s extends to Location opening hours to per week day
+#. translators: %s extends to Location second from opening hours per week day
+#. translators: %s extends to Location second to opening hours per week day
+#: src/tools/import.php:309 src/tools/import.php:319 src/tools/import.php:352
+#: src/tools/import.php:362
+msgid "%s is not a valid time notation"
+msgstr "%s is not a valid time notation"
+
+#: classes/admin/class-general-settings.php:678 classes/class-metaboxes.php:799
+msgid "If the marker is not in the right location for your store, you can drag the pin to the location where you want it."
+msgstr "If the marker is not in the right location for your store, you can drag the pin to the location where you want it."
+
+#: classes/class-metaboxes.php:2414
+#: js/src/blocks/store-locator/components/StoreLocator.js:150
+msgid "Show the nearest location, if none are found within radius"
+msgstr "Show the nearest location, if none are found within radius"
+
+#: classes/class-taxonomy.php:77
+msgid "A custom marker can be set per category. If no marker is set here, the global marker will be used."
+msgstr "A custom marker can be set per category. If no marker is set here, the global marker will be used."
+
+#: includes/wpseo-local-functions.php:1444
+msgid "If you want the map to display a custom marker pin for your locations, please upload it here."
+msgstr "If you want the map to display a custom marker pin for your locations, please upload it here."
+
+#: classes/admin/class-opening-hours.php:141
+msgid "Hide opening hours option"
+msgstr "Hide opening hours option"
+
+#. translators: 1: HTML <code> open tag; 2: <code> close tag.
+#: classes/admin/class-advanced-settings.php:247
+msgid "The singular label for your location pages. Default label is %1$sLocation%2$s."
+msgstr "The singular label for your location pages. Default label is %1$sLocation%2$s."
+
+#. translators: 1: HTML <code> open tag; 2: <code> close tag.
+#: classes/admin/class-advanced-settings.php:257
+msgid "The plural label for your location pages. Default label is %1$sLocations%2$s."
+msgstr "The plural label for your location pages. Default label is %1$sLocations%2$s."
+
+#. translators: %s extends to the singular label for the location post type
+#: src/posttype/register-post-type.php:74
+#: src/posttype/register-post-type.php:76
+msgid "New %s"
+msgstr "New %s"
+
+#. translators: %s extends to the singular label for the location post type
+#: src/posttype/register-post-type.php:78
+msgid "Add New %s"
+msgstr "Add New %s"
+
+#. translators: %s extends to the singular label for the location post type
+#: src/posttype/register-post-type.php:80
+msgid "Edit %s"
+msgstr "Edit %s"
+
+#. translators: %s extends to the singular label for the location post type
+#: src/posttype/register-post-type.php:82
+msgid "View %s"
+msgstr "View %s"
+
+#. translators: %s extends to the plural label for the location post type
+#: src/posttype/register-post-type.php:84
+msgid "Search %s"
+msgstr "Search %s"
+
+#. translators: %s extends to the plural label for the location post type
+#: src/posttype/register-post-type.php:86
+msgid "No %s found"
+msgstr "No %s found"
+
+#. translators: %s extends to the plural label for the location post type
+#: src/posttype/register-post-type.php:88
+msgid "No %s found in trash"
+msgstr "No %s found in trash"
+
+#: classes/class-core.php:649
+msgid "The uploaded custom marker exceeds the recommended size of 100x100 pixels. Please be aware this might influence the info popup."
+msgstr "The uploaded custom marker exceeds the recommended size of 100x100 pixels. Please be aware this might influence the info popup."
+
+#: classes/class-frontend.php:140
+msgid "Åland Islands"
+msgstr "Åland Islands"
+
+#: classes/class-frontend.php:160
+msgid "Belau"
+msgstr "Belau"
+
+#: classes/class-frontend.php:167
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr "Bonaire, Sint Eustatius and Saba"
+
+#: classes/class-frontend.php:173
+msgid "British Virgin Islands"
+msgstr "British Virgin Islands"
+
+#: classes/class-frontend.php:191
+msgid "Congo (Brazzaville)"
+msgstr "Congo (Brazzaville)"
+
+#: classes/class-frontend.php:192
+msgid "Congo (Kinshasa)"
+msgstr "Congo (Kinshasa)"
+
+#: classes/class-frontend.php:195
+msgid "Croatia"
+msgstr "Croatia"
+
+#: classes/class-frontend.php:197
+msgid "Curaçao"
+msgstr "Curaçao"
+
+#: classes/class-frontend.php:211
+msgid "Falkland Islands"
+msgstr "Falkland Islands"
+
+#: classes/class-frontend.php:230
+msgid "Guernsey"
+msgstr "Guernsey"
+
+#: classes/class-frontend.php:235
+msgid "Heard Island and McDonald Islands"
+msgstr "Heard Island and McDonald Islands"
+
+#: classes/class-frontend.php:244
+msgid "Isle of Man"
+msgstr "Isle of Man"
+
+#: classes/class-frontend.php:247
+msgid "Ivory Coast"
+msgstr "Ivory Coast"
+
+#: classes/class-frontend.php:250
+msgid "Jersey"
+msgstr "Jersey"
+
+#: classes/class-frontend.php:266
+msgid "Macao S.A.R., China"
+msgstr "Macao S.A.R., China"
+
+#: classes/class-frontend.php:284
+msgid "Montenegro"
+msgstr "Montenegro"
+
+#: classes/class-frontend.php:288
+msgid "Myanmar"
+msgstr "Myanmar"
+
+#: classes/class-frontend.php:305
+msgid "Palestinian Territory"
+msgstr "Palestinian Territory"
+
+#: classes/class-frontend.php:315
+msgid "Republic of Ireland"
+msgstr "Republic of Ireland"
+
+#: classes/class-frontend.php:325
+msgid "Saint Martin (Dutch part)"
+msgstr "Saint Martin (Dutch part)"
+
+#: classes/class-frontend.php:326
+msgid "Saint Martin (French part)"
+msgstr "Saint Martin (French part)"
+
+#: classes/class-frontend.php:332
+msgid "Serbia"
+msgstr "Serbia"
+
+#: classes/class-frontend.php:336
+msgid "Slovakia"
+msgstr "Slovakia"
+
+#: classes/class-frontend.php:341
+msgid "South Georgia/Sandwich Islands"
+msgstr "South Georgia/Sandwich Islands"
+
+#: classes/class-frontend.php:343
+msgid "South Sudan"
+msgstr "South Sudan"
+
+#: classes/class-frontend.php:357
+msgid "Timor-Leste"
+msgstr "Timor-Leste"
+
+#: classes/class-frontend.php:370
+msgid "United Kingdom (UK)"
+msgstr "United Kingdom (UK)"
+
+#: classes/class-frontend.php:371
+msgid "United States (US)"
+msgstr "United States (US)"
+
+#: classes/class-frontend.php:375
+msgid "Vatican"
+msgstr "Vatican"
+
+#: classes/class-frontend.php:378
+msgid "Wallis and Futuna"
+msgstr "Wallis and Futuna"
+
+#: classes/class-frontend.php:383
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
+
+#: classes/class-metaboxes.php:1986 classes/class-metaboxes.php:2183
+#: widgets/widget-show-locations-by-category.php:129
+msgid "Select a category"
+msgstr "Select a category"
+
+#: classes/class-metaboxes.php:2120
+msgid "Show email in info popup"
+msgstr "Show email in info popup"
+
+#: classes/class-metaboxes.php:2209
+msgid "By publish date"
+msgstr "By publish date"
+
+#. translators: %s extends to the distance in miles
+#: classes/class-storelocator.php:284
+msgid "The nearest location is %s miles away"
+msgstr "The nearest location is %s miles away"
+
+#. translators: %s extends to the distance in kilometers
+#: classes/class-storelocator.php:286
+msgid "The nearest location is %s kilometers away"
+msgstr "The nearest location is %s kilometers away"
+
+#: includes/wpseo-local-functions.php:369
+msgid "There are no locations to show."
+msgstr "There are no locations to show."
+
+#: classes/admin/class-general-settings.php:456 classes/class-metaboxes.php:677
+#: includes/wpseo-local-functions.php:98
+msgid "VAT ID"
+msgstr "VAT ID"
+
+#: classes/admin/class-general-settings.php:462 classes/class-metaboxes.php:691
+#: includes/wpseo-local-functions.php:102
+msgid "Tax ID"
+msgstr "Tax ID"
+
+#: classes/admin/class-general-settings.php:468 classes/class-metaboxes.php:705
+#: includes/wpseo-local-functions.php:106
+msgid "Chamber of Commerce ID"
+msgstr "Chamber of Commerce ID"
+
+#: classes/class-metaboxes.php:2009
+msgid "Center map on this location:"
+msgstr "Centre map on this location"
+
+#: classes/class-metaboxes.php:2087 classes/class-metaboxes.php:2401
+#: js/src/blocks/store-locator/components/StoreLocator.js:128
+msgid "Allow dragging of the map"
+msgstr "Allow dragging of the map"
+
+#: classes/class-metaboxes.php:2260 widgets/widget-show-address.php:249
+msgid "Show VAT ID"
+msgstr "Show VAT ID"
+
+#: classes/class-metaboxes.php:2263 widgets/widget-show-address.php:250
+msgid "Show Tax ID"
+msgstr "Show Tax ID"
+
+#: classes/class-metaboxes.php:2266 widgets/widget-show-address.php:251
+msgid "Show Chamber of Commerce ID"
+msgstr "Show Chamber of Commerce ID"
+
+#: widgets/widget-storelocator-form.php:172
+msgid "Default radius:"
+msgstr "Default radius:"
+
+#: widgets/widget-storelocator-form.php:180
+msgid "This field will be a hidden field and is only used for calculation."
+msgstr "This field will be a hidden field and is only used for calculation."
+
+#: classes/admin/class-api-settings.php:78
+msgid "API key"
+msgstr "API key"
+
+#. translators: %s expands to "Local SEO".
+#: classes/class-taxonomy.php:55
+msgid "%s Settings"
+msgstr "%s Settings"
+
+#: classes/admin/class-api-settings.php:132
+msgid "Google Maps API browser key (required)"
+msgstr "Google Maps API browser key (required)"
+
+#. translators: %1$s expands to Yoast SEO: Local, %2$s expands to Google
+#. Maps,%3$s expands to a link open tag to the settings page, %4$s expands to
+#. the closing tag for the link(s) to the settings page and %5$s expands to the
+#. opening tag for the link to the help center article
+#: classes/admin/class-admin.php:399
+msgid "%1$s needs a %2$s API key to show %2$s on your website. You haven't set a %2$s API key yet. Go to the %3$s%1$s API key tab%4$s to set the key, or %5$svisit the Yoast help center%4$s for more information."
+msgstr "%1$s needs a %2$s API key to show %2$s on your website. You haven't set a %2$s API key yet. Go to the %3$s%1$s API key tab%4$s to set the key, or %5$svisit the Yoast help center%4$s for more information."
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:685 classes/class-core.php:705
+msgid "%s categories"
+msgstr "%s categories"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:687
+msgid "%s category"
+msgstr "%s category"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:689
+msgid "Search %s categories"
+msgstr "Search %s categories"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:691
+msgid "All %s categories"
+msgstr "All %s categories"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:693
+msgid "Parent %s category"
+msgstr "Parent %s category"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:695
+msgid "Parent %s category:"
+msgstr "Parent %s category:"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:697
+msgid "Edit %s category"
+msgstr "Edit %s category"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:699
+msgid "Update %s category"
+msgstr "Update %s category"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:701
+msgid "Add New %s category"
+msgstr "Add New %s category"
+
+#. translators: %s extends to the singular label for the location category
+#: classes/class-core.php:703
+msgid "New %s category name"
+msgstr "New %s category name"
+
+#. translators: %s extends to Yoast Local SEO brand name
+#: classes/class-metaboxes.php:1260
+msgid "This custom marker will override the custom markers for the location category and general %s settings"
+msgstr "This custom marker will override the custom markers for the location category and general %s settings"
+
+#: classes/class-metaboxes.php:2257 widgets/widget-show-address.php:248
+msgid "Show logo"
+msgstr "Show logo"
+
+#. translators: %s extends to weekdays
+#: classes/class-metaboxes.php:2342
+msgid "Show %s"
+msgstr "Show %s"
+
+#: classes/class-storelocator.php:322
+msgid "Please enter a zipcode or city"
+msgstr "Please enter a zipcode or city"
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:140
+msgid "Subject"
+msgstr "Subject"
+
+#: widgets/widget-show-openinghours.php:192
+msgid "Show days"
+msgstr "Show days"
+
+#. Plugin Name of the plugin
+#: local-seo.php
+msgid "Yoast SEO: Local"
+msgstr "Yoast SEO: Local"
+
+#: classes/admin/class-admin.php:292
+msgid "Choose a business type"
+msgstr "Choose a business type"
+
+#: classes/admin/class-admin.php:305 classes/class-frontend.php:139
+msgid "Choose a country"
+msgstr "Choose a country"
+
+#: classes/class-storelocator.php:162 widgets/widget-storelocator-form.php:39
+msgid "Enter your postal code, city and / or state"
+msgstr "Enter your postal code, city and / or state"
+
+#. translators: 1: expands to 'WooCommerce'.
+#. translators: 1: expands to 'Local SEO for WooCommerce'.
+#: deprecated/woocommerce/admin/class-woocommerce-settings.php:57
+#: deprecated/woocommerce/admin/class-woocommerce-settings.php:59
+msgid "%1$s settings"
+msgstr "%1$s settings"
+
+#: classes/admin/class-map-settings.php:214
+msgid "Automatically detect the user's location as the starting point."
+msgstr "Automatically detect the user's location as the starting point."
+
+#: classes/admin/class-map-settings.php:207
+msgid "Location detection"
+msgstr "Location detection"
+
+#: classes/class-metaboxes.php:1983 classes/class-metaboxes.php:2179
+#: widgets/widget-show-locations-by-category.php:124
+msgid "Category:"
+msgstr "Category:"
+
+#: classes/class-metaboxes.php:2108
+msgid "Show info-popup by default"
+msgstr "Show info-popup by default"
+
+#: classes/class-metaboxes.php:2329
+msgid "Show Days"
+msgstr "Show Days"
+
+#: classes/class-storelocator.php:170 includes/wpseo-local-functions.php:642
+msgid "Use my current location"
+msgstr "Use my current location"
+
+#: classes/class-storelocator.php:170 includes/wpseo-local-functions.php:642
+msgid "Determining current location"
+msgstr "Determining current location"
+
+#: widgets/widget-show-map.php:272
+msgid "Show infowindow by default"
+msgstr "Show infowindow by default"
+
+#: classes/class-metaboxes.php:476
+msgid "Note:"
+msgstr "Note:"
+
+#: classes/class-metaboxes.php:2230 widgets/widget-show-address.php:240
+msgid "Hide business address"
+msgstr "Hide business address"
+
+#: widgets/widget-show-locations-by-category.php:26
+msgid "WP SEO - Show Locations By Category"
+msgstr "WP SEO - Show Locations By Category"
+
+#: classes/admin/class-general-settings.php:300 classes/class-metaboxes.php:514
+msgid "Business address line 2"
+msgstr "Business address line 2"
+
+#: src/tools/export.php:124
+msgid "There were no locations found that met your criteria for exporting"
+msgstr "There were no locations found that met your criteria for exporting"
+
+#: src/tools/export.php:231
+msgid "Export"
+msgstr "Export"
+
+#: src/tools/export.php:237
+msgid "Download .csv file"
+msgstr "Download .csv file"
+
+#. translators: 1: nr of locations found; 2: link to post type overview; 3:
+#. link close tag.
+#: src/tools/import.php:391
+msgid "%1$d locations found and successfully imported %2$shere%3$s"
+msgstr "%1$d locations found and successfully imported %2$shere%3$s"
+
+#: src/tools/import.php:406
+msgid "Import"
+msgstr "Import"
+
+#. translators: 1: <strong> open tag; 2: </strong> close tag.
+#: classes/admin/class-opening-hours.php:260 classes/class-metaboxes.php:1029
+msgid "If a specific day only has one set of opening hours, please set the second set for that day to %1$sclosed%2$s"
+msgstr "If a specific day only has one set of opening hours, please set the second set for that day to %1$sclosed%2$s"
+
+#. translators: %s extends to <code>.csv</code>
+#: src/tools/export.php:233
+msgid "Export all your locations to a %s file"
+msgstr "Export all your locations to a %s file"
+
+#: classes/class-metaboxes.php:2100 classes/class-metaboxes.php:2404
+#: widgets/widget-show-map.php:276
+#: js/src/blocks/store-locator/components/StoreLocator.js:134
+msgid "Marker clustering"
+msgstr "Marker clustering"
+
+#: classes/class-metaboxes.php:2124
+msgid "Show a filter for location categories under the map"
+msgstr "Show a filter for location categories under the map"
+
+#: includes/wpseo-local-functions.php:656
+msgid "All categories"
+msgstr "All categories"
+
+#: widgets/widget-location-open-closed.php:32
+msgid "Display a message when a location is open or closed."
+msgstr "Display a message when a location is open or closed."
+
+#: widgets/widget-location-open-closed.php:35
+msgid "WP SEO - Show open/closed message"
+msgstr "WP SEO - Show open/closed message"
+
+#: widgets/widget-location-open-closed.php:199
+msgid "Message when location is open"
+msgstr "Message when location is open"
+
+#: widgets/widget-location-open-closed.php:211
+msgid "Message when location is closed"
+msgstr "Message when location is closed"
+
+#: widgets/widget-show-map.php:271
+msgid "Show category filter"
+msgstr "Show category filter"
+
+#. translators: 1: HTML <a> open tag; 2: <a> close tag.
+#: classes/admin/class-general-settings.php:228 classes/class-metaboxes.php:427
+msgid "If your business type is not listed, please read %1$sthe FAQ entry%2$s."
+msgstr "If your business type is not listed, please read %1$sthe FAQ entry%2$s."
+
+#: classes/class-metaboxes.php:2637
+msgid "Your h1 and/or h2 headings contain your location's city, well done!"
+msgstr "Your h1 and/or h2 headings contain your location's city, well done!"
+
+#: classes/class-metaboxes.php:2638
+msgid "Your h1 and/or h2 headings do not contain your location's city, you should really add that."
+msgstr "Your h1 and/or h2 headings do not contain your location's city, you should really add that."
+
+#: classes/class-metaboxes.php:2654
+msgid "Your content contains a store locator shortcode, but not much more content. Please add content to make your page more useful for your visitors."
+msgstr "Your content contains a store locator shortcode, but not much more content. Please add content to make your page more useful for your visitors."
+
+#: classes/class-metaboxes.php:2006 classes/class-metaboxes.php:2200
+#: classes/class-metaboxes.php:2418
+#: js/src/blocks/store-locator/components/StoreLocator.js:155
+msgid "Maximum number of results to show"
+msgstr "Maximum number of results to show"
+
+#: classes/class-metaboxes.php:2407
+#: js/src/blocks/store-locator/components/StoreLocator.js:140
+msgid "Show filter to narrow down search results by category"
+msgstr "Show filter to narrow down search results by category"
+
+#: widgets/widget-show-address.php:24
+msgid "Shows address of locations."
+msgstr "Shows address of locations."
+
+#: widgets/widget-show-locations-by-category.php:23
+msgid "Shows a list of location names by category."
+msgstr "Shows a list of location names by category."
+
+#: widgets/widget-show-openinghours.php:32
+msgid "Shows opening hours of locations."
+msgstr "Shows opening hours of locations."
+
+#: classes/admin/class-opening-hours.php:153
+msgid "Closed label"
+msgstr "Closed label"
+
+#. translators: 1: link open tag; 2: link close tag.
+#: classes/admin/class-map-settings.php:221
+msgid "This option only works on HTTPS websites. Using HTTPS is important, read more about it in the %1$sYoast KB%2$s"
+msgstr "This option only works on HTTPS websites. Using HTTPS is important, read more about it in the %1$sYoast KB%2$s"
+
+#. translators: This should be translated according to the definition on
+#. Schema.org. For more information, visit: https://schema.org/Organization
+#: src/repositories/business-types-repository.php:136
+msgid "Organization"
+msgstr "Organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Corporation
+#: src/repositories/business-types-repository.php:231
+msgid "Corporation"
+msgstr "Corporation"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/GovernmentOrganization
+#: src/repositories/business-types-repository.php:253
+msgid "Government organization"
+msgstr "Government organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/NGO
+#: src/repositories/business-types-repository.php:631
+msgid "NGO"
+msgstr "NGO"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/EducationalOrganization
+#: src/repositories/business-types-repository.php:234
+msgid "Educational organization"
+msgstr "Educational organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/CollegeOrUniversity
+#: src/repositories/business-types-repository.php:237
+msgid "College or university"
+msgstr "College or university"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ElementarySchool
+#: src/repositories/business-types-repository.php:239
+msgid "Elementary school"
+msgstr "Elementary school"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HighSchool
+#: src/repositories/business-types-repository.php:241
+msgid "High school"
+msgstr "High school"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MiddleSchool
+#: src/repositories/business-types-repository.php:243
+msgid "Middle school"
+msgstr "Middle school"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Preschool
+#: src/repositories/business-types-repository.php:245
+msgid "Preschool"
+msgstr "Preschool"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/School
+#: src/repositories/business-types-repository.php:247
+msgid "School"
+msgstr "School"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PerformingGroup
+#: src/repositories/business-types-repository.php:636
+msgid "Performing group"
+msgstr "Performing group"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/DanceGroup
+#: src/repositories/business-types-repository.php:639
+msgid "Dance group"
+msgstr "Dance group"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MusicGroup
+#: src/repositories/business-types-repository.php:641
+msgid "Music group"
+msgstr "Music group"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/TheaterGroup
+#: src/repositories/business-types-repository.php:643
+msgid "Theater group"
+msgstr "Theatre group"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/SportsTeam
+#: src/repositories/business-types-repository.php:661
+msgid "Sports team"
+msgstr "Sports team"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/LocalBusiness
+#: src/repositories/business-types-repository.php:258
+msgid "Local business"
+msgstr "Local business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AnimalShelter
+#: src/repositories/business-types-repository.php:261
+msgid "Animal shelter"
+msgstr "Animal shelter"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/AutomotiveBusiness
+#: src/repositories/business-types-repository.php:266
+msgid "Automotive business"
+msgstr "Automotive business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutoBodyShop
+#: src/repositories/business-types-repository.php:269
+msgid "Auto body shop"
+msgstr "Auto body shop"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutoDealer
+#: src/repositories/business-types-repository.php:271
+msgid "Auto dealer"
+msgstr "Auto dealer"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutoPartsStore
+#: src/repositories/business-types-repository.php:273
+#: src/repositories/business-types-repository.php:541
+msgid "Auto parts store"
+msgstr "Auto parts store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutoRental
+#: src/repositories/business-types-repository.php:275
+msgid "Auto rental"
+msgstr "Auto rental"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutoRepair
+#: src/repositories/business-types-repository.php:277
+msgid "Auto repair"
+msgstr "Auto repair"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutoWash
+#: src/repositories/business-types-repository.php:279
+msgid "Auto wash"
+msgstr "Auto wash"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/GasStation
+#: src/repositories/business-types-repository.php:281
+msgid "Gas station"
+msgstr "Gas station"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MotorcycleDealer
+#: src/repositories/business-types-repository.php:283
+msgid "Motorcycle dealer"
+msgstr "Motorcycle dealer"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MotorcycleRepair
+#: src/repositories/business-types-repository.php:285
+msgid "Motorcycle repair"
+msgstr "Motorcycle repair"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/DryCleaningOrLaundry
+#: src/repositories/business-types-repository.php:293
+msgid "Dry cleaning or laundry"
+msgstr "Dry cleaning or laundry"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/EmergencyService
+#: src/repositories/business-types-repository.php:296
+msgid "Emergency service"
+msgstr "Emergency service"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/FireStation
+#: src/repositories/business-types-repository.php:299
+msgid "Fire station"
+msgstr "Fire station"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Hospital
+#: src/repositories/business-types-repository.php:301
+#: src/repositories/business-types-repository.php:619
+msgid "Hospital"
+msgstr "Hospital"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PoliceStation
+#: src/repositories/business-types-repository.php:303
+msgid "Police station"
+msgstr "Police station"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/EmploymentAgency
+#: src/repositories/business-types-repository.php:307
+msgid "Employment agency"
+msgstr "Employment agency"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/EntertainmentBusiness
+#: src/repositories/business-types-repository.php:310
+msgid "Entertainment business"
+msgstr "Entertainment business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/AdultEntertainment
+#: src/repositories/business-types-repository.php:313
+msgid "Adult entertainment"
+msgstr "Adult entertainment"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AmusementPark
+#: src/repositories/business-types-repository.php:315
+msgid "Amusement park"
+msgstr "Amusement park"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ArtGallery
+#: src/repositories/business-types-repository.php:317
+msgid "Art gallery"
+msgstr "Art gallery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Casino
+#: src/repositories/business-types-repository.php:319
+msgid "Casino"
+msgstr "Casino"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ComedyClub
+#: src/repositories/business-types-repository.php:321
+msgid "Comedy club"
+msgstr "Comedy club"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MovieTheater
+#: src/repositories/business-types-repository.php:323
+msgid "Movie theater"
+msgstr "Movie theatre"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/NightClub
+#: src/repositories/business-types-repository.php:325
+msgid "Night club"
+msgstr "Night club"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/LegalService
+#: src/repositories/business-types-repository.php:418
+msgid "Legal service"
+msgstr "Legal service"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Notary
+#: src/repositories/business-types-repository.php:423
+msgid "Notary"
+msgstr "Notary"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/FinancialService
+#: src/repositories/business-types-repository.php:330
+msgid "Financial service"
+msgstr "Financial service"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/AccountingService
+#: src/repositories/business-types-repository.php:333
+msgid "Accounting service"
+msgstr "Accounting service"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/AutomatedTeller
+#: src/repositories/business-types-repository.php:335
+msgid "Automated teller"
+msgstr "Automated teller"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/BankOrCreditUnion
+#: src/repositories/business-types-repository.php:337
+msgid "Bank or credit union"
+msgstr "Bank or credit union"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/InsuranceAgency
+#: src/repositories/business-types-repository.php:339
+msgid "Insurance agency"
+msgstr "Insurance agency"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/FoodEstablishment
+#: src/repositories/business-types-repository.php:344
+msgid "Food establishment"
+msgstr "Food establishment"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Bakery
+#: src/repositories/business-types-repository.php:347
+msgid "Bakery"
+msgstr "Bakery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/BarOrPub
+#: src/repositories/business-types-repository.php:349
+msgid "Bar or pub"
+msgstr "Bar or pub"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Brewery
+#: src/repositories/business-types-repository.php:351
+msgid "Brewery"
+msgstr "Brewery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/CafeOrCoffeeShop
+#: src/repositories/business-types-repository.php:353
+msgid "Cafe or coffee shop"
+msgstr "Cafe or coffee shop"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/FastFoodRestaurant
+#: src/repositories/business-types-repository.php:357
+msgid "Fast food restaurant"
+msgstr "Fast food restaurant"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/IceCreamShop
+#: src/repositories/business-types-repository.php:359
+msgid "Ice cream shop"
+msgstr "Ice cream shop"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Restaurant
+#: src/repositories/business-types-repository.php:361
+msgid "Restaurant"
+msgstr "Restaurant"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Winery
+#: src/repositories/business-types-repository.php:363
+msgid "Winery"
+msgstr "Winery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/GovernmentOffice
+#: src/repositories/business-types-repository.php:368
+msgid "Government office"
+msgstr "Government office"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PostOffice
+#: src/repositories/business-types-repository.php:371
+msgid "Post office"
+msgstr "Post office"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/HealthAndBeautyBusiness
+#: src/repositories/business-types-repository.php:376
+msgid "Health and beauty business"
+msgstr "Health and beauty business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/BeautySalon
+#: src/repositories/business-types-repository.php:379
+msgid "Beauty salon"
+msgstr "Beauty salon"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/DaySpa
+#: src/repositories/business-types-repository.php:381
+msgid "Day spa"
+msgstr "Day spa"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HairSalon
+#: src/repositories/business-types-repository.php:383
+msgid "Hair salon"
+msgstr "Hair salon"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HealthClub
+#: src/repositories/business-types-repository.php:385
+#: src/repositories/business-types-repository.php:523
+msgid "Health club"
+msgstr "Health club"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/NailSalon
+#: src/repositories/business-types-repository.php:387
+msgid "Nail salon"
+msgstr "Nail salon"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/TattooParlor
+#: src/repositories/business-types-repository.php:389
+msgid "Tattoo parlor"
+msgstr "Tattoo parlor"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Electrician
+#: src/repositories/business-types-repository.php:397
+msgid "Electrician"
+msgstr "Electrician"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/GeneralContractor
+#: src/repositories/business-types-repository.php:399
+msgid "General contractor"
+msgstr "General contractor"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HVACBusiness
+#: src/repositories/business-types-repository.php:401
+msgid "HVAC business"
+msgstr "HVAC business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HousePainter
+#: src/repositories/business-types-repository.php:403
+msgid "House painter"
+msgstr "House painter"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Locksmith
+#: src/repositories/business-types-repository.php:405
+msgid "Locksmith"
+msgstr "Locksmith"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MovingCompany
+#: src/repositories/business-types-repository.php:407
+msgid "Moving company"
+msgstr "Moving company"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Plumber
+#: src/repositories/business-types-repository.php:409
+msgid "Plumber"
+msgstr "Plumber"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/RoofingContractor
+#: src/repositories/business-types-repository.php:411
+msgid "Roofing contractor"
+msgstr "Roofing contractor"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Library
+#: src/repositories/business-types-repository.php:427
+msgid "Library"
+msgstr "Library"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/LodgingBusiness
+#: src/repositories/business-types-repository.php:430
+msgid "Lodging business"
+msgstr "Lodging business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/BedAndBreakfast
+#: src/repositories/business-types-repository.php:433
+msgid "Bed and breakfast"
+msgstr "Bed and breakfast"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Hostel
+#: src/repositories/business-types-repository.php:437
+msgid "Hostel"
+msgstr "Hostel"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Hotel
+#: src/repositories/business-types-repository.php:439
+msgid "Hotel"
+msgstr "Hotel"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Motel
+#: src/repositories/business-types-repository.php:441
+msgid "Motel"
+msgstr "Motel"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/MedicalOrganization
+#: src/repositories/business-types-repository.php:612
+msgid "Medical organization"
+msgstr "Medical organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Dentist
+#: src/repositories/business-types-repository.php:291
+#: src/repositories/business-types-repository.php:453
+#: src/repositories/business-types-repository.php:615
+msgid "Dentist"
+msgstr "Dentist"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/DiagnosticLab
+#: src/repositories/business-types-repository.php:617
+msgid "Diagnostic lab"
+msgstr "Diagnostic lab"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MedicalClinic
+#: src/repositories/business-types-repository.php:465
+#: src/repositories/business-types-repository.php:621
+msgid "Medical clinic"
+msgstr "Medical clinic"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Optician
+#: src/repositories/business-types-repository.php:475
+msgid "Optician"
+msgstr "Optician"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Pharmacy
+#: src/repositories/business-types-repository.php:483
+#: src/repositories/business-types-repository.php:623
+msgid "Pharmacy"
+msgstr "Pharmacy"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Physician
+#: src/repositories/business-types-repository.php:485
+#: src/repositories/business-types-repository.php:625
+msgid "Physician"
+msgstr "Physician"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/VeterinaryCare
+#: src/repositories/business-types-repository.php:627
+msgid "Veterinary care"
+msgstr "Veterinary care"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/RadioStation
+#: src/repositories/business-types-repository.php:503
+msgid "Radio station"
+msgstr "Radio station"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/RealEstateAgent
+#: src/repositories/business-types-repository.php:505
+msgid "Real estate agent"
+msgstr "Real estate agent"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/RecyclingCenter
+#: src/repositories/business-types-repository.php:507
+msgid "Recycling center"
+msgstr "Recycling centre"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/SelfStorage
+#: src/repositories/business-types-repository.php:509
+msgid "Self storage"
+msgstr "Self storage"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ShoppingCenter
+#: src/repositories/business-types-repository.php:511
+msgid "Shopping center"
+msgstr "Shopping centre"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/SportsActivityLocation
+#: src/repositories/business-types-repository.php:514
+msgid "Sports activity location"
+msgstr "Sports activity location"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/BowlingAlley
+#: src/repositories/business-types-repository.php:517
+msgid "Bowling alley"
+msgstr "Bowling alley"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ExerciseGym
+#: src/repositories/business-types-repository.php:519
+msgid "Exercise gym"
+msgstr "Exercise gym"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/GolfCourse
+#: src/repositories/business-types-repository.php:521
+msgid "Golf course"
+msgstr "Golf course"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/PublicSwimmingPool
+#: src/repositories/business-types-repository.php:525
+msgid "Public swimming pool"
+msgstr "Public swimming pool"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/SkiResort
+#: src/repositories/business-types-repository.php:527
+msgid "Ski resort"
+msgstr "Ski resort"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/SportsClub
+#: src/repositories/business-types-repository.php:529
+msgid "Sports club"
+msgstr "Sports club"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/StadiumOrArena
+#: src/repositories/business-types-repository.php:531
+msgid "Stadium or arena"
+msgstr "Stadium or arena"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/TennisComplex
+#: src/repositories/business-types-repository.php:533
+msgid "Tennis complex"
+msgstr "Tennis complex"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Store
+#: src/repositories/business-types-repository.php:538
+msgid "Store"
+msgstr "Store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/BikeStore
+#: src/repositories/business-types-repository.php:543
+msgid "Bike store"
+msgstr "Bike store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/BookStore
+#: src/repositories/business-types-repository.php:545
+msgid "Book store"
+msgstr "Book store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ClothingStore
+#: src/repositories/business-types-repository.php:547
+msgid "Clothing store"
+msgstr "Clothing store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ComputerStore
+#: src/repositories/business-types-repository.php:549
+msgid "Computer store"
+msgstr "Computer store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ConvenienceStore
+#: src/repositories/business-types-repository.php:551
+msgid "Convenience store"
+msgstr "Convenience store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/DepartmentStore
+#: src/repositories/business-types-repository.php:553
+msgid "Department store"
+msgstr "Department store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ElectronicsStore
+#: src/repositories/business-types-repository.php:555
+msgid "Electronics store"
+msgstr "Electronics store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Florist
+#: src/repositories/business-types-repository.php:557
+msgid "Florist"
+msgstr "Florist"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/FurnitureStore
+#: src/repositories/business-types-repository.php:559
+msgid "Furniture store"
+msgstr "Furniture store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/GardenStore
+#: src/repositories/business-types-repository.php:561
+msgid "Garden store"
+msgstr "Garden store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/GroceryStore
+#: src/repositories/business-types-repository.php:563
+msgid "Grocery store"
+msgstr "Grocery store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HardwareStore
+#: src/repositories/business-types-repository.php:565
+msgid "Hardware store"
+msgstr "Hardware store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HobbyShop
+#: src/repositories/business-types-repository.php:567
+msgid "Hobby shop"
+msgstr "Hobby shop"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/HomeGoodsStore
+#: src/repositories/business-types-repository.php:569
+msgid "Home goods store"
+msgstr "Home goods store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/JewelryStore
+#: src/repositories/business-types-repository.php:571
+msgid "Jewelry store"
+msgstr "Jewelry store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/LiquorStore
+#: src/repositories/business-types-repository.php:573
+msgid "Liquor store"
+msgstr "Liquor store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/MensClothingStore
+#: src/repositories/business-types-repository.php:575
+msgid "Mens clothing store"
+msgstr "Mens clothing store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MobilePhoneStore
+#: src/repositories/business-types-repository.php:577
+msgid "Mobile phone store"
+msgstr "Mobile phone store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MovieRentalStore
+#: src/repositories/business-types-repository.php:579
+msgid "Movie rental store"
+msgstr "Movie rental store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MusicStore
+#: src/repositories/business-types-repository.php:581
+msgid "Music store"
+msgstr "Music store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/OfficeEquipmentStore
+#: src/repositories/business-types-repository.php:583
+msgid "Office equipment store"
+msgstr "Office equipment store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/OutletStore
+#: src/repositories/business-types-repository.php:585
+msgid "Outlet store"
+msgstr "Outlet store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PawnShop
+#: src/repositories/business-types-repository.php:587
+msgid "Pawn shop"
+msgstr "Pawn shop"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PetStore
+#: src/repositories/business-types-repository.php:589
+msgid "Pet store"
+msgstr "Pet store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ShoeStore
+#: src/repositories/business-types-repository.php:591
+msgid "Shoe store"
+msgstr "Shoe store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/SportingGoodsStore
+#: src/repositories/business-types-repository.php:593
+msgid "Sporting goods store"
+msgstr "Sporting goods store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/TireShop
+#: src/repositories/business-types-repository.php:595
+msgid "Tire shop"
+msgstr "Tire shop"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ToyStore
+#: src/repositories/business-types-repository.php:597
+msgid "Toy store"
+msgstr "Toy store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/WholesaleStore
+#: src/repositories/business-types-repository.php:599
+msgid "Wholesale store"
+msgstr "Wholesale store"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/TelevisionStation
+#: src/repositories/business-types-repository.php:603
+msgid "Television station"
+msgstr "Television station"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/TouristInformationCenter
+#: src/repositories/business-types-repository.php:605
+msgid "Tourist information center"
+msgstr "Tourist information centre"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/TravelAgency
+#: src/repositories/business-types-repository.php:607
+msgid "Travel agency"
+msgstr "Travel agency"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Campground
+#: src/repositories/business-types-repository.php:435
+msgid "Campground"
+msgstr "Campground"
+
+#: classes/class-metaboxes.php:816
+msgid "This logo will override the logo set in the Yoast SEO Company Info tab"
+msgstr "This logo will override the logo set in the Yoast SEO Company Info tab"
+
+#: deprecated/woocommerce/admin/class-admin-columns.php:53
+msgid "Local Pickup allowed?"
+msgstr "Local Pickup allowed?"
+
+#: classes/admin/class-advanced-settings.php:172
+#: classes/admin/class-general-settings.php:201
+#: classes/admin/class-general-settings.php:554
+#: classes/admin/class-general-settings.php:598
+#: classes/admin/class-opening-hours.php:144
+#: classes/admin/class-opening-hours.php:174
+#: classes/admin/class-opening-hours.php:229
+#: classes/admin/class-opening-hours.php:248
+#: classes/admin/class-opening-hours.php:346 classes/class-metaboxes.php:989
+#: classes/class-metaboxes.php:1002 classes/class-metaboxes.php:1019
+#: deprecated/woocommerce/admin/class-admin-columns.php:69
+#: deprecated/woocommerce/admin/class-admin-columns.php:86
+msgid "Yes"
+msgstr "Yes"
+
+#: classes/admin/class-advanced-settings.php:171
+#: classes/admin/class-general-settings.php:200
+#: classes/admin/class-general-settings.php:553
+#: classes/admin/class-general-settings.php:597
+#: classes/admin/class-opening-hours.php:143
+#: classes/admin/class-opening-hours.php:173
+#: classes/admin/class-opening-hours.php:228
+#: classes/admin/class-opening-hours.php:247
+#: classes/admin/class-opening-hours.php:345 classes/class-metaboxes.php:988
+#: classes/class-metaboxes.php:1001 classes/class-metaboxes.php:1018
+#: deprecated/woocommerce/admin/class-admin-columns.php:75
+#: deprecated/woocommerce/admin/class-admin-columns.php:93
+msgid "No"
+msgstr "No"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:31
+msgid "Status"
+msgstr "Status"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:32
+msgid "Products"
+msgstr "Products"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:33
+msgid "Destination"
+msgstr "Destination"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:103
+msgid "Edit"
+msgstr "Edit"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:104
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:113
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:253
+msgid "Processing"
+msgstr "Processing"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:105
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:116
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:255
+msgid "Transporting"
+msgstr "Transporting"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:106
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:119
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:257
+msgid "Ready for pickup"
+msgstr "Ready for pickup"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:107
+msgid "Completed"
+msgstr "Completed"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:151
+msgid "Guest"
+msgstr "Guest"
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:164
+msgid "Show more details"
+msgstr "Show more details"
+
+#: deprecated/woocommerce/admin/class-wc-transport.php:56
+#: deprecated/woocommerce/admin/class-wc-transport.php:57
+#: deprecated/woocommerce/admin/class-wc-transport.php:73
+msgid "Transport"
+msgstr "Transport"
+
+#. translators: transport-page-description-text = a container for placing an
+#. explanatory text for the Transport page, it elaborates on what the page is
+#. actually for
+#: deprecated/woocommerce/admin/class-wc-transport.php:75
+msgid "transport-page-description-text"
+msgstr "transport-page-description-text"
+
+#. translators: 1: expands to '<a>'; 2: expands to '</a>'
+#: deprecated/woocommerce/admin/class-woocommerce-settings.php:78
+msgid "%1$sClick here%2$s for the specific WooCommerce settings"
+msgstr "%1$sClick here%2$s for the specific WooCommerce settings"
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:134
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:109
+msgid "Enable/Disable"
+msgstr "Enable/Disable"
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:136
+msgid "Enable this email notification"
+msgstr "Enable this email notification"
+
+#. translators: %s translates to the default email subject.
+#: deprecated/woocommerce/emails/abstract-wc-email.php:143
+msgid "This controls the email subject line. Leave blank to use the default subject: <code>%s</code>."
+msgstr "This controls the email subject line. Leave blank to use the default subject: <code>%s</code>."
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:148
+msgid "Email Heading"
+msgstr "Email Heading"
+
+#. translators: %s translates to the default email heading.
+#: deprecated/woocommerce/emails/abstract-wc-email.php:151
+msgid "This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>."
+msgstr "This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>."
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:156
+msgid "Email type"
+msgstr "Email type"
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:158
+msgid "Choose which format of email to send."
+msgstr "Choose which format of email to send."
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:162
+msgid "Plain text"
+msgstr "Plain text"
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:163
+msgid "HTML"
+msgstr "HTML"
+
+#: deprecated/woocommerce/emails/abstract-wc-email.php:164
+msgid "Multipart"
+msgstr "Multipart"
+
+#. translators: Ready for pickup order = the title for an email-notification
+#. that is being sent to the customer when an order is ready to be picked up at
+#. the local store
+#: deprecated/woocommerce/emails/class-wc-email-readyforpickup-order.php:38
+#: deprecated/woocommerce/emails/class-wc-email-readyforpickup-order.php:44
+#: deprecated/woocommerce/emails/class-wc-email-readyforpickup-order.php:45
+msgid "Ready for pickup order"
+msgstr "Ready for pickup order"
+
+#: deprecated/woocommerce/emails/class-wc-email-readyforpickup-order.php:41
+msgid "Ready for pickup order notification emails are sent when an order has been delivered to the local pickup store and is ready for pickup"
+msgstr "Ready for pickup order notification emails are sent when an order has been delivered to the local pickup store and is ready for pickup"
+
+#: deprecated/woocommerce/emails/class-wc-email-transporting.php:37
+msgid "Transporting order"
+msgstr "Transporting order"
+
+#: deprecated/woocommerce/emails/class-wc-email-transporting.php:40
+msgid "Transporting order notification emails are sent when an order has been sent to the local pickup store"
+msgstr "Transporting order notification emails are sent when an order has been sent to the local pickup store"
+
+#. translators: Transporting shipping order = the title and subject for an
+#. email-notification that is being sent to the customer when an order is being
+#. shipped to the local store
+#: deprecated/woocommerce/emails/class-wc-email-transporting.php:44
+#: deprecated/woocommerce/emails/class-wc-email-transporting.php:45
+msgid "Transporting shipping order"
+msgstr "Transporting shipping order"
+
+#. translators: %d translates to the number or orders in transport.
+#: deprecated/woocommerce/includes/class-wc-post-types.php:51
+msgid "Transporting <span class=\"count\">(%d)</span>"
+msgid_plural "Transporting <span class=\"count\">(%d)</span>"
+msgstr[0] "Transporting <span class=\"count\">(%d)</span>"
+msgstr[1] "Transporting <span class=\"count\">(%d)</span>"
+
+#. translators: %d translates to the number or orders ready for pickup.
+#: deprecated/woocommerce/includes/class-wc-post-types.php:57
+msgid "Ready for pickup <span class=\"count\">(%d)</span>"
+msgid_plural "Ready for pickup <span class=\"count\">(%d)</span>"
+msgstr[0] "Ready for pickup <span class=\"count\">(%d)</span>"
+msgstr[1] "Ready for pickup <span class=\"count\">(%d)</span>"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:53
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:373
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:487
+#: woocommerce/templates/cart/cart-shipping.php:59
+msgid "Local store pickup"
+msgstr "Local store pickup"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:54
+msgid "Local Store Pickup"
+msgstr "Local Store Pickup"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:56
+msgid "This shipping method enables customers to pick up their order in local stores defined in the Local SEO plugin."
+msgstr "This shipping method enables customers to pick up their order in local stores defined in the Local SEO plugin."
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:177
+msgid "Default: Allow"
+msgstr "Default: Allow"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:180
+msgid "Default: Disallow"
+msgstr "Default: Disallow"
+
+#. translators: %d translates to the default price for a location category.
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:184
+msgid "Default: %d"
+msgstr "Default: %d"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:111
+msgid "Enable this shipping method"
+msgstr "Enable this shipping method"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:117
+msgid "The text that appears during the checkout process for this shipping method"
+msgstr "The text that appears during the checkout process for this shipping method"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:120
+msgid "Checkout mode"
+msgstr "Checkout mode"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:121
+msgid "Choose between these checkout modes"
+msgstr "Choose between these checkout modes"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:125
+msgid "Radio"
+msgstr "Radio"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:126
+msgid "Dropdown (basic)"
+msgstr "Dropdown (basic)"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:127
+msgid "Dropdown (advanced)"
+msgstr "Dropdown (advanced)"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:139
+msgid "Enter a cost (excl. tax) or sum, e.g. <code>10.00 * [qty]</code>."
+msgstr "Enter a cost (excl. tax) or sum, e.g. <code>10.00 * [qty]</code>."
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:139
+msgid "Use <code>[qty]</code> for the number of items, <br/><code>[cost]</code> for the total cost of items, and <code>[fee percent=\"10\" min_fee=\"20\" max_fee=\"\"]</code> for percentage based fees."
+msgstr "Use <code>[qty]</code> for the number of items, <br/><code>[cost]</code> for the total cost of items, and <code>[fee percent=\"10\" min_fee=\"20\" max_fee=\"\"]</code> for percentage based fees."
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:142
+msgid "Local pickup costs"
+msgstr "Local pickup costs"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:145
+msgid "The costs for the local pickup for customers"
+msgstr "The costs for the local pickup for customers"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:146
+#: deprecated/woocommerce/shipping/class-wc-shipping.php:226
+msgid "Enter a price (excl. tax), like: 42.12"
+msgstr "Enter a price (excl. tax), like: 42.12"
+
+#. translators: %s expands to the admin URL to add location categories.
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:553
+msgid "You have not yet added any location categories, or you haven't assigned locations yet to these categories. After <a href=\"%s\">adding location categories</a>, you can set category specific shipping settings here."
+msgstr "You have not yet added any location categories, or you haven't assigned locations yet to these categories. After <a href=\"%s\">adding location categories</a>, you can set category specific shipping settings here."
+
+#. translators: %s expands to the URL of the Yoast SEO: Local admin page.
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:601
+msgid "You manage only a single location. In the <a href=\"%s\">Local SEO settings</a>, you can specify if you want to manage multiple locations."
+msgstr "You manage only a single location. In the <a href=\"%s\">Local SEO settings</a>, you can specify if you want to manage multiple locations."
+
+#. translators: %s expands to the admin URL to add locations.
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:620
+msgid "You have not yet added any locations. After <a href=\"%s\">adding locations</a>, you can set location specific shipping settings here."
+msgstr "You have not yet added any locations. After <a href=\"%s\">adding locations</a>, you can set location specific shipping settings here."
+
+#: deprecated/woocommerce/shipping/class-wc-shipping.php:154
+msgid "Local Pickup Information"
+msgstr "Local Pickup Information"
+
+#: deprecated/woocommerce/shipping/class-wc-shipping.php:221
+#: woocommerce/shipping/includes/location-costs-table.php:75
+msgid "Remove"
+msgstr "Remove"
+
+#. translators: Hidden accessibility text; %s expands to a pickup location
+#. title.
+#: deprecated/woocommerce/shipping/class-wc-shipping.php:223
+#: woocommerce/shipping/includes/location-costs-table.php:39
+msgid "Allow pickup location: %s"
+msgstr "Allow pickup location: %s"
+
+#. translators: Hidden accessibility text; %s expands to a pickup location
+#. title.
+#: deprecated/woocommerce/shipping/class-wc-shipping.php:225
+#: woocommerce/shipping/includes/location-costs-table.php:44
+msgid "Costs for pickup location: %s"
+msgstr "Costs for pickup location: %s"
+
+#. translators: 1: expands to "Yoast SEO: Local SEO for WooCommerce"; 2:
+#. expands to "WooCommerce.
+#: deprecated/woocommerce/shipping/class-wc-shipping.php:228
+msgid "Note: Please make sure you have configured at least one location before enabling this shipping method, as enabling Local Pickup in %1$s will disable the default %2$s local pickup."
+msgstr "Note: Please make sure you have configured at least one location before enabling this shipping method, as enabling Local Pickup in %1$s will disable the default %2$s local pickup."
+
+#: woocommerce/shipping/includes/category-costs-table.php:11
+#: woocommerce/shipping/includes/category-costs-table.php:14
+msgid "Cost per category"
+msgstr "Cost per category"
+
+#: woocommerce/shipping/includes/category-costs-table.php:19
+#: woocommerce/shipping/includes/location-costs-table.php:26
+msgid "Allow local pickup"
+msgstr "Allow local pickup"
+
+#: woocommerce/shipping/includes/category-costs-table.php:19
+msgid "Whether or not to allow local pickup from locations in this category."
+msgstr "Whether or not to allow local pickup from locations in this category."
+
+#: woocommerce/shipping/includes/category-costs-table.php:20
+#: woocommerce/shipping/includes/location-costs-table.php:27
+msgid "Costs"
+msgstr "Costs"
+
+#. translators: %s expands to a pickup category name.
+#: woocommerce/shipping/includes/category-costs-table.php:30
+msgid "Allow pickup category: %s"
+msgstr "Allow pickup category: %s"
+
+#. translators: %s expands to a pickup category name.
+#: woocommerce/shipping/includes/category-costs-table.php:35
+msgid "Costs for pickup category: %s"
+msgstr "Costs for pickup category: %s"
+
+#: woocommerce/shipping/includes/location-costs-table.php:12
+#: woocommerce/shipping/includes/location-costs-table.php:21
+msgid "Cost per location"
+msgstr "Cost per location"
+
+#: woocommerce/shipping/includes/location-costs-table.php:15
+msgid "These settings will override any category specific settings made above."
+msgstr "These settings will override any category specific settings made above."
+
+#: woocommerce/shipping/includes/location-costs-table.php:26
+msgid "Whether or not to allow local pickup from this location."
+msgstr "Whether or not to allow local pickup from this location."
+
+#: woocommerce/shipping/includes/location-costs-table.php:84
+msgid "New location specific settings for:"
+msgstr "New location specific settings for:"
+
+#: woocommerce/shipping/includes/location-costs-table.php:86
+msgid "Select a location to add"
+msgstr "Select a location to add"
+
+#: woocommerce/shipping/includes/location-costs-table.php:99
+msgid "Add"
+msgstr "Add"
+
+#: woocommerce/templates/emails/customer-readyforpickup-order.php:18
+#: woocommerce/templates/emails/plain/customer-readyforpickup-order.php:14
+msgid "Your order is ready for pickup at local pickup store of your choosing"
+msgstr "Your order is ready for pickup at local pickup store of your choosing"
+
+#: woocommerce/templates/emails/customer-transporting-order.php:18
+#: woocommerce/templates/emails/plain/customer-transporting-order.php:14
+msgid "Your order has been sent to the local pickup store of your choosing"
+msgstr "Your order has been sent to the local pickup store of your choosing"
+
+#. translators: %s expands to "Yoast SEO: Local SEO for WooCommerce".
+#: deprecated/classes/class-woocommerce.php:84
+#: deprecated/classes/class-woocommerce.php:105
+msgid "%s disabled this shipping method. To configure local pickup, go to the Local Store Pickup settings."
+msgstr "%s disabled this shipping method. To configure local pickup, go to the Local Store Pickup settings."
+
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:30
+msgctxt "noun"
+msgid "Order"
+msgstr "Order"
+
+#. translators: 1: User first name; 2: User last name.
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:135
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:145
+msgctxt "full name"
+msgid "%1$s %2$s"
+msgstr "%1$s %2$s"
+
+#. translators: 1: the id number of the order, like: '#34'; 2: the
+#. username/customer that has submitted the order, like: 'Joost de Valk'
+#: deprecated/woocommerce/admin/class-wc-transport-list.php:156
+msgctxt "Order number by X"
+msgid "%1$s by %2$s"
+msgstr "%1$s by %2$s"
+
+#: deprecated/woocommerce/includes/class-wc-post-types.php:49
+#: deprecated/woocommerce/includes/class-wc-post-types.php:75
+msgctxt "Order status"
+msgid "Transporting"
+msgstr "Transporting"
+
+#: deprecated/woocommerce/includes/class-wc-post-types.php:55
+#: deprecated/woocommerce/includes/class-wc-post-types.php:76
+msgctxt "Order status"
+msgid "Ready for pickup"
+msgstr "Ready for pickup"
+
+#. translators: %1$s and %2$s show code blocks with a URL inside
+#: classes/admin/class-advanced-settings.php:202
+msgid "Each location and location category will receive a custom URL. By default, these are %1$s and %2$s. If you like, you may enter custom structures for your locations and location categories."
+msgstr "Each location and location category will receive a custom URL. By default, these are %1$s and %2$s. If you like, you may enter custom structures for your locations and location categories."
+
+#: classes/admin/class-advanced-settings.php:198
+msgid "Permalinks"
+msgstr "Permalinks"
+
+#: classes/admin/class-advanced-settings.php:240
+msgid "Admin Label"
+msgstr "Admin Label"
+
+#: classes/admin/class-advanced-settings.php:210
+msgid "Locations base"
+msgstr "Locations base"
+
+#: classes/admin/class-opening-hours.php:154
+msgid "Open 24h label"
+msgstr "Open 24h label"
+
+#: classes/admin/class-advanced-settings.php:253
+msgid "Plural label"
+msgstr "Plural label"
+
+#: classes/admin/class-advanced-settings.php:243
+msgid "Single label"
+msgstr "Single label"
+
+#: classes/admin/class-advanced-settings.php:241
+msgid "With multiple locations, you will have a new menu item in your admin sidebar. By default, this menu item is labeled using the plural term of locations with each single item being called a location. If you like, you may enter custom labels to better match your business."
+msgstr "With multiple locations, you will have a new menu item in your admin sidebar. By default, this menu item is labelled using the plural term of locations with each single item being called a location. If you like, you may enter custom labels to better match your business."
+
+#: classes/admin/endpoints/class-endpoint-locations.php:79
+msgid "No title"
+msgstr "No title"
+
+#: classes/admin/class-advanced-settings.php:165
+msgid "Enhanced search"
+msgstr "Enhanced search"
+
+#: classes/admin/class-opening-hours.php:226 classes/class-metaboxes.php:999
+#: includes/wpseo-local-functions.php:717
+msgid "Open 24/7"
+msgstr "Open 24/7"
+
+#: classes/admin/class-opening-hours.php:155
+msgid "Open 24/7 label"
+msgstr "Open 24/7 label"
+
+#: classes/class-metaboxes.php:2090
+msgid "Show phone number in info-popup"
+msgstr "Show phone number in info-popup"
+
+#: classes/class-metaboxes.php:2093
+msgid "Show 2nd phone number in info-popup"
+msgstr "Show 2nd phone number in info-popup"
+
+#: classes/class-metaboxes.php:2096
+msgid "Show fax number in info-popup"
+msgstr "Show fax number in info-popup"
+
+#. translators: 1: link open tag; 2: link close tag.
+#: classes/class-metaboxes.php:2142 classes/class-metaboxes.php:2297
+#: classes/class-metaboxes.php:2374
+msgid "In order to use this shortcode function, please %1$sadd one or more locations%2$s first."
+msgstr "In order to use this shortcode function, please %1$sadd one or more locations%2$s first."
+
+#: classes/admin/class-opening-hours.php:314 classes/class-metaboxes.php:1188
+#: includes/wpseo-local-functions.php:716
+msgid "Open 24 hours"
+msgstr "Open 24 hours"
+
+#. translators: %1$s resolves to the link to search the plugin directory for
+#. Yoast SEO, %2$s resolves to the closing tag for this link, %3$s resolves to
+#. Local SEO
+#: local-seo.php:245
+msgid "Please %1$sinstall & activate Yoast SEO%2$s to allow the %3$s module to work."
+msgstr "Please %1$sinstall & activate Yoast SEO%2$s to allow the %3$s module to work."
+
+#: classes/admin/class-general-settings.php:483 classes/class-metaboxes.php:772
+msgid "Area served"
+msgstr "Area served"
+
+#: classes/admin/class-general-settings.php:674
+msgid "In order for automatic lat/long calculation to work, you first need to enter an API code under the API tab at the top of this page"
+msgstr "In order for automatic lat/long calculation to work, you first need to enter an API code under the API tab at the top of this page"
+
+#. translators: %s translates to the Yoast SEO: Local brand name
+#: classes/class-core.php:432
+msgid "In order to make full use of %s functionality, we force the setting for 'Person or Organization' here to 'Organization'."
+msgstr "In order to make full use of %s functionality, we force the setting for 'Person or Organization' here to 'Organization'."
+
+#: classes/class-metaboxes.php:2347 widgets/widget-show-openinghours.php:235
+#: js/src/blocks/opening-hours/components/OpeningHours.js:306
+msgid "Show open now label after opening hour for current day"
+msgstr "Show open now label after opening hour for current day"
+
+#: includes/wpseo-local-functions.php:810
+msgid "Open now"
+msgstr "Open now"
+
+#: src/repositories/timezone-repository.php:74
+msgid "Cannot retrieve location current date and time"
+msgstr "Cannot retrieve location current date and time"
+
+#. translators: This should be translated according to the definition on
+#. Schema.org. For more information, visit: https://schema.org/Airline
+#: src/repositories/business-types-repository.php:139
+msgid "Airline"
+msgstr "Airline"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Consortium
+#: src/repositories/business-types-repository.php:229
+msgid "Consortium"
+msgstr "Consortium"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/FundingScheme
+#: src/repositories/business-types-repository.php:251
+msgid "Funding scheme"
+msgstr "Funding scheme"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/LibrarySystem
+#: src/repositories/business-types-repository.php:255
+msgid "Library system"
+msgstr "Library system"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/ArchiveOrganization
+#: src/repositories/business-types-repository.php:263
+msgid "Archive organization"
+msgstr "Archive organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Distillery
+#: src/repositories/business-types-repository.php:355
+msgid "Distillery"
+msgstr "Distillery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/InternetCafe
+#: src/repositories/business-types-repository.php:415
+msgid "Internet caf&eacute;"
+msgstr "Internet caf&eacute;"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Attorney
+#: src/repositories/business-types-repository.php:421
+msgid "Attorney"
+msgstr "Attorney"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Resort
+#: src/repositories/business-types-repository.php:443
+msgid "Resort"
+msgstr "Resort"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/MedicalBusiness
+#: src/repositories/business-types-repository.php:448
+msgid "Medical business"
+msgstr "Medical business"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/CommunityHealth
+#: src/repositories/business-types-repository.php:451
+msgid "Community health"
+msgstr "Community health"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Dermatology
+#: src/repositories/business-types-repository.php:455
+msgid "Dermatology"
+msgstr "Dermatology"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/DietNutrition
+#: src/repositories/business-types-repository.php:457
+msgid "Diet nutrition"
+msgstr "Diet nutrition"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Emergency
+#: src/repositories/business-types-repository.php:459
+msgid "Emergency"
+msgstr "Emergency"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Geriatric
+#: src/repositories/business-types-repository.php:461
+msgid "Geriatric"
+msgstr "Geriatric"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Gynecologic
+#: src/repositories/business-types-repository.php:463
+msgid "Gynecologic"
+msgstr "Gynecologic"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Midwifery
+#: src/repositories/business-types-repository.php:467
+msgid "Midwifery"
+msgstr "Midwifery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Nursing
+#: src/repositories/business-types-repository.php:469
+msgid "Nursing"
+msgstr "Nursing"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Obstetric
+#: src/repositories/business-types-repository.php:471
+msgid "Obstetric"
+msgstr "Obstetric"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Oncologic
+#: src/repositories/business-types-repository.php:473
+msgid "Oncologic"
+msgstr "Oncologic"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Optometric
+#: src/repositories/business-types-repository.php:477
+msgid "Optometric"
+msgstr "Optometric"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Otolaryngologic
+#: src/repositories/business-types-repository.php:479
+msgid "Otolaryngologic"
+msgstr "Otolaryngologic"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Pediatric
+#: src/repositories/business-types-repository.php:481
+msgid "Pediatric"
+msgstr "Pediatric"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Physiotherapy
+#: src/repositories/business-types-repository.php:487
+msgid "Physiotherapy"
+msgstr "Physiotherapy"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PlasticSurgery
+#: src/repositories/business-types-repository.php:489
+msgid "Plastic surgery"
+msgstr "Plastic surgery"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Podiatric
+#: src/repositories/business-types-repository.php:491
+msgid "Podiatric"
+msgstr "Podiatric"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PrimaryCare
+#: src/repositories/business-types-repository.php:493
+msgid "Primary care"
+msgstr "Primary care"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Psychiatric
+#: src/repositories/business-types-repository.php:495
+msgid "Psychiatric"
+msgstr "Psychiatric"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/PublicHealth
+#: src/repositories/business-types-repository.php:497
+msgid "Public health"
+msgstr "Public health"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/ProfessionalService
+#: src/repositories/business-types-repository.php:501
+msgid "Professional service"
+msgstr "Professional service"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/NewsMediaOrganization
+#: src/repositories/business-types-repository.php:633
+msgid "News media organization"
+msgstr "News media organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/Project
+#: src/repositories/business-types-repository.php:648
+msgid "Project"
+msgstr "Project"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/FundingAgency
+#: src/repositories/business-types-repository.php:651
+msgid "Funding agency"
+msgstr "Funding agency"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ResearchProject
+#: src/repositories/business-types-repository.php:653
+msgid "Research project"
+msgstr "Research project"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/SportsOrganization
+#: src/repositories/business-types-repository.php:658
+msgid "Sports organization"
+msgstr "Sports organization"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/WorkersUnion
+#: src/repositories/business-types-repository.php:665
+msgid "Workers union"
+msgstr "Workers union"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit: https://schema.org/ChildCare
+#: src/repositories/business-types-repository.php:289
+msgid "Child care"
+msgstr "Child care"
+
+#. translators: This should be translated according to the definition on
+#. schema.org. For more information, visit:
+#. https://schema.org/HomeAndConstructionBusiness
+#: src/repositories/business-types-repository.php:394
+msgid "Home and construction business"
+msgstr "Home and construction business"
+
+#: classes/admin/class-general-settings.php:173
+msgid "Set up the location of your business with the form below. This information will be used in the search results, and can be used to add blocks with contact information or a map to a page or post on your website."
+msgstr "Set up the location of your business with the form below. This information will be used in the search results, and can be used to add blocks with contact information or a map to a page or post on your website."
+
+#. translators: 1: link open tag; 2: link close tag. %3$s expands to Yoast SEO
+#: classes/admin/class-general-settings.php:178
+msgid "If you have multiple locations, %3$s will create a new Custom Post Type where you can manage your locations. %1$sRead more about managing multiple locations with CPTs%2$s."
+msgstr "If you have multiple locations, %3$s will create a new Custom Post Type where you can manage your locations. %1$sRead more about managing multiple locations with CPTs%2$s."
+
+#: classes/admin/class-general-settings.php:239 classes/class-metaboxes.php:438
+msgid "Select the price indication of your business, where $ is cheap and $$$$$ is expensive."
+msgstr "Select the price indication of your business, where $ is cheap and $$$$$ is expensive."
+
+#. Translators: $s shipping destination.
+#: woocommerce/templates/cart/cart-shipping.php:173
+msgid "Shipping to %s."
+msgstr "Shipping to %s."
+
+#: woocommerce/templates/cart/cart-shipping.php:174
+msgid "Change address"
+msgstr "Change address"
+
+#: woocommerce/templates/cart/cart-shipping.php:178
+msgid "Shipping options will be updated during checkout."
+msgstr "Shipping options will be updated during checkout."
+
+#: woocommerce/templates/cart/cart-shipping.php:208
+msgid "Enter your address to view shipping options."
+msgstr "Enter your address to view shipping options."
+
+#: woocommerce/templates/cart/cart-shipping.php:211
+msgid "There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help."
+msgstr "There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help."
+
+#: classes/admin/class-general-settings.php:479 classes/class-metaboxes.php:744
+msgid "Currencies accepted"
+msgstr "Currencies accepted"
+
+#. translators: 1: link open tag; 2: link close tag.
+#: classes/admin/class-general-settings.php:541
+msgid "You have selected the multiple locations option, so we added the Locations Post Type for you in the menu on the left. Now you can start adding the locations %1$sright here%2$s."
+msgstr "You have selected the multiple locations option, so we added the Locations Post Type for you in the menu on the left. Now you can start adding the locations %1$sright here%2$s."
+
+#: classes/admin/class-opening-hours.php:151
+msgid "Below you can enter a custom text to display in the opening hours for locations that are closed/open for 24 hours."
+msgstr "Below you can enter a custom text to display in the opening hours for locations that are closed/open for 24 hours."
+
+#: classes/admin/class-map-settings.php:199
+msgid "Primary country"
+msgstr "Primary country"
+
+#: classes/admin/class-map-settings.php:201
+msgid "From which country does your business mainly operate? This will improve the accuracy of the store locator."
+msgstr "From which country does your business mainly operate? This will improve the accuracy of the store locator."
+
+#: classes/admin/class-general-settings.php:480 classes/class-metaboxes.php:758
+msgid "Payment methods accepted"
+msgstr "Payment methods accepted"
+
+#: classes/admin/class-general-settings.php:263 classes/class-metaboxes.php:462
+msgid "The geographic area where a service or offered item is provided."
+msgstr "The geographic area where a service or offered item is provided."
+
+#: classes/admin/class-admin.php:300
+#: classes/admin/class-general-settings.php:616 classes/class-metaboxes.php:726
+#: classes/class-metaboxes.php:1457
+msgid "Select your price indication"
+msgstr "Select your price indication"
+
+#: classes/admin/class-general-settings.php:474 classes/class-metaboxes.php:725
+#: includes/wpseo-local-functions.php:110
+msgid "Price indication"
+msgstr "Price indication"
+
+#: classes/class-metaboxes.php:2269 widgets/widget-show-address.php:252
+msgid "Show price indication"
+msgstr "Show price indication"
+
+#: classes/admin/class-map-settings.php:210
+msgid "On"
+msgstr "On"
+
+#: classes/admin/class-map-settings.php:209
+msgid "Off"
+msgstr "Off"
+
+#: classes/admin/class-advanced-settings.php:169
+msgid "Include business locations in site-wide search results."
+msgstr "Include business locations in site-wide search results."
+
+#: classes/admin/class-advanced-settings.php:176
+msgid "Users searching for street name, zip code or city will now also get your business location(s) in their search results."
+msgstr "Users searching for street name, postal code or city will now also get your business location(s) in their search results."
+
+#: classes/admin/class-advanced-settings.php:215
+msgid "The slug for your location pages. Default slug is"
+msgstr "The slug for your location pages. Default slug is"
+
+#: classes/admin/class-advanced-settings.php:227
+msgid "The category slug for your location pages. Default slug is"
+msgstr "The category slug for your location pages. Default slug is"
+
+#: classes/admin/class-general-settings.php:670
+msgid "Location coordinates"
+msgstr "Location coordinates"
+
+#: classes/admin/class-general-settings.php:136
+#: classes/admin/class-general-settings.php:137 classes/class-metaboxes.php:299
+msgid "Business info"
+msgstr "Business info"
+
+#: classes/admin/class-general-settings.php:547
+msgid "You can find some advanced settings regarding multiple locations under the Advanced tab"
+msgstr "You can find some advanced settings regarding multiple locations under the Advanced tab"
+
+#: classes/admin/class-advanced-settings.php:130
+msgid "When you use multiple locations, which you can enable under the Business info tab, you can find advanced settings regarding multiple locations here."
+msgstr "When you use multiple locations, which you can enable under the Business info tab, you can find advanced settings regarding multiple locations here."
+
+#: classes/admin/class-api-settings.php:79
+msgid "Google Maps API Key"
+msgstr "Google Maps API Key"
+
+#: classes/admin/class-api-settings.php:108
+msgid "Google has changed their API key functionality, so you only need one key for all the services. After you have generated this key you can enter the key here. The other two keys will then no longer be used."
+msgstr "Google has changed their API key functionality, so you only need one key for all the services. After you have generated this key you can enter the key here. The other two keys will then no longer be used."
+
+#: classes/admin/class-api-settings.php:114
+msgid "Google Maps API key"
+msgstr "Google Maps API key"
+
+#. translators: %s extends to the API Key constant name
+#: classes/admin/class-api-settings.php:118
+msgid "You defined your Google Maps API key using the %s PHP constant."
+msgstr "You defined your Google Maps API key using the %s PHP constant."
+
+#: classes/admin/class-api-settings.php:126
+msgid "API browser key for Google Maps"
+msgstr "API browser key for Google Maps"
+
+#: classes/admin/class-map-settings.php:130
+msgid "In order to use the Maps settings, you should set an API key. You can add an API key in the API settings tab, which allows you to change the Maps settings here."
+msgstr "In order to use the Maps settings, you should set an API key. You can add an API key in the API settings tab, which allows you to change the Maps settings here."
+
+#: classes/admin/class-general-settings.php:672
+msgid "Here you can enter the latitude and longitude coordinates yourself. If you've entered a Google Maps API Key these coordinates will be automatically calculated. This API Key is also needed for the map to show on your site."
+msgstr "Here you can enter the latitude and longitude coordinates yourself. If you've entered a Google Maps API Key these coordinates will be automatically calculated. This API Key is also needed for the map to show on your site."
+
+#: classes/admin/class-map-settings.php:135
+msgid "Kilometers"
+msgstr "Kilometres"
+
+#: classes/admin/class-map-settings.php:136
+msgid "Miles"
+msgstr "Miles"
+
+#: classes/admin/class-map-settings.php:140
+msgid "Measurement system"
+msgstr "Measurement system"
+
+#: classes/class-metaboxes.php:309
+msgid "Map settings"
+msgstr "Map settings"
+
+#: classes/class-metaboxes.php:356
+msgid "Yoast Local SEO"
+msgstr "Yoast Local SEO"
+
+#. translators: 1: HTML <a> open tag; 2: <a> close tag.
+#: classes/class-metaboxes.php:1236
+msgid "In order to use the Maps settings, you should set an API key. You can add an API key in the %1$sAPI settings tab%2$s, which allows you to change the Maps settings here."
+msgstr "In order to use the Maps settings, you should set an API key. You can add an API key in the %1$sAPI settings tab%2$s, which allows you to change the Maps settings here."
+
+#: classes/class-metaboxes.php:2084 classes/class-metaboxes.php:2398
+#: js/src/blocks/store-locator/components/StoreLocator.js:122
+msgid "Allow zoom by scroll"
+msgstr "Allow zoom by scroll"
+
+#: classes/admin/class-admin.php:296 classes/class-metaboxes.php:1067
+msgid "Choose a time zone"
+msgstr "Choose a time zone"
+
+#: classes/admin/class-opening-hours.php:323 classes/class-metaboxes.php:1066
+msgid "Timezone"
+msgstr "Timezone"
+
+#: classes/admin/class-opening-hours.php:210 classes/class-metaboxes.php:1058
+msgid "The timezone is used to calculate the “Open now” functionality which can be shown together with your opening hours."
+msgstr "The timezone is used to calculate the “Open now” functionality which can be shown together with your opening hours."
+
+#: src/repositories/timezone-repository.php:164
+msgid "US/Pacific"
+msgstr "US/Pacific"
+
+#: src/repositories/timezone-repository.php:165
+msgid "US/Eastern"
+msgstr "US/Eastern"
+
+#: src/repositories/timezone-repository.php:166
+msgid "Europe/London"
+msgstr "Europe/London"
+
+#: src/repositories/timezone-repository.php:167
+msgid "Europe/Paris"
+msgstr "Europe/Paris"
+
+#: src/repositories/timezone-repository.php:168
+msgid "Europe/Amsterdam"
+msgstr "Europe/Amsterdam"
+
+#: src/repositories/timezone-repository.php:169
+msgid "Europe/Berlin"
+msgstr "Europe/Berlin"
+
+#: src/repositories/timezone-repository.php:170
+msgid "Australia/Sydney"
+msgstr "Australia/Sydney"
+
+#: src/repositories/timezone-repository.php:172
+msgid "Africa/Abidjan"
+msgstr "Africa/Abidjan"
+
+#: src/repositories/timezone-repository.php:173
+msgid "Africa/Accra"
+msgstr "Africa/Accra"
+
+#: src/repositories/timezone-repository.php:174
+msgid "Africa/Addis_Ababa"
+msgstr "Africa/Addis_Ababa"
+
+#: src/repositories/timezone-repository.php:175
+msgid "Africa/Algiers"
+msgstr "Africa/Algiers"
+
+#: src/repositories/timezone-repository.php:176
+msgid "Africa/Asmara"
+msgstr "Africa/Asmara"
+
+#: src/repositories/timezone-repository.php:177
+msgid "Africa/Bamako"
+msgstr "Africa/Bamako"
+
+#: src/repositories/timezone-repository.php:178
+msgid "Africa/Bangui"
+msgstr "Africa/Bangui"
+
+#: src/repositories/timezone-repository.php:179
+msgid "Africa/Banjul"
+msgstr "Africa/Banjul"
+
+#: src/repositories/timezone-repository.php:180
+msgid "Africa/Bissau"
+msgstr "Africa/Bissau"
+
+#: src/repositories/timezone-repository.php:181
+msgid "Africa/Blantyre"
+msgstr "Africa/Blantyre"
+
+#: src/repositories/timezone-repository.php:182
+msgid "Africa/Brazzaville"
+msgstr "Africa/Brazzaville"
+
+#: src/repositories/timezone-repository.php:183
+msgid "Africa/Bujumbura"
+msgstr "Africa/Bujumbura"
+
+#: src/repositories/timezone-repository.php:184
+msgid "Africa/Cairo"
+msgstr "Africa/Cairo"
+
+#: src/repositories/timezone-repository.php:185
+msgid "Africa/Casablanca"
+msgstr "Africa/Casablanca"
+
+#: src/repositories/timezone-repository.php:186
+msgid "Africa/Ceuta"
+msgstr "Africa/Ceuta"
+
+#: src/repositories/timezone-repository.php:187
+msgid "Africa/Conakry"
+msgstr "Africa/Conakry"
+
+#: src/repositories/timezone-repository.php:188
+msgid "Africa/Dakar"
+msgstr "Africa/Dakar"
+
+#: src/repositories/timezone-repository.php:189
+msgid "Africa/Dar_es_Salaam"
+msgstr "Africa/Dar_es_Salaam"
+
+#: src/repositories/timezone-repository.php:190
+msgid "Africa/Djibouti"
+msgstr "Africa/Djibouti"
+
+#: src/repositories/timezone-repository.php:191
+msgid "Africa/Douala"
+msgstr "Africa/Douala"
+
+#: src/repositories/timezone-repository.php:192
+msgid "Africa/El_Aaiun"
+msgstr "Africa/El_Aaiun"
+
+#: src/repositories/timezone-repository.php:193
+msgid "Africa/Freetown"
+msgstr "Africa/Freetown"
+
+#: src/repositories/timezone-repository.php:194
+msgid "Africa/Gaborone"
+msgstr "Africa/Gaborone"
+
+#: src/repositories/timezone-repository.php:195
+msgid "Africa/Harare"
+msgstr "Africa/Harare"
+
+#: src/repositories/timezone-repository.php:196
+msgid "Africa/Johannesburg"
+msgstr "Africa/Johannesburg"
+
+#: src/repositories/timezone-repository.php:197
+msgid "Africa/Juba"
+msgstr "Africa/Juba"
+
+#: src/repositories/timezone-repository.php:198
+msgid "Africa/Kampala"
+msgstr "Africa/Kampala"
+
+#: src/repositories/timezone-repository.php:199
+msgid "Africa/Khartoum"
+msgstr "Africa/Khartoum"
+
+#: src/repositories/timezone-repository.php:200
+msgid "Africa/Kigali"
+msgstr "Africa/Kigali"
+
+#: src/repositories/timezone-repository.php:201
+msgid "Africa/Kinshasa"
+msgstr "Africa/Kinshasa"
+
+#: src/repositories/timezone-repository.php:202
+msgid "Africa/Lagos"
+msgstr "Africa/Lagos"
+
+#: src/repositories/timezone-repository.php:203
+msgid "Africa/Libreville"
+msgstr "Africa/Libreville"
+
+#: src/repositories/timezone-repository.php:204
+msgid "Africa/Lome"
+msgstr "Africa/Lome"
+
+#: src/repositories/timezone-repository.php:205
+msgid "Africa/Luanda"
+msgstr "Africa/Luanda"
+
+#: src/repositories/timezone-repository.php:206
+msgid "Africa/Lubumbashi"
+msgstr "Africa/Lubumbashi"
+
+#: src/repositories/timezone-repository.php:207
+msgid "Africa/Lusaka"
+msgstr "Africa/Lusaka"
+
+#: src/repositories/timezone-repository.php:208
+msgid "Africa/Malabo"
+msgstr "Africa/Malabo"
+
+#: src/repositories/timezone-repository.php:209
+msgid "Africa/Maputo"
+msgstr "Africa/Maputo"
+
+#: src/repositories/timezone-repository.php:210
+msgid "Africa/Maseru"
+msgstr "Africa/Maseru"
+
+#: src/repositories/timezone-repository.php:211
+msgid "Africa/Mbabane"
+msgstr "Africa/Mbabane"
+
+#: src/repositories/timezone-repository.php:212
+msgid "Africa/Mogadishu"
+msgstr "Africa/Mogadishu"
+
+#: src/repositories/timezone-repository.php:213
+msgid "Africa/Monrovia"
+msgstr "Africa/Monrovia"
+
+#: src/repositories/timezone-repository.php:214
+msgid "Africa/Nairobi"
+msgstr "Africa/Nairobi"
+
+#: src/repositories/timezone-repository.php:215
+msgid "Africa/Ndjamena"
+msgstr "Africa/Ndjamena"
+
+#: src/repositories/timezone-repository.php:216
+msgid "Africa/Niamey"
+msgstr "Africa/Niamey"
+
+#: src/repositories/timezone-repository.php:217
+msgid "Africa/Nouakchott"
+msgstr "Africa/Nouakchott"
+
+#: src/repositories/timezone-repository.php:218
+msgid "Africa/Ouagadougou"
+msgstr "Africa/Ouagadougou"
+
+#: src/repositories/timezone-repository.php:219
+msgid "Africa/Porto-Novo"
+msgstr "Africa/Porto-Novo"
+
+#: src/repositories/timezone-repository.php:220
+msgid "Africa/Sao_Tome"
+msgstr "Africa/Sao_Tome"
+
+#: src/repositories/timezone-repository.php:221
+msgid "Africa/Tripoli"
+msgstr "Africa/Tripoli"
+
+#: src/repositories/timezone-repository.php:222
+msgid "Africa/Tunis"
+msgstr "Africa/Tunis"
+
+#: src/repositories/timezone-repository.php:223
+msgid "Africa/Windhoek"
+msgstr "Africa/Windhoek"
+
+#: src/repositories/timezone-repository.php:224
+msgid "America/Adak"
+msgstr "America/Adak"
+
+#: src/repositories/timezone-repository.php:225
+msgid "America/Anchorage"
+msgstr "America/Anchorage"
+
+#: src/repositories/timezone-repository.php:226
+msgid "America/Anguilla"
+msgstr "America/Anguilla"
+
+#: src/repositories/timezone-repository.php:227
+msgid "America/Antigua"
+msgstr "America/Antigua"
+
+#: src/repositories/timezone-repository.php:228
+msgid "America/Araguaina"
+msgstr "America/Araguaina"
+
+#: src/repositories/timezone-repository.php:229
+msgid "America/Argentina/Buenos_Aires"
+msgstr "America/Argentina/Buenos_Aires"
+
+#: src/repositories/timezone-repository.php:230
+msgid "America/Argentina/Catamarca"
+msgstr "America/Argentina/Catamarca"
+
+#: src/repositories/timezone-repository.php:231
+msgid "America/Argentina/Cordoba"
+msgstr "America/Argentina/Cordoba"
+
+#: src/repositories/timezone-repository.php:232
+msgid "America/Argentina/Jujuy"
+msgstr "America/Argentina/Jujuy"
+
+#: src/repositories/timezone-repository.php:233
+msgid "America/Argentina/La_Rioja"
+msgstr "America/Argentina/La_Rioja"
+
+#: src/repositories/timezone-repository.php:234
+msgid "America/Argentina/Mendoza"
+msgstr "America/Argentina/Mendoza"
+
+#: src/repositories/timezone-repository.php:235
+msgid "America/Argentina/Rio_Gallegos"
+msgstr "America/Argentina/Rio_Gallegos"
+
+#: src/repositories/timezone-repository.php:236
+msgid "America/Argentina/Salta"
+msgstr "America/Argentina/Salta"
+
+#: src/repositories/timezone-repository.php:237
+msgid "America/Argentina/San_Juan"
+msgstr "America/Argentina/San_Juan"
+
+#: src/repositories/timezone-repository.php:238
+msgid "America/Argentina/San_Luis"
+msgstr "America/Argentina/San_Luis"
+
+#: src/repositories/timezone-repository.php:239
+msgid "America/Argentina/Tucuman"
+msgstr "America/Argentina/Tucuman"
+
+#: src/repositories/timezone-repository.php:240
+msgid "America/Argentina/Ushuaia"
+msgstr "America/Argentina/Ushuaia"
+
+#: src/repositories/timezone-repository.php:241
+msgid "America/Aruba"
+msgstr "America/Aruba"
+
+#: src/repositories/timezone-repository.php:242
+msgid "America/Asuncion"
+msgstr "America/Asuncion"
+
+#: src/repositories/timezone-repository.php:243
+msgid "America/Atikokan"
+msgstr "America/Atikokan"
+
+#: src/repositories/timezone-repository.php:244
+msgid "America/Bahia"
+msgstr "America/Bahia"
+
+#: src/repositories/timezone-repository.php:245
+msgid "America/Bahia_Banderas"
+msgstr "America/Bahia_Banderas"
+
+#: src/repositories/timezone-repository.php:246
+msgid "America/Barbados"
+msgstr "America/Barbados"
+
+#: src/repositories/timezone-repository.php:247
+msgid "America/Belem"
+msgstr "America/Belem"
+
+#: src/repositories/timezone-repository.php:248
+msgid "America/Belize"
+msgstr "America/Belize"
+
+#: src/repositories/timezone-repository.php:249
+msgid "America/Blanc-Sablon"
+msgstr "America/Blanc-Sablon"
+
+#: src/repositories/timezone-repository.php:250
+msgid "America/Boa_Vista"
+msgstr "America/Boa_Vista"
+
+#: src/repositories/timezone-repository.php:251
+msgid "America/Bogota"
+msgstr "America/Bogota"
+
+#: src/repositories/timezone-repository.php:252
+msgid "America/Boise"
+msgstr "America/Boise"
+
+#: src/repositories/timezone-repository.php:253
+msgid "America/Cambridge_Bay"
+msgstr "America/Cambridge_Bay"
+
+#: src/repositories/timezone-repository.php:254
+msgid "America/Campo_Grande"
+msgstr "America/Campo_Grande"
+
+#: src/repositories/timezone-repository.php:255
+msgid "America/Cancun"
+msgstr "America/Cancun"
+
+#: src/repositories/timezone-repository.php:256
+msgid "America/Caracas"
+msgstr "America/Caracas"
+
+#: src/repositories/timezone-repository.php:257
+msgid "America/Cayenne"
+msgstr "America/Cayenne"
+
+#: src/repositories/timezone-repository.php:258
+msgid "America/Cayman"
+msgstr "America/Cayman"
+
+#: src/repositories/timezone-repository.php:259
+msgid "America/Chicago"
+msgstr "America/Chicago"
+
+#: src/repositories/timezone-repository.php:260
+msgid "America/Chihuahua"
+msgstr "America/Chihuahua"
+
+#: src/repositories/timezone-repository.php:261
+msgid "America/Costa_Rica"
+msgstr "America/Costa_Rica"
+
+#: src/repositories/timezone-repository.php:262
+msgid "America/Creston"
+msgstr "America/Creston"
+
+#: src/repositories/timezone-repository.php:263
+msgid "America/Cuiaba"
+msgstr "America/Cuiaba"
+
+#: src/repositories/timezone-repository.php:264
+msgid "America/Curacao"
+msgstr "America/Curacao"
+
+#: src/repositories/timezone-repository.php:265
+msgid "America/Danmarkshavn"
+msgstr "America/Danmarkshavn"
+
+#: src/repositories/timezone-repository.php:266
+msgid "America/Dawson"
+msgstr "America/Dawson"
+
+#: src/repositories/timezone-repository.php:267
+msgid "America/Dawson_Creek"
+msgstr "America/Dawson_Creek"
+
+#: src/repositories/timezone-repository.php:268
+msgid "America/Denver"
+msgstr "America/Denver"
+
+#: src/repositories/timezone-repository.php:269
+msgid "America/Detroit"
+msgstr "America/Detroit"
+
+#: src/repositories/timezone-repository.php:270
+msgid "America/Dominica"
+msgstr "America/Dominica"
+
+#: src/repositories/timezone-repository.php:271
+msgid "America/Edmonton"
+msgstr "America/Edmonton"
+
+#: src/repositories/timezone-repository.php:272
+msgid "America/Eirunepe"
+msgstr "America/Eirunepe"
+
+#: src/repositories/timezone-repository.php:273
+msgid "America/El_Salvador"
+msgstr "America/El_Salvador"
+
+#: src/repositories/timezone-repository.php:274
+msgid "America/Fortaleza"
+msgstr "America/Fortaleza"
+
+#: src/repositories/timezone-repository.php:275
+msgid "America/Glace_Bay"
+msgstr "America/Glace_Bay"
+
+#: src/repositories/timezone-repository.php:276
+msgid "America/Godthab"
+msgstr "America/Godthab"
+
+#: src/repositories/timezone-repository.php:277
+msgid "America/Goose_Bay"
+msgstr "America/Goose_Bay"
+
+#: src/repositories/timezone-repository.php:278
+msgid "America/Grand_Turk"
+msgstr "America/Grand_Turk"
+
+#: src/repositories/timezone-repository.php:279
+msgid "America/Grenada"
+msgstr "America/Grenada"
+
+#: src/repositories/timezone-repository.php:280
+msgid "America/Guadeloupe"
+msgstr "America/Guadeloupe"
+
+#: src/repositories/timezone-repository.php:281
+msgid "America/Guatemala"
+msgstr "America/Guatemala"
+
+#: src/repositories/timezone-repository.php:282
+msgid "America/Guayaquil"
+msgstr "America/Guayaquil"
+
+#: src/repositories/timezone-repository.php:283
+msgid "America/Guyana"
+msgstr "America/Guyana"
+
+#: src/repositories/timezone-repository.php:284
+msgid "America/Halifax"
+msgstr "America/Halifax"
+
+#: src/repositories/timezone-repository.php:285
+msgid "America/Havana"
+msgstr "America/Havana"
+
+#: src/repositories/timezone-repository.php:286
+msgid "America/Hermosillo"
+msgstr "America/Hermosillo"
+
+#: src/repositories/timezone-repository.php:287
+msgid "America/Indiana/Indianapolis"
+msgstr "America/Indiana/Indianapolis"
+
+#: src/repositories/timezone-repository.php:288
+msgid "America/Indiana/Knox"
+msgstr "America/Indiana/Knox"
+
+#: src/repositories/timezone-repository.php:289
+msgid "America/Indiana/Marengo"
+msgstr "America/Indiana/Marengo"
+
+#: src/repositories/timezone-repository.php:290
+msgid "America/Indiana/Petersburg"
+msgstr "America/Indiana/Petersburg"
+
+#: src/repositories/timezone-repository.php:291
+msgid "America/Indiana/Tell_City"
+msgstr "America/Indiana/Tell_City"
+
+#: src/repositories/timezone-repository.php:292
+msgid "America/Indiana/Vevay"
+msgstr "America/Indiana/Vevay"
+
+#: src/repositories/timezone-repository.php:293
+msgid "America/Indiana/Vincennes"
+msgstr "America/Indiana/Vincennes"
+
+#: src/repositories/timezone-repository.php:294
+msgid "America/Indiana/Winamac"
+msgstr "America/Indiana/Winamac"
+
+#: src/repositories/timezone-repository.php:295
+msgid "America/Inuvik"
+msgstr "America/Inuvik"
+
+#: src/repositories/timezone-repository.php:296
+msgid "America/Iqaluit"
+msgstr "America/Iqaluit"
+
+#: src/repositories/timezone-repository.php:297
+msgid "America/Jamaica"
+msgstr "America/Jamaica"
+
+#: src/repositories/timezone-repository.php:298
+msgid "America/Juneau"
+msgstr "America/Juneau"
+
+#: src/repositories/timezone-repository.php:299
+msgid "America/Kentucky/Louisville"
+msgstr "America/Kentucky/Louisville"
+
+#: src/repositories/timezone-repository.php:300
+msgid "America/Kentucky/Monticello"
+msgstr "America/Kentucky/Monticello"
+
+#: src/repositories/timezone-repository.php:301
+msgid "America/Kralendijk"
+msgstr "America/Kralendijk"
+
+#: src/repositories/timezone-repository.php:302
+msgid "America/La_Paz"
+msgstr "America/La_Paz"
+
+#: src/repositories/timezone-repository.php:303
+msgid "America/Lima"
+msgstr "America/Lima"
+
+#: src/repositories/timezone-repository.php:304
+msgid "America/Los_Angeles"
+msgstr "America/Los_Angeles"
+
+#: src/repositories/timezone-repository.php:305
+msgid "America/Lower_Princes"
+msgstr "America/Lower_Princes"
+
+#: src/repositories/timezone-repository.php:306
+msgid "America/Maceio"
+msgstr "America/Maceio"
+
+#: src/repositories/timezone-repository.php:307
+msgid "America/Managua"
+msgstr "America/Managua"
+
+#: src/repositories/timezone-repository.php:308
+msgid "America/Manaus"
+msgstr "America/Manaus"
+
+#: src/repositories/timezone-repository.php:309
+msgid "America/Marigot"
+msgstr "America/Marigot"
+
+#: src/repositories/timezone-repository.php:310
+msgid "America/Martinique"
+msgstr "America/Martinique"
+
+#: src/repositories/timezone-repository.php:311
+msgid "America/Matamoros"
+msgstr "America/Matamoros"
+
+#: src/repositories/timezone-repository.php:312
+msgid "America/Mazatlan"
+msgstr "America/Mazatlan"
+
+#: src/repositories/timezone-repository.php:313
+msgid "America/Menominee"
+msgstr "America/Menominee"
+
+#: src/repositories/timezone-repository.php:314
+msgid "America/Merida"
+msgstr "America/Merida"
+
+#: src/repositories/timezone-repository.php:315
+msgid "America/Metlakatla"
+msgstr "America/Metlakatla"
+
+#: src/repositories/timezone-repository.php:316
+msgid "America/Mexico_City"
+msgstr "America/Mexico_City"
+
+#: src/repositories/timezone-repository.php:317
+msgid "America/Miquelon"
+msgstr "America/Miquelon"
+
+#: src/repositories/timezone-repository.php:318
+msgid "America/Moncton"
+msgstr "America/Moncton"
+
+#: src/repositories/timezone-repository.php:319
+msgid "America/Monterrey"
+msgstr "America/Monterrey"
+
+#: src/repositories/timezone-repository.php:320
+msgid "America/Montevideo"
+msgstr "America/Montevideo"
+
+#: src/repositories/timezone-repository.php:321
+msgid "America/Montreal"
+msgstr "America/Montreal"
+
+#: src/repositories/timezone-repository.php:322
+msgid "America/Montserrat"
+msgstr "America/Montserrat"
+
+#: src/repositories/timezone-repository.php:323
+msgid "America/Nassau"
+msgstr "America/Nassau"
+
+#: src/repositories/timezone-repository.php:324
+msgid "America/New_York"
+msgstr "America/New_York"
+
+#: src/repositories/timezone-repository.php:325
+msgid "America/Nipigon"
+msgstr "America/Nipigon"
+
+#: src/repositories/timezone-repository.php:326
+msgid "America/Nome"
+msgstr "America/Nome"
+
+#: src/repositories/timezone-repository.php:327
+msgid "America/Noronha"
+msgstr "America/Noronha"
+
+#: src/repositories/timezone-repository.php:328
+msgid "America/North_Dakota/Beulah"
+msgstr "America/North_Dakota/Beulah"
+
+#: src/repositories/timezone-repository.php:329
+msgid "America/North_Dakota/Center"
+msgstr "America/North_Dakota/Center"
+
+#: src/repositories/timezone-repository.php:330
+msgid "America/North_Dakota/New_Salem"
+msgstr "America/North_Dakota/New_Salem"
+
+#: src/repositories/timezone-repository.php:331
+msgid "America/Ojinaga"
+msgstr "America/Ojinaga"
+
+#: src/repositories/timezone-repository.php:332
+msgid "America/Panama"
+msgstr "America/Panama"
+
+#: src/repositories/timezone-repository.php:333
+msgid "America/Pangnirtung"
+msgstr "America/Pangnirtung"
+
+#: src/repositories/timezone-repository.php:334
+msgid "America/Paramaribo"
+msgstr "America/Paramaribo"
+
+#: src/repositories/timezone-repository.php:335
+msgid "America/Phoenix"
+msgstr "America/Phoenix"
+
+#: src/repositories/timezone-repository.php:336
+msgid "America/Port-au-Prince"
+msgstr "America/Port-au-Prince"
+
+#: src/repositories/timezone-repository.php:337
+msgid "America/Port_of_Spain"
+msgstr "America/Port_of_Spain"
+
+#: src/repositories/timezone-repository.php:338
+msgid "America/Porto_Velho"
+msgstr "America/Porto_Velho"
+
+#: src/repositories/timezone-repository.php:339
+msgid "America/Puerto_Rico"
+msgstr "America/Puerto_Rico"
+
+#: src/repositories/timezone-repository.php:340
+msgid "America/Rainy_River"
+msgstr "America/Rainy_River"
+
+#: src/repositories/timezone-repository.php:341
+msgid "America/Rankin_Inlet"
+msgstr "America/Rankin_Inlet"
+
+#: src/repositories/timezone-repository.php:342
+msgid "America/Recife"
+msgstr "America/Recife"
+
+#: src/repositories/timezone-repository.php:343
+msgid "America/Regina"
+msgstr "America/Regina"
+
+#: src/repositories/timezone-repository.php:344
+msgid "America/Resolute"
+msgstr "America/Resolute"
+
+#: src/repositories/timezone-repository.php:345
+msgid "America/Rio_Branco"
+msgstr "America/Rio_Branco"
+
+#: src/repositories/timezone-repository.php:346
+msgid "America/Santa_Isabel"
+msgstr "America/Santa_Isabel"
+
+#: src/repositories/timezone-repository.php:347
+msgid "America/Santarem"
+msgstr "America/Santarem"
+
+#: src/repositories/timezone-repository.php:348
+msgid "America/Santiago"
+msgstr "America/Santiago"
+
+#: src/repositories/timezone-repository.php:349
+msgid "America/Santo_Domingo"
+msgstr "America/Santo_Domingo"
+
+#: src/repositories/timezone-repository.php:350
+msgid "America/Sao_Paulo"
+msgstr "America/Sao_Paulo"
+
+#: src/repositories/timezone-repository.php:351
+msgid "America/Scoresbysund"
+msgstr "America/Scoresbysund"
+
+#: src/repositories/timezone-repository.php:352
+msgid "America/Shiprock"
+msgstr "America/Shiprock"
+
+#: src/repositories/timezone-repository.php:353
+msgid "America/Sitka"
+msgstr "America/Sitka"
+
+#: src/repositories/timezone-repository.php:354
+msgid "America/St_Barthelemy"
+msgstr "America/St_Barthelemy"
+
+#: src/repositories/timezone-repository.php:355
+msgid "America/St_Johns"
+msgstr "America/St_Johns"
+
+#: src/repositories/timezone-repository.php:356
+msgid "America/St_Kitts"
+msgstr "America/St_Kitts"
+
+#: src/repositories/timezone-repository.php:357
+msgid "America/St_Lucia"
+msgstr "America/St_Lucia"
+
+#: src/repositories/timezone-repository.php:358
+msgid "America/St_Thomas"
+msgstr "America/St_Thomas"
+
+#: src/repositories/timezone-repository.php:359
+msgid "America/St_Vincent"
+msgstr "America/St_Vincent"
+
+#: src/repositories/timezone-repository.php:360
+msgid "America/Swift_Current"
+msgstr "America/Swift_Current"
+
+#: src/repositories/timezone-repository.php:361
+msgid "America/Tegucigalpa"
+msgstr "America/Tegucigalpa"
+
+#: src/repositories/timezone-repository.php:362
+msgid "America/Thule"
+msgstr "America/Thule"
+
+#: src/repositories/timezone-repository.php:363
+msgid "America/Thunder_Bay"
+msgstr "America/Thunder_Bay"
+
+#: src/repositories/timezone-repository.php:364
+msgid "America/Tijuana"
+msgstr "America/Tijuana"
+
+#: src/repositories/timezone-repository.php:365
+msgid "America/Toronto"
+msgstr "America/Toronto"
+
+#: src/repositories/timezone-repository.php:366
+msgid "America/Tortola"
+msgstr "America/Tortola"
+
+#: src/repositories/timezone-repository.php:367
+msgid "America/Vancouver"
+msgstr "America/Vancouver"
+
+#: src/repositories/timezone-repository.php:368
+msgid "America/Whitehorse"
+msgstr "America/Whitehorse"
+
+#: src/repositories/timezone-repository.php:369
+msgid "America/Winnipeg"
+msgstr "America/Winnipeg"
+
+#: src/repositories/timezone-repository.php:370
+msgid "America/Yakutat"
+msgstr "America/Yakutat"
+
+#: src/repositories/timezone-repository.php:371
+msgid "America/Yellowknife"
+msgstr "America/Yellowknife"
+
+#: src/repositories/timezone-repository.php:372
+msgid "Antarctica/Casey"
+msgstr "Antarctica/Casey"
+
+#: src/repositories/timezone-repository.php:373
+msgid "Antarctica/Davis"
+msgstr "Antarctica/Davis"
+
+#: src/repositories/timezone-repository.php:374
+msgid "Antarctica/DumontDUrville"
+msgstr "Antarctica/DumontDUrville"
+
+#: src/repositories/timezone-repository.php:375
+msgid "Antarctica/Macquarie"
+msgstr "Antarctica/Macquarie"
+
+#: src/repositories/timezone-repository.php:376
+msgid "Antarctica/Mawson"
+msgstr "Antarctica/Mawson"
+
+#: src/repositories/timezone-repository.php:377
+msgid "Antarctica/McMurdo"
+msgstr "Antarctica/McMurdo"
+
+#: src/repositories/timezone-repository.php:378
+msgid "Antarctica/Palmer"
+msgstr "Antarctica/Palmer"
+
+#: src/repositories/timezone-repository.php:379
+msgid "Antarctica/Rothera"
+msgstr "Antarctica/Rothera"
+
+#: src/repositories/timezone-repository.php:380
+msgid "Antarctica/South_Pole"
+msgstr "Antarctica/South_Pole"
+
+#: src/repositories/timezone-repository.php:381
+msgid "Antarctica/Syowa"
+msgstr "Antarctica/Syowa"
+
+#: src/repositories/timezone-repository.php:382
+msgid "Antarctica/Vostok"
+msgstr "Antarctica/Vostok"
+
+#: src/repositories/timezone-repository.php:383
+msgid "Arctic/Longyearbyen"
+msgstr "Arctic/Longyearbyen"
+
+#: src/repositories/timezone-repository.php:384
+msgid "Asia/Aden"
+msgstr "Asia/Aden"
+
+#: src/repositories/timezone-repository.php:385
+msgid "Asia/Almaty"
+msgstr "Asia/Almaty"
+
+#: src/repositories/timezone-repository.php:386
+msgid "Asia/Amman"
+msgstr "Asia/Amman"
+
+#: src/repositories/timezone-repository.php:387
+msgid "Asia/Anadyr"
+msgstr "Asia/Anadyr"
+
+#: src/repositories/timezone-repository.php:388
+msgid "Asia/Aqtau"
+msgstr "Asia/Aqtau"
+
+#: src/repositories/timezone-repository.php:389
+msgid "Asia/Aqtobe"
+msgstr "Asia/Aqtobe"
+
+#: src/repositories/timezone-repository.php:390
+msgid "Asia/Ashgabat"
+msgstr "Asia/Ashgabat"
+
+#: src/repositories/timezone-repository.php:391
+msgid "Asia/Baghdad"
+msgstr "Asia/Baghdad"
+
+#: src/repositories/timezone-repository.php:392
+msgid "Asia/Bahrain"
+msgstr "Asia/Bahrain"
+
+#: src/repositories/timezone-repository.php:393
+msgid "Asia/Baku"
+msgstr "Asia/Baku"
+
+#: src/repositories/timezone-repository.php:394
+msgid "Asia/Bangkok"
+msgstr "Asia/Bangkok"
+
+#: src/repositories/timezone-repository.php:395
+msgid "Asia/Beirut"
+msgstr "Asia/Beirut"
+
+#: src/repositories/timezone-repository.php:396
+msgid "Asia/Bishkek"
+msgstr "Asia/Bishkek"
+
+#: src/repositories/timezone-repository.php:397
+msgid "Asia/Brunei"
+msgstr "Asia/Brunei"
+
+#: src/repositories/timezone-repository.php:398
+msgid "Asia/Choibalsan"
+msgstr "Asia/Choibalsan"
+
+#: src/repositories/timezone-repository.php:399
+msgid "Asia/Chongqing"
+msgstr "Asia/Chongqing"
+
+#: src/repositories/timezone-repository.php:400
+msgid "Asia/Colombo"
+msgstr "Asia/Colombo"
+
+#: src/repositories/timezone-repository.php:401
+msgid "Asia/Damascus"
+msgstr "Asia/Damascus"
+
+#: src/repositories/timezone-repository.php:402
+msgid "Asia/Dhaka"
+msgstr "Asia/Dhaka"
+
+#: src/repositories/timezone-repository.php:403
+msgid "Asia/Dili"
+msgstr "Asia/Dili"
+
+#: src/repositories/timezone-repository.php:404
+msgid "Asia/Dubai"
+msgstr "Asia/Dubai"
+
+#: src/repositories/timezone-repository.php:405
+msgid "Asia/Dushanbe"
+msgstr "Asia/Dushanbe"
+
+#: src/repositories/timezone-repository.php:406
+msgid "Asia/Gaza"
+msgstr "Asia/Gaza"
+
+#: src/repositories/timezone-repository.php:407
+msgid "Asia/Harbin"
+msgstr "Asia/Harbin"
+
+#: src/repositories/timezone-repository.php:408
+msgid "Asia/Hebron"
+msgstr "Asia/Hebron"
+
+#: src/repositories/timezone-repository.php:409
+msgid "Asia/Ho_Chi_Minh"
+msgstr "Asia/Ho_Chi_Minh"
+
+#: src/repositories/timezone-repository.php:410
+msgid "Asia/Hong_Kong"
+msgstr "Asia/Hong_Kong"
+
+#: src/repositories/timezone-repository.php:411
+msgid "Asia/Hovd"
+msgstr "Asia/Hovd"
+
+#: src/repositories/timezone-repository.php:412
+msgid "Asia/Irkutsk"
+msgstr "Asia/Irkutsk"
+
+#: src/repositories/timezone-repository.php:413
+msgid "Asia/Jakarta"
+msgstr "Asia/Jakarta"
+
+#: src/repositories/timezone-repository.php:414
+msgid "Asia/Jayapura"
+msgstr "Asia/Jayapura"
+
+#: src/repositories/timezone-repository.php:415
+msgid "Asia/Jerusalem"
+msgstr "Asia/Jerusalem"
+
+#: src/repositories/timezone-repository.php:416
+msgid "Asia/Kabul"
+msgstr "Asia/Kabul"
+
+#: src/repositories/timezone-repository.php:417
+msgid "Asia/Kamchatka"
+msgstr "Asia/Kamchatka"
+
+#: src/repositories/timezone-repository.php:418
+msgid "Asia/Karachi"
+msgstr "Asia/Karachi"
+
+#: src/repositories/timezone-repository.php:419
+msgid "Asia/Kashgar"
+msgstr "Asia/Kashgar"
+
+#: src/repositories/timezone-repository.php:420
+msgid "Asia/Kathmandu"
+msgstr "Asia/Kathmandu"
+
+#: src/repositories/timezone-repository.php:421
+msgid "Asia/Kolkata"
+msgstr "Asia/Kolkata"
+
+#: src/repositories/timezone-repository.php:422
+msgid "Asia/Krasnoyarsk"
+msgstr "Asia/Krasnoyarsk"
+
+#: src/repositories/timezone-repository.php:423
+msgid "Asia/Kuala_Lumpur"
+msgstr "Asia/Kuala_Lumpur"
+
+#: src/repositories/timezone-repository.php:424
+msgid "Asia/Kuching"
+msgstr "Asia/Kuching"
+
+#: src/repositories/timezone-repository.php:425
+msgid "Asia/Kuwait"
+msgstr "Asia/Kuwait"
+
+#: src/repositories/timezone-repository.php:426
+msgid "Asia/Macau"
+msgstr "Asia/Macau"
+
+#: src/repositories/timezone-repository.php:427
+msgid "Asia/Magadan"
+msgstr "Asia/Magadan"
+
+#: src/repositories/timezone-repository.php:428
+msgid "Asia/Makassar"
+msgstr "Asia/Makassar"
+
+#: src/repositories/timezone-repository.php:429
+msgid "Asia/Manila"
+msgstr "Asia/Manila"
+
+#: src/repositories/timezone-repository.php:430
+msgid "Asia/Muscat"
+msgstr "Asia/Muscat"
+
+#: src/repositories/timezone-repository.php:431
+msgid "Asia/Nicosia"
+msgstr "Asia/Nicosia"
+
+#: src/repositories/timezone-repository.php:432
+msgid "Asia/Novokuznetsk"
+msgstr "Asia/Novokuznetsk"
+
+#: src/repositories/timezone-repository.php:433
+msgid "Asia/Novosibirsk"
+msgstr "Asia/Novosibirsk"
+
+#: src/repositories/timezone-repository.php:434
+msgid "Asia/Omsk"
+msgstr "Asia/Omsk"
+
+#: src/repositories/timezone-repository.php:435
+msgid "Asia/Oral"
+msgstr "Asia/Oral"
+
+#: src/repositories/timezone-repository.php:436
+msgid "Asia/Phnom_Penh"
+msgstr "Asia/Phnom_Penh"
+
+#: src/repositories/timezone-repository.php:437
+msgid "Asia/Pontianak"
+msgstr "Asia/Pontianak"
+
+#: src/repositories/timezone-repository.php:438
+msgid "Asia/Pyongyang"
+msgstr "Asia/Pyongyang"
+
+#: src/repositories/timezone-repository.php:439
+msgid "Asia/Qatar"
+msgstr "Asia/Qatar"
+
+#: src/repositories/timezone-repository.php:440
+msgid "Asia/Qyzylorda"
+msgstr "Asia/Qyzylorda"
+
+#: src/repositories/timezone-repository.php:441
+msgid "Asia/Rangoon"
+msgstr "Asia/Rangoon"
+
+#: src/repositories/timezone-repository.php:442
+msgid "Asia/Riyadh"
+msgstr "Asia/Riyadh"
+
+#: src/repositories/timezone-repository.php:443
+msgid "Asia/Sakhalin"
+msgstr "Asia/Sakhalin"
+
+#: src/repositories/timezone-repository.php:444
+msgid "Asia/Samarkand"
+msgstr "Asia/Samarkand"
+
+#: src/repositories/timezone-repository.php:445
+msgid "Asia/Seoul"
+msgstr "Asia/Seoul"
+
+#: src/repositories/timezone-repository.php:446
+msgid "Asia/Shanghai"
+msgstr "Asia/Shanghai"
+
+#: src/repositories/timezone-repository.php:447
+msgid "Asia/Singapore"
+msgstr "Asia/Singapore"
+
+#: src/repositories/timezone-repository.php:448
+msgid "Asia/Taipei"
+msgstr "Asia/Taipei"
+
+#: src/repositories/timezone-repository.php:449
+msgid "Asia/Tashkent"
+msgstr "Asia/Tashkent"
+
+#: src/repositories/timezone-repository.php:450
+msgid "Asia/Tbilisi"
+msgstr "Asia/Tbilisi"
+
+#: src/repositories/timezone-repository.php:451
+msgid "Asia/Tehran"
+msgstr "Asia/Tehran"
+
+#: src/repositories/timezone-repository.php:452
+msgid "Asia/Thimphu"
+msgstr "Asia/Thimphu"
+
+#: src/repositories/timezone-repository.php:453
+msgid "Asia/Tokyo"
+msgstr "Asia/Tokyo"
+
+#: src/repositories/timezone-repository.php:454
+msgid "Asia/Ulaanbaatar"
+msgstr "Asia/Ulaanbaatar"
+
+#: src/repositories/timezone-repository.php:455
+msgid "Asia/Urumqi"
+msgstr "Asia/Urumqi"
+
+#: src/repositories/timezone-repository.php:456
+msgid "Asia/Vientiane"
+msgstr "Asia/Vientiane"
+
+#: src/repositories/timezone-repository.php:457
+msgid "Asia/Vladivostok"
+msgstr "Asia/Vladivostok"
+
+#: src/repositories/timezone-repository.php:458
+msgid "Asia/Yakutsk"
+msgstr "Asia/Yakutsk"
+
+#: src/repositories/timezone-repository.php:459
+msgid "Asia/Yekaterinburg"
+msgstr "Asia/Yekaterinburg"
+
+#: src/repositories/timezone-repository.php:460
+msgid "Asia/Yerevan"
+msgstr "Asia/Yerevan"
+
+#: src/repositories/timezone-repository.php:461
+msgid "Atlantic/Azores"
+msgstr "Atlantic/Azores"
+
+#: src/repositories/timezone-repository.php:462
+msgid "Atlantic/Bermuda"
+msgstr "Atlantic/Bermuda"
+
+#: src/repositories/timezone-repository.php:463
+msgid "Atlantic/Canary"
+msgstr "Atlantic/Canary"
+
+#: src/repositories/timezone-repository.php:464
+msgid "Atlantic/Cape_Verde"
+msgstr "Atlantic/Cape_Verde"
+
+#: src/repositories/timezone-repository.php:465
+msgid "Atlantic/Faroe"
+msgstr "Atlantic/Faroe"
+
+#: src/repositories/timezone-repository.php:466
+msgid "Atlantic/Madeira"
+msgstr "Atlantic/Madeira"
+
+#: src/repositories/timezone-repository.php:467
+msgid "Atlantic/Reykjavik"
+msgstr "Atlantic/Reykjavik"
+
+#: src/repositories/timezone-repository.php:468
+msgid "Atlantic/South_Georgia"
+msgstr "Atlantic/South_Georgia"
+
+#: src/repositories/timezone-repository.php:469
+msgid "Atlantic/St_Helena"
+msgstr "Atlantic/St_Helena"
+
+#: src/repositories/timezone-repository.php:470
+msgid "Atlantic/Stanley"
+msgstr "Atlantic/Stanley"
+
+#: src/repositories/timezone-repository.php:471
+msgid "Australia/Adelaide"
+msgstr "Australia/Adelaide"
+
+#: src/repositories/timezone-repository.php:472
+msgid "Australia/Brisbane"
+msgstr "Australia/Brisbane"
+
+#: src/repositories/timezone-repository.php:473
+msgid "Australia/Broken_Hill"
+msgstr "Australia/Broken_Hill"
+
+#: src/repositories/timezone-repository.php:474
+msgid "Australia/Currie"
+msgstr "Australia/Currie"
+
+#: src/repositories/timezone-repository.php:475
+msgid "Australia/Darwin"
+msgstr "Australia/Darwin"
+
+#: src/repositories/timezone-repository.php:476
+msgid "Australia/Eucla"
+msgstr "Australia/Eucla"
+
+#: src/repositories/timezone-repository.php:477
+msgid "Australia/Hobart"
+msgstr "Australia/Hobart"
+
+#: src/repositories/timezone-repository.php:478
+msgid "Australia/Lindeman"
+msgstr "Australia/Lindeman"
+
+#: src/repositories/timezone-repository.php:479
+msgid "Australia/Lord_Howe"
+msgstr "Australia/Lord_Howe"
+
+#: src/repositories/timezone-repository.php:480
+msgid "Australia/Melbourne"
+msgstr "Australia/Melbourne"
+
+#: src/repositories/timezone-repository.php:481
+msgid "Australia/Perth"
+msgstr "Australia/Perth"
+
+#: src/repositories/timezone-repository.php:482
+msgid "Canada/Atlantic"
+msgstr "Canada/Atlantic"
+
+#: src/repositories/timezone-repository.php:483
+msgid "Canada/Central"
+msgstr "Canada/Central"
+
+#: src/repositories/timezone-repository.php:484
+msgid "Canada/Eastern"
+msgstr "Canada/Eastern"
+
+#: src/repositories/timezone-repository.php:485
+msgid "Canada/Mountain"
+msgstr "Canada/Mountain"
+
+#: src/repositories/timezone-repository.php:486
+msgid "Canada/Newfoundland"
+msgstr "Canada/Newfoundland"
+
+#: src/repositories/timezone-repository.php:487
+msgid "Canada/Pacific"
+msgstr "Canada/Pacific"
+
+#: src/repositories/timezone-repository.php:488
+msgid "Europe/Andorra"
+msgstr "Europe/Andorra"
+
+#: src/repositories/timezone-repository.php:489
+msgid "Europe/Athens"
+msgstr "Europe/Athens"
+
+#: src/repositories/timezone-repository.php:490
+msgid "Europe/Belgrade"
+msgstr "Europe/Belgrade"
+
+#: src/repositories/timezone-repository.php:491
+msgid "Europe/Bratislava"
+msgstr "Europe/Bratislava"
+
+#: src/repositories/timezone-repository.php:492
+msgid "Europe/Brussels"
+msgstr "Europe/Brussels"
+
+#: src/repositories/timezone-repository.php:493
+msgid "Europe/Bucharest"
+msgstr "Europe/Bucharest"
+
+#: src/repositories/timezone-repository.php:494
+msgid "Europe/Budapest"
+msgstr "Europe/Budapest"
+
+#: src/repositories/timezone-repository.php:495
+msgid "Europe/Chisinau"
+msgstr "Europe/Chisinau"
+
+#: src/repositories/timezone-repository.php:496
+msgid "Europe/Copenhagen"
+msgstr "Europe/Copenhagen"
+
+#: src/repositories/timezone-repository.php:497
+msgid "Europe/Dublin"
+msgstr "Europe/Dublin"
+
+#: src/repositories/timezone-repository.php:498
+msgid "Europe/Gibraltar"
+msgstr "Europe/Gibraltar"
+
+#: src/repositories/timezone-repository.php:499
+msgid "Europe/Guernsey"
+msgstr "Europe/Guernsey"
+
+#: src/repositories/timezone-repository.php:500
+msgid "Europe/Helsinki"
+msgstr "Europe/Helsinki"
+
+#: src/repositories/timezone-repository.php:501
+msgid "Europe/Isle_of_Man"
+msgstr "Europe/Isle_of_Man"
+
+#: src/repositories/timezone-repository.php:502
+msgid "Europe/Istanbul"
+msgstr "Europe/Istanbul"
+
+#: src/repositories/timezone-repository.php:503
+msgid "Europe/Jersey"
+msgstr "Europe/Jersey"
+
+#: src/repositories/timezone-repository.php:504
+msgid "Europe/Kaliningrad"
+msgstr "Europe/Kaliningrad"
+
+#: src/repositories/timezone-repository.php:505
+msgid "Europe/Kiev"
+msgstr "Europe/Kiev"
+
+#: src/repositories/timezone-repository.php:506
+msgid "Europe/Lisbon"
+msgstr "Europe/Lisbon"
+
+#: src/repositories/timezone-repository.php:507
+msgid "Europe/Ljubljana"
+msgstr "Europe/Ljubljana"
+
+#: src/repositories/timezone-repository.php:508
+msgid "Europe/Luxembourg"
+msgstr "Europe/Luxembourg"
+
+#: src/repositories/timezone-repository.php:509
+msgid "Europe/Madrid"
+msgstr "Europe/Madrid"
+
+#: src/repositories/timezone-repository.php:510
+msgid "Europe/Malta"
+msgstr "Europe/Malta"
+
+#: src/repositories/timezone-repository.php:511
+msgid "Europe/Mariehamn"
+msgstr "Europe/Mariehamn"
+
+#: src/repositories/timezone-repository.php:512
+msgid "Europe/Minsk"
+msgstr "Europe/Minsk"
+
+#: src/repositories/timezone-repository.php:513
+msgid "Europe/Monaco"
+msgstr "Europe/Monaco"
+
+#: src/repositories/timezone-repository.php:514
+msgid "Europe/Moscow"
+msgstr "Europe/Moscow"
+
+#: src/repositories/timezone-repository.php:515
+msgid "Europe/Oslo"
+msgstr "Europe/Oslo"
+
+#: src/repositories/timezone-repository.php:516
+msgid "Europe/Podgorica"
+msgstr "Europe/Podgorica"
+
+#: src/repositories/timezone-repository.php:517
+msgid "Europe/Prague"
+msgstr "Europe/Prague"
+
+#: src/repositories/timezone-repository.php:518
+msgid "Europe/Riga"
+msgstr "Europe/Riga"
+
+#: src/repositories/timezone-repository.php:519
+msgid "Europe/Rome"
+msgstr "Europe/Rome"
+
+#: src/repositories/timezone-repository.php:520
+msgid "Europe/Samara"
+msgstr "Europe/Samara"
+
+#: src/repositories/timezone-repository.php:521
+msgid "Europe/San_Marino"
+msgstr "Europe/San_Marino"
+
+#: src/repositories/timezone-repository.php:522
+msgid "Europe/Sarajevo"
+msgstr "Europe/Sarajevo"
+
+#: src/repositories/timezone-repository.php:523
+msgid "Europe/Simferopol"
+msgstr "Europe/Simferopol"
+
+#: src/repositories/timezone-repository.php:524
+msgid "Europe/Skopje"
+msgstr "Europe/Skopje"
+
+#: src/repositories/timezone-repository.php:525
+msgid "Europe/Sofia"
+msgstr "Europe/Sofia"
+
+#: src/repositories/timezone-repository.php:526
+msgid "Europe/Stockholm"
+msgstr "Europe/Stockholm"
+
+#: src/repositories/timezone-repository.php:527
+msgid "Europe/Tallinn"
+msgstr "Europe/Tallinn"
+
+#: src/repositories/timezone-repository.php:528
+msgid "Europe/Tirane"
+msgstr "Europe/Tirane"
+
+#: src/repositories/timezone-repository.php:529
+msgid "Europe/Uzhgorod"
+msgstr "Europe/Uzhgorod"
+
+#: src/repositories/timezone-repository.php:530
+msgid "Europe/Vaduz"
+msgstr "Europe/Vaduz"
+
+#: src/repositories/timezone-repository.php:531
+msgid "Europe/Vatican"
+msgstr "Europe/Vatican"
+
+#: src/repositories/timezone-repository.php:532
+msgid "Europe/Vienna"
+msgstr "Europe/Vienna"
+
+#: src/repositories/timezone-repository.php:533
+msgid "Europe/Vilnius"
+msgstr "Europe/Vilnius"
+
+#: src/repositories/timezone-repository.php:534
+msgid "Europe/Volgograd"
+msgstr "Europe/Volgograd"
+
+#: src/repositories/timezone-repository.php:535
+msgid "Europe/Warsaw"
+msgstr "Europe/Warsaw"
+
+#: src/repositories/timezone-repository.php:536
+msgid "Europe/Zagreb"
+msgstr "Europe/Zagreb"
+
+#: src/repositories/timezone-repository.php:537
+msgid "Europe/Zaporozhye"
+msgstr "Europe/Zaporozhye"
+
+#: src/repositories/timezone-repository.php:538
+msgid "Europe/Zurich"
+msgstr "Europe/Zurich"
+
+#: src/repositories/timezone-repository.php:539
+msgid "GMT"
+msgstr "GMT"
+
+#: src/repositories/timezone-repository.php:540
+msgid "Indian/Antananarivo"
+msgstr "Indian/Antananarivo"
+
+#: src/repositories/timezone-repository.php:541
+msgid "Indian/Chagos"
+msgstr "Indian/Chagos"
+
+#: src/repositories/timezone-repository.php:542
+msgid "Indian/Christmas"
+msgstr "Indian/Christmas"
+
+#: src/repositories/timezone-repository.php:543
+msgid "Indian/Cocos"
+msgstr "Indian/Cocos"
+
+#: src/repositories/timezone-repository.php:544
+msgid "Indian/Comoro"
+msgstr "Indian/Comoro"
+
+#: src/repositories/timezone-repository.php:545
+msgid "Indian/Kerguelen"
+msgstr "Indian/Kerguelen"
+
+#: src/repositories/timezone-repository.php:546
+msgid "Indian/Mahe"
+msgstr "Indian/Mahe"
+
+#: src/repositories/timezone-repository.php:547
+msgid "Indian/Maldives"
+msgstr "Indian/Maldives"
+
+#: src/repositories/timezone-repository.php:548
+msgid "Indian/Mauritius"
+msgstr "Indian/Mauritius"
+
+#: src/repositories/timezone-repository.php:549
+msgid "Indian/Mayotte"
+msgstr "Indian/Mayotte"
+
+#: src/repositories/timezone-repository.php:550
+msgid "Indian/Reunion"
+msgstr "Indian/Reunion"
+
+#: src/repositories/timezone-repository.php:551
+msgid "Pacific/Apia"
+msgstr "Pacific/Apia"
+
+#: src/repositories/timezone-repository.php:552
+msgid "Pacific/Auckland"
+msgstr "Pacific/Auckland"
+
+#: src/repositories/timezone-repository.php:553
+msgid "Pacific/Chatham"
+msgstr "Pacific/Chatham"
+
+#: src/repositories/timezone-repository.php:554
+msgid "Pacific/Chuuk"
+msgstr "Pacific/Chuuk"
+
+#: src/repositories/timezone-repository.php:555
+msgid "Pacific/Easter"
+msgstr "Pacific/Easter"
+
+#: src/repositories/timezone-repository.php:556
+msgid "Pacific/Efate"
+msgstr "Pacific/Efate"
+
+#: src/repositories/timezone-repository.php:557
+msgid "Pacific/Enderbury"
+msgstr "Pacific/Enderbury"
+
+#: src/repositories/timezone-repository.php:558
+msgid "Pacific/Fakaofo"
+msgstr "Pacific/Fakaofo"
+
+#: src/repositories/timezone-repository.php:559
+msgid "Pacific/Fiji"
+msgstr "Pacific/Fiji"
+
+#: src/repositories/timezone-repository.php:560
+msgid "Pacific/Funafuti"
+msgstr "Pacific/Funafuti"
+
+#: src/repositories/timezone-repository.php:561
+msgid "Pacific/Galapagos"
+msgstr "Pacific/Galapagos"
+
+#: src/repositories/timezone-repository.php:562
+msgid "Pacific/Gambier"
+msgstr "Pacific/Gambier"
+
+#: src/repositories/timezone-repository.php:563
+msgid "Pacific/Guadalcanal"
+msgstr "Pacific/Guadalcanal"
+
+#: src/repositories/timezone-repository.php:564
+msgid "Pacific/Guam"
+msgstr "Pacific/Guam"
+
+#: src/repositories/timezone-repository.php:565
+msgid "Pacific/Honolulu"
+msgstr "Pacific/Honolulu"
+
+#: src/repositories/timezone-repository.php:566
+msgid "Pacific/Johnston"
+msgstr "Pacific/Johnston"
+
+#: src/repositories/timezone-repository.php:567
+msgid "Pacific/Kiritimati"
+msgstr "Pacific/Kiritimati"
+
+#: src/repositories/timezone-repository.php:568
+msgid "Pacific/Kosrae"
+msgstr "Pacific/Kosrae"
+
+#: src/repositories/timezone-repository.php:569
+msgid "Pacific/Kwajalein"
+msgstr "Pacific/Kwajalein"
+
+#: src/repositories/timezone-repository.php:570
+msgid "Pacific/Majuro"
+msgstr "Pacific/Majuro"
+
+#: src/repositories/timezone-repository.php:571
+msgid "Pacific/Marquesas"
+msgstr "Pacific/Marquesas"
+
+#: src/repositories/timezone-repository.php:572
+msgid "Pacific/Midway"
+msgstr "Pacific/Midway"
+
+#: src/repositories/timezone-repository.php:573
+msgid "Pacific/Nauru"
+msgstr "Pacific/Nauru"
+
+#: src/repositories/timezone-repository.php:574
+msgid "Pacific/Niue"
+msgstr "Pacific/Niue"
+
+#: src/repositories/timezone-repository.php:575
+msgid "Pacific/Norfolk"
+msgstr "Pacific/Norfolk"
+
+#: src/repositories/timezone-repository.php:576
+msgid "Pacific/Noumea"
+msgstr "Pacific/Noumea"
+
+#: src/repositories/timezone-repository.php:577
+msgid "Pacific/Pago_Pago"
+msgstr "Pacific/Pago_Pago"
+
+#: src/repositories/timezone-repository.php:578
+msgid "Pacific/Palau"
+msgstr "Pacific/Palau"
+
+#: src/repositories/timezone-repository.php:579
+msgid "Pacific/Pitcairn"
+msgstr "Pacific/Pitcairn"
+
+#: src/repositories/timezone-repository.php:580
+msgid "Pacific/Pohnpei"
+msgstr "Pacific/Pohnpei"
+
+#: src/repositories/timezone-repository.php:581
+msgid "Pacific/Port_Moresby"
+msgstr "Pacific/Port_Moresby"
+
+#: src/repositories/timezone-repository.php:582
+msgid "Pacific/Rarotonga"
+msgstr "Pacific/Rarotonga"
+
+#: src/repositories/timezone-repository.php:583
+msgid "Pacific/Saipan"
+msgstr "Pacific/Saipan"
+
+#: src/repositories/timezone-repository.php:584
+msgid "Pacific/Tahiti"
+msgstr "Pacific/Tahiti"
+
+#: src/repositories/timezone-repository.php:585
+msgid "Pacific/Tarawa"
+msgstr "Pacific/Tarawa"
+
+#: src/repositories/timezone-repository.php:586
+msgid "Pacific/Tongatapu"
+msgstr "Pacific/Tongatapu"
+
+#: src/repositories/timezone-repository.php:587
+msgid "Pacific/Wake"
+msgstr "Pacific/Wake"
+
+#: src/repositories/timezone-repository.php:588
+msgid "Pacific/Wallis"
+msgstr "Pacific/Wallis"
+
+#: src/repositories/timezone-repository.php:589
+msgid "US/Alaska"
+msgstr "US/Alaska"
+
+#: src/repositories/timezone-repository.php:590
+msgid "US/Arizona"
+msgstr "US/Arizona"
+
+#: src/repositories/timezone-repository.php:591
+msgid "US/Central"
+msgstr "US/Central"
+
+#: src/repositories/timezone-repository.php:592
+msgid "US/Hawaii"
+msgstr "US/Hawaii"
+
+#: src/repositories/timezone-repository.php:593
+msgid "US/Mountain"
+msgstr "US/Mountain"
+
+#: src/repositories/timezone-repository.php:594
+msgid "UTC"
+msgstr "UTC"
+
+#. translators: Hidden accessibility text.
+#: classes/admin/class-general-settings.php:225 classes/class-metaboxes.php:424
+msgid "Help with: Business types"
+msgstr "Help with: Business types"
+
+#. translators: Hidden accessibility text.
+#: classes/admin/class-general-settings.php:238 classes/class-metaboxes.php:437
+msgid "Help with: Price indication"
+msgstr "Help with: Price indication"
+
+#. translators: Hidden accessibility text.
+#: classes/admin/class-general-settings.php:262 classes/class-metaboxes.php:461
+msgid "Help with: Area served"
+msgstr "Help with: Area served"
+
+#. translators: Hidden accessibility text.
+#: classes/admin/class-opening-hours.php:209 classes/class-metaboxes.php:1057
+msgid "Help with: Timezone"
+msgstr "Help with: Timezone"
+
+#. translators: %s translates to the used unit system: km or mi in a <code> tag
+#: widgets/widget-storelocator-form.php:177
+msgid "Enter the radius in %s to search within."
+msgstr "Enter the radius in %s to search within."
+
+#: classes/admin/class-admin.php:254
+msgid "The coordinates of the entered business address have been calculated."
+msgstr "The coordinates of the entered business address have been calculated."
+
+#: classes/admin/class-admin.php:255
+msgid "The coordinates of the entered business address were not calculated. An error occurred."
+msgstr "The coordinates of the entered business address were not calculated. An error occurred."
+
+#: classes/admin/class-admin.php:256
+msgid "We've noticed that you changed your business address. You can recalculate the coordinates of your business's location below."
+msgstr "We've noticed that you changed your business address. You can recalculate the coordinates of your business's location below."
+
+#. translators: 1: HTML <a> open tag; 2: <a> close tag.
+#: classes/admin/class-api-settings.php:150
+msgid "You've successfully set a Google Maps API Key! Now you're able to display Google Maps on your website. Also you can automatically calculate the coordinates of your business location under the %1$sBusiness info tab%2$s."
+msgstr "You've successfully set a Google Maps API Key! Now you're able to display Google Maps on your website. Also you can automatically calculate the coordinates of your business location under the %1$sBusiness info tab%2$s."
+
+#. translators: 1: HTML <a> open tag; 2: <a> close tag.
+#: classes/admin/class-api-settings.php:158
+msgid "You've successfully set a Google Maps API Key! Now you're able to display Google Maps on your website. Also you can automatically calculate the coordinates of your %1$sbusiness locations%2$s."
+msgstr "You've successfully set a Google Maps API Key! Now you're able to display Google Maps on your website. Also you can automatically calculate the coordinates of your %1$sbusiness locations%2$s."
+
+#: classes/admin/class-general-settings.php:359 classes/class-metaboxes.php:540
+msgid "You've set a Google Maps API Key. By using the button below, you can automatically calculate the coordinates that match the entered business address"
+msgstr "You've set a Google Maps API Key. By using the button below, you can automatically calculate the coordinates that match the entered business address"
+
+#. translators: 1: HTML <a> open tag; 2: <a> close tag; 3: HTML <a> open tag;
+#. 4: <a> close tag.
+#: classes/admin/class-general-settings.php:365 classes/class-metaboxes.php:547
+msgid "To determine the exact location of your business, search engines need to know its latitude and longitude coordinates. You can %1$smanually enter%2$s these coordinates below. If you've entered a %3$sGoogle Maps API Key%4$s the coordinates will automatically be calculated."
+msgstr "To determine the exact location of your business, search engines need to know its latitude and longitude coordinates. You can %1$smanually enter%2$s these coordinates below. If you've entered a %3$sGoogle Maps API Key%4$s the coordinates will automatically be calculated."
+
+#: classes/admin/class-general-settings.php:394 classes/class-metaboxes.php:563
+msgid "Calculate coordinates"
+msgstr "Calculate coordinates"
+
+#: classes/class-metaboxes.php:2621
+msgid "Your content contains an address block  which is important for search engines to validate your business address. Well done!"
+msgstr "Your content contains an address block which is important for search engines to validate your business address. Well done!"
+
+#: classes/class-metaboxes.php:2622
+msgid "Your content does not contain an address block which is important for search engines to validate your business address. You should really add that."
+msgstr "Your content does not contain an address block which is important for search engines to validate your business address. You should really add that."
+
+#: classes/class-metaboxes.php:2625
+msgid "Your content contains an address shortcode which is important for search engines to validate your business address. Well done!"
+msgstr "Your content contains an address shortcode which is important for search engines to validate your business address. Well done!"
+
+#: classes/class-metaboxes.php:2626
+msgid "Your content does not contain an address shortcode which is important for search engines to validate your business address. You should really add that."
+msgstr "Your content does not contain an address shortcode which is important for search engines to validate your business address. You should really add that."
+
+#. Translators: %s is a link to the post type edit page
+#: classes/admin/class-advanced-settings.php:151
+msgid "Permalink and label settings are not available because your locations post type is being overwritten by a filter. The current post type used for locations is %s"
+msgstr "Permalink and label settings are not available because your location's post type is being overwritten by a filter. The current post type used for locations is %s"
+
+#: classes/admin/class-general-settings.php:198
+msgid "My business has multiple locations"
+msgstr "My business has multiple locations"
+
+#: classes/admin/class-general-settings.php:551
+msgid "All locations are part of the same business"
+msgstr "All locations are part of the same business"
+
+#: classes/admin/class-general-settings.php:580
+msgid "Primary location"
+msgstr "Primary location"
+
+#: classes/class-blocks.php:140
+msgid "Yoast Local SEO blocks"
+msgstr "Yoast Local SEO blocks"
+
+#: classes/class-metaboxes.php:483
+msgid "Some fields in this form contain shared business info. You can override these fields by checking the 'Override' checkbox."
+msgstr "Some fields in this form contain shared business info. You can override these fields by checking the 'Override' checkbox."
+
+#: classes/class-metaboxes.php:663
+msgid "Business url"
+msgstr "Business URL"
+
+#: classes/class-metaboxes.php:852 classes/class-metaboxes.php:912
+#: classes/class-metaboxes.php:1202 classes/class-metaboxes.php:1562
+msgid "Override"
+msgstr "Override"
+
+#: includes/wpseo-local-functions.php:153
+msgid "Your company"
+msgstr "Your company"
+
+#: src/tools/import.php:149
+msgid "There seems to be an error reading the uploaded file."
+msgstr "There seems to be an error reading the uploaded file."
+
+#: deprecated/woocommerce/shipping/class-wc-shipping-method.php:115
+msgid "Thank you text"
+msgstr "Thank you text"
+
+#: woocommerce/shipping/includes/category-costs-table.php:8
+#: woocommerce/shipping/includes/location-costs-table.php:8
+msgid "Enter a cost (excl. tax) or sum, e.g. 10.00 * [qty]."
+msgstr "Enter a cost (excl. tax) or sum, e.g. 10.00 * [qty]."
+
+#: woocommerce/shipping/includes/category-costs-table.php:8
+#: woocommerce/shipping/includes/location-costs-table.php:8
+msgid "Use [qty] for the number of items, <br/>[cost] for the total cost of items, and [fee percent=\"10\" min_fee=\"20\" max_fee=\"\"] for percentage based fees."
+msgstr "Use [qty] for the number of items, <br/>[cost] for the total cost of items, and [fee percent=\"10\" min_fee=\"20\" max_fee=\"\"] for percentage based fees."
+
+#: includes/wpseo-local-functions.php:1610
+msgctxt "The company name for use in the dummy address in the block preview"
+msgid "Your company"
+msgstr "Your Company"
+
+#: includes/wpseo-local-functions.php:1611
+msgctxt "The street name for use in the dummy address in the block preview"
+msgid "Streetname 1"
+msgstr "Street Number and Name"
+
+#: includes/wpseo-local-functions.php:1613
+msgctxt "The postal code for use in the dummy address in the block preview"
+msgid "1234"
+msgstr "A1B 2C3"
+
+#: includes/wpseo-local-functions.php:1614
+msgctxt "The city name for use in the dummy address in the block preview"
+msgid "Your city"
+msgstr "Your city"

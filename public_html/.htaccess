@@ -1,0 +1,26 @@
+# 🔒 Force HTTPS and redirect www to non-www
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.loft1325\.com [NC]
+RewriteRule ^(.*)$ https://loft1325.com/$1 [L,R=301]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://loft1325.com/$1 [L,R=301]
+</IfModule>
+
+
+
+# BEGIN WordPress
+# Les directives (lignes) entre « BEGIN WordPress » et « END WordPress » sont générées
+# dynamiquement et doivent uniquement être modifiées via les filtres de WordPress.
+# Toute modification des directives situées entre ces marqueurs sera surchargée.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress

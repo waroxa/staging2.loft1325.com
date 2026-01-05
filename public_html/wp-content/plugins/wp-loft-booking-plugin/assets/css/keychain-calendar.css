@@ -1,0 +1,448 @@
+:root {
+    --lkc-surface: #f8fafc;
+    --lkc-border: #e2e8f0;
+    --lkc-text: #0f172a;
+    --lkc-muted: #6b7280;
+    --lkc-active: #2563eb;
+    --lkc-future: #0ea5e9;
+    --lkc-expired: #94a3b8;
+    --lkc-admin: #f59e0b;
+    --lkc-bg: #ffffff;
+}
+
+.loft-keychain-calendar {
+    color: var(--lkc-text);
+    margin-top: 18px;
+}
+
+.loft-keychain-calendar__hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #0f172a, #1f2937);
+    color: #fff;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.28);
+    gap: 12px;
+}
+
+.loft-keychain-calendar__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    margin: 0 0 4px;
+    color: #cbd5e1;
+}
+
+.loft-keychain-calendar__hero h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+}
+
+.loft-keychain-calendar__lede {
+    margin: 6px 0 0;
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.loft-keychain-calendar__legend {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.loft-keychain-calendar__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.loft-keychain-calendar__chip--active { background: rgba(37, 99, 235, 0.2); border-color: rgba(37, 99, 235, 0.5); }
+.loft-keychain-calendar__chip--future { background: rgba(14, 165, 233, 0.2); border-color: rgba(14, 165, 233, 0.5); }
+.loft-keychain-calendar__chip--expired { background: rgba(148, 163, 184, 0.25); border-color: rgba(148, 163, 184, 0.6); }
+.loft-keychain-calendar__chip--admin { background: rgba(245, 158, 11, 0.18); border-color: rgba(245, 158, 11, 0.5); }
+
+.loft-keychain-calendar__controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0 10px;
+    align-items: center;
+}
+
+.loft-keychain-calendar__search {
+    background: #fff;
+    border: 1px solid var(--lkc-border);
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 10px;
+}
+
+.loft-keychain-calendar__search input {
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    outline: none;
+}
+
+.loft-keychain-calendar__filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.loft-keychain-calendar__filters select {
+    min-width: 160px;
+}
+
+.loft-keychain-calendar__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.loft-keychain-calendar__view-switcher {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.loft-keychain-calendar__views {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.loft-keychain-calendar__nav.button {
+    padding: 6px 10px;
+}
+
+.loft-keychain-calendar__canvas {
+    margin-top: 6px;
+    border: 1px solid var(--lkc-border);
+    border-radius: 12px;
+    background: var(--lkc-bg);
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    height: calc(100vh - 220px);
+    min-height: 320px;
+}
+
+.loft-keychain-calendar__board {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    position: relative;
+    background: #fff;
+}
+
+.loft-keychain-calendar__corner {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    padding: 12px;
+    border-bottom: 1px solid var(--lkc-border);
+    border-right: 1px solid var(--lkc-border);
+    background: var(--lkc-surface);
+    position: sticky;
+    top: 0;
+    z-index: 4;
+}
+
+.loft-keychain-calendar__corner-title {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.loft-keychain-calendar__corner-sub {
+    color: var(--lkc-muted);
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.loft-keychain-calendar__header-wrap {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-bottom: 1px solid var(--lkc-border);
+    background: var(--lkc-surface);
+}
+
+.loft-keychain-calendar__timeline-header {
+    display: grid;
+    gap: 0;
+    position: relative;
+    min-height: 52px;
+    width: max-content;
+}
+
+.loft-keychain-calendar__timeline-header div {
+    padding: 10px 6px;
+    text-align: center;
+    font-weight: 600;
+    border-left: 1px solid var(--lkc-border);
+    font-size: 13px;
+    color: var(--lkc-muted);
+    background: var(--lkc-surface);
+}
+
+.loft-keychain-calendar__timeline-header .is-today {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--lkc-active);
+}
+
+.loft-keychain-calendar__timeline-header div:first-child,
+.loft-keychain-calendar__timeline-grid div:first-child {
+    border-left: none;
+}
+
+.loft-keychain-calendar__left {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    border-right: 1px solid var(--lkc-border);
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.loft-keychain-calendar__body {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+
+.loft-keychain-calendar__left-scroller {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.loft-keychain-calendar__body-scroller {
+    height: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+.loft-keychain-calendar__resource-row {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--lkc-border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #fff;
+}
+
+.loft-keychain-calendar__resource-row strong {
+    font-size: 14px;
+}
+
+.loft-keychain-calendar__resource-meta {
+    color: var(--lkc-muted);
+    font-size: 12px;
+}
+
+.loft-keychain-calendar__resource-row.is-striped,
+.loft-keychain-calendar__timeline-row.is-striped {
+    background: linear-gradient(90deg, rgba(148, 163, 184, 0.12) 0%, rgba(148, 163, 184, 0.08) 100%);
+}
+
+.loft-keychain-calendar__timeline {
+    position: relative;
+    min-height: 48px;
+    border-bottom: 1px solid var(--lkc-border);
+    background: linear-gradient(90deg, rgba(226, 232, 240, 0.25) 1px, transparent 1px) 0 0 / var(--lkc-step, 80px) 100%;
+}
+
+.loft-keychain-calendar__timeline-row {
+    position: relative;
+    min-height: 44px;
+    border-bottom: 1px solid var(--lkc-border);
+    padding: 6px 10px 12px;
+    width: max-content;
+}
+
+.loft-keychain-calendar__event {
+    position: absolute;
+    height: 28px;
+    border-radius: 8px;
+    padding: 6px 10px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.loft-keychain-calendar__event--stacked {
+    height: auto;
+    min-height: 40px;
+    white-space: normal;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 8px 10px;
+    line-height: 1.25;
+}
+
+.loft-keychain-calendar__event-title {
+    font-weight: 700;
+}
+
+.loft-keychain-calendar__event-dates {
+    font-size: 11px;
+    opacity: 0.92;
+}
+
+.loft-keychain-calendar__event--active { background: var(--lkc-active); }
+.loft-keychain-calendar__event--future { background: var(--lkc-future); color: #0f172a; }
+.loft-keychain-calendar__event--expired { background: var(--lkc-expired); opacity: 0.7; }
+.loft-keychain-calendar__event--admin { box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.35), 0 8px 18px rgba(15, 23, 42, 0.2); }
+
+.loft-keychain-calendar__timeline-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    width: max-content;
+}
+
+.loft-keychain-calendar__timeline-grid div {
+    border-left: 1px solid var(--lkc-border);
+    height: 100%;
+}
+
+.loft-keychain-calendar__timeline-grid div.is-today {
+    background: rgba(37, 99, 235, 0.08);
+    border-left-color: var(--lkc-active);
+}
+
+.loft-keychain-calendar__lane {
+    position: relative;
+    min-height: 32px;
+    margin: 4px 0;
+}
+
+.loft-keychain-calendar__more {
+    margin-top: 4px;
+    border: 1px dashed var(--lkc-border);
+    background: #f8fafc;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--lkc-muted);
+}
+
+.loft-keychain-calendar__timelines {
+    position: relative;
+}
+
+.loft-keychain-calendar__today-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--lkc-active);
+    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.06);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.loft-keychain-calendar__summary {
+    margin-top: 6px;
+    font-weight: 600;
+    color: var(--lkc-muted);
+}
+
+.loft-keychain-calendar__empty {
+    padding: 18px;
+    text-align: center;
+    color: var(--lkc-muted);
+}
+
+.loft-keychain-calendar__tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: #0f172a;
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.22);
+    z-index: 9999;
+}
+
+.loft-keychain-calendar__modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+}
+
+.loft-keychain-calendar__modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 25px 45px rgba(15, 23, 42, 0.25);
+}
+
+.loft-keychain-calendar__modal h2 {
+    margin-top: 0;
+}
+
+.loft-keychain-calendar__modal footer {
+    margin-top: 14px;
+    text-align: right;
+}
+
+.loft-keychain-calendar__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--lkc-surface);
+    border: 1px solid var(--lkc-border);
+}
+
+@media (max-width: 960px) {
+    .loft-keychain-calendar__grid-header,
+    .loft-keychain-calendar__grid-body,
+    .loft-keychain-calendar__grid {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .loft-keychain-calendar__timeline-header {
+        font-size: 11px;
+    }
+}

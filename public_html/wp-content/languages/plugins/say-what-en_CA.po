@@ -1,0 +1,103 @@
+# Translation of Plugins - Say what? - Stable (latest release) in English (Canada)
+# This file is distributed under the same license as the Plugins - Say what? - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-07-26 11:22:59+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: en_CA\n"
+"Project-Id-Version: Plugins - Say what? - Stable (latest release)\n"
+
+#. Author of the plugin
+#: say-what.php
+msgid "Ademti Software"
+msgstr "Ademti Software"
+
+#. Author URI of the plugin
+#: say-what.php
+msgid "https://plugins.leewillis.co.uk/"
+msgstr "https://plugins.leewillis.co.uk/"
+
+#. Description of the plugin
+#: say-what.php
+msgid "An easy-to-use plugin that allows you to alter strings on your site without editing WordPress core, or plugin code"
+msgstr "An easy-to-use plugin that allows you to alter strings on your site without editing WordPress core, or plugin code"
+
+#. Plugin URI of the plugin
+#: say-what.php
+msgid "https://github.com/leewillis77/say-what"
+msgstr "https://github.com/leewillis77/say-what"
+
+#. Plugin Name of the plugin
+#: say-what.php
+msgid "Say What?"
+msgstr "Say What?"
+
+#: src/ListTable.php:147
+msgid "Delete"
+msgstr "Delete"
+
+#: src/ListTable.php:134
+msgid "Edit"
+msgstr "Edit"
+
+#: src/ListTable.php:19
+msgid "No string replacements configured yet."
+msgstr "No string replacements configured yet."
+
+#: src/Admin.php:145 src/Admin.php:166 src/Admin.php:187 src/Admin.php:260
+msgid "Did you really mean to do that? Please go back and try again."
+msgstr "Did you really mean to do that? Please go back and try again."
+
+#: src/Admin.php:64
+msgid "Settings"
+msgstr "Settings"
+
+#: html/say-what-admin-list.php:4
+msgid "Add New"
+msgstr "Add New"
+
+#: html/say-what-admin-delete.php:10
+msgid "No"
+msgstr "No"
+
+#: html/say-what-admin-delete.php:10
+msgid "Yes"
+msgstr "Yes"
+
+#. Translators: %s is the string for which the replacement is being deleted.
+#: html/say-what-admin-delete.php:7
+msgid "Are you sure you want to delete the replacement string for &quot;%s&quot;?"
+msgstr "Are you sure you want to delete the replacement string for &quot;%s&quot;?"
+
+#: html/say-what-admin-addedit.php:40
+msgid "Add"
+msgstr "Add"
+
+#: html/say-what-admin-addedit.php:40
+msgid "Update"
+msgstr "Update"
+
+#: html/say-what-admin-addedit.php:34 src/ListTable.php:34
+msgid "Replacement string"
+msgstr "Replacement string"
+
+#: html/say-what-admin-addedit.php:28 src/ListTable.php:33
+msgid "Text context"
+msgstr "Text context"
+
+#: html/say-what-admin-addedit.php:22 src/ListTable.php:32
+msgid "Text domain"
+msgstr "Text domain"
+
+#: html/say-what-admin-addedit.php:16 src/ListTable.php:31
+msgid "Original string"
+msgstr "Original string"
+
+#: html/say-what-admin-addedit.php:3 html/say-what-admin-delete.php:3
+#: html/say-what-admin-list.php:3 src/Admin.php:77 src/Admin.php:78
+msgid "Text changes"
+msgstr "Text changes"

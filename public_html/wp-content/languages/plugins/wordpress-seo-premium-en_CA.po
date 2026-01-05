@@ -1,0 +1,992 @@
+# Translation of Yoast - Yoast SEO Premium (for WordPress) in English (Canada)
+# This file is distributed under the same license as the Yoast - Yoast SEO Premium (for WordPress) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-07-29 20:42:21+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.0-rc.1\n"
+"Language: en_CA\n"
+"Project-Id-Version: Yoast - Yoast SEO Premium (for WordPress)\n"
+
+#: assets/js/src/frontend-inspector/components/frontend-inspector.js:28
+#: src/integrations/frontend-inspector.php:69
+msgid "Front-end SEO inspector"
+msgstr "Front-end SEO inspector"
+
+#: classes/redirect/views/redirects-tab-settings.php:84
+msgid "Read more about why web server redirect methods have been disabled on a multisite."
+msgstr "Read more about why web server redirect methods have been disabled on a multisite."
+
+#: classes/redirect/views/redirects-tab-settings.php:82
+msgid "Since this site is a multisite, web server redirect methods have been disabled to prevent issues."
+msgstr "Since this site is a multisite, web server redirect methods have been disabled to prevent issues."
+
+#: src/integrations/admin/thank-you-page-integration.php:80
+msgid "Installation Successful"
+msgstr "Installation Successful"
+
+#: classes/views/thank-you.php:104
+msgid "Browse our courses"
+msgstr "Browse our courses"
+
+#. translators: %1$s: Yoast SEO Premium, %2$s: <strong>, %3$s: Yoast SEO, %4$s:
+#. </strong>
+#: classes/views/thank-you.php:91
+msgid "%1$s grants you direct access to %2$sall premium %3$s academy courses%4$s. Learn all the ins and outs of holistic SEO from industry experts."
+msgstr "%1$s grants you direct access to %2$sall premium %3$s academy courses%4$s. Learn all the ins and outs of holistic SEO from industry experts."
+
+#: classes/views/thank-you.php:84
+msgid "Master vital SEO skills with our online courses"
+msgstr "Master vital SEO skills with our online courses"
+
+#: classes/views/thank-you.php:79
+msgid "Check out the Redirect Manager"
+msgstr "Check out the Redirect Manager"
+
+#. translators: %1$s: Yoast SEO, %2$s: <strong>, %3$s: </strong>
+#: classes/views/thank-you.php:68
+msgid "The %1$s %2$sRedirect Manager%3$s automatically prevents visitors from reaching a dead end whenever you move or delete content. It also makes managing your existing redirects easy."
+msgstr "The %1$s %2$sRedirect Manager%3$s automatically prevents visitors from reaching a dead end whenever you move or delete content. It also makes managing your existing redirects easy."
+
+#: classes/views/thank-you.php:61
+msgid "Keep your site well-organised so people won't get lost"
+msgstr "Keep your site well organised so people won't get lost"
+
+#: classes/views/thank-you.php:56
+msgid "Score some more green bullets"
+msgstr "Score some more green bullets"
+
+#. translators: %1$s: <strong>, %2$s: </strong>
+#: classes/views/thank-you.php:46
+msgid "Different people search with different search terms. With our %1$spremium analysis%2$s, you are free to use variations and synonyms of your keywords in your content, which will make your writing style far more natural."
+msgstr "Different people search with different search terms. With our %1$spremium analysis%2$s, you are free to use variations and synonyms of your keywords in your content, which will make your writing style far more natural."
+
+#: classes/views/thank-you.php:39
+msgid "Optimize your content further with our smart analysis"
+msgstr "Optimise your content further with our smart analysis"
+
+#: classes/views/thank-you.php:34
+msgid "Do the cornerstone workout!"
+msgstr "Do the cornerstone workout!"
+
+#. translators: %1$s: <strong>, %2$s: </strong>
+#: classes/views/thank-you.php:24
+msgid "%1$sCornerstone content%2$s is the content on your site that’s most important. You want to rank highest in Google with these articles. Make sure your internal linking structure reflects what pages are most important. Want to know how?"
+msgstr "%1$sCornerstone content%2$s is the content on your site that’s most important. You want to rank highest in Google with these articles. Make sure your internal linking structure reflects what pages are most important. Want to know how?"
+
+#: assets/js/src/workouts/components/CornerstoneWorkout.js:107
+#: classes/views/thank-you.php:17
+msgid "Rank with articles you want to rank with"
+msgstr "Rank with articles with which you want to rank"
+
+#: classes/views/thank-you.php:12
+msgid "So, what's next?"
+msgstr "So, what's next?"
+
+#: classes/views/thank-you.php:10
+msgid "Installation successful!"
+msgstr "Installation successful!"
+
+#: src/integrations/admin/user-profile-integration.php:146
+msgid "The info you add below is added to the data Yoast SEO outputs in its schema.org output, for instance when you're the author of a page. Please only add the info you feel good sharing publicly."
+msgstr "The info you add below is added to the data Yoast SEO outputs in its schema.org output, for instance when you're the author of a page. Please only add the info you feel good sharing publicly."
+
+#: src/integrations/admin/user-profile-integration.php:145
+msgid "Yoast SEO Schema enhancements"
+msgstr "Yoast SEO Schema enhancements"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:129
+msgid "E.g. %1$sAcme inc%2$s"
+msgstr "Eg %1$sAcme inc%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:127
+msgid "Employer name"
+msgstr "Employer name"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:123
+msgid "E.g. %1$ssoftware engineer%2$s"
+msgstr "Eg %1$ssoftware engineer%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:117
+msgid "Employer information"
+msgstr "Employer information"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:113
+msgid "Comma separated, e.g. %1$sEnglish, French, Dutch%2$s"
+msgstr "Comma separated, eg %1$sEnglish, French, Dutch%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:111
+msgid "Language(s) spoken"
+msgstr "Language(s) spoken"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:107
+msgid "Comma separated, e.g. %1$sPHP, JavaScript, 90's rock music%2$s"
+msgstr "Comma separated, eg %1$sPHP, JavaScript, 90's rock music%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:105
+msgid "Expertise in"
+msgstr "Expertise in"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:101
+msgid "Comma separated, e.g. %1$sMost likely to succeed - 1991, Smartest in class - 1990%2$s"
+msgstr "Comma separated, eg %1$sMost likely to succeed – 1991, Smartest in class – 1990%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:99
+msgid "Awards"
+msgstr "Awards"
+
+#: src/integrations/admin/user-profile-integration.php:95
+msgid "Extra information"
+msgstr "Extra information"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:91
+msgid "E.g. %1$sfemale%2$s, %1$smale%2$s, %1$snon-binary%2$s"
+msgstr "Eg %1$sfemale%2$s, %1$smale%2$s, %1$snon-binary%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:89
+msgid "Gender"
+msgstr "Gender"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:85
+msgid "Use format: %1$sYYYY-MM-DD%2$s"
+msgstr "Use format: %1$sDD-MM-YYYY%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:83
+msgid "Birth date"
+msgstr "Birth date"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:79
+msgid "E.g. %1$sMD%2$s, %1$sPhD%2$s"
+msgstr "Eg %1$sMD%2$s, %1$sPhD%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:77
+msgid "Honorific suffix"
+msgstr "Honorific suffix"
+
+#. translators: %1$s is replaced by `<code>`, %2$s by `</code>`.
+#: src/integrations/admin/user-profile-integration.php:73
+msgid "E.g. %1$sDr%2$s, %1$sMs%2$s, %1$sMr%2$s"
+msgstr "Eg %1$sDr%2$s, %1$sMs%2$s, %1$sMr%2$s"
+
+#: src/integrations/admin/user-profile-integration.php:71
+msgid "Honorific prefix"
+msgstr "Honorific prefix"
+
+#: src/integrations/admin/user-profile-integration.php:67
+msgid "Basic information"
+msgstr "Basic information"
+
+#: premium.php:319
+msgid "Custom fields to include in page analysis"
+msgstr "Custom fields to include in page analysis"
+
+#: premium.php:312
+msgid "Learn more about including custom fields in the page analysis"
+msgstr "Learn more about including custom fields in the page analysis"
+
+#: src/integrations/admin/user-profile-integration.php:121
+msgid "Job title"
+msgstr "Job title"
+
+#. translators: %1$s: Yoast SEO, %2$s: Link start tag, %3$s: Link end tag.
+#: src/addon-installer.php:202
+msgid "%2$sActivate %1$s now%3$s"
+msgstr "%2$sActivate %1$s now%3$s"
+
+#. translators: %1$s: Yoast SEO, %2$s: Link start tag, %3$s: Link end tag.
+#: src/addon-installer.php:209
+msgid "%2$sUpgrade %1$s now%3$s"
+msgstr "%2$sUpgrade %1$s now%3$s"
+
+#. translators: %1$s: Yoast SEO, %2$s: Link start tag, %3$s: Link end tag.
+#: src/addon-installer.php:214
+msgid "%2$sInstall %1$s now%3$s"
+msgstr "%2$sInstall %1$s now%3$s"
+
+#. translators: %1$s: Yoast SEO, %2$s: The minimum Yoast SEO version required,
+#. %3$s: Yoast SEO Premium.
+#: src/addon-installer.php:152
+msgid "%1$s %2$s must be installed and activated in order to use %3$s."
+msgstr "%1$s %2$s must be installed and activated in order to use %3$s."
+
+#. translators: %1$s: Yoast SEO, %2$s: Link start tag, %3$s: Link end tag.
+#: src/addon-installer.php:197
+msgid "%2$sNetwork Activate %1$s now%3$s"
+msgstr "%2$sNetwork Activate %1$s now%3$s"
+
+#. translators: %1$s: Yoast SEO, %2$s: The minimum Yoast SEO version required.
+#: src/addon-installer.php:227
+msgid "Please contact a network administrator to install %1$s %2$s."
+msgstr "Please contact a network administrator to install %1$s %2$s."
+
+#. translators: %1$s: Yoast SEO, %2$s: The minimum Yoast SEO version required.
+#: src/addon-installer.php:231
+msgid "Please contact an administrator to install %1$s %2$s."
+msgstr "Please contact an administrator to install %1$s %2$s."
+
+#: assets/js/src/blocks/estimated-reading-time/block.js:69
+#: assets/js/src/blocks/estimated-reading-time/legacy/15.6.js:58
+#: assets/js/src/blocks/estimated-reading-time/legacy/15.6.non-admin.js:28
+#: assets/js/src/blocks/estimated-reading-time/legacy/15.8.js:22
+#: assets/js/src/blocks/estimated-reading-time/legacy/22.9.js:21
+#: src/integrations/blocks/estimated-reading-time-block.php:54
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minute"
+msgstr[1] "minutes"
+
+#: classes/redirect/redirect-table.php:127
+msgid "Filter"
+msgstr "Filter"
+
+#: assets/js/src/new-redirects/components/table-rows.js:135
+#: classes/premium-javascript-strings.php:63
+#: classes/redirect/redirect-table.php:436
+msgid "Edit"
+msgstr "Edit"
+
+#: assets/js/src/components/RedirectNotification.js:128
+#: assets/js/src/elementor/components/RedirectNotification.js:101
+#: assets/js/src/frontend-inspector/components/frontend-inspector.js:61
+#: classes/premium-javascript-strings.php:55
+msgid "OK"
+msgstr "OK"
+
+#: classes/export/export-keywords-csv.php:69
+msgid "title"
+msgstr "title"
+
+#: classes/export/export-keywords-csv.php:75
+msgid "meta description"
+msgstr "meta description"
+
+#: premium.php:277
+msgid "Create Redirect"
+msgstr "Create Redirect"
+
+#: assets/js/src/new-redirects/components/menu.js:52
+#: assets/js/src/new-redirects/routes/redirects.js:72
+#: classes/redirect/redirect-formats.php:23 premium.php:338
+msgid "Redirects"
+msgstr "Redirects"
+
+#: assets/js/src/new-redirects/components/form-add-redirect.js:36
+#: classes/redirect/views/redirects-form.php:59
+msgid "URL"
+msgstr "URL"
+
+#: classes/premium-import-manager.php:238
+msgid "Redirect import failed: the Redirection plugin is not installed or activated."
+msgstr "Redirect import failed: the Redirection plugin is not installed or activated."
+
+#: classes/premium-import-manager.php:314
+msgid "Redirect import failed: no redirects found."
+msgstr "Redirect import failed: no redirects found."
+
+#: classes/premium-javascript-strings.php:33
+msgid "You have unsaved redirects, are you sure you want to leave?"
+msgstr "You have unsaved redirects, are you sure you want to leave?"
+
+#: assets/js/src/new-redirects/components/form-add-redirect.js:36
+#: classes/redirect/redirect-table.php:142
+msgid "New URL"
+msgstr "New URL"
+
+#: assets/js/src/new-redirects/components/table-rows.js:141
+#: assets/js/src/new-redirects/constants/index.js:29
+#: classes/premium-javascript-strings.php:64
+#: classes/redirect/redirect-table.php:318
+#: classes/redirect/redirect-table.php:437
+msgid "Delete"
+msgstr "Delete"
+
+#: classes/redirect/views/redirects-tab-plain.php:61
+#: classes/redirect/views/redirects-tab-regex.php:72
+msgid "Search"
+msgstr "Search"
+
+#: classes/redirect/views/redirects-tab-settings.php:122
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: classes/redirect/redirect-formats.php:24
+msgid "Regex Redirects"
+msgstr "Regex Redirects"
+
+#: assets/js/src/new-redirects/components/form-add-redirect.js:27
+#: classes/redirect/presenters/redirect-table-presenter.php:71
+msgid "Old URL"
+msgstr "Old URL"
+
+#: classes/redirect/views/redirects-tab-plain.php:41
+#: classes/redirect/views/redirects-tab-regex.php:52
+msgid "Add Redirect"
+msgstr "Add Redirect"
+
+#: classes/redirect/views/redirects-tab-settings.php:50
+msgid "As you're on Nginx, you should add the following include to the Nginx config file:"
+msgstr "As you're on Nginx, you should add the following include to the NGINX config file:"
+
+#: classes/redirect/views/redirects-tab-settings.php:24
+msgid "As you're on Apache, you should add the following include to the website httpd config file:"
+msgstr "As you're on Apache, you should add the following include to the website httpd config file:"
+
+#. Description of the plugin
+#: wp-seo-premium.php
+msgid "The first true all-in-one SEO solution for WordPress, including on-page content analysis, XML sitemaps and much more."
+msgstr "The first true all-in-one SEO solution for WordPress, including on-page content analysis, XML sitemaps and much more."
+
+#: assets/js/src/new-redirects/components/form-add-redirect.js:18
+#: assets/js/src/new-redirects/components/table-header.js:42
+#: assets/js/src/workouts/components/CornerstoneWorkout/MostLinked.js:98
+#: classes/redirect/exporters/redirect-csv-exporter.php:76
+msgid "Type"
+msgstr "Type"
+
+#. translators: %s: '.htaccess' file name.
+#: classes/redirect/views/redirects-tab-settings.php:37
+msgid "We're unable to save the redirects to your %s file. Please make the file writable."
+msgstr "We're unable to save the redirects to your %s file. Please make the file writable."
+
+#: assets/js/src/new-redirects/components/apache-settings.js:24
+#: classes/redirect/views/redirects-tab-settings.php:111
+msgid "Generate a separate redirect file"
+msgstr "Generate a separate redirect file"
+
+#: classes/views/import-redirects.php:79
+msgid "Import .htaccess"
+msgstr "Import .htaccess"
+
+#: classes/premium-javascript-strings.php:28
+msgid "The old URL field can't be empty."
+msgstr "The old URL field can't be empty."
+
+#: classes/premium-javascript-strings.php:30
+msgid "The new URL field can't be empty."
+msgstr "The new URL field can't be empty."
+
+#: assets/js/src/new-redirects/components/redirect-warning-modal.js:33
+#: classes/premium-javascript-strings.php:31
+msgid "Error while saving this redirect"
+msgstr "Error while saving this redirect"
+
+#: classes/premium-javascript-strings.php:32
+msgid "New type can't be empty."
+msgstr "New type can't be empty."
+
+#. Author of the plugin
+#: wp-seo-premium.php
+msgid "Team Yoast"
+msgstr "Team Yoast"
+
+#: classes/premium-javascript-strings.php:27
+msgid "You can't redirect a URL to itself."
+msgstr "You can't redirect a URL to itself."
+
+#. translators: %s: '.htaccess' file name
+#: classes/redirect/views/redirects-tab-settings.php:114
+msgid "By default we write the redirects to your %s file, check this if you want the redirects written to a separate file. Only check this option if you know what you are doing!"
+msgstr "By default we write the redirects to your %s file, check this if you want the redirects written to a separate file. Only check this option if you know what you are doing!"
+
+#: assets/js/src/new-redirects/components/form-add-redirect.js:27
+#: classes/redirect/presenters/redirect-table-presenter.php:68
+msgid "Regular Expression"
+msgstr "Regular Expression"
+
+#. translators: 1: '.htaccess' file name
+#: classes/redirect/views/redirects-tab-settings.php:109
+msgid "Write redirects to the %1$s file. Make sure the %1$s file is writable."
+msgstr "Write redirects to the %1$s file. Make sure the %1$s file is writable."
+
+#. translators: %s: '.htaccess' file name
+#: classes/views/import-redirects.php:12
+msgid "Import redirects from %s"
+msgstr "Import redirects from %s"
+
+#: classes/premium-javascript-strings.php:29
+msgid "The Regular Expression field can't be empty."
+msgstr "The Regular Expression field can't be empty."
+
+#. translators: %s is replaced with the URL that will be deleted.
+#: classes/premium-javascript-strings.php:36
+msgid "Please enter the new URL for %s"
+msgstr "Please enter the new URL for %s"
+
+#. translators: variables will be replaced with from and to URLs.
+#: classes/premium-javascript-strings.php:38
+msgid "Redirect created from %1$s to %2$s!"
+msgstr "Redirect created from %1$s to %2$s!"
+
+#: classes/redirect/redirect-table.php:140
+#: classes/redirect/views/redirects-form.php:22
+msgctxt "noun"
+msgid "Type"
+msgstr "Type"
+
+#. translators: %1$s: '.htaccess' file name, %2$s: plugin name
+#: classes/views/import-redirects.php:18
+msgid "You can copy the contents of any %1$s file in here, and it will import the redirects into %2$s."
+msgstr "You can copy the contents of any %1$s file in here, and it will import the redirects into %2$s."
+
+#: classes/premium-javascript-strings.php:43
+msgid "Redirect added."
+msgstr "Redirect added."
+
+#: classes/premium-javascript-strings.php:44
+msgid "The redirect was added successfully."
+msgstr "The redirect was added successfully."
+
+#: classes/premium-javascript-strings.php:47
+#: classes/premium-redirect-service.php:153
+msgid "Redirect updated."
+msgstr "Redirect updated."
+
+#: classes/premium-javascript-strings.php:48
+#: classes/premium-redirect-service.php:154
+msgid "The redirect was updated successfully."
+msgstr "The redirect was updated successfully."
+
+#: classes/premium-javascript-strings.php:51
+#: classes/premium-redirect-service.php:86
+#: classes/redirect-undo-endpoint.php:98
+msgid "Redirect deleted."
+msgstr "Redirect deleted."
+
+#: classes/premium-javascript-strings.php:52
+#: classes/premium-redirect-service.php:87
+#: classes/redirect-undo-endpoint.php:99
+msgid "The redirect was deleted successfully."
+msgstr "The redirect was deleted successfully."
+
+#: assets/js/src/new-redirects/components/delete-modal.js:50
+#: assets/js/src/new-redirects/components/edit-redirect-row.js:104
+#: assets/js/src/new-redirects/components/redirect-warning-modal.js:42
+#: classes/premium-javascript-strings.php:56
+#: classes/redirect/views/redirects-quick-edit.php:43
+msgid "Cancel"
+msgstr "Cancel"
+
+#: assets/js/src/new-redirects/components/edit-redirect-row.js:97
+#: classes/premium-javascript-strings.php:57
+msgid "Save"
+msgstr "Save"
+
+#: assets/js/src/new-redirects/components/redirect-warning-modal.js:45
+#: classes/premium-javascript-strings.php:58
+msgid "Save anyway"
+msgstr "Save anyway"
+
+#: classes/premium-javascript-strings.php:60
+#: classes/redirect/views/redirects-quick-edit.php:22
+msgid "Edit redirect"
+msgstr "Edit redirect"
+
+#: classes/premium-javascript-strings.php:61
+msgid "You are already editing a redirect, please finish this one first"
+msgstr "You are already editing a redirect, please finish this one first"
+
+#: classes/redirect/validation/redirect-accessible-validation.php:29
+msgid "The URL you entered could not be resolved."
+msgstr "The URL you entered could not be resolved."
+
+#. translators: %1$s expands to the returned http code
+#: classes/redirect/validation/redirect-accessible-validation.php:40
+msgid "The URL you are redirecting to seems to return a %1$s status. You might want to check if the target can be reached manually before saving."
+msgstr "The url you are redirecting seems to return a %1$s status. You might want to check if the target can be reached manually before saving."
+
+#: classes/redirect/validation/redirect-accessible-validation.php:49
+msgid "You're redirecting to a target that returns a 301 HTTP code (permanently moved). Make sure the target you specify is directly reachable."
+msgstr "You\\'re redirecting to a target that returns a 301 HTTP code (permanently moved). Make sure the target you specify is directly reachable."
+
+#. translators: %1$s expands to the returned http code
+#: classes/redirect/validation/redirect-accessible-validation.php:57
+msgid "The URL you entered returned a HTTP code different than 200(OK). The received HTTP code is %1$s."
+msgstr "The URL you entered returned a HTTP code different than 200(OK). The received HTTP code is %1$s."
+
+#: classes/redirect/redirect-ajax.php:67
+msgid "Unknown error. Failed to create redirect."
+msgstr "Unknown error. Failed to create redirect."
+
+#: classes/redirect/redirect-ajax.php:103
+msgid "Unknown error. Failed to update redirect."
+msgstr "Unknown error. Failed to update redirect."
+
+#: classes/redirect/validation/redirect-endpoint-validation.php:40
+msgid "The redirect you are trying to save will create a redirect loop. This means there probably already exists a redirect that points to the origin of the redirect you are trying to save"
+msgstr "The redirect you are trying to save will create a redirect loop. This means there probably already exists a redirect that points to the origin of the redirect you are trying to save"
+
+#. translators: %1$s: will be the target, %2$s: will be the found endpoint.
+#: classes/redirect/validation/redirect-endpoint-validation.php:48
+msgid "%1$s will be redirected to %2$s. Maybe it's worth considering to create a direct redirect to %2$s."
+msgstr "%1$s will be redirected to %2$s. Maybe it's worth considering to create a direct redirect to %2$s."
+
+#. translators: %s expands to the file path that we tried to write to
+#: classes/redirect/redirect-file-util.php:88
+msgid "We're unable to write data to the file %s"
+msgstr "We're unable to write data to the file %s"
+
+#: assets/js/src/new-redirects/constants/index.js:12
+#: classes/redirect/redirect-types.php:26
+msgid "301 Moved Permanently"
+msgstr "301 Moved Permanently"
+
+#: assets/js/src/new-redirects/constants/index.js:13
+#: classes/redirect/redirect-types.php:27
+msgid "302 Found"
+msgstr "302 Found"
+
+#: assets/js/src/new-redirects/constants/index.js:14
+#: classes/redirect/redirect-types.php:28
+msgid "307 Temporary Redirect"
+msgstr "307 Temporary Redirect"
+
+#: assets/js/src/new-redirects/constants/index.js:15
+#: classes/redirect/redirect-types.php:29
+msgid "410 Content Deleted"
+msgstr "410 Content Deleted"
+
+#: assets/js/src/new-redirects/constants/index.js:16
+#: classes/redirect/redirect-types.php:30
+msgid "451 Unavailable For Legal Reasons"
+msgstr "451 Unavailable For Legal Reasons"
+
+#: classes/redirect/validation/redirect-presence-validation.php:34
+msgid "Not all the required fields are filled."
+msgstr "Not all the required fields are filled."
+
+#: classes/redirect/validation/redirect-uniqueness-validation.php:32
+msgid "The old URL already exists as a redirect."
+msgstr "The old url already exists as a redirect."
+
+#: classes/redirect/views/redirects-quick-edit.php:42
+msgid "Update Redirect"
+msgstr "Update Redirect"
+
+#. translators: %s expands to the folder location where the redirects fill will
+#. be saved.
+#: classes/redirect/views/redirects-tab-settings.php:63
+msgid "We're unable to save the redirect file to %s"
+msgstr "We're unable to save the redirect file to %s"
+
+#. translators: %1$s: Yoast SEO Premium, %2$s: List with actions, %3$s: <a
+#. href=''>, %4$s: </a>, %5$s: Slug to post
+#: classes/post-watcher.php:286
+msgid "%1$s detected that you moved a post (%5$s) to the trash. You can either: %2$s Don't know what to do? %3$sRead this post%4$s."
+msgstr "%1$s detected that you moved a post (%5$s) to the trash. You can either: %2$s Don't know what to do? %3$sRead this post%4$s."
+
+#. translators: %1$s: Yoast SEO Premium, %2$s: List with actions, %3$s: <a
+#. href='{post_with_explaination.}'>, %4$s: </a>, %5%s: The removed url.
+#: classes/post-watcher.php:493
+msgid "%1$s detected that you deleted a post (%5$s). You can either: %2$s Don't know what to do? %3$sRead this post %4$s."
+msgstr "%1$s detected that you deleted a post (%5$s). You can either: %2$s Don't know what to do? %3$sRead this post %4$s."
+
+#. translators: %1$s will be replaced with the from URL.
+#: classes/premium-javascript-strings.php:40
+msgid "410 Redirect created from %1$s!"
+msgstr "410 Redirect created from %1$s!"
+
+#. translators: %1$s: Yoast SEO Premium, %2$s: List with actions, %3$s: <a
+#. href='{post_with_explaination.}'>, %4$s: </a>, %5%s: The removed url.
+#: classes/term-watcher.php:309
+msgid "%1$s detected that you deleted a term (%5$s). You can either: %2$s Don't know what to do? %3$sRead this post %4$s."
+msgstr "%1$s detected that you deleted a term (%5$s). You can either: %2$s Don't know what to do? %3$sRead this post %4$s."
+
+#: classes/watcher.php:271
+msgid "Redirect it to another URL"
+msgstr "Redirect it to another URL."
+
+#: classes/watcher.php:272
+msgid "Make it serve a 410 Content Deleted header"
+msgstr "Make it serve a 410 Content Deleted header."
+
+#: classes/redirect/views/redirects-tab-settings.php:101
+msgid "Web server"
+msgstr "Web server"
+
+#: assets/js/src/new-redirects/components/menu.js:68
+#: classes/redirect/views/redirects-tab-settings.php:103
+msgid "Redirect method"
+msgstr "Redirect method"
+
+#. translators: %s: 'Yoast SEO Premium'
+#: classes/redirect/views/redirects-tab-settings.php:118
+msgid "%s can generate redirect files that can be included in your website web server configuration. If you choose this option the PHP redirects will be disabled. Only check this option if you know what you are doing!"
+msgstr "%s can generate redirect files that can be included in your website web server configuration. If you choose this option the PHP redirects will be disabled. Only check this option if you know what you are doing!"
+
+#. translators: %s expands to the file path that we tried to write to
+#: classes/redirect/redirect-file-util.php:46
+msgid "We're unable to create the directory %s"
+msgstr "We're unable to create the directory %s"
+
+#: classes/redirect/validation/redirect-self-redirect-validation.php:25
+msgid "You are attempting to redirect to the same URL as the origin. Please choose a different URL to redirect to."
+msgstr "You are attempting to redirect to the same URL as the origin. Please choose a different URL to redirect to."
+
+#. translators: 1: opens a link to a related help center article. 2: closes the
+#. link.
+#: classes/redirect/views/redirects-form.php:42
+msgid "The redirect type is the HTTP response code sent to the browser telling the browser what type of redirect is served. %1$sLearn more about redirect types%2$s."
+msgstr "The redirect type is the HTTP response code sent to the browser telling the browser what type of redirect is served. %1$sLearn more about redirect types%2$s."
+
+#. translators: 1: opens a link to a related help center article. 2: closes the
+#. link.
+#: classes/redirect/views/redirects-tab-regex.php:30
+msgid "Regular Expression (regex) Redirects are extremely powerful redirects. You should only use them if you know what you are doing. %1$sRead more about regex redirects on our help center%2$s."
+msgstr "Regular Expression (regex) Redirects are extremely powerful redirects. You should only use them if you know what you are doing. %1$sRead more about regex redirects on our knowledge base%2$s."
+
+#: assets/js/src/new-redirects/components/apache-settings.js:48 premium.php:374
+msgid "Enabled"
+msgstr "Enabled"
+
+#. translators: Hidden accessibility text.
+#: classes/views/import-redirects.php:75
+msgid "Enter redirects to import"
+msgstr "Enter redirects to import"
+
+#. translators: %1$s expands to the subdirectory WordPress is installed.
+#: classes/redirect/validation/redirect-subdirectory-validation.php:37
+msgid "Your redirect is missing the subdirectory where WordPress is installed in. This will result in a redirect that won't work. Make sure the redirect starts with %1$s"
+msgstr "Your redirect is missing the subdirectory where WordPress is installed in. This will result in a redirect that won't work. Make sure the redirect starts with %1$s"
+
+#. translators: Hidden accessibility text.
+#: classes/redirect/redirect-table.php:250
+msgid "Select this redirect"
+msgstr "Select this redirect"
+
+#. translators: %s expands to Yoast
+#: classes/metabox-link-suggestions.php:103
+msgid "%s internal linking"
+msgstr "%s internal linking"
+
+#. translators: %s: '.htaccess' file name
+#: classes/premium-import-manager.php:67 classes/views/import-redirects.php:45
+msgid "Import redirects"
+msgstr "Import redirects"
+
+#: classes/views/import-redirects.php:25
+msgid "Redirection"
+msgstr "Redirection"
+
+#: classes/views/import-redirects.php:26
+msgid "Safe Redirect Manager"
+msgstr "Safe Redirect Manager"
+
+#: classes/views/import-redirects.php:27
+msgid "Simple 301 Redirects"
+msgstr "Simple 301 Redirects"
+
+#: classes/views/import-redirects.php:38
+msgid "Import from other redirect plugins"
+msgstr "Import from other redirect plugins"
+
+#: classes/views/import-redirects.php:42
+msgid "Import from:"
+msgstr "Import from:"
+
+#: classes/watcher.php:242
+msgid "New URL:"
+msgstr "New URL:"
+
+#: classes/watcher.php:240
+msgid "Old URL:"
+msgstr "Old URL:"
+
+#: classes/premium-redirect-export-manager.php:35
+#: classes/views/export-redirects.php:15
+msgid "Export redirects"
+msgstr "Export redirects"
+
+#: classes/redirect/exporters/redirect-csv-exporter.php:74
+msgid "Origin"
+msgstr "Origin"
+
+#: classes/redirect/exporters/redirect-csv-exporter.php:75
+msgid "Target"
+msgstr "Target"
+
+#: classes/redirect/exporters/redirect-csv-exporter.php:77
+msgid "Format"
+msgstr "Format"
+
+#: classes/views/export-redirects.php:10
+msgid "Export redirects to a CSV file"
+msgstr "Export redirects to a CSV file"
+
+#: classes/views/export-redirects.php:11
+msgid "If you need to have a list of all redirects, you can generate a CSV file using the button below."
+msgstr "If you need to have a list of all redirects, you can generate a CSV file using the button below."
+
+#: classes/views/export-redirects.php:12
+msgid "Please note that the first row in this file is a header. This row should be ignored when parsing or importing the data from the export."
+msgstr "Please note that the first row in this file is a header. This row should be ignored when parsing or importing the data from the export."
+
+#: classes/premium-import-manager.php:272
+msgid "CSV import failed: the provided file could not be parsed using a CSV parser."
+msgstr "CSV import failed: the provided file could not be parsed using a CSV parser."
+
+#: classes/views/import-redirects.php:52
+msgid "Import from a CSV file"
+msgstr "Import from a CSV file"
+
+#: classes/views/import-redirects.php:59
+msgid "Import CSV file"
+msgstr "Import CSV file"
+
+#. translators: %1$s: Yoast SEO Premium, %2$s: <a href='{undo_redirect_url}'>,
+#. %3$s: </a>, %4$s: Slug to post
+#: classes/post-watcher.php:312
+msgid "%1$s detected that you restored a post (%4$s) from the trash, for which a redirect was created. %2$sClick here to remove the redirect%3$s"
+msgstr "%1$s detected that you restored a post (%4$s) from the trash, for which a redirect was created. %2$sClick here to remove the redirect%3$s"
+
+#. translators: %1$s expands to the link to an article to read more about
+#. orphaned content, %2$s expands to </a>
+#: classes/premium-orphaned-post-filter.php:77
+msgid "%1$sLearn more about orphaned content%2$s."
+msgstr "%1$sLearn more about orphaned content%2$s."
+
+#. translators: %1$s: plural form of the current post type, %2$s: a Learn more
+#. about link
+#: classes/premium-orphaned-post-filter.php:85
+msgid "Ask your SEO Manager or Site Administrator to count links in all texts, so we can identify orphaned %1$s. %2$s"
+msgstr "Ask your SEO Manager or Site Administrator to count links in all texts, so we can identify orphaned %1$s. %2$s"
+
+#. translators: %1$s expands to link to the recalculation option, %2$s: anchor
+#. closing, %3$s: plural form of the current post type, %4$s: a Learn more
+#. about link
+#: classes/premium-orphaned-post-filter.php:94
+msgid "%1$sClick here%2$s to index your links, so we can identify orphaned %3$s. %4$s"
+msgstr "%1$sClick here%2$s to index your links, so we can identify orphaned %3$s. %4$s"
+
+#. translators: %1$s: plural form of the current post type, %2$s: a Learn more
+#. about link
+#: classes/premium-orphaned-post-filter.php:104
+msgid "'Orphaned content' refers to %1$s that have no inbound links, consider adding links towards these %1$s. %2$s"
+msgstr "'Orphaned content' refers to %1$s that have no inbound links, consider adding links towards these %1$s. %2$s"
+
+#: assets/js/src/workouts/components/OrphanedWorkout.js:89
+#: classes/premium-orphaned-post-filter.php:164
+msgid "Orphaned content"
+msgstr "Orphaned content"
+
+#: classes/export/export-keywords-csv.php:70
+msgid "url"
+msgstr "url"
+
+#: classes/export/export-keywords-csv.php:71
+msgid "readability score"
+msgstr "readability score"
+
+#: classes/export/export-keywords-csv.php:78
+msgid "ID"
+msgstr "ID"
+
+#. translators: Hidden accessibility text.
+#: classes/redirect/redirect-table.php:111
+msgid "Filter by redirect type"
+msgstr "Filter by redirect type"
+
+#: classes/redirect/redirect-table.php:115
+msgid "All redirect types"
+msgstr "All redirect types"
+
+#. translators: %s resolves to the button label translation.
+#: classes/views/export-keywords.php:12
+msgid "If you need a list of all public posts, terms and related keyphrases, you can generate a CSV file using the %s button below."
+msgstr "If you need a list of all public posts, terms and related keyphrases, you can generate a CSV file using the %s button below."
+
+#: classes/views/export-keywords.php:21
+msgid "Export keyphrases to a CSV file"
+msgstr "Export keyphrases to a CSV file"
+
+#: classes/views/export-keywords.php:23
+msgid "You can add or remove columns to be included in the export using the checkboxes below."
+msgstr "You can add or remove columns to be included in the export using the checkboxes below."
+
+#: classes/views/export-keywords.php:31
+msgid "Export URL"
+msgstr "Export URL"
+
+#: classes/views/export-keywords.php:32
+msgid "Export title"
+msgstr "Export title"
+
+#: classes/views/export-keywords.php:35
+msgid "Export readability score"
+msgstr "Export readability score"
+
+#: classes/views/export-keywords.php:49
+msgid "Please note:"
+msgstr "Please note:"
+
+#: classes/views/export-keywords.php:51
+msgid "The first row in this file is the header row. This row should be ignored when parsing or importing the data from the export."
+msgstr "The first row in this file is the header row. This row should be ignored when parsing or importing the data from the export."
+
+#: classes/views/export-keywords.php:52
+msgid "Exporting data can take a long time when there are many posts, pages, public custom post types or terms."
+msgstr "Exporting data can take a long time when there are many posts, pages, public custom post types or terms."
+
+#: assets/js/src/new-redirects/routes/redirects.js:83
+#: classes/redirect/views/redirects-tab-plain.php:25
+msgid "Plain redirects"
+msgstr "Plain redirects"
+
+#: classes/redirect/views/redirects-tab-regex.php:25
+msgid "Regular Expression redirects"
+msgstr "Regular Expression redirects"
+
+#: classes/redirect/views/redirects-tab-settings.php:76
+msgid "Redirects settings"
+msgstr "Redirects settings"
+
+#: classes/export/export-keywords-csv.php:79
+msgctxt "post_type of a post or the taxonomy of a term"
+msgid "type"
+msgstr "type"
+
+#: classes/export/export-keywords-csv.php:74
+msgid "seo title"
+msgstr "seo title"
+
+#: classes/views/export-keywords.php:33
+msgid "Export SEO title"
+msgstr "Export SEO title"
+
+#: classes/views/export-keywords.php:34
+msgid "Export meta description"
+msgstr "Export meta description"
+
+#: classes/export/export-keywords-csv.php:72
+msgid "keyphrase"
+msgstr "keyphrase"
+
+#: classes/export/export-keywords-csv.php:73
+msgid "keyphrase score"
+msgstr "keyphrase score"
+
+#: classes/premium-keyword-export-manager.php:37
+#: classes/views/export-keywords.php:8
+msgid "Export keyphrases"
+msgstr "Export keyphrases"
+
+#: classes/views/export-keywords.php:30
+msgid "Export keyphrase scores"
+msgstr "Export keyphrase scores"
+
+#. Plugin URI of the plugin
+#: wp-seo-premium.php
+msgid "https://yoa.st/2jc"
+msgstr "https://yoa.st/2jc"
+
+#. Plugin Name of the plugin
+#: wp-seo-premium.php
+msgid "Yoast SEO Premium"
+msgstr "Yoast SEO Premium"
+
+#. translators: 1: link to redirects overview, 2: closing link tag
+#: classes/premium-import-manager.php:189
+msgid "All redirects have been imported successfully. Go to the %1$sredirects overview%2$s to see the imported redirects."
+msgstr "All redirects have been imported successfully. Go to the %1$sredirects overview%2$s to see the imported redirects."
+
+#. translators: 1: link to redirects overview, 2: closing link tag
+#: classes/premium-import-manager.php:198
+msgid "No redirects have been imported. Probably they already exist as a redirect. Go to the %1$sredirects overview%2$s to see the existing redirects."
+msgstr "No redirects have been imported. Probably they already exist as a redirect. Go to the %1$sredirects overview%2$s to see the existing redirects."
+
+#. translators: 1: amount of imported redirects, 2: total amount of redirects,
+#. 3: link to redirects overview, 4: closing link tag
+#: classes/premium-import-manager.php:206
+msgid "Imported %1$s/%2$s redirects successfully. Go to the %3$sredirects overview%4$s to see the imported redirect."
+msgid_plural "Imported %1$s/%2$s redirects successfully. Go to the %3$sredirects overview%4$s to see the imported redirects."
+msgstr[0] "Imported %1$s/%2$s redirects successfully. Go to the %3$sredirects overview%4$s to see the imported redirect."
+msgstr[1] "Imported %1$s/%2$s redirects successfully. Go to the %3$sredirects overview%4$s to see the imported redirects."
+
+#: classes/premium-import-manager.php:248
+msgid "Redirect import failed: the selected redirect plugin is not installed or activated."
+msgstr "Redirect import failed: the selected redirect plugin is not installed or activated."
+
+#: classes/premium-import-manager.php:266
+msgid "CSV import failed: No file selected."
+msgstr "CSV import failed: No file selected."
+
+#. translators: 1: The maximum file size
+#: classes/premium-import-manager.php:280
+msgid "CSV import failed: the provided file is larger than %1$s."
+msgstr "CSV import failed: the provided file is larger than %1$s."
+
+#: classes/premium-import-manager.php:287
+msgid "CSV import failed: the provided file is not a CSV file."
+msgstr "CSV import failed: the provided file is not a CSV file."
+
+#: classes/premium-import-manager.php:306
+msgid "Redirect import failed: we can't recognize this type of import."
+msgstr "Redirect import failed: we can't recognize this type of import."
+
+#: classes/premium-stale-cornerstone-content-filter.php:51
+msgid "Stale cornerstone content"
+msgstr "Stale cornerstone content"
+
+#. translators: %1$s expands to dynamic post type label, %2$s expands anchor to
+#. blog post about cornerstone content, %3$s expands to </a>
+#: classes/premium-stale-cornerstone-content-filter.php:68
+msgid "Stale cornerstone content refers to cornerstone content that hasn’t been updated in the last 6 months. Make sure to keep these %1$s up-to-date. %2$sLearn more about cornerstone content%3$s."
+msgstr "Stale cornerstone content refers to cornerstone content that hasn’t been updated in the last 6 months. Make sure to keep these %1$s up-to-date. %2$sLearn more about cornerstone content%3$s."
+
+#: classes/views/import-redirects.php:56
+msgid "Choose a CSV file from your computer:"
+msgstr "Choose a CSV file from your computer:"
+
+#: assets/js/src/ai/ai-fix-assessments/components/fix-assessments-notification.js:265
+#: assets/js/src/components/RedirectNotification.js:138
+#: assets/js/src/elementor/components/RedirectNotification.js:107
+#: classes/watcher.php:253
+msgid "Undo"
+msgstr "Undo"
+
+#: classes/premium-redirect-service.php:95
+#: classes/premium-redirect-service.php:140
+#: classes/redirect-undo-endpoint.php:87 classes/redirect-undo-endpoint.php:107
+msgid "Redirect not deleted."
+msgstr "Redirect not deleted."
+
+#: classes/premium-redirect-service.php:96
+#: classes/redirect-undo-endpoint.php:88 classes/redirect-undo-endpoint.php:108
+msgid "Something went wrong when deleting this redirect."
+msgstr "Something went wrong when deleting this redirect."
+
+#: classes/redirect/validation/redirect-relative-origin-validation.php:27
+msgid "The old URL for your redirect is not relative. Only the new URL is allowed to be absolute. Make sure to provide a relative old URL."
+msgstr "The old URL for your redirect is not relative. Only the new URL is allowed to be absolute. Make sure to provide a relative old URL."
+
+#. translators: %1$s: Yoast SEO Premium, %2$s and %3$s expand to a link to the
+#. admin page.
+#: classes/post-watcher.php:480
+msgid "%1$s created a %2$sredirect%3$s from the old post URL to the new post URL."
+msgstr "%1$s created a %2$sredirect%3$s from the old post URL to the new post URL."
+
+#. translators: %1$s: Yoast SEO Premium, %2$s and %3$s expand to a link to the
+#. admin page.
+#: classes/term-watcher.php:296
+msgid "%1$s created a %2$sredirect%3$s from the old term URL to the new term URL."
+msgstr "%1$s created a %2$sredirect%3$s from the old term URL to the new term URL."
+
+#: classes/watcher.php:247
+msgid "Ok"
+msgstr "Ok"
+
+#: assets/js/src/blocks/table-of-contents-block.js:310
+#: assets/js/src/blocks/table-of-contents-block.js:394
+#: src/integrations/admin/extension-importer/content-processor.php:336
+msgid "Table of contents"
+msgstr "Table of contents"

@@ -1,0 +1,301 @@
+AWSTATS DATA FILE 7.7 (build 20161204)
+# If you remove this file, all statistics for date 202509 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.staging2.loft1325.com.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2004                
+POS_TIME 2687                
+POS_VISITOR 6574                
+POS_DAY 7640                
+POS_DOMAIN 3254                
+POS_LOGIN 3553                
+POS_ROBOT 3708                
+POS_WORMS 3914                
+POS_EMAILSENDER 4045                
+POS_EMAILRECEIVER 4188                
+POS_SESSION 7837                
+POS_SIDER 7984                
+POS_FILETYPES 4323                
+POS_DOWNLOADS 4562                
+POS_OS 4610                
+POS_BROWSER 4754                
+POS_SCREENSIZE 5099                
+POS_UNKNOWNREFERER 5173                
+POS_UNKNOWNREFERERBROWSER 5458                
+POS_ORIGIN 5540                
+POS_SEREFERRALS 5675                
+POS_PAGEREFS 5819                
+POS_SEARCHWORDS 5967                
+POS_KEYWORDS 6119                
+POS_MISC 2351                
+POS_ERRORS 6178                
+POS_CLUSTER 3409                
+POS_SIDER_404 6265                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20251002234306 819 304661 11209819753050
+FirstTime 20250922193115
+LastTime 20250927013007
+LastUpdate 20251003044839 819 810 0 0 8
+TotalVisits 19                  
+TotalUnique 19                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 28                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+RealPlayerSupport 0 0 0
+JavaEnabled 0 0 0
+DirectorSupport 0 0 0
+AddToFavourites 0 5 0
+JavascriptDisabled 0 0 0
+QuickTimeSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+FlashSupport 0 0 0
+TotalMisc 0 0 0
+PDFSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 2 2 62117 2 4 283960
+1 2 2 124234 1 1 283916
+2 0 0 0 0 0 0
+3 0 0 0 0 0 0
+4 0 0 0 0 0 0
+5 1 5 91038 0 0 0
+6 2 4 125694 2 4 96
+7 0 0 0 0 0 0
+8 0 0 0 0 0 0
+9 0 0 0 0 0 0
+10 0 0 0 1 1 283917
+11 0 0 0 0 0 0
+12 8 109 7404537 3 3 62135
+13 0 0 0 0 0 0
+14 0 0 0 0 0 0
+15 0 0 0 2 2 62111
+16 0 0 0 0 0 0
+17 8 122 9222932 1 1 24
+18 1 6 91768 1 2 24
+19 25 310 17399564 0 0 0
+20 0 0 0 0 0 0
+21 21 227 17561113 4 4 72
+22 1 1 283861 0 0 0
+23 0 0 0 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 6
+us 57 650 42576518
+ca 9 123 9506793
+gb 2 7 99002
+tr 1 5 83804
+ie 1 1 37894
+in 1 2 62847
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 2
+no_user_agent 3 851740 20250927101012 0
+checker 2 124174 20250923153342 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 9
+js 259 2103989 0 0
+Unknown 14 1162 0 0
+html 22 1270178 0 0
+jpeg 16 2320777 0 0
+css 273 890414 0 0
+woff2 35 781424 0 0
+png 118 43930334 0 0
+svg 35 65024 0 0
+jpg 16 1003556 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 6
+linux 120 17
+win10 122 8
+ios_iphone 412 33
+macosx 121 9
+winnt 1 1
+Unknown 12 3
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 15
+mozilla 12 3
+chrome117.0.5938.132 121 7
+chrome125.0.6422.60 109 8
+firefox83.0 1 1
+chrome119.0.0.0 1 1
+chrome140.0.0.0 1 1
+firefox120.0 3 3
+chrome113.0.0.0 121 9
+chrome139.0.0.0 4 2
+safari15.4 103 9
+safari 206 16
+safari16.1 103 8
+chrome137.0.0.0 1 1
+chrome121.0.0.0 1 1
+chrome127.0.6533.119 1 1
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 2
+Mozilla/5.0_(compatible;_UGAResearchAgent/1.0;_Please_visit:_NISLabUGA.github.io) 20250922193249
+Mozilla/5.0_(compatible;_InternetMeasurement/1.0;__https://internet-measurement.com/) 20250924053019
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 16 24
+From1 0 0
+From2 0 0
+From3 0 0
+From4 55 764
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 1
+301 12 264
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 0
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 28
+35.89.17.57 16 222 17336897 20250922215145
+205.169.39.1 8 122 9222932 20250926174817
+162.43.233.27 8 103 5779149 20250922193118
+34.123.170.104 8 109 7404537 20250926125108
+103.4.250.10 8 103 5779149 20250922193755
+103.4.250.190 8 103 5779149 20250922193608
+18.237.127.153 2 2 124234 20250922212315
+192.64.113.146 2 2 62088 20250922212150
+87.236.176.97 1 1 62116 20250924053018
+54.247.57.72 1 1 37894 20250922215136
+87.236.176.56 0 1 730 
+185.247.137.139 0 1 730 
+87.236.176.20 0 1 7964 
+149.57.180.25 1 1 62117 20250923004628
+192.175.111.232 1 1 283861 20250922223636
+137.184.85.177 1 2 62847 20250925065230
+87.236.176.201 0 1 7307 
+173.239.217.53 1 1 0 20250923002525
+87.236.176.81 0 1 7964 
+87.236.176.116 0 1 12921 
+185.247.137.144 1 1 62116 20250923184833
+149.57.180.10 1 1 62117 20250924011018
+128.192.12.110 1 1 62117 20250922193249
+185.247.137.36 0 1 12921 
+149.57.180.37 1 1 62117 20250927013007
+167.71.230.59 1 2 62847 20250923065750
+185.247.137.85 0 1 730 
+185.247.137.127 0 1 7307 
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 6
+20250922 47 538 35244538 9
+20250923 4 10 216732 4
+20250924 2 6 153155 2
+20250925 1 2 62847 1
+20250926 16 231 16627469 2
+20250927 1 1 62117 1
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 1
+0s-30s 19
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 8
+/ 22 1270178 19 13
+/wp-content/uploads/elementor/google-fonts/fonts/opensans-memvyags126mizpba-uvwbx2vvnxbbobj2ovts-muw.woff2 7 338240 0 0
+/wp-content/uploads/elementor/google-fonts/fonts/poppins-pxieyp8kv8jhgfvrjjfecg.woff2 7 55188 0 0
+/wp-json/contact-form-7/v1/contact-forms/3742/refill 7 42 0 5
+/wp-content/uploads/elementor/google-fonts/fonts/poppins-pxibyp8kv8jhgfvrlcz7z1xlfq.woff2 7 54712 0 0
+/wp-json/contact-form-7/v1/contact-forms/3742/feedback/schema 7 1120 0 1
+/wp-content/uploads/elementor/google-fonts/fonts/roboto-kfo7cnqeu92fr1me7ksn66agldtyluama3yuba.woff2 7 280896 0 0
+/wp-content/uploads/elementor/google-fonts/fonts/poppins-pxigyp8kv8jhgfvrlptuchta.woff2 7 52388 0 0
+END_SIDER
