@@ -43,8 +43,9 @@ function marina_child_enqueue_custom_assets() {
     );
 
     if ( is_front_page() && wp_is_mobile() ) {
-        $mobile_home_path = get_stylesheet_directory() . '/css/mobile-home.css';
-        $home_translation_fix_path = get_stylesheet_directory() . '/js/home-translation-fix.js';
+        $mobile_home_path           = get_stylesheet_directory() . '/css/mobile-home.css';
+        $home_translation_fix_path  = get_stylesheet_directory() . '/js/home-translation-fix.js';
+        $mobile_stylesheet_enqueued = false;
 
         if ( file_exists( $mobile_home_path ) && is_readable( $mobile_home_path ) ) {
             $mobile_home_version = (string) filemtime( $mobile_home_path );
@@ -55,6 +56,26 @@ function marina_child_enqueue_custom_assets() {
                 array( 'marina-child-header-fixes' ),
                 $mobile_home_version
             );
+
+            $mobile_stylesheet_enqueued = true;
+        }
+
+        if ( ! $mobile_stylesheet_enqueued ) {
+            $plugin_mobile_css = WP_PLUGIN_DIR . '/loft1325-mobile-homepage/assets/css/mobile-home.css';
+
+            if ( file_exists( $plugin_mobile_css ) && is_readable( $plugin_mobile_css ) ) {
+                $plugin_mobile_uri     = plugin_dir_url( WP_PLUGIN_DIR . '/loft1325-mobile-homepage/loft1325-mobile-homepage.php' ) . 'assets/css/mobile-home.css';
+                $plugin_mobile_version = (string) filemtime( $plugin_mobile_css );
+
+                wp_enqueue_style(
+                    'loft1325-mobile-home',
+                    $plugin_mobile_uri,
+                    array( 'marina-child-header-fixes' ),
+                    $plugin_mobile_version
+                );
+
+                $mobile_stylesheet_enqueued = true;
+            }
         }
 
         if ( file_exists( $home_translation_fix_path ) && is_readable( $home_translation_fix_path ) ) {
