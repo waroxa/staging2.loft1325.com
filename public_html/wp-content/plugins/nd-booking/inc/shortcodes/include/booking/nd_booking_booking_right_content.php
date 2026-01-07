@@ -1,18 +1,44 @@
 <?php
 
 
+$nd_booking_language = 'fr';
+if ( function_exists( 'trp_get_current_language' ) ) {
+    $nd_booking_language = (string) trp_get_current_language();
+} elseif ( function_exists( 'determine_locale' ) ) {
+    $nd_booking_language = (string) determine_locale();
+} else {
+    $nd_booking_language = (string) get_locale();
+}
+
+$nd_booking_language = strtolower( substr( $nd_booking_language, 0, 2 ) );
+$nd_booking_is_english = ( 'en' === $nd_booking_language );
+
+$nd_booking_heading = $nd_booking_is_english ? 'Guest information' : 'Vos informations';
+$nd_booking_heading_subtitle = $nd_booking_is_english ? 'A five-star experience starts here.' : 'Une expérience 5 étoiles commence ici.';
+$nd_booking_urgency_title = $nd_booking_is_english ? 'This exclusive rate expires soon' : 'Cette offre exclusive expire bientôt';
+$nd_booking_urgency_text = $nd_booking_is_english ? 'Lock in today’s price and complete your reservation before the timer runs out.' : 'Confirmez votre réservation maintenant pour garantir le tarif du jour avant qu’il n’expire.';
+
 $nd_booking_initial_breakdown = nd_booking_calculate_tax_breakdown( $nd_booking_trip_price );
 $nd_booking_initial_final_price = $nd_booking_initial_breakdown['total'];
 $nd_booking_initial_base_price = $nd_booking_initial_breakdown['base'];
 
 $nd_booking_shortcode_right_content = '
 
-<div class="nd_booking_section nd_booking_height_2 nd_booking_bg_grey"></div>
-<div class="nd_booking_section">
+<div class="nd_booking_section loft1325-booking-card">
+  <div class="nd_booking_section nd_booking_height_2 nd_booking_bg_grey"></div>
 
   <div class="nd_booking_section nd_booking_height_40"></div>
-  <h1>'.__('Add Your Informations','nd-booking').' :</h1>
+  <h1>'.$nd_booking_heading.'</h1>
+  <p class="nd_booking_font_size_14">'.$nd_booking_heading_subtitle.'</p>
   <div class="nd_booking_section nd_booking_height_30"></div>
+
+  <div class="loft1325-booking-urgency">
+    <div class="loft1325-booking-urgency__icon">⏳</div>
+    <div>
+      <p class="loft1325-booking-urgency__title">'.$nd_booking_urgency_title.'</p>
+      <p class="loft1325-booking-urgency__text">'.$nd_booking_urgency_text.'</p>
+    </div>
+  </div>
 
   <form method="post" enctype="multipart/form-data" action="'.nd_booking_checkout_page().'">
       

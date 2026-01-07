@@ -33,6 +33,21 @@ if ( null !== $nd_booking_loft_rule ) {
 //END price
 
 
+$nd_booking_language = 'fr';
+if ( function_exists( 'trp_get_current_language' ) ) {
+    $nd_booking_language = (string) trp_get_current_language();
+} elseif ( function_exists( 'determine_locale' ) ) {
+    $nd_booking_language = (string) determine_locale();
+} else {
+    $nd_booking_language = (string) get_locale();
+}
+
+$nd_booking_language = strtolower( substr( $nd_booking_language, 0, 2 ) );
+$nd_booking_is_english = ( 'en' === $nd_booking_language );
+
+$nd_booking_breakdown_title = $nd_booking_is_english ? 'Price breakdown' : 'Détail du prix';
+$nd_booking_breakdown_subtitle = $nd_booking_is_english ? 'As shown on your invoice' : 'Comme sur la facture finale';
+
 $nd_booking_tax_breakdown = nd_booking_calculate_tax_breakdown( $nd_booking_trip_price );
 $nd_booking_currency = nd_booking_get_currency();
 $nd_booking_initial_total_formatted = nd_booking_format_decimal( $nd_booking_tax_breakdown['total'] );
@@ -45,8 +60,9 @@ $nd_booking_known_tax_labels = array(
     'qst'     => __( 'QST', 'nd-booking' ),
 );
 
-$nd_booking_tax_lines = '<div class="nd_booking_section nd_booking_margin_top_20 nd_booking_tax_breakdown">';
-$nd_booking_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_13" data-tax-key="subtotal"><span class="nd_booking_tax_label">'.__( 'Subtotal', 'nd-booking' ).'</span> <span class="nd_booking_tax_amount">'.$nd_booking_initial_subtotal_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_currency.'</span></p>';
+$nd_booking_tax_lines = '<div class="nd_booking_section nd_booking_margin_top_20 nd_booking_tax_breakdown loft1325-booking-breakdown">';
+$nd_booking_tax_lines .= '<div class="loft1325-booking-breakdown-header"><p class="nd_booking_margin_0 nd_booking_font_size_14"><strong>'.$nd_booking_breakdown_title.'</strong></p><p class="nd_booking_margin_0 nd_booking_font_size_12">'.$nd_booking_breakdown_subtitle.'</p></div>';
+$nd_booking_tax_lines .= '<div class="loft1325-booking-breakdown-row" data-tax-key="subtotal"><span class="nd_booking_tax_label">'.__( 'Subtotal', 'nd-booking' ).'</span> <span><span class="nd_booking_tax_amount">'.$nd_booking_initial_subtotal_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_currency.'</span></span></div>';
 
 foreach ( $nd_booking_known_tax_labels as $nd_booking_tax_key => $nd_booking_tax_label ) {
     $nd_booking_line_style = '';
@@ -61,12 +77,11 @@ foreach ( $nd_booking_known_tax_labels as $nd_booking_tax_key => $nd_booking_tax
         $nd_booking_line_style = ' style="display:none;"';
     }
 
-    $nd_booking_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_12" data-tax-key="'.$nd_booking_tax_key.'"'.$nd_booking_line_style.'><span class="nd_booking_tax_label">'.$nd_booking_display_label.'</span> <span class="nd_booking_tax_amount">'.$nd_booking_tax_amount_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_currency.'</span></p>';
+    $nd_booking_tax_lines .= '<div class="loft1325-booking-breakdown-row" data-tax-key="'.$nd_booking_tax_key.'"'.$nd_booking_line_style.'><span class="nd_booking_tax_label">'.$nd_booking_display_label.'</span> <span><span class="nd_booking_tax_amount">'.$nd_booking_tax_amount_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_currency.'</span></span></div>';
 }
 
-$nd_booking_tax_lines .= '<div class="nd_booking_section nd_booking_height_10"></div>';
-$nd_booking_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_13 nd_booking_font_weight_bold" data-tax-key="total_tax"><span class="nd_booking_tax_label">'.__( 'Total Tax', 'nd-booking' ).'</span> <span class="nd_booking_tax_amount">'.$nd_booking_initial_tax_total_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_currency.'</span></p>';
-$nd_booking_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_14 nd_booking_font_weight_bolder" data-tax-key="grand_total"><span class="nd_booking_tax_label">'.__( 'Grand Total', 'nd-booking' ).'</span> <span class="nd_booking_tax_amount">'.$nd_booking_initial_total_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_currency.'</span></p>';
+$nd_booking_tax_lines .= '<div class="loft1325-booking-breakdown-row" data-tax-key="total_tax"><span class="nd_booking_tax_label"><strong>'.__( 'Total Tax', 'nd-booking' ).'</strong></span> <span><strong class="nd_booking_tax_amount">'.$nd_booking_initial_tax_total_formatted.'</strong> <strong class="nd_booking_tax_currency">'.$nd_booking_currency.'</strong></span></div>';
+$nd_booking_tax_lines .= '<div class="loft1325-booking-breakdown-row loft1325-booking-breakdown-row--total" data-tax-key="grand_total"><span class="nd_booking_tax_label"><strong>'.__( 'Grand Total', 'nd-booking' ).'</strong></span> <span><strong class="nd_booking_tax_amount">'.$nd_booking_initial_total_formatted.'</strong> <strong class="nd_booking_tax_currency">'.$nd_booking_currency.'</strong></span></div>';
 $nd_booking_tax_lines .= '</div>';
 
 $nd_booking_shortcode_left_content = '';
@@ -118,7 +133,7 @@ $nd_booking_new_date_to_format_Y = date_format($nd_booking_new_date_to, 'Y');
 
 $nd_booking_shortcode_left_content .= '
 
-<div class="nd_booking_section nd_booking_box_sizing_border_box">
+<div class="nd_booking_section nd_booking_box_sizing_border_box loft1325-booking-card loft1325-booking-card--dark">
 
   '.$nd_booking_image.'
 
@@ -202,7 +217,6 @@ $nd_booking_shortcode_left_content .= '
 
 
 ';
-
 
 
 
