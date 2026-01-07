@@ -96,7 +96,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 				return true;
 			}
 
-			return wp_is_mobile();
+			return $this->is_mobile_request();
 		}
 
 		/**
@@ -196,6 +196,46 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 			$this->current_language = ( 'en' === $language ) ? 'en' : 'fr';
 
 			return $this->current_language;
+		}
+
+		/**
+		 * Determine whether the request is coming from a mobile or tablet device.
+		 *
+		 * @return bool
+		 */
+		private function is_mobile_request() {
+			$is_mobile = wp_is_mobile();
+
+			if ( ! $is_mobile && isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
+				$user_agent = strtolower( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+				$mobile_indicators = array(
+					'iphone',
+					'ipod',
+					'ipad',
+					'android',
+					'blackberry',
+					'bb10',
+					'webos',
+					'windows phone',
+					'opera mini',
+					'mobile',
+					'tablet',
+				);
+
+				foreach ( $mobile_indicators as $indicator ) {
+					if ( false !== strpos( $user_agent, $indicator ) ) {
+						$is_mobile = true;
+						break;
+					}
+				}
+
+				if ( ! $is_mobile && false !== strpos( $user_agent, 'macintosh' ) && false !== strpos( $user_agent, 'mobile' ) ) {
+					$is_mobile = true;
+				}
+			}
+
+			return (bool) apply_filters( 'loft1325_mobile_lofts_is_mobile', $is_mobile );
 		}
 
 		/**
