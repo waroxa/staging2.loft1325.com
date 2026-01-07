@@ -83,14 +83,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
          * Validate plugin dependencies before running any front-end logic.
          */
         public function evaluate_dependencies() {
-            $nd_booking_active = post_type_exists( 'nd_booking_cpt_1' );
-
-            if ( ! $nd_booking_active ) {
-                $this->dependencies_ready = false;
-                return;
-            }
-
-            $this->dependencies_ready = true;
+            $this->ensure_dependencies_ready();
         }
 
         /**
@@ -171,7 +164,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return false;
             }
 
-            if ( ! $this->dependencies_ready ) {
+            if ( ! $this->ensure_dependencies_ready() ) {
                 return false;
             }
 
@@ -185,7 +178,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return false;
             }
 
-            $is_mobile_request = wp_is_mobile();
+            $is_mobile_request = $this->is_mobile_request();
 
             if ( ! $is_mobile_request ) {
                 return false;
@@ -938,11 +931,66 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
          * Surface a helpful admin notice when dependencies are missing.
          */
         public function maybe_show_dependency_notice() {
-            if ( $this->dependencies_ready || ! current_user_can( 'activate_plugins' ) ) {
+            if ( $this->ensure_dependencies_ready() || ! current_user_can( 'activate_plugins' ) ) {
                 return;
             }
 
             echo '<div class="notice notice-error"><p>' . esc_html__( 'Loft1325 Mobile Homepage needs the ND Booking plugin active to render properly. Please activate ND Booking before enabling the mobile experience.', 'loft1325-mobile-home' ) . '</p></div>';
+        }
+
+        /**
+         * Ensure required dependencies are loaded before rendering the mobile homepage.
+         *
+         * @return bool
+         */
+        private function ensure_dependencies_ready() {
+            if ( $this->dependencies_ready ) {
+                return true;
+            }
+
+            $this->dependencies_ready = post_type_exists( 'nd_booking_cpt_1' );
+
+            return $this->dependencies_ready;
+        }
+
+        /**
+         * Determine whether the request is coming from a mobile or tablet device.
+         *
+         * @return bool
+         */
+        private function is_mobile_request() {
+            $is_mobile = wp_is_mobile();
+
+            if ( ! $is_mobile && isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
+                $user_agent = strtolower( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+                $mobile_indicators = array(
+                    'iphone',
+                    'ipod',
+                    'ipad',
+                    'android',
+                    'blackberry',
+                    'bb10',
+                    'webos',
+                    'windows phone',
+                    'opera mini',
+                    'mobile',
+                    'tablet',
+                );
+
+                foreach ( $mobile_indicators as $indicator ) {
+                    if ( false !== strpos( $user_agent, $indicator ) ) {
+                        $is_mobile = true;
+                        break;
+                    }
+                }
+
+                if ( ! $is_mobile && false !== strpos( $user_agent, 'macintosh' ) && false !== strpos( $user_agent, 'mobile' ) ) {
+                    $is_mobile = true;
+                }
+            }
+
+            return (bool) apply_filters( 'loft1325_mobile_home_is_mobile', $is_mobile );
         }
     }
 }
