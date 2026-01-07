@@ -4,6 +4,7 @@ body.loft1325-mobile-home-active {
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     background-color: #f7f7f9;
     color: #111827;
+    overflow-x: hidden;
     --loft1325-brand: #0f172a;
     --loft1325-brand-dark: #0b1220;
     --loft1325-brand-darker: #050914;
@@ -57,6 +58,11 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     position: relative;
     background: #f7f7f9;
     min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
 
 
