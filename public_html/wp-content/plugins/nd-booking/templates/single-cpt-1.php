@@ -11,9 +11,16 @@ $nd_booking_meta_box_image_position = get_post_meta( get_the_ID(), 'nd_booking_m
 $nd_booking_meta_box_image = get_post_meta( get_the_ID(), 'nd_booking_meta_box_image', true );
 $nd_booking_meta_box_min_price = get_post_meta( get_the_ID(), 'nd_booking_meta_box_min_price', true );
 $nd_booking_meta_box_title_packages = get_post_meta( get_the_ID(), 'nd_booking_meta_box_title_packages', true );
+$nd_booking_meta_box_featured_image_replace = get_post_meta( get_the_ID(), 'nd_booking_meta_box_featured_image_replace', true );
+$nd_booking_use_featured_replace_as_header = false;
+$nd_booking_header_slider = '';
+if ( wp_is_mobile() && $nd_booking_meta_box_featured_image_replace != '' ) {
+	$nd_booking_use_featured_replace_as_header = true;
+	$nd_booking_header_slider = do_shortcode( $nd_booking_meta_box_featured_image_replace );
+}
 
 
-if ( $nd_booking_meta_box_image != '' ) {	
+if ( $nd_booking_meta_box_image != '' || $nd_booking_use_featured_replace_as_header ) {	
 
 	//similar room link
 	$nd_booking_meta_box_similar_rooms = get_post_meta( get_the_ID(), 'nd_booking_meta_box_similar_rooms', true );
@@ -40,14 +47,14 @@ if ( $nd_booking_meta_box_image != '' ) {
 
 
 	$nd_booking_result .= '
-	<div id="nd_booking_single_cpt_1_header_image" class="nd_booking_section nd_booking_background_size_cover '.$nd_booking_meta_box_image_position.' " style="background-image:url('.$nd_booking_meta_box_image.');">
+	<div id="nd_booking_single_cpt_1_header_image" class="nd_booking_section nd_booking_background_size_cover '.$nd_booking_meta_box_image_position.' "'.( $nd_booking_header_slider == '' ? ' style="background-image:url('.$nd_booking_meta_box_image.');"' : '' ).'>
 
         <div class="nd_booking_section nd_booking_bg_greydark_alpha_gradient_5">';
 
             if ( nd_booking_get_container() != 1) {  $nd_booking_result .= '<div class="nd_booking_container nd_booking_box_sizing_border_box nd_booking_clearfix">'; }
 
             	$nd_booking_result .= '
-                <div id="nd_booking_single_cpt_1_header_image_space_top" class="nd_booking_section nd_booking_height_250"></div>
+                '.( $nd_booking_header_slider != '' ? '<div class="nd_booking_section">'.$nd_booking_header_slider.'</div><div class="nd_booking_section nd_booking_height_20"></div>' : '<div id="nd_booking_single_cpt_1_header_image_space_top" class="nd_booking_section nd_booking_height_250"></div>' ).'
 
            
                	<div id="nd_booking_single_cpt_1_header_image_tab" class="nd_booking_width_66_percentage nd_booking_width_100_percentage_responsive nd_booking_padding_15 nd_booking_box_sizing_border_box nd_booking_float_left">
@@ -526,7 +533,11 @@ if(have_posts()) :
 	    
 
 	    //START image or custom content
-        if ( $nd_booking_meta_box_featured_image_replace == '' ) {
+        if ( $nd_booking_use_featured_replace_as_header ) {
+
+        	$nd_booking_image = '';
+
+        } elseif ( $nd_booking_meta_box_featured_image_replace == '' ) {
 
         	if ( has_post_thumbnail() ) { 
 
@@ -1208,5 +1219,4 @@ echo $nd_booking_result;
 
 //footer
 get_footer( );
-
 
