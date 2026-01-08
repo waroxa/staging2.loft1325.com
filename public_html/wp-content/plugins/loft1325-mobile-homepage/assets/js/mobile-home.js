@@ -411,66 +411,13 @@
             });
         }
 
-        function buildSearchUrl() {
-            var action = form.getAttribute('action') || window.location.href;
-            var url = null;
-
-            try {
-                url = new URL(action, window.location.origin);
-            } catch (error) {
-                url = null;
-            }
-
-            var params = new URLSearchParams();
-
-            if (checkInInput && checkInInput.value) {
-                params.set('nd_booking_archive_form_date_range_from', checkInInput.value);
-            }
-
-            if (checkOutInput && checkOutInput.value) {
-                params.set('nd_booking_archive_form_date_range_to', checkOutInput.value);
-            }
-
-            if (totalGuestsInput && totalGuestsInput.value) {
-                params.set('nd_booking_archive_form_guests', totalGuestsInput.value);
-            }
-
-            if (adultInput && adultInput.value) {
-                params.set('nd_booking_archive_form_adults', adultInput.value);
-            }
-
-            if (childInput && childInput.value) {
-                params.set('nd_booking_archive_form_children', childInput.value);
-            }
-
-            if (promoInput && promoInput.value) {
-                params.set('nd_booking_booking_form_coupon', promoInput.value);
-                params.set('nd_booking_checkout_form_coupon', promoInput.value);
-            }
-
-            if (url) {
-                params.forEach(function (value, key) {
-                    url.searchParams.set(key, value);
-                });
-
-                return url.toString();
-            }
-
-            var query = params.toString();
-            return query ? action + (action.indexOf('?') === -1 ? '?' : '&') + query : action;
-        }
-
         function handleSubmit(event) {
             if (event && typeof event.preventDefault === 'function') {
                 event.preventDefault();
             }
 
             updateTotalGuests();
-
-            var destination = buildSearchUrl();
-            if (destination) {
-                window.location.assign(destination);
-            }
+            form.submit();
         }
 
         if (submitButton) {
