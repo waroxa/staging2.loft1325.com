@@ -318,6 +318,10 @@ body.loft1325-mobile-lofts-active a {
         box-shadow: 0 16px 32px rgba(15, 23, 42, 0.28);
 }
 
+.loft1325-mobile-loft__btn--primary:visited {
+        color: #fff;
+}
+
 .loft1325-mobile-loft__btn--ghost {
         background: #fff;
         border-color: var(--loft1325-border);
@@ -394,15 +398,20 @@ scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 1.35rem);
 }
 
 .loft1325-mobile-loft__section--perks {
-        background: linear-gradient(160deg, rgba(15, 23, 42, 0.9), #0b1222 70%);
+        background: linear-gradient(160deg, rgba(15, 23, 42, 0.95), #0b1222 70%);
         color: #f8fafc;
         border-color: transparent;
         box-shadow: 0 28px 48px rgba(15, 23, 42, 0.28);
 }
 
 .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill,
-.loft1325-mobile-loft__section--perks h2 {
+.loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-header h2 {
         color: #f8fafc;
+}
+
+.loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill {
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .loft1325-mobile-loft__perk-grid {
@@ -424,11 +433,11 @@ scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 1.35rem);
 .loft1325-mobile-loft__perk p {
         margin: 0;
         font-weight: 700;
-        color: #fff;
+        color: #f8fafc;
 }
 
 .loft1325-mobile-loft__perk small {
-        color: #e5e7eb;
+        color: #e2e8f0;
 }
 
 .loft1325-mobile-loft__section--stacked {
