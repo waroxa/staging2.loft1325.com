@@ -1281,6 +1281,10 @@ body.loft1325-mobile-home-active #loft1325-mobile-home-search .nd_booking_search
     font-family: inherit !important;
 }
 
+body.loft1325-mobile-home-active #loft1325-mobile-home-search .nd_booking_search_form::before {
+    content: none !important;
+}
+
 body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolbar__group {
     background: #ffffff !important;
     border: 1.5px solid #e5e7eb !important;
@@ -1300,7 +1304,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolb
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-home-search button.loft-search-toolbar__submit {
-    background: #76b1c4 !important;
+    background: #ffda44 !important;
     color: #ffffff !important;
     border: none !important;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08) !important;
@@ -1530,7 +1534,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-home-search button.loft-search
 
 #loft1325-mobile-home-search .nd_booking_search_form button.loft-search-toolbar__submit {
     appearance: none;
-    background: #76b1c4;
+    background: #ffda44;
     border: none;
     border-radius: 12px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14);
@@ -1552,7 +1556,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-home-search button.loft-search
 
 #loft1325-mobile-home-search .nd_booking_search_form button.loft-search-toolbar__submit:hover,
 #loft1325-mobile-home-search .nd_booking_search_form button.loft-search-toolbar__submit:focus {
-    background: #6aa0b2;
+    background: #f5c400;
     transform: translateY(-1px);
     box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
 }
@@ -1789,7 +1793,7 @@ body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__submit
     width: 100%;
     height: 44px;
     border-radius: 6px;
-    background: #76b1c4 !important;
+    background: #ffda44 !important;
     border: none;
     color: #ffffff !important;
     font-size: 15px;
@@ -1802,7 +1806,7 @@ body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__submit
 
 body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__submit:hover,
 body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__submit:focus-visible {
-    background: #6aa0b2 !important;
+    background: #f5c400 !important;
     outline: none;
 }
 
