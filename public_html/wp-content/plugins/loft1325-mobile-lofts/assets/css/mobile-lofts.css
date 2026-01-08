@@ -80,6 +80,23 @@ body.loft1325-mobile-lofts-active a {
         box-shadow: var(--loft1325-glow);
 }
 
+.loft1325-mobile-loft__slider--rev {
+        background: #0f172a;
+}
+
+.loft1325-mobile-loft__slider--rev .rev_slider_wrapper,
+.loft1325-mobile-loft__slider--rev rs-module-wrap,
+.loft1325-mobile-loft__slider--rev rs-module {
+        width: 100% !important;
+        max-width: 100% !important;
+}
+
+.loft1325-mobile-loft__slider--rev .rev_slider_wrapper,
+.loft1325-mobile-loft__slider--rev rs-module-wrap {
+        border-radius: 24px;
+        overflow: hidden;
+}
+
 .loft1325-mobile-loft__slider-track {
         display: flex;
         width: 100%;
@@ -437,6 +454,18 @@ scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 1.35rem);
 }
 
 .loft1325-mobile-loft__perk small {
+        color: #e2e8f0;
+}
+
+.loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk .dashicons {
+        color: #f8fafc;
+}
+
+.loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk p {
+        color: #f8fafc;
+}
+
+.loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk small {
         color: #e2e8f0;
 }
 
