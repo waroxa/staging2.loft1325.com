@@ -363,7 +363,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                                     <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $this->localize_label( 'Diminuer le nombre d’adultes', 'Decrease adult count' ) ); ?>">−</button>
                                     <span class="loft-search-toolbar__guests-value" id="loft_booking_adults_value"><?php echo esc_html( $default_adults ); ?></span>
                                     <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $this->localize_label( 'Augmenter le nombre d’adultes', 'Increase adult count' ) ); ?>">+</button>
-                                    <input type="hidden" id="loft_booking_adults" name="nd_booking_archive_form_adults" value="<?php echo esc_attr( $default_adults ); ?>" />
+                                    <input type="hidden" id="loft_booking_adults" value="<?php echo esc_attr( $default_adults ); ?>" />
                                 </div>
                             </div>
 
@@ -373,7 +373,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                                     <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $this->localize_label( 'Diminuer le nombre d’enfants', 'Decrease child count' ) ); ?>">−</button>
                                     <span class="loft-search-toolbar__guests-value" id="loft_booking_children_value"><?php echo esc_html( $default_children ); ?></span>
                                     <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $this->localize_label( 'Augmenter le nombre d’enfants', 'Increase child count' ) ); ?>">+</button>
-                                    <input type="hidden" id="loft_booking_children" name="nd_booking_archive_form_children" value="<?php echo esc_attr( $default_children ); ?>" />
+                                    <input type="hidden" id="loft_booking_children" value="<?php echo esc_attr( $default_children ); ?>" />
                                 </div>
                             </div>
                         </div>

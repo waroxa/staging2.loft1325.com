@@ -397,6 +397,27 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		}
 
 		/**
+		 * Render the featured image replacement slider markup, if available.
+		 *
+		 * @param int $post_id Room post ID.
+		 *
+		 * @return string
+		 */
+		public function get_room_slider_markup( $post_id ) {
+			$featured_replace = get_post_meta( $post_id, 'nd_booking_meta_box_featured_image_replace', true );
+			if ( '' === trim( $featured_replace ) ) {
+				return '';
+			}
+
+			$markup = do_shortcode( $featured_replace );
+			if ( '' === trim( $markup ) ) {
+				return '';
+			}
+
+			return $markup;
+		}
+
+		/**
 		 * Extract images from the featured image replacement slider.
 		 *
 		 * @param int $post_id Room post ID.
