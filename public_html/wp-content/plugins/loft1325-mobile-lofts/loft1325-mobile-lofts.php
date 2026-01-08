@@ -364,6 +364,11 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 			$featured = get_post_thumbnail_id( $post_id );
 			$seen     = array();
 
+			$featured_replace_images = $this->get_featured_replace_gallery( $post_id );
+			if ( ! empty( $featured_replace_images ) ) {
+				return $featured_replace_images;
+			}
+
 			if ( $featured ) {
 				$images[] = $this->format_image( $featured );
 				$seen[]   = (string) $featured;
@@ -386,6 +391,143 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 
 				$images[] = $this->format_image( $attachment->ID );
 				$seen[]   = (string) $attachment->ID;
+			}
+
+			return $images;
+		}
+
+		/**
+		 * Extract images from the featured image replacement slider.
+		 *
+		 * @param int $post_id Room post ID.
+		 *
+		 * @return array<int, array<string, string>>
+		 */
+		private function get_featured_replace_gallery( $post_id ) {
+			$featured_replace = get_post_meta( $post_id, 'nd_booking_meta_box_featured_image_replace', true );
+			if ( '' === trim( $featured_replace ) ) {
+				return array();
+			}
+
+			$markup = do_shortcode( $featured_replace );
+			if ( '' === trim( $markup ) ) {
+				return array();
+			}
+
+			return $this->extract_images_from_markup( $markup, $post_id );
+		}
+
+		/**
+		 * Parse image URLs from slider markup.
+		 *
+		 * @param string $markup  Rendered slider markup.
+		 * @param int    $post_id Room post ID.
+		 *
+		 * @return array<int, array<string, string>>
+		 */
+		private function extract_images_from_markup( $markup, $post_id ) {
+			$images = array();
+			$seen   = array();
+
+			$doc = new DOMDocument();
+			libxml_use_internal_errors( true );
+			$doc->loadHTML( '<?xml encoding="utf-8" ?>' . $markup );
+			libxml_clear_errors();
+
+			$title = get_the_title( $post_id );
+
+			foreach ( $doc->getElementsByTagName( 'img' ) as $image_node ) {
+				$url = $this->extract_image_url_from_node( $image_node );
+				if ( '' === $url ) {
+					continue;
+				}
+
+				$url = esc_url_raw( $url );
+				if ( '' === $url || in_array( $url, $seen, true ) ) {
+					continue;
+				}
+
+				$seen[]  = $url;
+				$alt     = $image_node->getAttribute( 'alt' );
+				$images[] = array(
+					'url' => $url,
+					'alt' => $alt ? $alt : $title,
+				);
+			}
+
+			if ( empty( $images ) ) {
+				$images = $this->extract_background_images_from_markup( $markup, $title );
+			}
+
+			return $images;
+		}
+
+		/**
+		 * Extract a single image URL from an image node.
+		 *
+		 * @param DOMElement $image_node Image element.
+		 *
+		 * @return string
+		 */
+		private function extract_image_url_from_node( $image_node ) {
+			$attributes = array(
+				'src',
+				'data-src',
+				'data-lazyload',
+				'data-lazy',
+				'data-bg',
+				'data-background',
+				'data-image',
+				'data-thumb',
+			);
+
+			foreach ( $attributes as $attribute ) {
+				if ( $image_node->hasAttribute( $attribute ) ) {
+					$value = trim( $image_node->getAttribute( $attribute ) );
+					if ( '' !== $value ) {
+						return $value;
+					}
+				}
+			}
+
+			if ( $image_node->hasAttribute( 'srcset' ) ) {
+				$srcset = $image_node->getAttribute( 'srcset' );
+				$parts  = preg_split( '/\s+/', trim( $srcset ) );
+				if ( ! empty( $parts ) ) {
+					return (string) $parts[0];
+				}
+			}
+
+			return '';
+		}
+
+		/**
+		 * Extract background-image URLs from slider markup.
+		 *
+		 * @param string $markup Slider markup.
+		 * @param string $title  Fallback alt text.
+		 *
+		 * @return array<int, array<string, string>>
+		 */
+		private function extract_background_images_from_markup( $markup, $title ) {
+			$images = array();
+			$seen   = array();
+
+			if ( preg_match_all( '/background-image\\s*:\\s*url\\(([^)]+)\\)/i', $markup, $matches ) ) {
+				foreach ( $matches[1] as $match ) {
+					$url = trim( $match, " \t\n\r\0\x0B\"'" );
+					$url = esc_url_raw( $url );
+
+					if ( '' === $url || in_array( $url, $seen, true ) ) {
+						continue;
+					}
+
+					$seen[]  = $url;
+					$images[] = array(
+						'url' => $url,
+						'alt' => $title,
+					);
+				}
 			}
 
 			return $images;
