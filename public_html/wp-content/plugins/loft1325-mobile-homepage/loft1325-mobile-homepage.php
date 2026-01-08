@@ -393,7 +393,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                         <input type="hidden" id="nd_booking_archive_form_guests" name="nd_booking_archive_form_guests" value="<?php echo esc_attr( $default_adults + $default_children ); ?>" />
 
                         <div class="loft-search-toolbar__field loft-search-toolbar__field--actions">
-                            <button type="button" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php echo esc_html( $this->get_string( 'search_submit_label' ) ); ?></button>
+                            <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php echo esc_html( $this->get_string( 'search_submit_label' ) ); ?></button>
                         </div>
                     </div>
                 </div>
