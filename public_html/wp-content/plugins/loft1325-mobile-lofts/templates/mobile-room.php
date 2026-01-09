@@ -33,6 +33,7 @@ $empty_price    = $plugin->localize_label( 'Tarif sur demande', 'Rate on request
 $vibe_label     = $plugin->localize_label( 'Ambiance signature', 'Signature vibe' );
 $perks_label    = $plugin->localize_label( 'Avantages directs', 'Direct perks' );
 $cta_hint       = $plugin->localize_label( 'Confirmation immédiate', 'Instant confirmation' );
+$reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler reviews' );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -144,10 +145,12 @@ $cta_hint       = $plugin->localize_label( 'Confirmation immédiate', 'Instant c
 						<span class="loft1325-mobile-loft__price-hint"><?php echo esc_html( $cta_hint ); ?></span>
 					</div>
 
+					<div class="loft1325-mobile-loft__reviews">
+						<h2><?php echo esc_html( $reviews_label ); ?></h2>
+						<?php echo do_shortcode( '[trustindex no-registration=google]' ); ?>
+					</div>
+
 					<div class="loft1325-mobile-loft__cta-row">
-						<a class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" href="<?php echo esc_url( $booking_url ); ?>">
-							<?php echo esc_html( $cta_label ); ?>
-						</a>
 						<a class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--ghost" href="#loft1325-mobile-loft-highlights">
 							<?php echo esc_html( $details_label ); ?>
 						</a>
@@ -270,12 +273,12 @@ $cta_hint       = $plugin->localize_label( 'Confirmation immédiate', 'Instant c
 
 			<div class="loft1325-mobile-loft__floating-bar">
 				<div class="loft1325-mobile-loft__floating-price">
-					<span class="loft1325-mobile-loft__floating-label"><?php echo esc_html( $plugin->localize_label( 'Votre séjour', 'Your stay' ) ); ?></span>
+					<span class="loft1325-mobile-loft__floating-label"><?php echo esc_html( $plugin->localize_label( 'À partir de', 'From' ) ); ?></span>
 					<strong><?php echo $room_data['price'] ? esc_html( $room_data['price'] ) : esc_html( $empty_price ); ?></strong>
 					<small><?php echo esc_html( $per_night ); ?></small>
 				</div>
 				<a class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" href="<?php echo esc_url( $booking_url ); ?>">
-					<?php echo esc_html( $cta_label ); ?>
+					<?php echo esc_html( $plugin->localize_label( 'Réserver', 'Reserve' ) ); ?>
 				</a>
 			</div>
 		</div>
