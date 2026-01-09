@@ -105,6 +105,7 @@
         var MIN_CHILDREN = 0;
         var MAX_CHILDREN = 10;
         var ONE_DAY = 86400000;
+        var hasCustomGuests = totalGuestsInput && totalGuestsInput.value !== '';
 
         function parseDate(value) {
             if (typeof value !== 'string' || !value) {
@@ -169,6 +170,10 @@
             if (!totalGuestsInput || !adultInput || !childInput) {
                 return;
             }
+            if (!hasCustomGuests) {
+                totalGuestsInput.value = '';
+                return;
+            }
             var adults = clampAdults(adultInput.value);
             var children = clampChildren(childInput.value);
             totalGuestsInput.value = adults + children;
@@ -209,6 +214,7 @@
                 current = isChildren ? clampChildren(current) : clampAdults(current);
             }
             input.value = current;
+            hasCustomGuests = true;
             updateGuestGroupDisplay(group);
             updateTotalGuests();
         }

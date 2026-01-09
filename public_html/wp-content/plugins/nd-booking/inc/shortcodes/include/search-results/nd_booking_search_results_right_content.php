@@ -382,7 +382,7 @@ if ( ! defined( 'ND_BOOKING_LOFT_SEARCH_RESULTS_STYLES' ) ) {
       border: none;
       border-radius: 999px;
       box-shadow: 0 14px 26px rgba(118, 177, 196, 0.30);
-      color: #0b2f3d !important;
+      color: #ffffff !important;
       cursor: pointer;
       display: inline-flex;
       font-size: clamp(13px, 1.8vw, 15px);
@@ -399,7 +399,7 @@ if ( ! defined( 'ND_BOOKING_LOFT_SEARCH_RESULTS_STYLES' ) ) {
     [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__btn:focus {
       background: #5fa0b6;
       box-shadow: 0 18px 32px rgba(118, 177, 196, 0.36);
-      color: #0b2f3d !important;
+      color: #ffffff !important;
     }
 
     [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__btn.nd_booking_display_none_important {

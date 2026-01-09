@@ -315,6 +315,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 
 			$default_adults   = 2;
 			$default_children = 0;
+			$default_total_guests = '';
 
             $dates_label      = $this->localize_label( 'Dates', 'Dates' );
             $date_placeholder = $this->localize_label( 'Sélectionner les dates', 'Select dates' );
@@ -390,7 +391,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                             </div>
                         </div>
 
-                        <input type="hidden" id="nd_booking_archive_form_guests" name="nd_booking_archive_form_guests" value="<?php echo esc_attr( $default_adults + $default_children ); ?>" />
+                        <input type="hidden" id="nd_booking_archive_form_guests" name="nd_booking_archive_form_guests" value="<?php echo esc_attr( $default_total_guests ); ?>" />
 
                         <div class="loft-search-toolbar__field loft-search-toolbar__field--actions">
                             <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php echo esc_html( $this->get_string( 'search_submit_label' ) ); ?></button>
