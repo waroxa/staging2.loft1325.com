@@ -177,6 +177,18 @@ $nd_booking_shortcode_right_content .= '
                     $nd_booking_r_permalink = nd_booking_get_room_link($nd_booking_id,$nd_booking_date_from,$nd_booking_date_to,$nd_booking_archive_form_guests);
                 }
 
+                if ( wp_is_mobile() ) {
+                    $nd_booking_r_permalink = add_query_arg(
+                        array(
+                            'nd_booking_archive_form_date_range_from' => $nd_booking_date_from,
+                            'nd_booking_archive_form_date_range_to'   => $nd_booking_date_to,
+                            'nd_booking_archive_form_guests'          => $nd_booking_archive_form_guests,
+                            'loft1325_mobile_preview'                 => '1',
+                        ),
+                        $nd_booking_permalink
+                    );
+                }
+
                 $nd_booking_shortcode_right_content .= '
                         <a class="loft-search-card__title-link" href="'.$nd_booking_r_permalink.'"><h2 class="loft-search-card__title">'.$loft_room_title.'</h2></a>
 
