@@ -280,7 +280,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 
                 <div class="loft1325-mobile-home__hero-content loft1325-mobile-home__hero-content--after-search">
                     <span class="loft1325-mobile-home__hero-pill"><?php echo esc_html( $plugin->get_string( 'hero_tagline' ) ); ?></span>
-                    <h1 class="loft1325-mobile-home__hero-title"><?php echo esc_html( $plugin->get_string( 'hero_title' ) ); ?></h1>
+                    <h1 class="loft1325-mobile-home__hero-title screen-reader-text"><?php echo esc_html( $plugin->get_string( 'hero_title' ) ); ?></h1>
                     <p class="loft1325-mobile-home__hero-text"><?php echo esc_html( $plugin->get_string( 'hero_description' ) ); ?></p>
                 </div>
 

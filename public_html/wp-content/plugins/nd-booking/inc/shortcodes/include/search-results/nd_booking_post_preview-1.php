@@ -185,7 +185,7 @@ $nd_booking_shortcode_right_content .= '
                             'nd_booking_archive_form_guests'          => $nd_booking_archive_form_guests,
                             'loft1325_mobile_preview'                 => '1',
                         ),
-                        $nd_booking_permalink
+                        $nd_booking_r_permalink
                     );
                 }
 
