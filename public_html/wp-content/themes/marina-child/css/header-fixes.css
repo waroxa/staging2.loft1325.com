@@ -220,6 +220,11 @@
     height: auto;
 }
 
+/* Hide ND Booking alert toast (e.g., last rooms available message) */
+.nd_booking_alert_msg {
+    display: none !important;
+}
+
 [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__sidebar {
     width: 270px;
     flex: 0 0 270px;
