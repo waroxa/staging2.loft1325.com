@@ -419,9 +419,11 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             }
 
             $target = '';
+            $search_page_id = 0;
 
 			if ( function_exists( 'nd_booking_search_page' ) ) {
 				$target = nd_booking_search_page();
+				$search_page_id = (int) get_option( 'nd_booking_search_page' );
 			}
 
 			if ( ! $target ) {
@@ -431,6 +433,14 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 			if ( ! $target ) {
 				return;
 			}
+
+            if ( $search_page_id && is_page( $search_page_id ) ) {
+                return;
+            }
+
+            if ( is_post_type_archive( 'nd_booking_cpt_1' ) ) {
+                return;
+            }
 
 			$language = $this->get_current_language();
 
@@ -449,9 +459,14 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 
             $query_args = array_filter(
                 $query_args,
-                static function ( $value ) {
+                static function ( $value, $key ) {
+                    if ( 'nd_booking_archive_form_guests' === $key ) {
+                        return true;
+                    }
+
                     return '' !== $value && null !== $value;
-                }
+                },
+                ARRAY_FILTER_USE_BOTH
             );
 
             $query_string = http_build_query( $query_args );
