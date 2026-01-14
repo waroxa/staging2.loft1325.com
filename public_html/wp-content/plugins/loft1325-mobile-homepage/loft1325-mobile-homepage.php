@@ -168,6 +168,16 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return false;
             }
 
+            $search_page_id = (int) get_option( 'nd_booking_search_page' );
+
+            if ( $search_page_id && is_page( $search_page_id ) ) {
+                return false;
+            }
+
+            if ( is_post_type_archive( 'nd_booking_cpt_1' ) ) {
+                return false;
+            }
+
             if ( isset( $_GET['loft1325_mobile_preview'] ) && '1' === $_GET['loft1325_mobile_preview'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 return true;
             }
