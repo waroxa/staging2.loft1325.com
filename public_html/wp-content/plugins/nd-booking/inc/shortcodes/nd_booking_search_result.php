@@ -554,7 +554,7 @@ function nd_booking_shortcode_search_results() {
 
     ob_start();
     ?>
-    <form id="nd_booking_search_cpt_1_form_sidebar" class="loft-search-toolbar__form" action="<?php echo esc_url( $nd_booking_form_action ); ?>" method="get" onsubmit="return false;">
+    <form id="nd_booking_search_cpt_1_form_sidebar" class="loft-search-toolbar__form" action="<?php echo esc_url( $nd_booking_form_action ); ?>" method="get">
         <div id="nd_booking_search_main_bg" class="loft-search-toolbar nd_booking_search_form">
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--date">
@@ -588,7 +588,7 @@ function nd_booking_shortcode_search_results() {
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--actions">
                 <span class="loft-search-toolbar__label">&nbsp;</span>
-                <button type="button" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php esc_html_e( 'Recherche', 'nd-booking' ); ?></button>
+                <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php esc_html_e( 'Recherche', 'nd-booking' ); ?></button>
             </div>
         </div>
 
@@ -606,6 +606,7 @@ function nd_booking_shortcode_search_results() {
         var guestsLabelSingular = '<?php echo esc_js( __( 'invité', 'nd-booking' ) ); ?>';
         var guestsLabelPlural = '<?php echo esc_js( __( 'invités', 'nd-booking' ) ); ?>';
 
+        var $form = $('#nd_booking_search_cpt_1_form_sidebar');
         var $checkIn = $('#nd_booking_archive_form_date_range_from');
         var $checkOut = $('#nd_booking_archive_form_date_range_to');
         var $guestInput = $('#nd_booking_archive_form_guests');
@@ -718,7 +719,13 @@ function nd_booking_shortcode_search_results() {
             nd_booking_sorting(1);
         });
 
-        $searchButton.on('click', function(){
+        $form.on('submit', function(event){
+            event.preventDefault();
+            nd_booking_sorting(1);
+        });
+
+        $searchButton.on('click', function(event){
+            event.preventDefault();
             nd_booking_sorting(1);
         });
     });
@@ -1494,6 +1501,21 @@ function nd_booking_sorting_php() {
             'class' => [],
             'style' => [],
         ],
+        'ul' => [
+            'id' => [],
+            'class' => [],
+            'style' => [],
+        ],
+        'ol' => [
+            'id' => [],
+            'class' => [],
+            'style' => [],
+        ],
+        'li' => [
+            'id' => [],
+            'class' => [],
+            'style' => [],
+        ],
         'img' => [ 
             'alt' => [],
             'class' => [], 
@@ -1507,6 +1529,19 @@ function nd_booking_sorting_php() {
             'class' => [],
             'style' => [],
         ],
+        'strong' => [
+            'class' => [],
+            'style' => [],
+        ],
+        'em' => [
+            'class' => [],
+            'style' => [],
+        ],
+        'small' => [
+            'class' => [],
+            'style' => [],
+        ],
+        'br' => [],
         'a' => [ 
             'href' => [],
             'class' => [],
@@ -1518,12 +1553,28 @@ function nd_booking_sorting_php() {
             'id' => [],
             'class' => [],
             'style' => [],
-        ],              
+        ],
+        'h2' => [
+            'id' => [],
+            'class' => [],
+            'style' => [],
+        ],
+        'h3' => [
+            'id' => [],
+            'class' => [],
+            'style' => [],
+        ],
+        'h4' => [
+            'id' => [],
+            'class' => [],
+            'style' => [],
+        ],
         'form' => [ 
             'id' => [],
             'method' => [],
             'action' => [],
             'style' => [],
+            'class' => [],
         ],
         'input' => [ 
             'type' => [],
@@ -1531,6 +1582,13 @@ function nd_booking_sorting_php() {
             'value' => [],
             'style' => [],
             'class' => [],
+        ],
+        'button' => [
+            'type' => [],
+            'name' => [],
+            'value' => [],
+            'class' => [],
+            'style' => [],
         ],
         'style' => [],
         'table' => [
