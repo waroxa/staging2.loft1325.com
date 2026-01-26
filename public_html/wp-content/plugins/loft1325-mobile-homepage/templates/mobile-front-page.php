@@ -239,6 +239,16 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 </style>
 
 <div class="loft1325-mobile-home__wrapper">
+    <header class="loft1325-mobile-home__topbar" aria-hidden="true">
+        <div class="loft1325-mobile-home__logo">
+            <?php if ( has_custom_logo() ) : ?>
+                <?php the_custom_logo(); ?>
+            <?php else : ?>
+                <span class="loft1325-mobile-home__site-title"><?php bloginfo( 'name' ); ?></span>
+            <?php endif; ?>
+        </div>
+    </header>
+
     <main id="loft1325-mobile-homepage" class="loft1325-mobile-home">
         <section class="loft1325-mobile-home__hero" style="<?php echo $hero_background ? 'background-image: url(' . esc_url( $hero_background ) . ');' : ''; ?>">
             <div class="loft1325-mobile-home__hero-overlay"></div>

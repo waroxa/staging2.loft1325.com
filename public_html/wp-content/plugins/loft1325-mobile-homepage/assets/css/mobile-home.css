@@ -80,6 +80,10 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 
+body.loft1325-mobile-home-active .loft1325-mobile-home__topbar {
+    display: none;
+}
+
 .loft1325-mobile-home__logo img {
     max-height: 44px;
     width: auto;

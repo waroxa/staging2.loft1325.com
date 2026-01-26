@@ -948,10 +948,8 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return;
             }
 
-            $parent_slug = MPHB()->menus()->getMainMenuSlug();
-
             add_submenu_page(
-                $parent_slug,
+                'index.php',
                 __( 'Discount Codes', 'loft1325-mobile-home' ),
                 __( 'Discount Codes', 'loft1325-mobile-home' ),
                 'edit_mphb_coupons',
