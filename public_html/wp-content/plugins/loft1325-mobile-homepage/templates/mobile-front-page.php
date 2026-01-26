@@ -239,7 +239,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 </style>
 
 <div class="loft1325-mobile-home__wrapper">
-    <header class="loft1325-mobile-home__topbar">
+    <header class="loft1325-mobile-home__topbar" aria-hidden="true">
         <div class="loft1325-mobile-home__logo">
             <?php if ( has_custom_logo() ) : ?>
                 <?php the_custom_logo(); ?>

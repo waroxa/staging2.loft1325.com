@@ -80,6 +80,10 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
 }
 
+body.loft1325-mobile-home-active .loft1325-mobile-home__topbar {
+    display: none;
+}
+
 .loft1325-mobile-home__logo img {
     max-height: 44px;
     width: auto;
@@ -1305,7 +1309,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolb
 
 body.loft1325-mobile-home-active #loft1325-mobile-home-search button.loft-search-toolbar__submit {
     background: #ffda44 !important;
-    color: #ffffff !important;
+    color: #0b0b0b !important;
     border: none !important;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08) !important;
 }
@@ -1795,7 +1799,7 @@ body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__submit
     border-radius: 6px;
     background: #ffda44 !important;
     border: none;
-    color: #ffffff !important;
+    color: #0b0b0b !important;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 0;
