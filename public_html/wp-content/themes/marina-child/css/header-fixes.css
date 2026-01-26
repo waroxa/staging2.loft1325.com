@@ -748,3 +748,73 @@
     border-color: var(--loft1325-accent-strong) !important;
     box-shadow: 0 14px 30px var(--loft1325-accent-shadow);
 }
+
+/* Concierge + booking polish */
+.nd_booking_section_box_search_field {
+    border-radius: 14px;
+    border-color: #d1d5db;
+    background: #ffffff;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+}
+
+.nd_booking_label_search {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.nd_booking_section_box_search_field .nd_booking_field_search {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    letter-spacing: 0.02em;
+}
+
+.nd_booking_section_box_search_field img,
+.nd_booking_search_form img[src*="icon-"],
+#nd_booking_single_cpt_1_basic_info img[src*="icon-"] {
+    width: 20px;
+    height: 20px;
+}
+
+.nd_booking_search_form .nd_booking_guests_increase,
+.nd_booking_search_form .nd_booking_guests_decrease {
+    opacity: 0.7;
+}
+
+.nd_booking_search_form .nd_booking_guests_increase:hover,
+.nd_booking_search_form .nd_booking_guests_decrease:hover {
+    opacity: 1;
+}
+
+.nicdark_bg_greydark,
+.nd_booking_bg_greydark,
+.nd_booking_bg_greydark_2 {
+    color: #f8fafc;
+}
+
+.nicdark_bg_greydark p,
+.nicdark_bg_greydark h1,
+.nicdark_bg_greydark h2,
+.nicdark_bg_greydark h3,
+.nicdark_bg_greydark h4,
+.nicdark_bg_greydark h5,
+.nicdark_bg_greydark h6,
+.nd_booking_bg_greydark p,
+.nd_booking_bg_greydark h1,
+.nd_booking_bg_greydark h2,
+.nd_booking_bg_greydark h3,
+.nd_booking_bg_greydark h4,
+.nd_booking_bg_greydark h5,
+.nd_booking_bg_greydark h6,
+.nd_booking_bg_greydark_2 p,
+.nd_booking_bg_greydark_2 h1,
+.nd_booking_bg_greydark_2 h2,
+.nd_booking_bg_greydark_2 h3,
+.nd_booking_bg_greydark_2 h4,
+.nd_booking_bg_greydark_2 h5,
+.nd_booking_bg_greydark_2 h6 {
+    color: rgba(248, 250, 252, 0.92);
+}
