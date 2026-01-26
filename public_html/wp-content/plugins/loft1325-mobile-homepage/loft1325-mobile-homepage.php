@@ -77,6 +77,8 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             add_action( 'customize_register', array( $this, 'register_customizer_settings' ) );
             add_action( 'template_redirect', array( $this, 'redirect_mobile_search_requests' ) );
             add_action( 'admin_notices', array( $this, 'maybe_show_dependency_notice' ) );
+            add_action( 'admin_menu', array( $this, 'register_coupon_tools_page' ) );
+            add_action( 'admin_post_loft1325_create_coupon', array( $this, 'handle_coupon_creation' ) );
         }
 
         /**
@@ -331,9 +333,6 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             $date_placeholder = $this->localize_label( 'Sélectionner les dates', 'Select dates' );
             $adults_label     = $this->localize_label( 'Adultes', 'Adults' );
             $children_label   = $this->localize_label( 'Enfants (0–18 ans)', 'Children (0–18 yrs)' );
-            $promo_label      = $this->localize_label( 'Code promotionnel', 'Promotional code' );
-            $add_promo_label  = $this->localize_label( 'Ajouter un code promotionnel', 'Add promotional code' );
-            $promo_placeholder = $this->localize_label( 'Entrez votre code', 'Enter your code' );
             $language_attr    = ( 'en' === $language ) ? 'en' : 'fr';
 
             ob_start();
@@ -386,18 +385,6 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                                     <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $this->localize_label( 'Augmenter le nombre d’enfants', 'Increase child count' ) ); ?>">+</button>
                                     <input type="hidden" id="loft_booking_children" value="<?php echo esc_attr( $default_children ); ?>" />
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="loft-booking-card__promo">
-                            <button type="button" class="loft-booking-card__promo-toggle" data-promo-toggle>
-                                <span class="loft-booking-card__promo-icon" aria-hidden="true">+</span>
-                                <span class="loft-booking-card__promo-text"><?php echo esc_html( $add_promo_label ); ?></span>
-                            </button>
-                            <div class="loft-booking-card__promo-field" data-promo-field hidden>
-                                <label class="loft-search-toolbar__label" for="loft_booking_coupon"><?php echo esc_html( $promo_label ); ?></label>
-                                <input type="text" id="loft_booking_coupon" name="nd_booking_booking_form_coupon" class="loft-booking-card__text" placeholder="<?php echo esc_attr( $promo_placeholder ); ?>" autocomplete="off" />
-                                <input type="hidden" id="loft_booking_coupon_checkout" name="nd_booking_checkout_form_coupon" value="" />
                             </div>
                         </div>
 
@@ -950,6 +937,378 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                         'mime_type'=> 'image',
                     )
                 )
+            );
+        }
+
+        /**
+         * Register the discount code helper under the Hotel Booking menu.
+         */
+        public function register_coupon_tools_page() {
+            if ( ! function_exists( 'MPHB' ) || ! class_exists( '\MPHB\PostTypes\CouponCPT' ) ) {
+                return;
+            }
+
+            $parent_slug = MPHB()->menus()->getMainMenuSlug();
+
+            add_submenu_page(
+                $parent_slug,
+                __( 'Discount Codes', 'loft1325-mobile-home' ),
+                __( 'Discount Codes', 'loft1325-mobile-home' ),
+                'edit_mphb_coupons',
+                'loft1325-discount-codes',
+                array( $this, 'render_coupon_tools_page' )
+            );
+        }
+
+        /**
+         * Render the discount code helper page.
+         */
+        public function render_coupon_tools_page() {
+            if ( ! current_user_can( 'edit_mphb_coupons' ) ) {
+                return;
+            }
+
+            if ( ! function_exists( 'MPHB' ) || ! class_exists( '\MPHB\PostTypes\CouponCPT' ) ) {
+                echo '<div class="notice notice-error"><p>' . esc_html__( 'Hotel Booking coupons are unavailable because the MotoPress Hotel Booking plugin is not active.', 'loft1325-mobile-home' ) . '</p></div>';
+                return;
+            }
+
+            $created_id = isset( $_GET['loft1325_coupon_created'] ) ? absint( $_GET['loft1325_coupon_created'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $error_code = isset( $_GET['loft1325_coupon_error'] ) ? sanitize_key( $_GET['loft1325_coupon_error'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+            if ( $created_id ) {
+                $edit_url = esc_url( admin_url( 'post.php?post=' . $created_id . '&action=edit' ) );
+                echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Discount code created.', 'loft1325-mobile-home' ) . ' <a href="' . $edit_url . '">' . esc_html__( 'Edit coupon', 'loft1325-mobile-home' ) . '</a></p></div>';
+            } elseif ( $error_code ) {
+                $message = esc_html__( 'Please review the form and try again.', 'loft1325-mobile-home' );
+
+                if ( 'missing_code' === $error_code ) {
+                    $message = esc_html__( 'A coupon code is required.', 'loft1325-mobile-home' );
+                } elseif ( 'missing_amount' === $error_code ) {
+                    $message = esc_html__( 'Please provide a discount amount for this preset.', 'loft1325-mobile-home' );
+                } elseif ( 'invalid_preset' === $error_code ) {
+                    $message = esc_html__( 'Please select a valid discount preset.', 'loft1325-mobile-home' );
+                } elseif ( 'duplicate_code' === $error_code ) {
+                    $message = esc_html__( 'That coupon code already exists.', 'loft1325-mobile-home' );
+                } elseif ( 'insert_failed' === $error_code ) {
+                    $message = esc_html__( 'We could not create the coupon. Please try again.', 'loft1325-mobile-home' );
+                }
+
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+            }
+
+            $presets = $this->get_coupon_presets();
+            $coupons_enabled = MPHB()->settings()->main()->isCouponsEnabled();
+            ?>
+            <div class="wrap">
+                <h1><?php esc_html_e( 'Discount Codes', 'loft1325-mobile-home' ); ?></h1>
+                <p><?php esc_html_e( 'Create popular hotel discount codes that work with the MotoPress Hotel Booking checkout.', 'loft1325-mobile-home' ); ?></p>
+                <?php if ( ! $coupons_enabled ) : ?>
+                    <div class="notice notice-warning inline"><p><?php esc_html_e( 'Coupons are currently disabled in Hotel Booking settings. Enable them to allow guests to redeem these codes.', 'loft1325-mobile-home' ); ?></p></div>
+                <?php endif; ?>
+                <p>
+                    <a class="button" href="<?php echo esc_url( admin_url( 'edit.php?post_type=mphb_coupon' ) ); ?>">
+                        <?php esc_html_e( 'View all coupons', 'loft1325-mobile-home' ); ?>
+                    </a>
+                </p>
+
+                <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                    <?php wp_nonce_field( 'loft1325_create_coupon' ); ?>
+                    <input type="hidden" name="action" value="loft1325_create_coupon" />
+
+                    <table class="form-table" role="presentation">
+                        <tbody>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_code"><?php esc_html_e( 'Coupon Code', 'loft1325-mobile-home' ); ?></label></th>
+                                <td><input type="text" class="regular-text" id="loft1325_coupon_code" name="loft1325_coupon_code" required /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_preset"><?php esc_html_e( 'Discount Preset', 'loft1325-mobile-home' ); ?></label></th>
+                                <td>
+                                    <select id="loft1325_coupon_preset" name="loft1325_coupon_preset">
+                                        <?php foreach ( $presets as $preset_key => $preset ) : ?>
+                                            <option value="<?php echo esc_attr( $preset_key ); ?>"><?php echo esc_html( $preset['label'] ); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <p class="description"><?php esc_html_e( 'Pick a common hotel discount type like early-bird, last-minute, or fixed amount off.', 'loft1325-mobile-home' ); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_amount"><?php esc_html_e( 'Discount Amount', 'loft1325-mobile-home' ); ?></label></th>
+                                <td>
+                                    <input type="number" step="0.01" min="0" id="loft1325_coupon_amount" name="loft1325_coupon_amount" class="small-text" />
+                                    <p class="description"><?php esc_html_e( 'Required for percentage/fixed discounts. Ignored for the 100% off preset.', 'loft1325-mobile-home' ); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_min_days"><?php esc_html_e( 'Min Days Before Check-in', 'loft1325-mobile-home' ); ?></label></th>
+                                <td>
+                                    <input type="number" step="1" min="0" id="loft1325_coupon_min_days" name="loft1325_coupon_min_days" class="small-text" />
+                                    <p class="description"><?php esc_html_e( 'Used for early-bird discounts.', 'loft1325-mobile-home' ); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_max_days"><?php esc_html_e( 'Max Days Before Check-in', 'loft1325-mobile-home' ); ?></label></th>
+                                <td>
+                                    <input type="number" step="1" min="0" id="loft1325_coupon_max_days" name="loft1325_coupon_max_days" class="small-text" />
+                                    <p class="description"><?php esc_html_e( 'Used for last-minute discounts.', 'loft1325-mobile-home' ); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_min_nights"><?php esc_html_e( 'Minimum Nights', 'loft1325-mobile-home' ); ?></label></th>
+                                <td>
+                                    <input type="number" step="1" min="1" id="loft1325_coupon_min_nights" name="loft1325_coupon_min_nights" class="small-text" />
+                                    <p class="description"><?php esc_html_e( 'Used for long-stay discounts.', 'loft1325-mobile-home' ); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_max_nights"><?php esc_html_e( 'Maximum Nights', 'loft1325-mobile-home' ); ?></label></th>
+                                <td>
+                                    <input type="number" step="1" min="0" id="loft1325_coupon_max_nights" name="loft1325_coupon_max_nights" class="small-text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_expiration"><?php esc_html_e( 'Expiration Date', 'loft1325-mobile-home' ); ?></label></th>
+                                <td><input type="date" id="loft1325_coupon_expiration" name="loft1325_coupon_expiration" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_usage_limit"><?php esc_html_e( 'Usage Limit', 'loft1325-mobile-home' ); ?></label></th>
+                                <td><input type="number" step="1" min="0" id="loft1325_coupon_usage_limit" name="loft1325_coupon_usage_limit" class="small-text" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><label for="loft1325_coupon_description"><?php esc_html_e( 'Internal Description', 'loft1325-mobile-home' ); ?></label></th>
+                                <td><textarea id="loft1325_coupon_description" name="loft1325_coupon_description" class="large-text" rows="3"></textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <?php submit_button( __( 'Create discount code', 'loft1325-mobile-home' ) ); ?>
+                </form>
+            </div>
+            <?php
+        }
+
+        /**
+         * Handle creation of new coupon presets.
+         */
+        public function handle_coupon_creation() {
+            if ( ! current_user_can( 'edit_mphb_coupons' ) ) {
+                wp_die( esc_html__( 'You are not allowed to create coupons.', 'loft1325-mobile-home' ) );
+            }
+
+            check_admin_referer( 'loft1325_create_coupon' );
+
+            if ( ! function_exists( 'MPHB' ) || ! class_exists( '\MPHB\PostTypes\CouponCPT' ) ) {
+                wp_die( esc_html__( 'Hotel Booking coupons are unavailable.', 'loft1325-mobile-home' ) );
+            }
+
+            $code        = isset( $_POST['loft1325_coupon_code'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_coupon_code'] ) ) : '';
+            $preset_key  = isset( $_POST['loft1325_coupon_preset'] ) ? sanitize_key( wp_unslash( $_POST['loft1325_coupon_preset'] ) ) : '';
+            $amount      = isset( $_POST['loft1325_coupon_amount'] ) ? (float) wp_unslash( $_POST['loft1325_coupon_amount'] ) : 0;
+            $min_days    = isset( $_POST['loft1325_coupon_min_days'] ) ? absint( $_POST['loft1325_coupon_min_days'] ) : 0;
+            $max_days    = isset( $_POST['loft1325_coupon_max_days'] ) ? absint( $_POST['loft1325_coupon_max_days'] ) : 0;
+            $min_nights  = isset( $_POST['loft1325_coupon_min_nights'] ) ? absint( $_POST['loft1325_coupon_min_nights'] ) : 0;
+            $max_nights  = isset( $_POST['loft1325_coupon_max_nights'] ) ? absint( $_POST['loft1325_coupon_max_nights'] ) : 0;
+            $expiration  = isset( $_POST['loft1325_coupon_expiration'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_coupon_expiration'] ) ) : '';
+            $usage_limit = isset( $_POST['loft1325_coupon_usage_limit'] ) ? absint( $_POST['loft1325_coupon_usage_limit'] ) : 0;
+            $description = isset( $_POST['loft1325_coupon_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['loft1325_coupon_description'] ) ) : '';
+
+            if ( '' === $code ) {
+                $this->redirect_coupon_error( 'missing_code' );
+            }
+
+            $presets = $this->get_coupon_presets();
+
+            if ( ! isset( $presets[ $preset_key ] ) ) {
+                $this->redirect_coupon_error( 'invalid_preset' );
+            }
+
+            if ( $presets[ $preset_key ]['requires_amount'] && $amount <= 0 ) {
+                $this->redirect_coupon_error( 'missing_amount' );
+            }
+
+            $existing = get_page_by_title( $code, OBJECT, 'mphb_coupon' );
+
+            if ( $existing ) {
+                $this->redirect_coupon_error( 'duplicate_code' );
+            }
+
+            $coupon_id = wp_insert_post(
+                array(
+                    'post_title'  => $code,
+                    'post_status' => 'publish',
+                    'post_type'   => 'mphb_coupon',
+                ),
+                true
+            );
+
+            if ( is_wp_error( $coupon_id ) ) {
+                $this->redirect_coupon_error( 'insert_failed' );
+            }
+
+            $preset = $presets[ $preset_key ];
+
+            $room_amount    = $preset['room_amount'];
+            $service_amount = $preset['service_amount'];
+            $fee_amount     = $preset['fee_amount'];
+
+            if ( 'amount' === $room_amount ) {
+                $room_amount = $amount;
+            }
+
+            if ( 'amount' === $service_amount ) {
+                $service_amount = $amount;
+            }
+
+            if ( 'amount' === $fee_amount ) {
+                $fee_amount = $amount;
+            }
+
+            update_post_meta( $coupon_id, '_mphb_description', $description );
+            update_post_meta( $coupon_id, '_mphb_room_discount_type', $preset['room_discount_type'] );
+            update_post_meta( $coupon_id, '_mphb_service_discount_type', $preset['service_discount_type'] );
+            update_post_meta( $coupon_id, '_mphb_fee_discount_type', $preset['fee_discount_type'] );
+            update_post_meta( $coupon_id, '_mphb_room_amount', $room_amount );
+            update_post_meta( $coupon_id, '_mphb_service_amount', $service_amount );
+            update_post_meta( $coupon_id, '_mphb_fee_amount', $fee_amount );
+            update_post_meta( $coupon_id, '_mphb_include_room_types', array() );
+            update_post_meta( $coupon_id, '_mphb_include_services', array() );
+            update_post_meta( $coupon_id, '_mphb_include_fees', array() );
+            update_post_meta( $coupon_id, '_mphb_min_days_before_check_in', $preset['min_days_before_check_in'] ? $min_days : 0 );
+            update_post_meta( $coupon_id, '_mphb_max_days_before_check_in', $preset['max_days_before_check_in'] ? $max_days : 0 );
+            update_post_meta( $coupon_id, '_mphb_min_nights', $preset['min_nights'] ? max( 1, $min_nights ) : 1 );
+            update_post_meta( $coupon_id, '_mphb_max_nights', $preset['max_nights'] ? $max_nights : 0 );
+            update_post_meta( $coupon_id, '_mphb_usage_limit', $usage_limit );
+            update_post_meta( $coupon_id, '_mphb_usage_count', 0 );
+            update_post_meta( $coupon_id, '_mphb_expiration_date', $expiration );
+
+            $redirect_url = add_query_arg(
+                array(
+                    'page'                      => 'loft1325-discount-codes',
+                    'loft1325_coupon_created'   => $coupon_id,
+                ),
+                admin_url( 'admin.php' )
+            );
+
+            wp_safe_redirect( $redirect_url );
+            exit;
+        }
+
+        /**
+         * Redirect back to the discount tool with an error.
+         *
+         * @param string $code Error code.
+         */
+        private function redirect_coupon_error( $code ) {
+            $redirect_url = add_query_arg(
+                array(
+                    'page'                   => 'loft1325-discount-codes',
+                    'loft1325_coupon_error'  => $code,
+                ),
+                admin_url( 'admin.php' )
+            );
+
+            wp_safe_redirect( $redirect_url );
+            exit;
+        }
+
+        /**
+         * Define preset configurations for coupon creation.
+         *
+         * @return array<string, array<string, mixed>>
+         */
+        private function get_coupon_presets() {
+            if ( ! class_exists( '\MPHB\PostTypes\CouponCPT' ) ) {
+                return array();
+            }
+
+            $coupon = '\MPHB\PostTypes\CouponCPT';
+
+            return array(
+                'percentage' => array(
+                    'label'                  => __( 'Percentage off accommodation', 'loft1325-mobile-home' ),
+                    'room_discount_type'     => $coupon::TYPE_ACCOMMODATION_PERCENTAGE,
+                    'service_discount_type'  => $coupon::TYPE_SERVICE_NONE,
+                    'fee_discount_type'      => $coupon::TYPE_FEE_NONE,
+                    'room_amount'            => 'amount',
+                    'service_amount'         => 0,
+                    'fee_amount'             => 0,
+                    'min_days_before_check_in' => false,
+                    'max_days_before_check_in' => false,
+                    'min_nights'             => false,
+                    'max_nights'             => false,
+                    'requires_amount'        => true,
+                ),
+                'fixed' => array(
+                    'label'                  => __( 'Fixed amount off accommodation', 'loft1325-mobile-home' ),
+                    'room_discount_type'     => $coupon::TYPE_ACCOMMODATION_FIXED,
+                    'service_discount_type'  => $coupon::TYPE_SERVICE_NONE,
+                    'fee_discount_type'      => $coupon::TYPE_FEE_NONE,
+                    'room_amount'            => 'amount',
+                    'service_amount'         => 0,
+                    'fee_amount'             => 0,
+                    'min_days_before_check_in' => false,
+                    'max_days_before_check_in' => false,
+                    'min_nights'             => false,
+                    'max_nights'             => false,
+                    'requires_amount'        => true,
+                ),
+                'early_bird' => array(
+                    'label'                  => __( 'Early-bird percentage', 'loft1325-mobile-home' ),
+                    'room_discount_type'     => $coupon::TYPE_ACCOMMODATION_PERCENTAGE,
+                    'service_discount_type'  => $coupon::TYPE_SERVICE_NONE,
+                    'fee_discount_type'      => $coupon::TYPE_FEE_NONE,
+                    'room_amount'            => 'amount',
+                    'service_amount'         => 0,
+                    'fee_amount'             => 0,
+                    'min_days_before_check_in' => true,
+                    'max_days_before_check_in' => false,
+                    'min_nights'             => false,
+                    'max_nights'             => false,
+                    'requires_amount'        => true,
+                ),
+                'last_minute' => array(
+                    'label'                  => __( 'Last-minute percentage', 'loft1325-mobile-home' ),
+                    'room_discount_type'     => $coupon::TYPE_ACCOMMODATION_PERCENTAGE,
+                    'service_discount_type'  => $coupon::TYPE_SERVICE_NONE,
+                    'fee_discount_type'      => $coupon::TYPE_FEE_NONE,
+                    'room_amount'            => 'amount',
+                    'service_amount'         => 0,
+                    'fee_amount'             => 0,
+                    'min_days_before_check_in' => false,
+                    'max_days_before_check_in' => true,
+                    'min_nights'             => false,
+                    'max_nights'             => false,
+                    'requires_amount'        => true,
+                ),
+                'long_stay' => array(
+                    'label'                  => __( 'Long-stay percentage', 'loft1325-mobile-home' ),
+                    'room_discount_type'     => $coupon::TYPE_ACCOMMODATION_PERCENTAGE,
+                    'service_discount_type'  => $coupon::TYPE_SERVICE_NONE,
+                    'fee_discount_type'      => $coupon::TYPE_FEE_NONE,
+                    'room_amount'            => 'amount',
+                    'service_amount'         => 0,
+                    'fee_amount'             => 0,
+                    'min_days_before_check_in' => false,
+                    'max_days_before_check_in' => false,
+                    'min_nights'             => true,
+                    'max_nights'             => false,
+                    'requires_amount'        => true,
+                ),
+                'free_stay' => array(
+                    'label'                  => __( '100% off stay (rooms, services, fees)', 'loft1325-mobile-home' ),
+                    'room_discount_type'     => $coupon::TYPE_ACCOMMODATION_PERCENTAGE,
+                    'service_discount_type'  => $coupon::TYPE_SERVICE_PERCENTAGE,
+                    'fee_discount_type'      => $coupon::TYPE_FEE_PERCENTAGE,
+                    'room_amount'            => 100,
+                    'service_amount'         => 100,
+                    'fee_amount'             => 100,
+                    'min_days_before_check_in' => false,
+                    'max_days_before_check_in' => false,
+                    'min_nights'             => false,
+                    'max_nights'             => false,
+                    'requires_amount'        => false,
+                ),
             );
         }
 
