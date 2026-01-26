@@ -26,8 +26,6 @@ body.loft1325-mobile-home-active .nicdark_site > .nicdark_section.nicdark_custom
 }
 
 body.loft1325-mobile-home-active .nicdark_site > .nicdark_section.nicdark_height_3,
-body.loft1325-mobile-home-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_section,
-body.loft1325-mobile-home-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_container,
 body.loft1325-mobile-home-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_navigation_1_sidebar_content {
     display: none !important;
 }
