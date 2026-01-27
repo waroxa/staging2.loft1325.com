@@ -50,65 +50,56 @@
     });
   };
 
-  const localizeScarcityNotices = () => {
-    const lang = (document.documentElement && document.documentElement.lang) || '';
-    const isFrench = lang.toLowerCase().startsWith('fr');
+  const removeScarcityNotices = () => {
+    const normalizeForMatch = (text) =>
+      normalize(text)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
 
-    if (!isFrench) {
-      return;
-    }
-
-    const translations = {
-      'last room available': 'Dernière chambre disponible',
-      'last rooms available': 'Dernières chambres disponibles',
-    };
+    const scarcityPhrases = [
+      'last room available',
+      'last rooms available',
+      'derniere chambre disponible',
+      'dernieres chambres disponibles',
+    ];
 
     const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, {
       acceptNode: (node) => {
         if (!node.nodeValue) return NodeFilter.FILTER_SKIP;
 
-        const normalized = normalize(node.nodeValue).toLowerCase();
-        return Object.keys(translations).some((needle) => normalized.includes(needle))
+        const normalized = normalizeForMatch(node.nodeValue);
+        return scarcityPhrases.some((needle) => normalized.includes(needle))
           ? NodeFilter.FILTER_ACCEPT
           : NodeFilter.FILTER_SKIP;
       },
     });
 
-    const nodesToTranslate = [];
+    const nodesToRemove = [];
 
     while (walker.nextNode()) {
-      nodesToTranslate.push(walker.currentNode);
+      nodesToRemove.push(walker.currentNode);
     }
 
-    nodesToTranslate.forEach((node) => {
-      const normalized = normalize(node.nodeValue).toLowerCase();
-      let replacement = node.nodeValue;
+    nodesToRemove.forEach((node) => {
+      const holder = node.parentElement;
 
-      Object.entries(translations).forEach(([needle, target]) => {
-        if (normalized.includes(needle)) {
-          replacement = target;
-        }
-      });
-
-      if (replacement === node.nodeValue) {
-        const holder = node.parentElement;
-
-        if (holder) {
-          holder.style.display = 'none';
-        } else {
-          node.nodeValue = '';
-        }
-
-        return;
+      if (holder) {
+        const container =
+          holder.closest(
+            'button, .nd_booking_btn, .nd_booking_message, .nd_booking_alert, .nd_booking_box, .nd_booking_box_small, .nd_booking_box_large'
+          ) || holder;
+        container.style.display = 'none';
+        container.setAttribute('aria-hidden', 'true');
+      } else {
+        node.nodeValue = '';
       }
-
-      node.nodeValue = replacement;
     });
   };
 
   const runFixes = () => {
     cleanTranslationPlaceholders();
-    localizeScarcityNotices();
+    removeScarcityNotices();
   };
 
   if (document.readyState === 'loading') {
