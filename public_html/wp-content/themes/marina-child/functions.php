@@ -742,3 +742,13 @@ function marina_child_prevent_search_404() {
     }
 }
 add_action( 'template_redirect', 'marina_child_prevent_search_404', 9 );
+
+/**
+ * Disable ND Booking alert toast messages site-wide.
+ */
+function marina_child_disable_booking_alert_message() {
+    if ( function_exists( 'nd_booking_get_alert' ) ) {
+        remove_action( 'nicdark_footer_nd', 'nd_booking_get_alert' );
+    }
+}
+add_action( 'wp', 'marina_child_disable_booking_alert_message', 1 );
