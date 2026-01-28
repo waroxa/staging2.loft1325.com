@@ -21,7 +21,6 @@ $guest_singular     = $plugin->localize_label( 'invité', 'guest' );
 $guest_plural       = $plugin->localize_label( 'invités', 'guests' );
 $night_singular     = $plugin->localize_label( 'nuit', 'night' );
 $night_plural       = $plugin->localize_label( 'nuits', 'nights' );
-$search_helper_text = $plugin->localize_label( 'Choisissez vos dates et le nombre d’invités pour trouver un loft disponible.', 'Choose your dates and number of guests to find an available loft.' );
 $features_heading   = $plugin->localize_label( 'Avantages principaux', 'Key benefits' );
 $empty_rooms_text   = $plugin->localize_label( 'Aucun loft n’est actuellement disponible. Ajoutez vos chambres ND Booking pour alimenter cette section.', 'No lofts are currently available. Add your ND Booking rooms to populate this section.' );
 $price_label        = ( 'en' === $language ) ? 'From %1$s%2$s' : 'À partir de %1$s%2$s';
@@ -204,7 +203,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 
 @media (max-width: 420px) {
     body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__search-card {
-        padding: 1.65rem 1.45rem;
+        padding: 0.9rem;
     }
 }
 
@@ -239,7 +238,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 </style>
 
 <div class="loft1325-mobile-home__wrapper">
-    <header class="loft1325-mobile-home__topbar" aria-hidden="true">
+    <header class="loft1325-mobile-home__topbar">
         <div class="loft1325-mobile-home__logo">
             <?php if ( has_custom_logo() ) : ?>
                 <?php the_custom_logo(); ?>
@@ -247,12 +246,57 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                 <span class="loft1325-mobile-home__site-title"><?php bloginfo( 'name' ); ?></span>
             <?php endif; ?>
         </div>
+        <button
+            class="loft1325-mobile-home__nav-toggle"
+            type="button"
+            aria-label="<?php echo esc_attr( $plugin->localize_label( 'Ouvrir le menu', 'Open menu' ) ); ?>"
+            aria-expanded="false"
+            aria-controls="loft1325-mobile-nav"
+            data-loft1325-mobile-nav-toggle
+        >
+            <span class="loft1325-mobile-home__nav-toggle-bar"></span>
+            <span class="loft1325-mobile-home__nav-toggle-bar"></span>
+            <span class="loft1325-mobile-home__nav-toggle-bar"></span>
+        </button>
     </header>
+
+    <div class="loft1325-mobile-home__nav-overlay" data-loft1325-mobile-nav-overlay hidden></div>
+    <nav id="loft1325-mobile-nav" class="loft1325-mobile-home__nav" aria-hidden="true" hidden>
+        <div class="loft1325-mobile-home__nav-inner">
+            <?php
+            $menu = wp_nav_menu(
+                array(
+                    'theme_location' => 'primary',
+                    'container'      => false,
+                    'echo'           => false,
+                    'fallback_cb'    => false,
+                )
+            );
+
+            if ( ! $menu ) {
+                $menu = wp_page_menu(
+                    array(
+                        'echo'      => false,
+                        'menu_class'=> 'menu',
+                    )
+                );
+            }
+
+            echo $menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            ?>
+        </div>
+    </nav>
 
     <main id="loft1325-mobile-homepage" class="loft1325-mobile-home">
         <section class="loft1325-mobile-home__hero" style="<?php echo $hero_background ? 'background-image: url(' . esc_url( $hero_background ) . ');' : ''; ?>">
             <div class="loft1325-mobile-home__hero-overlay"></div>
             <div class="loft1325-mobile-home__hero-body">
+                <div class="loft1325-mobile-home__hero-content">
+                    <span class="loft1325-mobile-home__hero-pill"><?php echo esc_html( $plugin->get_string( 'hero_tagline' ) ); ?></span>
+                    <h1 class="loft1325-mobile-home__hero-title"><?php echo esc_html( $plugin->get_string( 'hero_title' ) ); ?></h1>
+                    <p class="loft1325-mobile-home__hero-text"><?php echo esc_html( $plugin->get_string( 'hero_description' ) ); ?></p>
+                </div>
+
                 <div
                     class="loft1325-mobile-home__search-card"
                     id="loft1325-mobile-home-search"
@@ -268,33 +312,22 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                     data-nights-plural="<?php echo esc_attr( $night_plural ); ?>"
                 >
                     <div class="loft-search-card loft-search-card--stacked">
-                        <div class="loft-search-card__header">
-                            <h2 class="loft1325-mobile-home__search-title"><?php echo esc_html( $plugin->get_string( 'search_card_title' ) ); ?></h2>
-                            <p class="loft-search-card__subtext"><?php echo esc_html( $search_helper_text ); ?></p>
-                        </div>
-                        <div class="loft1325-mobile-home__search-form loft-search-card__body">
+                        <div class="loft-search-card__body loft1325-mobile-home__search-form">
+                            <div class="loft-booking-card__field loft-booking-card__field--location">
+                                <span class="loft-booking-card__field-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+                                        <path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 1 1 16 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </span>
+                                <div class="loft-booking-card__field-body">
+                                    <span class="loft-booking-card__label"><?php echo esc_html( $plugin->get_string( 'search_location_label' ) ); ?></span>
+                                    <span class="loft-booking-card__value"><?php echo esc_html( $plugin->get_string( 'search_location_value' ) ); ?></span>
+                                </div>
+                            </div>
                             <?php echo $plugin->get_mobile_search_form_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                         </div>
                     </div>
-                </div>
-
-                <div class="loft1325-mobile-home__hero-content loft1325-mobile-home__hero-content--after-search">
-                    <span class="loft1325-mobile-home__hero-pill"><?php echo esc_html( $plugin->get_string( 'hero_tagline' ) ); ?></span>
-                    <h1 class="loft1325-mobile-home__hero-title screen-reader-text"><?php echo esc_html( $plugin->get_string( 'hero_title' ) ); ?></h1>
-                    <p class="loft1325-mobile-home__hero-text"><?php echo esc_html( $plugin->get_string( 'hero_description' ) ); ?></p>
-                </div>
-
-                <div class="loft1325-mobile-home__hero-actions">
-                <?php if ( $plugin->get_string( 'hero_primary_label' ) ) : ?>
-                    <a class="loft1325-mobile-home__btn loft1325-mobile-home__btn--primary" href="<?php echo esc_url( $plugin->get_string( 'hero_primary_url' ) ); ?>">
-                        <?php echo esc_html( $plugin->get_string( 'hero_primary_label' ) ); ?>
-                    </a>
-                <?php endif; ?>
-                <?php if ( $plugin->get_string( 'hero_secondary_label' ) ) : ?>
-                    <a class="loft1325-mobile-home__btn loft1325-mobile-home__btn--ghost" href="<?php echo esc_url( $plugin->get_string( 'hero_secondary_url' ) ); ?>">
-                        <?php echo esc_html( $plugin->get_string( 'hero_secondary_label' ) ); ?>
-                    </a>
-                <?php endif; ?>
                 </div>
             </div>
         </section>
