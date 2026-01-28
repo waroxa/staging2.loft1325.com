@@ -176,7 +176,16 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return false;
             }
 
+            $booking_page_id = (int) get_option( 'nd_booking_booking_page' );
+            if ( $booking_page_id && is_page( $booking_page_id ) ) {
+                return false;
+            }
+
             if ( is_post_type_archive( 'nd_booking_cpt_1' ) ) {
+                return false;
+            }
+
+            if ( is_singular( 'nd_booking_cpt_1' ) ) {
                 return false;
             }
 

@@ -13,6 +13,32 @@ $room_data      = $plugin->get_room_data( $room_id );
 $gallery        = $plugin->get_room_gallery( $room_id );
 $slider_markup  = $plugin->get_room_slider_markup( $room_id );
 $booking_url    = $plugin->get_booking_url( $room_id );
+$booking_action = function_exists( 'nd_booking_booking_page' ) ? nd_booking_booking_page() : $booking_url;
+$booking_date_from = filter_input( INPUT_GET, 'nd_booking_archive_form_date_range_from', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+$booking_date_to   = filter_input( INPUT_GET, 'nd_booking_archive_form_date_range_to', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+$booking_guests    = filter_input( INPUT_GET, 'nd_booking_archive_form_guests', FILTER_SANITIZE_NUMBER_INT );
+$booking_nights    = filter_input( INPUT_GET, 'nd_booking_archive_form_nights', FILTER_SANITIZE_NUMBER_INT );
+$booking_guests    = $booking_guests ? absint( $booking_guests ) : 0;
+
+if ( ! $booking_nights && $booking_date_from && $booking_date_to && function_exists( 'nd_booking_get_number_night' ) ) {
+	$booking_nights = nd_booking_get_number_night( $booking_date_from, $booking_date_to );
+}
+
+$room_id_room = get_post_meta( $room_id, 'nd_booking_id_room', true );
+if ( ! $room_id_room ) {
+	$room_id_room = $room_id;
+}
+
+$booking_form_id = $room_id . '-' . $room_id_room;
+$has_booking_params = $booking_date_from && $booking_date_to;
+$booking_payload = array_filter(
+	array(
+		'nd_booking_archive_form_date_range_from' => $booking_date_from,
+		'nd_booking_archive_form_date_range_to'   => $booking_date_to,
+		'nd_booking_archive_form_guests'          => $booking_guests ? $booking_guests : null,
+		'nd_booking_archive_form_nights'          => $booking_nights ? $booking_nights : null,
+	)
+);
 $language       = $plugin->get_current_language();
 $archive_url    = get_post_type_archive_link( 'nd_booking_cpt_1' );
 $archive_url    = $archive_url ? $archive_url : home_url( '/' );
@@ -277,9 +303,23 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 					<strong><?php echo $room_data['price'] ? esc_html( $room_data['price'] ) : esc_html( $empty_price ); ?></strong>
 					<small><?php echo esc_html( $per_night ); ?></small>
 				</div>
-				<a class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" href="<?php echo esc_url( $booking_url ); ?>">
-					<?php echo esc_html( $plugin->localize_label( 'Réserver', 'Reserve' ) ); ?>
-				</a>
+				<?php if ( $has_booking_params && $booking_action ) : ?>
+					<form class="loft1325-mobile-loft__booking-form" action="<?php echo esc_url( $booking_action ); ?>" method="post">
+						<input type="hidden" name="nd_booking_form_booking_arrive_advs" value="1" />
+						<input type="hidden" name="nd_booking_form_booking_arrive_sr" value="1" />
+						<input type="hidden" name="nd_booking_archive_form_id" value="<?php echo esc_attr( $booking_form_id ); ?>" />
+						<?php foreach ( $booking_payload as $field => $value ) : ?>
+							<input type="hidden" name="<?php echo esc_attr( $field ); ?>" value="<?php echo esc_attr( (string) $value ); ?>" />
+						<?php endforeach; ?>
+						<button class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" type="submit">
+							<?php echo esc_html( $plugin->localize_label( 'Réserver', 'Reserve' ) ); ?>
+						</button>
+					</form>
+				<?php else : ?>
+					<a class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" href="<?php echo esc_url( $booking_url ); ?>">
+						<?php echo esc_html( $plugin->localize_label( 'Réserver', 'Reserve' ) ); ?>
+					</a>
+				<?php endif; ?>
 			</div>
 		</div>
 	</main>
