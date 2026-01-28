@@ -85,27 +85,26 @@
         var checkInInput = form.querySelector('#nd_booking_archive_form_date_range_from');
         var checkOutInput = form.querySelector('#nd_booking_archive_form_date_range_to');
         var totalGuestsInput = form.querySelector('#nd_booking_archive_form_guests');
-        var adultInput = form.querySelector('#loft_booking_adults');
-        var childInput = form.querySelector('#loft_booking_children');
+        var guestGroup = form.querySelector('[data-guest-group="total"]');
+        var guestInput = guestGroup ? guestGroup.querySelector('input[type="hidden"]') : null;
+        var guestValue = guestGroup ? guestGroup.querySelector('.loft-search-toolbar__guests-value') : null;
         var dateInput = form.querySelector('#loft_booking_date_range');
         var dateClear = form.querySelector('[data-date-clear]');
-        var guestGroups = form.querySelectorAll('[data-guest-group]');
         var promoToggle = form.querySelector('[data-promo-toggle]');
         var promoField = form.querySelector('[data-promo-field]');
         var promoInput = form.querySelector('#loft_booking_coupon');
         var promoCheckoutInput = form.querySelector('#loft_booking_coupon_checkout');
         var submitButton = form.querySelector('.loft-search-toolbar__submit');
         var language = (form.getAttribute('data-language') || 'fr').toLowerCase() === 'en' ? 'en' : 'fr';
+        var guestSingular = searchCard.getAttribute('data-guests-singular') || (language === 'en' ? 'guest' : 'invité');
+        var guestPlural = searchCard.getAttribute('data-guests-plural') || (language === 'en' ? 'guests' : 'invités');
         var overlay = document.createElement('div');
         overlay.className = 'loft-datepicker-overlay';
         document.body.appendChild(overlay);
 
-        var MIN_ADULTS = 1;
-        var MAX_ADULTS = 10;
-        var MIN_CHILDREN = 0;
-        var MAX_CHILDREN = 10;
+        var MIN_GUESTS = 1;
+        var MAX_GUESTS = 10;
         var ONE_DAY = 86400000;
-        var hasCustomGuests = totalGuestsInput && totalGuestsInput.value !== '';
 
         function parseDate(value) {
             if (typeof value !== 'string' || !value) {
@@ -144,94 +143,50 @@
             return month + '/' + day + '/' + year;
         }
 
-        function clampAdults(value) {
+        function clampGuests(value) {
             var parsed = parseInt(value, 10);
-            if (isNaN(parsed) || parsed < MIN_ADULTS) {
-                parsed = MIN_ADULTS;
+            if (isNaN(parsed) || parsed < MIN_GUESTS) {
+                parsed = MIN_GUESTS;
             }
-            if (parsed > MAX_ADULTS) {
-                parsed = MAX_ADULTS;
+            if (parsed > MAX_GUESTS) {
+                parsed = MAX_GUESTS;
             }
             return parsed;
         }
 
-        function clampChildren(value) {
-            var parsed = parseInt(value, 10);
-            if (isNaN(parsed) || parsed < MIN_CHILDREN) {
-                parsed = MIN_CHILDREN;
+        function updateGuestsDisplay() {
+            if (!guestInput || !guestValue) {
+                return;
             }
-            if (parsed > MAX_CHILDREN) {
-                parsed = MAX_CHILDREN;
+            var value = clampGuests(guestInput.value);
+            guestInput.value = value;
+            guestValue.textContent = value + ' ' + (value === 1 ? guestSingular : guestPlural);
+            if (totalGuestsInput) {
+                totalGuestsInput.value = value;
             }
-            return parsed;
         }
 
-        function updateTotalGuests() {
-            if (!totalGuestsInput || !adultInput || !childInput) {
+        function adjustGuests(direction) {
+            if (!guestInput) {
                 return;
             }
-            if (!hasCustomGuests) {
-                totalGuestsInput.value = '';
-                return;
-            }
-            var adults = clampAdults(adultInput.value);
-            var children = clampChildren(childInput.value);
-            totalGuestsInput.value = adults + children;
+            var current = clampGuests(guestInput.value);
+            current = direction === 'up' ? current + 1 : current - 1;
+            guestInput.value = clampGuests(current);
+            updateGuestsDisplay();
         }
 
-        function updateGuestGroupDisplay(group) {
-            if (!group) {
-                return;
-            }
-            var valueEl = group.querySelector('.loft-search-toolbar__guests-value');
-            var hiddenInput = group.querySelector('input[type=\"hidden\"]');
-            var direction = group.getAttribute('data-guest-group');
-
-            if (!valueEl || !hiddenInput) {
-                return;
-            }
-
-            var value = direction === 'children' ? clampChildren(hiddenInput.value) : clampAdults(hiddenInput.value);
-            hiddenInput.value = value;
-            valueEl.textContent = value;
-        }
-
-        function adjustGroup(group, direction) {
-            if (!group) {
-                return;
-            }
-            var input = group.querySelector('input[type=\"hidden\"]');
-            if (!input) {
-                return;
-            }
-            var isChildren = group.getAttribute('data-guest-group') === 'children';
-            var current = isChildren ? clampChildren(input.value) : clampAdults(input.value);
-            if (direction === 'up') {
-                current = current + 1;
-                current = isChildren ? clampChildren(current) : clampAdults(current);
-            } else {
-                current = current - 1;
-                current = isChildren ? clampChildren(current) : clampAdults(current);
-            }
-            input.value = current;
-            hasCustomGuests = true;
-            updateGuestGroupDisplay(group);
-            updateTotalGuests();
-        }
-
-        Array.prototype.forEach.call(guestGroups, function (group) {
-            var buttons = group.querySelectorAll('.loft-search-toolbar__guest-btn');
+        if (guestGroup) {
+            var buttons = guestGroup.querySelectorAll('.loft-search-toolbar__guest-btn');
             Array.prototype.forEach.call(buttons, function (button) {
                 button.addEventListener('click', function (event) {
                     event.preventDefault();
                     var dir = button.getAttribute('data-direction') === 'down' ? 'down' : 'up';
-                    adjustGroup(group, dir);
+                    adjustGuests(dir);
                 });
             });
-            updateGuestGroupDisplay(group);
-        });
-
-        updateTotalGuests();
+            updateGuestsDisplay();
+        }
 
         function formatDisplayRange(start, end) {
             var locale = language === 'en' ? 'en-CA' : 'fr-CA';
