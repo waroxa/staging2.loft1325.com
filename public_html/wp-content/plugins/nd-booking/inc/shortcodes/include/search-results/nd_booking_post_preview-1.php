@@ -5,6 +5,30 @@ $nd_booking_title = get_the_title();
 $nd_booking_content = do_shortcode(get_the_content());
 $nd_booking_id = get_the_ID();
 $nd_booking_permalink = get_permalink( $nd_booking_id );
+$loft_mobile_room_link = '';
+
+if ( function_exists( 'wp_is_mobile' ) && wp_is_mobile() ) {
+    $loft_mobile_args = array(
+        'nd_booking_archive_form_date_range_from' => $nd_booking_date_from,
+        'nd_booking_archive_form_date_range_to'   => $nd_booking_date_to,
+        'nd_booking_archive_form_guests'          => $nd_booking_archive_form_guests,
+    );
+
+    if ( function_exists( 'nd_booking_get_number_night' ) && $nd_booking_date_from && $nd_booking_date_to ) {
+        $loft_mobile_args['nd_booking_archive_form_nights'] = nd_booking_get_number_night( $nd_booking_date_from, $nd_booking_date_to );
+    }
+
+    $loft_mobile_args = array_filter(
+        $loft_mobile_args,
+        static function ( $value ) {
+            return '' !== $value && null !== $value;
+        }
+    );
+
+    if ( ! empty( $loft_mobile_args ) ) {
+        $loft_mobile_room_link = add_query_arg( $loft_mobile_args, $nd_booking_permalink );
+    }
+}
 
 //ids
 $nd_booking_id_room = get_post_meta( get_the_ID(), 'nd_booking_id_room', true );
@@ -279,7 +303,13 @@ $nd_booking_shortcode_right_content .= '
                     $loft_booking_id     = $nd_booking_id . '-' . $nd_booking_id_room;
 
                     $nd_booking_shortcode_right_content .= '
-                    <div class="loft-search-card__actions">
+                    <div class="loft-search-card__actions">';
+
+                    if ( $loft_mobile_room_link ) {
+                        $nd_booking_shortcode_right_content .= '
+                        <a class="loft-search-card__btn loft-search-card__btn--primary" href="' . esc_url( $loft_mobile_room_link ) . '">' . $loft_button_label . '</a>';
+                    } else {
+                        $nd_booking_shortcode_right_content .= '
                         <form class="loft-search-card__form" action="'.esc_url( $loft_booking_action ).'" method="post">
                             <input type="hidden" name="nd_booking_form_booking_arrive_advs" value="1" />
                             <input type="hidden" name="nd_booking_form_booking_arrive_sr" value="0" />
@@ -289,6 +319,7 @@ $nd_booking_shortcode_right_content .= '
                             <input type="hidden" name="nd_booking_form_booking_guests" value="'.esc_attr( $nd_booking_archive_form_guests ).'" />
                             <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary">'.$loft_button_label.'</button>
                         </form>';
+                    }
 
                     include realpath(dirname( __FILE__ ).'/nd_booking_info_price_hover_btn.php');
 
