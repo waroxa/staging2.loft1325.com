@@ -334,14 +334,13 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 			$check_in_value  = '';
 			$check_out_value = '';
 
-			$default_adults   = 2;
-			$default_children = 0;
-			$default_total_guests = '';
+			$default_total_guests = 1;
 
             $dates_label      = $this->get_string( 'search_date_label' );
             $date_placeholder = $this->localize_label( 'Sélectionner les dates', 'Select dates' );
-            $adults_label     = $this->localize_label( 'Adultes', 'Adults' );
-            $children_label   = $this->localize_label( 'Enfants (0–18 ans)', 'Children (0–18 yrs)' );
+            $guests_label     = $this->get_string( 'search_guests_label' );
+            $guest_singular   = $this->localize_label( 'invité', 'guest' );
+            $guest_plural     = $this->localize_label( 'invités', 'guests' );
             $language_attr    = ( 'en' === $language ) ? 'en' : 'fr';
 
             ob_start();
@@ -389,32 +388,14 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                                         </svg>
                                     </span>
                                     <div class="loft-booking-card__field-body">
-                                        <label class="loft-search-toolbar__label" for="loft_booking_adults"><?php echo esc_html( $adults_label ); ?></label>
-                                        <div class="loft-search-toolbar__control loft-search-toolbar__control--guests loft-search-toolbar__group loft-search-toolbar__guests" data-guest-group="adults">
-                                            <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $this->localize_label( 'Diminuer le nombre d’adultes', 'Decrease adult count' ) ); ?>">−</button>
-                                            <span class="loft-search-toolbar__guests-value" id="loft_booking_adults_value"><?php echo esc_html( $default_adults ); ?></span>
-                                            <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $this->localize_label( 'Augmenter le nombre d’adultes', 'Increase adult count' ) ); ?>">+</button>
-                                            <input type="hidden" id="loft_booking_adults" value="<?php echo esc_attr( $default_adults ); ?>" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="loft-search-toolbar__field loft-search-toolbar__field--guests">
-                                <div class="loft-booking-card__field">
-                                    <span class="loft-booking-card__field-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
-                                            <path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0z"></path>
-                                            <path d="M4 20a8 8 0 0 1 16 0"></path>
-                                        </svg>
-                                    </span>
-                                    <div class="loft-booking-card__field-body">
-                                        <label class="loft-search-toolbar__label" for="loft_booking_children"><?php echo esc_html( $children_label ); ?></label>
-                                        <div class="loft-search-toolbar__control loft-search-toolbar__control--guests loft-search-toolbar__group loft-search-toolbar__guests" data-guest-group="children">
-                                            <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $this->localize_label( 'Diminuer le nombre d’enfants', 'Decrease child count' ) ); ?>">−</button>
-                                            <span class="loft-search-toolbar__guests-value" id="loft_booking_children_value"><?php echo esc_html( $default_children ); ?></span>
-                                            <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $this->localize_label( 'Augmenter le nombre d’enfants', 'Increase child count' ) ); ?>">+</button>
-                                            <input type="hidden" id="loft_booking_children" value="<?php echo esc_attr( $default_children ); ?>" />
+                                        <label class="loft-search-toolbar__label" for="loft_booking_guests"><?php echo esc_html( $guests_label ); ?></label>
+                                        <div class="loft-search-toolbar__control loft-search-toolbar__control--guests loft-search-toolbar__group loft-search-toolbar__guests" data-guest-group="total">
+                                            <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $this->localize_label( 'Diminuer le nombre d’invités', 'Decrease guest count' ) ); ?>">−</button>
+                                            <span class="loft-search-toolbar__guests-value" id="loft_booking_guests_value">
+                                                <?php echo esc_html( $default_total_guests . ' ' . ( 1 === $default_total_guests ? $guest_singular : $guest_plural ) ); ?>
+                                            </span>
+                                            <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $this->localize_label( 'Augmenter le nombre d’invités', 'Increase guest count' ) ); ?>">+</button>
+                                            <input type="hidden" id="loft_booking_guests" value="<?php echo esc_attr( $default_total_guests ); ?>" />
                                         </div>
                                     </div>
                                 </div>
@@ -550,7 +531,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             $this->default_strings['fr'] = array(
                 'hero_tagline'           => __( 'Concierge Virtuel', 'loft1325-mobile-home' ),
                 'hero_title'             => __( 'Expérience Hôtelière 100% Virtuelle', 'loft1325-mobile-home' ),
-                'hero_description'       => __( "Pour le prix d'une chambre d'hôtel, offrez-vous tout le confort d'une maison et une expérience entièrement autonome. Notre concept unique vous permet de gérer votre séjour directement depuis votre mobile, sans réception ni attente. Créez vos propres clés numériques, invitez vos proches et contrôlez vos réservations en quelques clics seulement.", 'loft1325-mobile-home' ),
+                'hero_description'       => __( "Le confort d'une maison avec l'expérience hôtelière, gérez tout depuis votre mobile.", 'loft1325-mobile-home' ),
                 'hero_primary_label'     => __( 'Réserver', 'loft1325-mobile-home' ),
                 'hero_primary_url'       => '#loft1325-mobile-home-search',
                 'hero_secondary_label'   => __( 'Nous contacter', 'loft1325-mobile-home' ),
@@ -581,7 +562,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             $this->default_strings['en'] = array(
                 'hero_tagline'           => __( 'Virtual Concierge', 'loft1325-mobile-home' ),
                 'hero_title'             => __( '100% Virtual Hotel Experience', 'loft1325-mobile-home' ),
-                'hero_description'       => __( "For the price of a hotel room, enjoy the comfort of a home and a fully self-service stay. Our unique concept lets you manage your visit from your phone with no front desk or waiting. Create your own digital keys, invite guests, and control bookings in just a few taps.", 'loft1325-mobile-home' ),
+                'hero_description'       => __( 'Home comfort with a hotel experience—manage everything from your phone.', 'loft1325-mobile-home' ),
                 'hero_primary_label'     => __( 'Book Now', 'loft1325-mobile-home' ),
                 'hero_primary_url'       => '#loft1325-mobile-home-search',
                 'hero_secondary_label'   => __( 'Contact Us', 'loft1325-mobile-home' ),

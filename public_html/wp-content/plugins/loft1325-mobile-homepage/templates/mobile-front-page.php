@@ -112,8 +112,8 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     align-self: flex-start;
     padding: 0.35rem 0.8rem;
     border-radius: 999px;
-    background: rgba(118, 177, 196, 0.14);
-    color: #0f172a;
+    background: #FDB913;
+    color: #030213;
     font-weight: 700;
     font-size: 0.85rem;
     letter-spacing: 0.02em;
@@ -240,11 +240,12 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 <div class="loft1325-mobile-home__wrapper">
     <header class="loft1325-mobile-home__topbar">
         <div class="loft1325-mobile-home__logo">
-            <?php if ( has_custom_logo() ) : ?>
-                <?php the_custom_logo(); ?>
-            <?php else : ?>
-                <span class="loft1325-mobile-home__site-title"><?php bloginfo( 'name' ); ?></span>
-            <?php endif; ?>
+            <img
+                class="loft1325-mobile-home__logo-img"
+                src="<?php echo esc_url( 'https://staging2.loft1325.com/wp-content/uploads/2024/06/Asset-1.png' ); ?>"
+                alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+                loading="lazy"
+            />
         </div>
         <button
             class="loft1325-mobile-home__nav-toggle"

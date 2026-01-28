@@ -2,20 +2,20 @@
 
 body.loft1325-mobile-home-active {
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f7f7f9;
-    color: #111827;
-    --loft1325-brand: #0f172a;
-    --loft1325-brand-dark: #0b1220;
-    --loft1325-brand-darker: #050914;
-    --loft1325-brand-light: #1f2937;
-    --loft1325-accent: #0f172a;
-    --loft1325-accent-soft: rgba(15, 23, 42, 0.16);
-    --loft1325-surface: #FFFFFF;
-    --loft1325-surface-muted: #0F1115;
-    --loft1325-text: #0B0B0B;
-    --loft1325-text-soft: rgba(11, 11, 11, 0.7);
+    background-color: #ffffff;
+    color: #030213;
+    --loft1325-brand: #003B95;
+    --loft1325-brand-dark: #002d73;
+    --loft1325-brand-darker: #001f52;
+    --loft1325-brand-light: #6FA9B8;
+    --loft1325-accent: #FDB913;
+    --loft1325-accent-soft: rgba(253, 185, 19, 0.18);
+    --loft1325-surface: #ffffff;
+    --loft1325-surface-muted: #f3f3f5;
+    --loft1325-text: #030213;
+    --loft1325-text-soft: #717182;
     --loft1325-text-on-dark: #FFFFFF;
-    --loft1325-shadow-soft: 0 22px 64px rgba(15, 17, 21, 0.12);
+    --loft1325-shadow-soft: 0 22px 64px rgba(3, 2, 19, 0.12);
 }
 
 body.loft1325-mobile-home-active .nicdark_site > .nicdark_section.nicdark_bg_greydark,
@@ -55,7 +55,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
 
 .loft1325-mobile-home__wrapper {
     position: relative;
-    background: #f7f7f9;
+    background: #ffffff;
     min-height: 100vh;
 }
 
@@ -66,23 +66,24 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     justify-content: space-between;
     padding: 0.9rem 1.25rem;
     background-color: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    color: #0f172a;
+    border-bottom: 1px solid #eef0f4;
+    color: #030213;
     position: sticky;
     top: 0;
     z-index: 5;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 20px rgba(3, 2, 19, 0.05);
 }
 
-.loft1325-mobile-home__logo img {
-    max-height: 36px;
+.loft1325-mobile-home__logo img,
+.loft1325-mobile-home__logo-img {
+    max-height: 32px;
     width: auto;
 }
 
 .loft1325-mobile-home__site-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #030213;
     letter-spacing: 0.05em;
     font-family: 'Playfair Display', serif;
 }
@@ -91,7 +92,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    background-color: #f3f4f6;
+    background-color: #f3f3f5;
     border: 1px solid #e5e7eb;
     display: inline-flex;
     align-items: center;
@@ -100,8 +101,8 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     flex-direction: column;
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-    color: #0f172a;
+    box-shadow: 0 8px 16px rgba(3, 2, 19, 0.08);
+    color: #030213;
 }
 
 .loft1325-mobile-home__nav-toggle-bar {
@@ -109,7 +110,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     width: 18px;
     height: 2px;
     border-radius: 999px;
-    background: #0f172a;
+    background: #030213;
 }
 
 .loft1325-mobile-home__nav-toggle:focus,
@@ -190,7 +191,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     position: relative;
     padding: clamp(2.4rem, 9vw, 3.1rem) 1.5rem clamp(5rem, 14vw, 6.2rem);
     color: #ffffff;
-    background: linear-gradient(135deg, #2c5f6f 0%, #1a3a45 100%);
+    background: linear-gradient(180deg, #2C5F6F 0%, #1f4c5a 100%);
     overflow: hidden;
     isolation: isolate;
     display: flex;
@@ -239,7 +240,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     justify-content: center;
     padding: 0.35rem 0.9rem;
     border-radius: 999px;
-    background: #6fa9b8;
+    background: #6FA9B8;
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -261,7 +262,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     font-size: 0.98rem;
     line-height: 1.6;
     margin: 0;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.88);
     max-width: 28rem;
 }
 
@@ -287,7 +288,7 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     text-decoration: none;
     font-size: 1rem;
     font-weight: 700;
-    color: #0f172a !important;
+    color: #030213 !important;
     transition: box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
     border: 1px solid transparent;
     cursor: pointer;
@@ -295,16 +296,16 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
 }
 
 .loft1325-mobile-home__btn--primary {
-    background-color: #0F2A44;
+    background-color: #003B95;
     color: #FFFFFF !important;
     opacity: 1 !important;
     filter: none;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 18px rgba(0, 59, 149, 0.24);
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--primary,
 .loft1325-mobile-home__btn--primary {
-    background-color: #0F2A44;
+    background-color: #003B95;
     color: #FFFFFF !important;
     opacity: 1 !important;
 }
@@ -320,18 +321,18 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--primary:focus,
 .loft1325-mobile-home__btn--primary:hover,
 .loft1325-mobile-home__btn--primary:focus {
-    background-color: #0b2036;
+    background-color: #002d73;
     color: #FFFFFF !important;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 10px 20px rgba(0, 59, 149, 0.3);
     outline: 2px solid #FFFFFF;
     outline-offset: 2px;
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--primary:active,
 .loft1325-mobile-home__btn--primary:active {
-    background-color: #091b2d;
+    background-color: #001f52;
     color: #FFFFFF !important;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
+    box-shadow: 0 6px 14px rgba(0, 59, 149, 0.22);
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--primary:disabled,
@@ -345,17 +346,17 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 
 .loft1325-mobile-home__btn--ghost {
     background-color: transparent;
-    color: #0f172a !important;
-    border-color: rgba(15, 23, 42, 0.48);
+    color: #030213 !important;
+    border-color: rgba(3, 2, 19, 0.4);
     opacity: 1 !important;
 }
 
 .loft1325-mobile-home__btn--ghost:hover,
 .loft1325-mobile-home__btn--ghost:focus {
-    background-color: rgba(15, 42, 68, 0.08);
-    color: #0F2A44 !important;
-    border-color: #0F2A44;
-    outline: 2px solid #0F2A44;
+    background-color: rgba(0, 59, 149, 0.08);
+    color: #003B95 !important;
+    border-color: #003B95;
+    outline: 2px solid #003B95;
     outline-offset: 2px;
 }
 
@@ -367,20 +368,20 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 }
 
 .loft1325-mobile-home__btn--secondary {
-    background: #0F2A44;
+    background: #6FA9B8;
     color: #FFFFFF !important;
-    border: 1px solid #0F2A44;
+    border: 1px solid #6FA9B8;
     opacity: 1 !important;
     filter: none;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(111, 169, 184, 0.3);
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--secondary,
 .loft1325-mobile-home__btn--secondary {
-    background: #0F2A44;
+    background: #6FA9B8;
     color: #FFFFFF !important;
     opacity: 1 !important;
-    border-color: #0F2A44;
+    border-color: #6FA9B8;
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--secondary *,
@@ -394,20 +395,20 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--secondary:focus,
 .loft1325-mobile-home__btn--secondary:hover,
 .loft1325-mobile-home__btn--secondary:focus {
-    background: #0b2036;
+    background: #5a93a1;
     color: #FFFFFF !important;
-    border-color: #0b2036;
-    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.22);
+    border-color: #5a93a1;
+    box-shadow: 0 12px 22px rgba(111, 169, 184, 0.35);
     outline: 2px solid #FFFFFF;
     outline-offset: 2px;
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--secondary:active,
 .loft1325-mobile-home__btn--secondary:active {
-    background: #091b2d;
+    background: #4d7f8c;
     color: #FFFFFF !important;
-    border-color: #091b2d;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+    border-color: #4d7f8c;
+    box-shadow: 0 8px 16px rgba(111, 169, 184, 0.28);
 }
 
 body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home__btn--secondary:disabled,
@@ -440,7 +441,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     display: grid;
     gap: 1rem;
     overflow: hidden;
-    color: #0B0B0B;
+    color: #030213;
 }
 .loft1325-mobile-home__search-card,
 .loft1325-mobile-home__hero-actions {
@@ -491,7 +492,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
 .loft1325-mobile-home__search-title {
     font-size: clamp(1.8rem, 5vw, 2.15rem);
     font-weight: 700;
-    color: #0B0B0B;
+    color: #030213;
     margin: 0;
     letter-spacing: 0.02em;
     text-transform: none;
@@ -1628,7 +1629,7 @@ body.loft1325-mobile-home-active .loft-booking-card__grid {
 body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__label {
     font-size: 0.72rem;
     font-weight: 600;
-    color: #6b7280;
+    color: #717182;
     margin-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -1641,7 +1642,7 @@ body.loft1325-mobile-home-active .loft-booking-card__input {
     border: none;
     border-radius: 0;
     background: transparent;
-    color: #111827;
+    color: #030213;
     font-size: 0.95rem;
     font-weight: 500;
     display: inline-flex;
@@ -1660,7 +1661,7 @@ body.loft1325-mobile-home-active .loft-booking-card__input:focus-visible {
 
 body.loft1325-mobile-home-active .loft-booking-card__value {
     flex: 1 1 auto;
-    color: #111827;
+    color: #030213;
 }
 
 body.loft1325-mobile-home-active .loft-booking-card__date-input {
@@ -1720,7 +1721,7 @@ body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__guest-
     border-radius: 8px;
     background: #ffffff;
     border: 1px solid #d1d5db;
-    color: #111827;
+    color: #030213;
     font-size: 18px;
     font-weight: 600;
     transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
@@ -1737,7 +1738,7 @@ body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__guest-
 body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__guests-value {
     font-size: 14px;
     font-weight: 600;
-    color: #2b2b2b;
+    color: #030213;
 }
 
 body.loft1325-mobile-home-active .loft-booking-card__promo {
