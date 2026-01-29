@@ -26,6 +26,15 @@ $empty_rooms_text   = $plugin->localize_label( 'Aucun loft n’est actuellement 
 $price_label        = ( 'en' === $language ) ? 'From %1$s%2$s' : 'À partir de %1$s%2$s';
 $rating_label       = $plugin->localize_label( 'Note %s sur 5', 'Rating %s out of 5' );
 $per_night_label    = $plugin->localize_label( 'par nuit', 'per night' );
+$dates_label        = $plugin->get_string( 'search_date_label' );
+$guests_label       = $plugin->get_string( 'search_guests_label' );
+$default_total_guests = 1;
+$language_attr      = ( 'en' === $language ) ? 'en' : 'fr';
+$search_action      = $plugin->get_mobile_search_action_url();
+$check_in_value     = '';
+$check_out_value    = '';
+
+$plugin->enqueue_search_dependencies();
 
 if ( ! $rooms_archive ) {
     $rooms_archive = home_url( '/' );
@@ -325,19 +334,78 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                 >
                     <div class="loft-search-card loft-search-card--stacked">
                         <div class="loft-search-card__body loft1325-mobile-home__search-form">
-                            <div class="loft-booking-card__field loft-booking-card__field--location">
-                                <span class="loft-booking-card__field-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
-                                        <path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 1 1 16 0z"></path>
-                                        <circle cx="12" cy="10" r="3"></circle>
-                                    </svg>
-                                </span>
-                                <div class="loft-booking-card__field-body">
-                                    <label class="loft-search-toolbar__label"><?php echo esc_html( $plugin->get_string( 'search_location_label' ) ); ?></label>
-                                    <span class="loft-booking-card__value"><?php echo esc_html( $plugin->get_string( 'search_location_value' ) ); ?></span>
+                            <form id="nd_booking_search_cpt_1_form_sidebar" class="loft-search-toolbar__form loft-search-toolbar__form--card" action="<?php echo esc_url( $search_action ); ?>" method="get" data-language="<?php echo esc_attr( $language_attr ); ?>">
+                                <div id="nd_booking_search_main_bg" class="loft-search-toolbar nd_booking_search_form">
+                                    <div class="loft-booking-card">
+                                        <div class="loft-booking-card__field loft-booking-card__field--location">
+                                            <span class="loft-booking-card__field-icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+                                                    <path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 1 1 16 0z"></path>
+                                                    <circle cx="12" cy="10" r="3"></circle>
+                                                </svg>
+                                            </span>
+                                            <div class="loft-booking-card__field-body">
+                                                <label class="loft-search-toolbar__label"><?php echo esc_html( $plugin->get_string( 'search_location_label' ) ); ?></label>
+                                                <span class="loft-booking-card__value"><?php echo esc_html( $plugin->get_string( 'search_location_value' ) ); ?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="loft-booking-card__field loft-booking-card__field--date-range" data-date-field>
+                                            <span class="loft-booking-card__field-icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+                                                    <rect x="4" y="5" width="16" height="16" rx="2"></rect>
+                                                    <line x1="16" y1="3" x2="16" y2="7"></line>
+                                                    <line x1="8" y1="3" x2="8" y2="7"></line>
+                                                    <line x1="4" y1="11" x2="20" y2="11"></line>
+                                                </svg>
+                                            </span>
+                                            <div class="loft-booking-card__field-body">
+                                                <label class="loft-search-toolbar__label" for="loft_booking_date_range"><?php echo esc_html( $dates_label ); ?></label>
+                                                <div class="loft-booking-card__date-input">
+                                                    <input
+                                                        type="text"
+                                                        id="loft_booking_date_range"
+                                                        class="loft-booking-card__input loft-booking-card__input--date"
+                                                        placeholder="<?php echo esc_attr( $date_placeholder ); ?>"
+                                                        autocomplete="off"
+                                                        readonly
+                                                        aria-label="<?php echo esc_attr( $dates_label ); ?>"
+                                                    />
+                                                    <button type="button" class="loft-booking-card__clear" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Effacer la plage de dates', 'Clear date range' ) ); ?>" data-date-clear>&times;</button>
+                                                </div>
+                                            </div>
+                                            <input type="text" id="nd_booking_archive_form_date_range_from" name="nd_booking_archive_form_date_range_from" class="loft-booking-card__hidden-input loft-search-toolbar__input" value="<?php echo esc_attr( $check_in_value ); ?>" autocomplete="off" readonly />
+                                            <input type="text" id="nd_booking_archive_form_date_range_to" name="nd_booking_archive_form_date_range_to" class="loft-booking-card__hidden-input loft-search-toolbar__input" value="<?php echo esc_attr( $check_out_value ); ?>" autocomplete="off" readonly />
+                                        </div>
+
+                                        <div class="loft-booking-card__field loft-booking-card__field--guests">
+                                            <span class="loft-booking-card__field-icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+                                                    <path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0z"></path>
+                                                    <path d="M4 20a8 8 0 0 1 16 0"></path>
+                                                </svg>
+                                            </span>
+                                            <div class="loft-booking-card__field-body">
+                                                <label class="loft-search-toolbar__label" for="loft_booking_guests"><?php echo esc_html( $guests_label ); ?></label>
+                                                <div class="loft-search-toolbar__control loft-search-toolbar__control--guests loft-search-toolbar__group loft-search-toolbar__guests" data-guest-group="total">
+                                                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Diminuer le nombre d’invités', 'Decrease guest count' ) ); ?>">−</button>
+                                                    <span class="loft-search-toolbar__guests-value" id="loft_booking_guests_value">
+                                                        <?php echo esc_html( $default_total_guests . ' ' . ( 1 === $default_total_guests ? $guest_singular : $guest_plural ) ); ?>
+                                                    </span>
+                                                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Augmenter le nombre d’invités', 'Increase guest count' ) ); ?>">+</button>
+                                                    <input type="hidden" id="loft_booking_guests" value="<?php echo esc_attr( $default_total_guests ); ?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" id="nd_booking_archive_form_guests" name="nd_booking_archive_form_guests" value="<?php echo esc_attr( $default_total_guests ); ?>" />
+
+                                        <div class="loft-search-toolbar__field loft-search-toolbar__field--actions">
+                                            <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php echo esc_html( $plugin->get_string( 'search_submit_label' ) ); ?></button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <?php echo $plugin->get_mobile_search_form_markup(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                            </form>
                         </div>
                     </div>
                 </div>
