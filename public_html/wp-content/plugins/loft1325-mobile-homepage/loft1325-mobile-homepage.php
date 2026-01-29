@@ -243,7 +243,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
         /**
          * Ensure the ND Booking search dependencies are available for the mobile form.
          */
-        private function enqueue_search_dependencies() {
+        public function enqueue_search_dependencies() {
             wp_enqueue_script( 'jquery-ui-datepicker' );
 
             $nd_booking_search_file = WP_PLUGIN_DIR . '/nd-booking/addons/visual/search/index.php';
@@ -313,21 +313,8 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 		public function get_mobile_search_form_markup() {
 			$this->enqueue_search_dependencies();
 
-			$action = '';
+			$action   = $this->get_mobile_search_action_url();
 			$language = $this->get_current_language();
-
-			if ( function_exists( 'nd_booking_search_page' ) ) {
-				$action = nd_booking_search_page();
-			}
-
-			if ( ! $action ) {
-				$archive_link = get_post_type_archive_link( 'nd_booking_cpt_1' );
-				$action       = $archive_link ? $archive_link : home_url( '/' );
-			}
-
-			if ( function_exists( 'trp_get_url_for_language' ) ) {
-				$action = trp_get_url_for_language( $action, $language );
-			}
 
 			$check_in_ts     = current_time( 'timestamp' );
 			$check_out_ts    = $check_in_ts + DAY_IN_SECONDS;
@@ -415,6 +402,31 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 
             return trim( ob_get_clean() );
         }
+
+		/**
+		 * Build the action URL for the mobile search form.
+		 *
+		 * @return string
+		 */
+		public function get_mobile_search_action_url() {
+			$action   = '';
+			$language = $this->get_current_language();
+
+			if ( function_exists( 'nd_booking_search_page' ) ) {
+				$action = nd_booking_search_page();
+			}
+
+			if ( ! $action ) {
+				$archive_link = get_post_type_archive_link( 'nd_booking_cpt_1' );
+				$action       = $archive_link ? $archive_link : home_url( '/' );
+			}
+
+			if ( function_exists( 'trp_get_url_for_language' ) ) {
+				$action = trp_get_url_for_language( $action, $language );
+			}
+
+			return $action;
+		}
 
         /**
          * When the mobile homepage handles ND Booking search requests, forward them to the
