@@ -357,7 +357,6 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                                             readonly
                                             aria-label="<?php echo esc_attr( $dates_label ); ?>"
                                         />
-                                        <button type="button" class="loft-booking-card__clear" aria-label="<?php echo esc_attr( $this->localize_label( 'Effacer la plage de dates', 'Clear date range' ) ); ?>" data-date-clear>&times;</button>
                                     </div>
                                 </div>
                             </div>

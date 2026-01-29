@@ -371,7 +371,6 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                                                         readonly
                                                         aria-label="<?php echo esc_attr( $dates_label ); ?>"
                                                     />
-                                                    <button type="button" class="loft-booking-card__clear" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Effacer la plage de dates', 'Clear date range' ) ); ?>" data-date-clear>&times;</button>
                                                 </div>
                                             </div>
                                             <input type="text" id="nd_booking_archive_form_date_range_from" name="nd_booking_archive_form_date_range_from" class="loft-booking-card__hidden-input loft-search-toolbar__input" value="<?php echo esc_attr( $check_in_value ); ?>" autocomplete="off" readonly />
