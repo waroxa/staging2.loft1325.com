@@ -1682,11 +1682,17 @@ body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolb
     width: 100%;
 }
 
-body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolbar__field--date-range .loft-booking-card__input--date {
+body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolbar__field--date-range .loft-booking-card__input--date,
+body.loft1325-mobile-home-active #loft1325-mobile-home-search .loft-search-toolbar__field--date-range .loft-booking-card__input--date.flatpickr-input {
+    -webkit-appearance: none;
     border: none;
     background: transparent;
     box-shadow: none;
     color: #030213;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    text-align: left;
 }
 
 body.loft1325-mobile-home-active .loft-booking-card__label--with-icon {
