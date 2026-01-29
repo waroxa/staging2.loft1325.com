@@ -253,21 +253,23 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
 }
 
 .loft1325-mobile-home__hero-title {
-    font-size: clamp(1.25rem, 4.6vw, 1.65rem);
-    line-height: 1.2;
+    font-size: clamp(1.1rem, 4.1vw, 1.5rem);
+    line-height: 1.25;
     font-weight: 700;
     margin: 0;
+    max-width: 20rem;
     text-wrap: balance;
     color: #ffffff !important;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     text-shadow: 0 6px 18px rgba(3, 2, 19, 0.35);
+    text-transform: none;
 }
 
 .loft1325-mobile-home__hero-text {
     font-size: 1.05rem;
     line-height: 1.65;
     margin: 0;
-    color: #ffffff;
+    color: #ffffff !important;
     max-width: 28rem;
     text-shadow: 0 4px 14px rgba(3, 2, 19, 0.3);
 }
@@ -1211,7 +1213,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     }
 
     .loft1325-mobile-home__hero-title {
-        font-size: 1.85rem;
+        font-size: 1.55rem;
     }
 
     .loft1325-mobile-home__cta-title {
@@ -1641,6 +1643,27 @@ body.loft1325-mobile-home-active .loft-booking-card .loft-search-toolbar__label 
     margin-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+}
+
+body.loft1325-mobile-home-active .loft-booking-card__label--with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #717182;
+    margin-bottom: 2px;
+    text-transform: none;
+    letter-spacing: 0.04em;
+}
+
+body.loft1325-mobile-home-active .loft-booking-card__label-icon {
+    width: 16px;
+    height: 16px;
+    color: #717182;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 body.loft1325-mobile-home-active .loft-booking-card__input {
