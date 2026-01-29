@@ -303,7 +303,9 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                     }
                     $hero_title = preg_replace( '/\s*100\s*%/u', '<br>100 %', $hero_title );
                     ?>
-                    <h1 class="loft1325-mobile-home__hero-title"><?php echo wp_kses( $hero_title, array( 'br' => array() ) ); ?></h1>
+                    <h1 class="loft1325-mobile-home__hero-title" style="font-size: 1.77rem !important;
+        color: #ffffff !important;line-height: 1.25 !important;
+    font-weight: 700 !important;"><?php echo wp_kses( $hero_title, array( 'br' => array() ) ); ?></h1>
                     <p class="loft1325-mobile-home__hero-text"><?php echo esc_html( $plugin->get_string( 'hero_description' ) ); ?></p>
                 </div>
 
