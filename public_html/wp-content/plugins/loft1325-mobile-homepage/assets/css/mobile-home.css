@@ -1702,11 +1702,17 @@ body.loft1325-mobile-home-active .loft-booking-card__input {
     font-size: 1rem;
     font-weight: 600;
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 10px;
     cursor: pointer;
     transition: color 0.12s ease;
+    line-height: 1.35;
+}
+
+body.loft1325-mobile-home-active .loft-booking-card__input::placeholder {
+    color: #030213;
+    opacity: 1;
 }
 
 body.loft1325-mobile-home-active .loft-booking-card__input:hover,
@@ -1731,7 +1737,7 @@ body.loft1325-mobile-home-active .loft-booking-card__field--location .loft-booki
 body.loft1325-mobile-home-active .loft-booking-card__date-input {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 
 body.loft1325-mobile-home-active .loft-booking-card__clear {
