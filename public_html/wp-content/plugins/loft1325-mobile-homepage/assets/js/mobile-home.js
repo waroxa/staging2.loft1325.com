@@ -176,6 +176,10 @@
             updateGuestsDisplay();
         }
 
+        function updateTotalGuests() {
+            updateGuestsDisplay();
+        }
+
         if (guestGroup) {
             var buttons = guestGroup.querySelectorAll('.loft-search-toolbar__guest-btn');
             Array.prototype.forEach.call(buttons, function (button) {
