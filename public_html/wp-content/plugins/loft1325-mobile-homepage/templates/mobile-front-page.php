@@ -324,16 +324,14 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                     <div class="loft-search-card loft-search-card--stacked">
                         <div class="loft-search-card__body loft1325-mobile-home__search-form">
                             <div class="loft-booking-card__field loft-booking-card__field--location">
+                                <span class="loft-booking-card__field-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
+                                        <path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 1 1 16 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                </span>
                                 <div class="loft-booking-card__field-body">
-                                    <span class="loft-booking-card__label loft-booking-card__label--with-icon">
-                                        <span class="loft-booking-card__label-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">
-                                                <path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 1 1 16 0z"></path>
-                                                <circle cx="12" cy="10" r="3"></circle>
-                                            </svg>
-                                        </span>
-                                        <span class="loft-booking-card__label-text"><?php echo esc_html( $plugin->get_string( 'search_location_label' ) ); ?></span>
-                                    </span>
+                                    <label class="loft-search-toolbar__label"><?php echo esc_html( $plugin->get_string( 'search_location_label' ) ); ?></label>
                                     <span class="loft-booking-card__value"><?php echo esc_html( $plugin->get_string( 'search_location_value' ) ); ?></span>
                                 </div>
                             </div>

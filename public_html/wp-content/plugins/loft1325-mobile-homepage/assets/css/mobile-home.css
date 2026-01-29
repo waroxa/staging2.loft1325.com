@@ -1701,6 +1701,14 @@ body.loft1325-mobile-home-active .loft-booking-card__value {
     color: #030213;
 }
 
+body.loft1325-mobile-home-active .loft-booking-card__field--location .loft-booking-card__value {
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 body.loft1325-mobile-home-active .loft-booking-card__date-input {
     position: relative;
     display: flex;
