@@ -301,8 +301,9 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
                     } else {
                         $hero_title = ucwords( strtolower( $hero_title ) );
                     }
+                    $hero_title = preg_replace( '/\s*100\s*%/u', '<br>100 %', $hero_title );
                     ?>
-                    <h1 class="loft1325-mobile-home__hero-title"><?php echo esc_html( $hero_title ); ?></h1>
+                    <h1 class="loft1325-mobile-home__hero-title"><?php echo wp_kses( $hero_title, array( 'br' => array() ) ); ?></h1>
                     <p class="loft1325-mobile-home__hero-text"><?php echo esc_html( $plugin->get_string( 'hero_description' ) ); ?></p>
                 </div>
 
