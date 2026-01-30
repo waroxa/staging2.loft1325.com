@@ -549,8 +549,37 @@ function nd_booking_shortcode_search_results() {
         $nd_booking_form_action = home_url( add_query_arg( array(), $wp->request ) );
     }
 
-    $nd_booking_nights_label = sprintf( _n( '%s night', '%s nights', $nd_booking_nights_number, 'nd-booking' ), number_format_i18n( $nd_booking_nights_number ) );
-    $nd_booking_guests_label = sprintf( _n( '%s guest', '%s guests', $nd_booking_archive_form_guests, 'nd-booking' ), number_format_i18n( $nd_booking_archive_form_guests ) );
+    $nd_booking_language = function_exists( 'trp_get_current_language' ) ? trp_get_current_language() : ( function_exists( 'determine_locale' ) ? determine_locale() : get_locale() );
+    $nd_booking_language = strtolower( substr( (string) $nd_booking_language, 0, 2 ) );
+    $nd_booking_is_english = 'en' === $nd_booking_language;
+
+    $nd_booking_labels = array(
+        'check_in'  => $nd_booking_is_english ? 'Check-in' : 'Arrivée',
+        'check_out' => $nd_booking_is_english ? 'Check-out' : 'Départ',
+        'guests'    => $nd_booking_is_english ? 'Guests' : 'Invités',
+        'nights'    => $nd_booking_is_english ? 'Nights' : 'Nuits',
+        'search'    => $nd_booking_is_english ? 'Search' : 'Rechercher',
+    );
+
+    $nd_booking_nights_label = sprintf(
+        _n( '%s night', '%s nights', $nd_booking_nights_number, 'nd-booking' ),
+        number_format_i18n( $nd_booking_nights_number )
+    );
+    $nd_booking_guests_label = sprintf(
+        _n( '%s guest', '%s guests', $nd_booking_archive_form_guests, 'nd-booking' ),
+        number_format_i18n( $nd_booking_archive_form_guests )
+    );
+
+    if ( ! $nd_booking_is_english ) {
+        $nd_booking_nights_label = sprintf(
+            _n( '%s nuit', '%s nuits', $nd_booking_nights_number, 'nd-booking' ),
+            number_format_i18n( $nd_booking_nights_number )
+        );
+        $nd_booking_guests_label = sprintf(
+            _n( '%s invité', '%s invités', $nd_booking_archive_form_guests, 'nd-booking' ),
+            number_format_i18n( $nd_booking_archive_form_guests )
+        );
+    }
 
     ob_start();
     ?>
@@ -558,37 +587,37 @@ function nd_booking_shortcode_search_results() {
         <div id="nd_booking_search_main_bg" class="loft-search-toolbar nd_booking_search_form">
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--date">
-                <label for="nd_booking_archive_form_date_range_from" class="loft-search-toolbar__label"><?php esc_html_e( 'Check-in', 'nd-booking' ); ?></label>
+                <label for="nd_booking_archive_form_date_range_from" class="loft-search-toolbar__label"><?php echo esc_html( $nd_booking_labels['check_in'] ); ?></label>
                 <div class="loft-search-toolbar__control loft-search-toolbar__control--date loft-search-toolbar__group">
                     <input type="text" id="nd_booking_archive_form_date_range_from" name="nd_booking_archive_form_date_range_from" class="loft-search-toolbar__input" value="<?php echo esc_attr( $nd_booking_date_from ); ?>" autocomplete="off" readonly />
                 </div>
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--date">
-                <label for="nd_booking_archive_form_date_range_to" class="loft-search-toolbar__label"><?php esc_html_e( 'Check-out', 'nd-booking' ); ?></label>
+                <label for="nd_booking_archive_form_date_range_to" class="loft-search-toolbar__label"><?php echo esc_html( $nd_booking_labels['check_out'] ); ?></label>
                 <div class="loft-search-toolbar__control loft-search-toolbar__control--date loft-search-toolbar__group">
                     <input type="text" id="nd_booking_archive_form_date_range_to" name="nd_booking_archive_form_date_range_to" class="loft-search-toolbar__input" value="<?php echo esc_attr( $nd_booking_new_date_to_format_mdy ); ?>" autocomplete="off" readonly />
                 </div>
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--guests">
-                <label class="loft-search-toolbar__label" for="nd_booking_archive_form_guests"><?php esc_html_e( 'Guests', 'nd-booking' ); ?></label>
+                <label class="loft-search-toolbar__label" for="nd_booking_archive_form_guests"><?php echo esc_html( $nd_booking_labels['guests'] ); ?></label>
                 <div class="loft-search-toolbar__control loft-search-toolbar__control--guests loft-search-toolbar__group loft-search-toolbar__guests">
-                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php esc_attr_e( 'Decrease guest count', 'nd-booking' ); ?>">−</button>
+                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php echo esc_attr( $nd_booking_is_english ? __( 'Decrease guest count', 'nd-booking' ) : 'Diminuer le nombre d’invités' ); ?>">−</button>
                     <span class="loft-search-toolbar__guests-value" id="loft_search_guest_display"><?php echo esc_html( $nd_booking_guests_label ); ?></span>
-                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php esc_attr_e( 'Increase guest count', 'nd-booking' ); ?>">+</button>
+                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php echo esc_attr( $nd_booking_is_english ? __( 'Increase guest count', 'nd-booking' ) : 'Augmenter le nombre d’invités' ); ?>">+</button>
                 </div>
                 <input type="hidden" id="nd_booking_archive_form_guests" name="nd_booking_archive_form_guests" value="<?php echo esc_attr( $nd_booking_archive_form_guests ); ?>" />
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--summary">
-                <span class="loft-search-toolbar__label"><?php esc_html_e( 'Nights', 'nd-booking' ); ?></span>
+                <span class="loft-search-toolbar__label"><?php echo esc_html( $nd_booking_labels['nights'] ); ?></span>
                 <div class="loft-search-toolbar__summary loft-search-toolbar__group loft-search-toolbar__nights" id="nd_booking_nights_display"><?php echo esc_html( $nd_booking_nights_label ); ?></div>
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--actions">
                 <span class="loft-search-toolbar__label">&nbsp;</span>
-                <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php esc_html_e( 'Search', 'nd-booking' ); ?></button>
+                <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php echo esc_html( $nd_booking_labels['search'] ); ?></button>
             </div>
         </div>
 
@@ -601,10 +630,10 @@ function nd_booking_shortcode_search_results() {
 
     <script type="text/javascript">
     jQuery(document).ready(function($){
-        var nightsLabelSingular = '<?php echo esc_js( __( 'night', 'nd-booking' ) ); ?>';
-        var nightsLabelPlural = '<?php echo esc_js( __( 'nights', 'nd-booking' ) ); ?>';
-        var guestsLabelSingular = '<?php echo esc_js( __( 'guest', 'nd-booking' ) ); ?>';
-        var guestsLabelPlural = '<?php echo esc_js( __( 'guests', 'nd-booking' ) ); ?>';
+        var nightsLabelSingular = '<?php echo esc_js( $nd_booking_is_english ? __( 'night', 'nd-booking' ) : 'nuit' ); ?>';
+        var nightsLabelPlural = '<?php echo esc_js( $nd_booking_is_english ? __( 'nights', 'nd-booking' ) : 'nuits' ); ?>';
+        var guestsLabelSingular = '<?php echo esc_js( $nd_booking_is_english ? __( 'guest', 'nd-booking' ) : 'invité' ); ?>';
+        var guestsLabelPlural = '<?php echo esc_js( $nd_booking_is_english ? __( 'guests', 'nd-booking' ) : 'invités' ); ?>';
 
         var $form = $('#nd_booking_search_cpt_1_form_sidebar');
         var $checkIn = $('#nd_booking_archive_form_date_range_from');
@@ -772,11 +801,11 @@ function nd_booking_shortcode_search_results() {
             width: 100%;
           }
 
-          .nd_booking_search_form {
-            width: 100%;
-            max-width: 1240px;
-            margin: 0 auto 48px auto;
-            padding: 28px 32px;
+            .nd_booking_search_form {
+              width: 100%;
+              max-width: 1240px;
+              margin: 48px auto 0 auto;
+              padding: 28px 32px;
             display: flex;
             flex-wrap: wrap;
             gap: 24px;
@@ -1160,15 +1189,15 @@ function nd_booking_shortcode_search_results() {
 
     <div class="nd_booking_section nd_booking_search_results_layout">
 
-        <div id="nd_booking_search_cpt_1_filters" class="nd_booking_search_filters_wrapper">
-
-            '.$nd_booking_shortcode_left_content.'
-
-        </div>
-
         <div id="nd_booking_search_cpt_1_content" class="nd_booking_search_results_content">
 
             '.$nd_booking_shortcode_right_content.'
+
+        </div>
+
+        <div id="nd_booking_search_cpt_1_filters" class="nd_booking_search_filters_wrapper">
+
+            '.$nd_booking_shortcode_left_content.'
 
         </div>
 
