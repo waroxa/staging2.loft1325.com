@@ -148,7 +148,7 @@ $nd_booking_shortcode_left_content .= '
     flex-direction: column;
     justify-content: flex-start;
     padding: 18px;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0.55) 100%);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.45) 100%);
     color: #ffffff;
   }
   .loft1325-booking-sidebar .loft1325-booking-title {
