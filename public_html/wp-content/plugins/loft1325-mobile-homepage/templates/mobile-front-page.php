@@ -274,25 +274,46 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     <nav id="loft1325-mobile-nav" class="loft1325-mobile-home__nav" aria-hidden="true" hidden>
         <div class="loft1325-mobile-home__nav-inner">
             <?php
-            $menu = wp_nav_menu(
-                array(
-                    'theme_location' => 'main-menu',
-                    'container'      => false,
-                    'echo'           => false,
-                    'fallback_cb'    => false,
-                )
+            $mobile_menu_links = array(
+                'https://loft1325.com/about-pages/a-propos/',
+                'https://loft1325.com/nd-booking-pages/nd-booking-search/',
+                'https://loft1325.com/rooms/occupation-simple/',
+                'https://loft1325.com/rooms/occupation-double/',
+                'https://loft1325.com/rooms/penthouse/',
+                'https://loft1325.com/nd-booking-pages/nd-booking-search/',
+                'https://loft1325.com/gallery-pages/gallery-01/',
+                'https://loft1325.com/reglements/',
+                'https://loft1325.com/guide-tv-utilisation-et-depannage-2025/',
+                'https://loft1325.com/liste-des-chaines-de-television-disponibles-pour-les-residents-des-lofts-2025/',
+                'https://loft1325.com/inner-pages/faq/',
+                'https://loft1325.com/remboursements/',
+                'https://loft1325.com/contact-pages/contact/',
             );
 
-            if ( ! $menu ) {
-                $menu = wp_page_menu(
-                    array(
-                        'echo'      => false,
-                        'menu_class'=> 'menu',
-                    )
+            $menu_output = '<ul class="menu">';
+            foreach ( $mobile_menu_links as $menu_link ) {
+                $menu_title = '';
+                $menu_post_id = url_to_postid( $menu_link );
+                if ( $menu_post_id ) {
+                    $menu_title = get_the_title( $menu_post_id );
+                }
+
+                if ( '' === $menu_title ) {
+                    $menu_path = wp_parse_url( $menu_link, PHP_URL_PATH );
+                    $menu_slug = trim( $menu_path ? $menu_path : '', '/' );
+                    $menu_slug = $menu_slug ? basename( $menu_slug ) : $menu_link;
+                    $menu_title = ucwords( str_replace( array( '-', '_' ), ' ', $menu_slug ) );
+                }
+
+                $menu_output .= sprintf(
+                    '<li class="menu-item"><a href="%s">%s</a></li>',
+                    esc_url( $menu_link ),
+                    esc_html( $menu_title )
                 );
             }
+            $menu_output .= '</ul>';
 
-            echo $menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo $menu_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             ?>
         </div>
     </nav>
