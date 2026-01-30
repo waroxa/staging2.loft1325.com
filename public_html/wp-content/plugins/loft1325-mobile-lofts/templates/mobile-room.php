@@ -19,9 +19,14 @@ $booking_date_to   = filter_input( INPUT_GET, 'nd_booking_archive_form_date_rang
 $booking_guests    = filter_input( INPUT_GET, 'nd_booking_archive_form_guests', FILTER_SANITIZE_NUMBER_INT );
 $booking_nights    = filter_input( INPUT_GET, 'nd_booking_archive_form_nights', FILTER_SANITIZE_NUMBER_INT );
 $booking_guests    = $booking_guests ? absint( $booking_guests ) : 0;
+$booking_nights    = $booking_nights ? absint( $booking_nights ) : 0;
 
 if ( ! $booking_nights && $booking_date_from && $booking_date_to && function_exists( 'nd_booking_get_number_night' ) ) {
 	$booking_nights = nd_booking_get_number_night( $booking_date_from, $booking_date_to );
+}
+
+if ( ! $booking_nights && ! $booking_date_from && ! $booking_date_to ) {
+	$booking_nights = 1;
 }
 
 $room_id_room = get_post_meta( $room_id, 'nd_booking_id_room', true );
@@ -39,6 +44,10 @@ $booking_payload = array_filter(
 		'nd_booking_archive_form_nights'          => $booking_nights ? $booking_nights : null,
 	)
 );
+
+if ( ! $has_booking_params && $booking_nights ) {
+	$booking_url = add_query_arg( 'nd_booking_archive_form_nights', $booking_nights, $booking_url );
+}
 $language       = $plugin->get_current_language();
 $archive_url    = $plugin->get_lofts_archive_url();
 $per_night      = $plugin->localize_label( 'par nuit', 'per night' );
