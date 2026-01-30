@@ -141,7 +141,6 @@ function marina_child_enqueue_search_styles() {
     $search_styles_uri  = get_stylesheet_directory_uri() . '/css/search-results.css';
     $search_styles_exists = file_exists( $search_styles_path ) && is_readable( $search_styles_path );
     $search_styles_version = $search_styles_exists ? (string) filemtime( $search_styles_path ) : wp_get_theme()->get( 'Version' );
-
     $nd_booking_handle          = 'nd_booking_style';
     $nd_booking_style_available = wp_style_is( $nd_booking_handle, 'enqueued' ) || wp_style_is( $nd_booking_handle, 'registered' );
 

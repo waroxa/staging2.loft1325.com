@@ -142,6 +142,42 @@ function wp_loft_booking_enqueue_scripts() {
     wp_enqueue_style('custom-loft-styles', plugin_dir_url(__FILE__) . 'assets/css/custom-loft-style.css');
     wp_enqueue_script('custom-loft-script', plugin_dir_url(__FILE__) . 'assets/js/custom-loft-script.js', ['jquery'], '1.0', true);
     wp_localize_script('custom-loft-script', 'ajax_object', ['ajax_url' => admin_url('admin-ajax.php')]);
+
+    $should_enqueue_search_fix = is_search();
+
+    if ( ! $should_enqueue_search_fix ) {
+        $nd_booking_query_params = array(
+            'nd_booking_archive_form_date_range_from',
+            'nd_booking_archive_form_date_range_to',
+            'nd_booking_archive_form_guests',
+            'nd_booking_archive_form_services',
+            'nd_booking_archive_form_additional_services',
+            'nd_booking_archive_form_branch_stars',
+            'nd_booking_archive_form_branches',
+            'nd_booking_archive_form_max_price_for_day',
+        );
+
+        foreach ( $nd_booking_query_params as $query_param ) {
+            if ( isset( $_GET[ $query_param ] ) && '' !== $_GET[ $query_param ] ) {
+                $should_enqueue_search_fix = true;
+                break;
+            }
+        }
+    }
+
+    if ( $should_enqueue_search_fix ) {
+        $search_fix_path = plugin_dir_path( __FILE__ ) . 'assets/js/nd-booking-mobile-masonry-fix.js';
+
+        if ( file_exists( $search_fix_path ) && is_readable( $search_fix_path ) ) {
+            wp_enqueue_script(
+                'wp-loft-booking-search-fix',
+                plugin_dir_url( __FILE__ ) . 'assets/js/nd-booking-mobile-masonry-fix.js',
+                array(),
+                (string) filemtime( $search_fix_path ),
+                true
+            );
+        }
+    }
 }
 add_action('wp_enqueue_scripts', 'wp_loft_booking_enqueue_scripts');
 
