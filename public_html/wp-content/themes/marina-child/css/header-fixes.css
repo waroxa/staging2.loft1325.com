@@ -849,6 +849,12 @@
     background-position: center !important;
 }
 
+#nd_booking_single_cpt_1_basic_info .nicdark_bg_greydark,
+#nd_booking_single_cpt_1_basic_info .nd_booking_bg_greydark,
+#nd_booking_single_cpt_1_basic_info .nd_booking_bg_greydark_2 {
+    box-shadow: none !important;
+}
+
 @media (max-width: 600px) {
     #nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
     #nd_booking_single_cpt_1_header_image .rev_slider {

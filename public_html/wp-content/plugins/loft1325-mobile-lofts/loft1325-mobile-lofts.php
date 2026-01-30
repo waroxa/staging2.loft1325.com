@@ -144,7 +144,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		 *
 		 * @param array<int, string> $classes Existing body classes.
 		 *
-		 * @return array<int, string>
+		 * @return array<int, array{label: string, icon: string}>
 		 */
 		public function filter_body_class( $classes ) {
 			if ( $this->is_mobile_template ) {
@@ -423,19 +423,60 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 				}
 			);
 			$output  = array();
+			$unique  = array();
 
 			foreach ( $items as $item ) {
-				$label = $item;
+				$label     = $item;
+				$icon      = '';
+				$service_id = null;
 
 				if ( is_numeric( $item ) ) {
-					$title = get_the_title( (int) $item );
-					$label = $title ? $title : $item;
+					$service_id = (int) $item;
+				} else {
+					$service_page = get_page_by_path( $item, OBJECT, 'nd_booking_cpt_2' );
+					if ( $service_page ) {
+						$service_id = $service_page->ID;
+					}
 				}
 
-				$output[] = wp_strip_all_tags( $label );
+				if ( $service_id ) {
+					$title = get_the_title( $service_id );
+					$label = $title ? $title : $item;
+					$icon  = (string) get_post_meta( $service_id, 'nd_booking_meta_box_cpt_2_icon', true );
+				}
+
+				$label = $this->format_service_label( $label );
+				$key   = strtolower( $label ) . '|' . strtolower( $icon );
+
+				if ( isset( $unique[ $key ] ) ) {
+					continue;
+				}
+
+				$service_data = array(
+					'label' => $label,
+					'icon'  => $icon ? esc_url_raw( $icon ) : '',
+				);
+
+				$unique[ $key ] = true;
+				$output[]       = $service_data;
 			}
 
-			return array_unique( $output );
+			return $output;
+		}
+
+		/**
+		 * Normalize service label text for display.
+		 *
+		 * @param string $label Raw label.
+		 *
+		 * @return string
+		 */
+		private function format_service_label( $label ) {
+			$label = wp_strip_all_tags( (string) $label );
+			$label = str_replace( array( '-', '_' ), ' ', $label );
+			$label = preg_replace( '/\s+/', ' ', $label );
+
+			return trim( (string) $label );
 		}
 
 		/**
