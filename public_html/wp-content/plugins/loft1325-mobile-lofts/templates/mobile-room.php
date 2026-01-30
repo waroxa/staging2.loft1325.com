@@ -200,8 +200,8 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 					<div class="loft1325-mobile-loft__perk" role="listitem">
 						<span class="dashicons dashicons-format-gallery" aria-hidden="true"></span>
 						<div>
-							<p><?php echo esc_html( $plugin->localize_label( 'Slider haute définition', 'High-definition slider' ) ); ?></p>
-							<small><?php echo esc_html( $plugin->localize_label( 'Gestes, dots et progression intuitive.', 'Gestures, dots and a smooth progress rail.' ) ); ?></small>
+							<p><?php echo esc_html( $plugin->localize_label( 'Ambiance loft spacieuse', 'Spacious loft ambiance' ) ); ?></p>
+							<small><?php echo esc_html( $plugin->localize_label( 'Volumes ouverts, coins détente et cuisine équipée.', 'Open volumes, lounge corners, and an equipped kitchen.' ) ); ?></small>
 						</div>
 					</div>
 					<div class="loft1325-mobile-loft__perk" role="listitem">
@@ -262,7 +262,7 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 			<?php if ( ! empty( $room_data['normal_services'] ) || ! empty( $room_data['extra_services'] ) ) : ?>
 				<section class="loft1325-mobile-loft__section loft1325-mobile-loft__section--stacked">
 					<div class="loft1325-mobile-loft__section-header">
-						<span class="loft1325-mobile-loft__section-pill"><?php echo esc_html( $plugin->localize_label( 'Pensé pour le mobile', 'Designed for mobile stays' ) ); ?></span>
+						<span class="loft1325-mobile-loft__section-pill"><?php echo esc_html( $plugin->localize_label( 'Pensé pour votre séjour', 'Designed for your stay' ) ); ?></span>
 						<h2><?php echo esc_html( $services_label ); ?></h2>
 					</div>
 
