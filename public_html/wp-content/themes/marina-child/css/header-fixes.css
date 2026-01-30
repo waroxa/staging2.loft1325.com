@@ -858,8 +858,8 @@
 @media (max-width: 600px) {
     #nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
     #nd_booking_single_cpt_1_header_image .rev_slider {
-        margin: 0 16px !important;
-        width: auto !important;
+        margin: 0 !important;
+        width: 100% !important;
     }
 }
 
