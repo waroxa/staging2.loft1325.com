@@ -142,6 +142,34 @@ body.loft1325-mobile-home-active .loft1325-mobile-home a {
     right: 0;
 }
 
+.loft1325-mobile-home__nav-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.loft1325-mobile-home__nav-close {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 1.4rem;
+    line-height: 1;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.loft1325-mobile-home__nav-close:focus,
+.loft1325-mobile-home__nav-close:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+}
+
 .loft1325-mobile-home__nav-inner ul {
     list-style: none;
     padding: 0;
