@@ -818,3 +818,52 @@
 .nd_booking_bg_greydark_2 h6 {
     color: rgba(248, 250, 252, 0.92);
 }
+
+/* Hide guest login/register banner on booking flow */
+.nd_booking_booking_alert_login_register {
+    display: none !important;
+}
+
+/* Room header slider alignment + image fill */
+#nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
+#nd_booking_single_cpt_1_header_image .rev_slider {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+#nd_booking_single_cpt_1_header_image .rev_slider,
+#nd_booking_single_cpt_1_header_image .rev_slider li,
+#nd_booking_single_cpt_1_header_image .rev_slider img,
+#nd_booking_single_cpt_1_header_image .tp-bgimg {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#nd_booking_single_cpt_1_header_image .tp-bgimg,
+#nd_booking_single_cpt_1_header_image .rev_slider img {
+    object-fit: cover;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+@media (max-width: 600px) {
+    #nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
+    #nd_booking_single_cpt_1_header_image .rev_slider {
+        margin: 0 16px !important;
+        width: auto !important;
+    }
+}
+
+/* Remove harsh shadows/lines on booking date cards */
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_greydark,
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_greydark_2 {
+    box-shadow: none !important;
+}
+
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_greydark_2 h1,
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_greydark_2 h6 {
+    text-shadow: none !important;
+}

@@ -1,9 +1,25 @@
 <?php
 wp_enqueue_script( 'jquery-ui-tabs' );
 
+$nd_booking_language = 'fr';
+if ( function_exists( 'trp_get_current_language' ) ) {
+    $nd_booking_language = (string) trp_get_current_language();
+} elseif ( function_exists( 'determine_locale' ) ) {
+    $nd_booking_language = (string) determine_locale();
+} else {
+    $nd_booking_language = (string) get_locale();
+}
+
+$nd_booking_language = strtolower( substr( $nd_booking_language, 0, 2 ) );
+$nd_booking_is_english = ( 'en' === $nd_booking_language );
+
+$nd_booking_payment_heading = $nd_booking_is_english ? 'Payment details' : 'Détails de paiement';
+$nd_booking_payment_status = $nd_booking_is_english ? 'Pending payment' : 'Paiement en attente';
+$nd_booking_payment_cta = $nd_booking_is_english ? 'Confirm reservation' : 'Confirmer la réservation';
+
 $nd_booking_shortcode_right_content .= '
     <div class="section loft-section-payment">
-        <h3><span class="section-icon" aria-hidden="true">💳</span> ' . esc_html__( 'Détails de paiement', 'nd-booking' ) . '</h3>
+        <h3><span class="section-icon" aria-hidden="true">💳</span> ' . esc_html( $nd_booking_payment_heading ) . '</h3>
         <div class="section-body">
             <div class="loft-payment-info">' . do_shortcode( get_option( 'nd_booking_stripe_checkout' ) ) . '</div>
             <div class="loft-payment-card">
@@ -39,8 +55,8 @@ $nd_booking_shortcode_right_content .= '
                     <input type="hidden" id="nd_booking_checkout_form_term" name="nd_booking_checkout_form_term" value="' . esc_attr( $nd_booking_booking_form_term ) . '">
                     <input type="hidden" id="nd_booking_booking_form_services" name="nd_booking_booking_form_services" value="' . esc_attr( $nd_booking_booking_form_services ) . '">
                     <input type="hidden" id="nd_booking_booking_form_action_type" name="nd_booking_booking_form_action_type" value="stripe">
-                    <input type="hidden" id="nd_booking_booking_form_payment_status" name="nd_booking_booking_form_payment_status" value="Paiement en attente">
-                    <button type="submit" class="button-primary">' . esc_html__( 'Confirmer la réservation', 'nd-booking' ) . '</button>
+                    <input type="hidden" id="nd_booking_booking_form_payment_status" name="nd_booking_booking_form_payment_status" value="' . esc_attr( $nd_booking_payment_status ) . '">
+                    <button type="submit" class="button-primary">' . esc_html( $nd_booking_payment_cta ) . '</button>
                 </form>
                 <script type="text/javascript">
                     (function($) {

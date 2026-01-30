@@ -704,7 +704,7 @@ $nd_booking_shortcode_right_content .= '
           <div id="nd_booking_search_results_loader" class="nd_booking_search_results_loader">
             <div class="nd_booking_search_results_loader_inner">
               <div class="nd_booking_loader_spinner"></div>
-              <p>'.__('Vérification des disponibilités pour vos dates…','nd-booking').'</p>
+              <p>'.__('Checking availability for your dates…','nd-booking').'</p>
             </div>
           </div>
 
@@ -719,7 +719,7 @@ $nd_booking_shortcode_right_content .= '
             <div class="nd_booking_section nd_booking_padding_15 nd_booking_box_sizing_border_box">
               <div class="nd_booking_section nd_booking_bg_yellow nd_booking_padding_15_20 nd_booking_box_sizing_border_box">
                 <img class="nd_booking_float_left nd_booking_display_none_all_iphone" width="20" src="'.esc_url(plugins_url('icon-warning-white.svg', __FILE__ )).'">
-                <h3 class="nd_booking_float_left nd_options_color_white nd_booking_color_white nd_options_first_font nd_booking_margin_left_10">'.__('Aucun résultat pour cette recherche','nd-booking').'</h3>
+                <h3 class="nd_booking_float_left nd_options_color_white nd_booking_color_white nd_options_first_font nd_booking_margin_left_10">'.__('No results found for this search','nd-booking').'</h3>
               </div>
             </div>
 
