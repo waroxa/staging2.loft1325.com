@@ -19,9 +19,14 @@ $booking_date_to   = filter_input( INPUT_GET, 'nd_booking_archive_form_date_rang
 $booking_guests    = filter_input( INPUT_GET, 'nd_booking_archive_form_guests', FILTER_SANITIZE_NUMBER_INT );
 $booking_nights    = filter_input( INPUT_GET, 'nd_booking_archive_form_nights', FILTER_SANITIZE_NUMBER_INT );
 $booking_guests    = $booking_guests ? absint( $booking_guests ) : 0;
+$booking_nights    = $booking_nights ? absint( $booking_nights ) : 0;
 
 if ( ! $booking_nights && $booking_date_from && $booking_date_to && function_exists( 'nd_booking_get_number_night' ) ) {
 	$booking_nights = nd_booking_get_number_night( $booking_date_from, $booking_date_to );
+}
+
+if ( ! $booking_nights && ! $booking_date_from && ! $booking_date_to ) {
+	$booking_nights = 1;
 }
 
 $room_id_room = get_post_meta( $room_id, 'nd_booking_id_room', true );
@@ -39,6 +44,10 @@ $booking_payload = array_filter(
 		'nd_booking_archive_form_nights'          => $booking_nights ? $booking_nights : null,
 	)
 );
+
+if ( ! $has_booking_params && $booking_nights ) {
+	$booking_url = add_query_arg( 'nd_booking_archive_form_nights', $booking_nights, $booking_url );
+}
 $language       = $plugin->get_current_language();
 $archive_url    = $plugin->get_lofts_archive_url();
 $per_night      = $plugin->localize_label( 'par nuit', 'per night' );
@@ -59,6 +68,13 @@ $vibe_label     = $plugin->localize_label( 'Ambiance signature', 'Signature vibe
 $perks_label    = $plugin->localize_label( 'Avantages directs', 'Direct perks' );
 $cta_hint       = $plugin->localize_label( 'Confirmation immédiate', 'Instant confirmation' );
 $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler reviews' );
+
+$normal_services = $room_data['normal_services'] ?? array();
+$extra_services  = $room_data['extra_services'] ?? array();
+$normal_services = is_array( $normal_services ) ? $normal_services : array( $normal_services );
+$extra_services  = is_array( $extra_services ) ? $extra_services : array( $extra_services );
+$normal_services = array_values( array_filter( array_map( 'trim', $normal_services ) ) );
+$extra_services  = array_values( array_filter( array_map( 'trim', $extra_services ) ) );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -258,28 +274,36 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 				</div>
 			</section>
 
-			<?php if ( ! empty( $room_data['normal_services'] ) || ! empty( $room_data['extra_services'] ) ) : ?>
+			<?php if ( ! empty( $normal_services ) || ! empty( $extra_services ) ) : ?>
 				<section class="loft1325-mobile-loft__section loft1325-mobile-loft__section--stacked">
 					<div class="loft1325-mobile-loft__section-header">
 						<span class="loft1325-mobile-loft__section-pill"><?php echo esc_html( $plugin->localize_label( 'Pensé pour votre séjour', 'Designed for your stay' ) ); ?></span>
 						<h2><?php echo esc_html( $services_label ); ?></h2>
 					</div>
 
-					<?php if ( ! empty( $room_data['normal_services'] ) ) : ?>
+					<?php if ( ! empty( $normal_services ) ) : ?>
 						<ul class="loft1325-mobile-loft__chip-list" aria-label="<?php echo esc_attr( $services_label ); ?>">
-							<?php foreach ( $room_data['normal_services'] as $service ) : ?>
-								<li class="loft1325-mobile-loft__chip"><?php echo esc_html( $service ); ?></li>
+							<?php foreach ( $normal_services as $service ) : ?>
+								<?php
+								$service_label = str_replace( array( '-', '_' ), ' ', $service );
+								$service_label = ucwords( $service_label );
+								?>
+								<li class="loft1325-mobile-loft__chip"><?php echo esc_html( $service_label ); ?></li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
 
-					<?php if ( ! empty( $room_data['extra_services'] ) ) : ?>
+					<?php if ( ! empty( $extra_services ) ) : ?>
 						<div class="loft1325-mobile-loft__section-subheader">
 							<h3><?php echo esc_html( $extras_label ); ?></h3>
 						</div>
 						<ul class="loft1325-mobile-loft__chip-list loft1325-mobile-loft__chip-list--accent" aria-label="<?php echo esc_attr( $extras_label ); ?>">
-							<?php foreach ( $room_data['extra_services'] as $service ) : ?>
-								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow"><?php echo esc_html( $service ); ?></li>
+							<?php foreach ( $extra_services as $service ) : ?>
+								<?php
+								$service_label = str_replace( array( '-', '_' ), ' ', $service );
+								$service_label = ucwords( $service_label );
+								?>
+								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow"><?php echo esc_html( $service_label ); ?></li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
