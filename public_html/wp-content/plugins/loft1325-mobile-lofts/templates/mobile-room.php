@@ -68,6 +68,13 @@ $vibe_label     = $plugin->localize_label( 'Ambiance signature', 'Signature vibe
 $perks_label    = $plugin->localize_label( 'Avantages directs', 'Direct perks' );
 $cta_hint       = $plugin->localize_label( 'Confirmation immédiate', 'Instant confirmation' );
 $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler reviews' );
+
+$normal_services = $room_data['normal_services'] ?? array();
+$extra_services  = $room_data['extra_services'] ?? array();
+$normal_services = is_array( $normal_services ) ? $normal_services : array( $normal_services );
+$extra_services  = is_array( $extra_services ) ? $extra_services : array( $extra_services );
+$normal_services = array_values( array_filter( array_map( 'trim', $normal_services ) ) );
+$extra_services  = array_values( array_filter( array_map( 'trim', $extra_services ) ) );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -267,42 +274,36 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 				</div>
 			</section>
 
-			<?php if ( ! empty( $room_data['normal_services'] ) || ! empty( $room_data['extra_services'] ) ) : ?>
+			<?php if ( ! empty( $normal_services ) || ! empty( $extra_services ) ) : ?>
 				<section class="loft1325-mobile-loft__section loft1325-mobile-loft__section--stacked">
 					<div class="loft1325-mobile-loft__section-header">
 						<span class="loft1325-mobile-loft__section-pill"><?php echo esc_html( $plugin->localize_label( 'Pensé pour votre séjour', 'Designed for your stay' ) ); ?></span>
 						<h2><?php echo esc_html( $services_label ); ?></h2>
 					</div>
 
-					<?php if ( ! empty( $room_data['normal_services'] ) ) : ?>
+					<?php if ( ! empty( $normal_services ) ) : ?>
 						<ul class="loft1325-mobile-loft__chip-list" aria-label="<?php echo esc_attr( $services_label ); ?>">
-							<?php foreach ( $room_data['normal_services'] as $service ) : ?>
-								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--service">
-									<?php if ( ! empty( $service['icon'] ) ) : ?>
-										<span class="loft1325-mobile-loft__chip-icon" aria-hidden="true">
-											<img src="<?php echo esc_url( $service['icon'] ); ?>" alt="" loading="lazy" />
-										</span>
-									<?php endif; ?>
-									<span class="loft1325-mobile-loft__chip-text"><?php echo esc_html( $service['label'] ); ?></span>
-								</li>
+							<?php foreach ( $normal_services as $service ) : ?>
+								<?php
+								$service_label = str_replace( array( '-', '_' ), ' ', $service );
+								$service_label = ucwords( $service_label );
+								?>
+								<li class="loft1325-mobile-loft__chip"><?php echo esc_html( $service_label ); ?></li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
 
-					<?php if ( ! empty( $room_data['extra_services'] ) ) : ?>
+					<?php if ( ! empty( $extra_services ) ) : ?>
 						<div class="loft1325-mobile-loft__section-subheader">
 							<h3><?php echo esc_html( $extras_label ); ?></h3>
 						</div>
 						<ul class="loft1325-mobile-loft__chip-list loft1325-mobile-loft__chip-list--accent" aria-label="<?php echo esc_attr( $extras_label ); ?>">
-							<?php foreach ( $room_data['extra_services'] as $service ) : ?>
-								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow loft1325-mobile-loft__chip--service">
-									<?php if ( ! empty( $service['icon'] ) ) : ?>
-										<span class="loft1325-mobile-loft__chip-icon" aria-hidden="true">
-											<img src="<?php echo esc_url( $service['icon'] ); ?>" alt="" loading="lazy" />
-										</span>
-									<?php endif; ?>
-									<span class="loft1325-mobile-loft__chip-text"><?php echo esc_html( $service['label'] ); ?></span>
-								</li>
+							<?php foreach ( $extra_services as $service ) : ?>
+								<?php
+								$service_label = str_replace( array( '-', '_' ), ' ', $service );
+								$service_label = ucwords( $service_label );
+								?>
+								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow"><?php echo esc_html( $service_label ); ?></li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
