@@ -818,3 +818,26 @@
 .nd_booking_bg_greydark_2 h6 {
     color: rgba(248, 250, 252, 0.92);
 }
+
+/* Room header slider alignment + image fill */
+#nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
+#nd_booking_single_cpt_1_header_image .rev_slider {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+}
+
+#nd_booking_single_cpt_1_header_image .rev_slider,
+#nd_booking_single_cpt_1_header_image .rev_slider li,
+#nd_booking_single_cpt_1_header_image .rev_slider img,
+#nd_booking_single_cpt_1_header_image .tp-bgimg {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#nd_booking_single_cpt_1_header_image .tp-bgimg,
+#nd_booking_single_cpt_1_header_image .rev_slider img {
+    object-fit: cover;
+    background-size: cover !important;
+    background-position: center !important;
+}
