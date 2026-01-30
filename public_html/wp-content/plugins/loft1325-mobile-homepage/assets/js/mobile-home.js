@@ -9,25 +9,31 @@
 
     function initializeNav(body) {
         var nav = document.getElementById('loft1325-mobile-nav');
-        var toggle = document.querySelector('[data-loft1325-mobile-nav-toggle]');
+        var toggles = document.querySelectorAll('[data-loft1325-mobile-nav-toggle]');
         var overlay = document.querySelector('[data-loft1325-mobile-nav-overlay]');
 
-        if (!nav || !toggle || !overlay) {
+        if (!nav || !overlay || !toggles.length) {
             return;
+        }
+
+        function setToggleExpanded(isExpanded) {
+            toggles.forEach(function (toggle) {
+                toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+            });
         }
 
         function openNav() {
             nav.removeAttribute('hidden');
             nav.setAttribute('aria-hidden', 'false');
             body.classList.add('loft1325-mobile-home--nav-open');
-            toggle.setAttribute('aria-expanded', 'true');
+            setToggleExpanded(true);
             overlay.removeAttribute('hidden');
         }
 
         function closeNav() {
             nav.setAttribute('aria-hidden', 'true');
             body.classList.remove('loft1325-mobile-home--nav-open');
-            toggle.setAttribute('aria-expanded', 'false');
+            setToggleExpanded(false);
             overlay.setAttribute('hidden', 'hidden');
             window.setTimeout(function () {
                 if (nav.getAttribute('aria-hidden') === 'true') {
@@ -38,7 +44,7 @@
 
         function toggleNav(event) {
             event.preventDefault();
-            var isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+            var isExpanded = body.classList.contains('loft1325-mobile-home--nav-open');
             if (isExpanded) {
                 closeNav();
             } else {
@@ -46,7 +52,9 @@
             }
         }
 
-        toggle.addEventListener('click', toggleNav);
+        toggles.forEach(function (toggle) {
+            toggle.addEventListener('click', toggleNav);
+        });
         overlay.addEventListener('click', closeNav);
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && body.classList.contains('loft1325-mobile-home--nav-open')) {
@@ -55,7 +63,8 @@
         });
 
         nav.addEventListener('click', function (event) {
-            if (event.target.tagName && event.target.tagName.toLowerCase() === 'a') {
+            var link = event.target.closest ? event.target.closest('a') : null;
+            if (link) {
                 closeNav();
             }
         });

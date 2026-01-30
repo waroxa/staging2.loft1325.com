@@ -273,26 +273,107 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     <div class="loft1325-mobile-home__nav-overlay" data-loft1325-mobile-nav-overlay hidden></div>
     <nav id="loft1325-mobile-nav" class="loft1325-mobile-home__nav" aria-hidden="true" hidden>
         <div class="loft1325-mobile-home__nav-inner">
+            <div class="loft1325-mobile-home__nav-header">
+                <button
+                    class="loft1325-mobile-home__nav-close"
+                    type="button"
+                    aria-label="<?php echo esc_attr( $plugin->localize_label( 'Fermer le menu', 'Close menu' ) ); ?>"
+                    aria-expanded="false"
+                    data-loft1325-mobile-nav-toggle
+                >
+                    ×
+                </button>
+            </div>
             <?php
-            $menu = wp_nav_menu(
+            $language = $plugin->get_current_language();
+            $menu_items = array(
                 array(
-                    'theme_location' => 'primary',
-                    'container'      => false,
-                    'echo'           => false,
-                    'fallback_cb'    => false,
-                )
+                    'path'     => '/',
+                    'label_fr' => 'Accueil',
+                    'label_en' => 'Home',
+                ),
+                array(
+                    'path'     => '/about-pages/a-propos/',
+                    'label_fr' => 'À propos',
+                    'label_en' => 'About',
+                ),
+                array(
+                    'path'     => '/rooms/occupation-simple/',
+                    'label_fr' => 'Occupation simple',
+                    'label_en' => 'Single occupancy',
+                ),
+                array(
+                    'path'     => '/rooms/occupation-double/',
+                    'label_fr' => 'Occupation double',
+                    'label_en' => 'Double occupancy',
+                ),
+                array(
+                    'path'     => '/rooms/penthouse/',
+                    'label_fr' => 'Penthouse',
+                    'label_en' => 'Penthouse',
+                ),
+                array(
+                    'path'     => '/gallery-pages/gallery-01/',
+                    'label_fr' => 'Galerie',
+                    'label_en' => 'Gallery',
+                ),
+                array(
+                    'path'     => '/reglements/',
+                    'label_fr' => 'Règlements',
+                    'label_en' => 'Regulations',
+                ),
+                array(
+                    'path'     => '/guide-tv-utilisation-et-depannage-2025/',
+                    'label_fr' => 'Guide TV : utilisation et dépannage 2025',
+                    'label_en' => 'TV guide: usage & troubleshooting 2025',
+                ),
+                array(
+                    'path'     => '/liste-des-chaines-de-television-disponibles-pour-les-residents-des-lofts-2025/',
+                    'label_fr' => 'Liste des chaînes de télévision disponibles pour les résidents des lofts 2025',
+                    'label_en' => 'List of TV channels available for loft residents 2025',
+                ),
+                array(
+                    'path'     => '/inner-pages/faq/',
+                    'label_fr' => 'FAQ',
+                    'label_en' => 'FAQ',
+                ),
+                array(
+                    'path'     => '/remboursements/',
+                    'label_fr' => 'Remboursements',
+                    'label_en' => 'Refunds',
+                ),
+                array(
+                    'path'     => '/contact-pages/contact/',
+                    'label_fr' => 'Contact',
+                    'label_en' => 'Contact',
+                ),
             );
 
-            if ( ! $menu ) {
-                $menu = wp_page_menu(
-                    array(
-                        'echo'      => false,
-                        'menu_class'=> 'menu',
-                    )
-                );
+            $trp_url_converter = null;
+            if ( class_exists( 'TRP_Translate_Press' ) ) {
+                $trp_instance = TRP_Translate_Press::get_trp_instance();
+                if ( $trp_instance ) {
+                    $trp_url_converter = $trp_instance->get_component( 'url_converter' );
+                }
             }
 
-            echo $menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            $menu_output = '<ul class="menu">';
+            foreach ( $menu_items as $menu_item ) {
+                $menu_link = home_url( $menu_item['path'] );
+                if ( $trp_url_converter ) {
+                    $menu_link = $trp_url_converter->get_url_for_language( $language, $menu_link, '' );
+                }
+                $menu_title = $plugin->localize_label( $menu_item['label_fr'], $menu_item['label_en'] );
+
+                $menu_output .= sprintf(
+                    '<li class="menu-item"><a href="%s">%s</a></li>',
+                    esc_url( $menu_link ),
+                    esc_html( $menu_title )
+                );
+            }
+            $menu_output .= '</ul>';
+
+            echo $menu_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             ?>
         </div>
     </nav>

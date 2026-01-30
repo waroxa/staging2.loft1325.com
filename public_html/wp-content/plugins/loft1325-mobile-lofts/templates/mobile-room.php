@@ -40,8 +40,7 @@ $booking_payload = array_filter(
 	)
 );
 $language       = $plugin->get_current_language();
-$archive_url    = get_post_type_archive_link( 'nd_booking_cpt_1' );
-$archive_url    = $archive_url ? $archive_url : home_url( '/' );
+$archive_url    = $plugin->get_lofts_archive_url();
 $per_night      = $plugin->localize_label( 'par nuit', 'per night' );
 $cta_label      = $plugin->localize_label( 'Réserver maintenant', 'Reserve now' );
 $details_label  = $plugin->localize_label( 'Voir les détails', 'View details' );
