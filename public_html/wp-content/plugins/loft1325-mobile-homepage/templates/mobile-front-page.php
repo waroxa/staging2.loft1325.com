@@ -276,7 +276,7 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
             <?php
             $menu = wp_nav_menu(
                 array(
-                    'theme_location' => 'primary',
+                    'theme_location' => 'main-menu',
                     'container'      => false,
                     'echo'           => false,
                     'fallback_cb'    => false,
