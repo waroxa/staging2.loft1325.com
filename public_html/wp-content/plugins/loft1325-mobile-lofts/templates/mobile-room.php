@@ -277,7 +277,14 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 					<?php if ( ! empty( $room_data['normal_services'] ) ) : ?>
 						<ul class="loft1325-mobile-loft__chip-list" aria-label="<?php echo esc_attr( $services_label ); ?>">
 							<?php foreach ( $room_data['normal_services'] as $service ) : ?>
-								<li class="loft1325-mobile-loft__chip"><?php echo esc_html( $service ); ?></li>
+								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--service">
+									<?php if ( ! empty( $service['icon'] ) ) : ?>
+										<span class="loft1325-mobile-loft__chip-icon" aria-hidden="true">
+											<img src="<?php echo esc_url( $service['icon'] ); ?>" alt="" loading="lazy" />
+										</span>
+									<?php endif; ?>
+									<span class="loft1325-mobile-loft__chip-text"><?php echo esc_html( $service['label'] ); ?></span>
+								</li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
@@ -288,7 +295,14 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 						</div>
 						<ul class="loft1325-mobile-loft__chip-list loft1325-mobile-loft__chip-list--accent" aria-label="<?php echo esc_attr( $extras_label ); ?>">
 							<?php foreach ( $room_data['extra_services'] as $service ) : ?>
-								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow"><?php echo esc_html( $service ); ?></li>
+								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow loft1325-mobile-loft__chip--service">
+									<?php if ( ! empty( $service['icon'] ) ) : ?>
+										<span class="loft1325-mobile-loft__chip-icon" aria-hidden="true">
+											<img src="<?php echo esc_url( $service['icon'] ); ?>" alt="" loading="lazy" />
+										</span>
+									<?php endif; ?>
+									<span class="loft1325-mobile-loft__chip-text"><?php echo esc_html( $service['label'] ); ?></span>
+								</li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
