@@ -273,37 +273,97 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     <div class="loft1325-mobile-home__nav-overlay" data-loft1325-mobile-nav-overlay hidden></div>
     <nav id="loft1325-mobile-nav" class="loft1325-mobile-home__nav" aria-hidden="true" hidden>
         <div class="loft1325-mobile-home__nav-inner">
+            <div class="loft1325-mobile-home__nav-header">
+                <button
+                    class="loft1325-mobile-home__nav-close"
+                    type="button"
+                    aria-label="<?php echo esc_attr( $plugin->localize_label( 'Fermer le menu', 'Close menu' ) ); ?>"
+                    aria-expanded="false"
+                    data-loft1325-mobile-nav-toggle
+                >
+                    ×
+                </button>
+            </div>
             <?php
-            $mobile_menu_links = array(
-                'https://loft1325.com/about-pages/a-propos/',
-                'https://loft1325.com/nd-booking-pages/nd-booking-search/',
-                'https://loft1325.com/rooms/occupation-simple/',
-                'https://loft1325.com/rooms/occupation-double/',
-                'https://loft1325.com/rooms/penthouse/',
-                'https://loft1325.com/nd-booking-pages/nd-booking-search/',
-                'https://loft1325.com/gallery-pages/gallery-01/',
-                'https://loft1325.com/reglements/',
-                'https://loft1325.com/guide-tv-utilisation-et-depannage-2025/',
-                'https://loft1325.com/liste-des-chaines-de-television-disponibles-pour-les-residents-des-lofts-2025/',
-                'https://loft1325.com/inner-pages/faq/',
-                'https://loft1325.com/remboursements/',
-                'https://loft1325.com/contact-pages/contact/',
+            $language = $plugin->get_current_language();
+            $menu_items = array(
+                array(
+                    'path'     => '/',
+                    'label_fr' => 'Accueil',
+                    'label_en' => 'Home',
+                ),
+                array(
+                    'path'     => '/about-pages/a-propos/',
+                    'label_fr' => 'À propos',
+                    'label_en' => 'About',
+                ),
+                array(
+                    'path'     => '/rooms/occupation-simple/',
+                    'label_fr' => 'Occupation simple',
+                    'label_en' => 'Single occupancy',
+                ),
+                array(
+                    'path'     => '/rooms/occupation-double/',
+                    'label_fr' => 'Occupation double',
+                    'label_en' => 'Double occupancy',
+                ),
+                array(
+                    'path'     => '/rooms/penthouse/',
+                    'label_fr' => 'Penthouse',
+                    'label_en' => 'Penthouse',
+                ),
+                array(
+                    'path'     => '/gallery-pages/gallery-01/',
+                    'label_fr' => 'Galerie',
+                    'label_en' => 'Gallery',
+                ),
+                array(
+                    'path'     => '/reglements/',
+                    'label_fr' => 'Règlements',
+                    'label_en' => 'Regulations',
+                ),
+                array(
+                    'path'     => '/guide-tv-utilisation-et-depannage-2025/',
+                    'label_fr' => 'Guide TV : utilisation et dépannage 2025',
+                    'label_en' => 'TV guide: usage & troubleshooting 2025',
+                ),
+                array(
+                    'path'     => '/liste-des-chaines-de-television-disponibles-pour-les-residents-des-lofts-2025/',
+                    'label_fr' => 'Liste des chaînes de télévision disponibles pour les résidents des lofts 2025',
+                    'label_en' => 'List of TV channels available for loft residents 2025',
+                ),
+                array(
+                    'path'     => '/inner-pages/faq/',
+                    'label_fr' => 'FAQ',
+                    'label_en' => 'FAQ',
+                ),
+                array(
+                    'path'     => '/remboursements/',
+                    'label_fr' => 'Remboursements',
+                    'label_en' => 'Refunds',
+                ),
+                array(
+                    'path'     => '/contact-pages/contact/',
+                    'label_fr' => 'Contact',
+                    'label_en' => 'Contact',
+                ),
             );
 
-            $menu_output = '<ul class="menu">';
-            foreach ( $mobile_menu_links as $menu_link ) {
-                $menu_title = '';
-                $menu_post_id = url_to_postid( $menu_link );
-                if ( $menu_post_id ) {
-                    $menu_title = get_the_title( $menu_post_id );
+            $trp_url_converter = null;
+            if ( class_exists( 'TRP_Translate_Press' ) ) {
+                $trp_instance = TRP_Translate_Press::get_trp_instance();
+                if ( $trp_instance ) {
+                    $trp_url_converter = $trp_instance->get_component( 'url_converter' );
                 }
+            }
 
-                if ( '' === $menu_title ) {
-                    $menu_path = wp_parse_url( $menu_link, PHP_URL_PATH );
-                    $menu_slug = trim( $menu_path ? $menu_path : '', '/' );
-                    $menu_slug = $menu_slug ? basename( $menu_slug ) : $menu_link;
-                    $menu_title = ucwords( str_replace( array( '-', '_' ), ' ', $menu_slug ) );
+            $menu_output = '<ul class="menu">';
+            foreach ( $menu_items as $menu_item ) {
+                $menu_link = home_url( $menu_item['path'] );
+                if ( $trp_url_converter ) {
+                    $menu_link = $trp_url_converter->get_url_for_language( $language, $menu_link, '' );
                 }
+                $menu_title = $plugin->localize_label( $menu_item['label_fr'], $menu_item['label_en'] );
 
                 $menu_output .= sprintf(
                     '<li class="menu-item"><a href="%s">%s</a></li>',
