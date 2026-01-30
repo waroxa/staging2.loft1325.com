@@ -44,7 +44,13 @@ function nd_booking_validate_fields(){
      if ( nd_booking_validate_fields_result == 1 ){
 
         jQuery( ".nd_booking_validation_errors").remove();
-        jQuery("#nd_booking_submit_go_to_checkout").trigger("click");
+        var ndBookingSubmitButton = jQuery("#nd_booking_submit_go_to_checkout");
+        var ndBookingForm = ndBookingSubmitButton.closest("form");
+        if (ndBookingForm.length) {
+          ndBookingForm.trigger("submit");
+        } else {
+          ndBookingSubmitButton.trigger("click");
+        }
         
      }else{
         
