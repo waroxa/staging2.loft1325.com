@@ -17,6 +17,7 @@ $nd_booking_heading = $nd_booking_is_english ? 'Guest information' : 'Vos inform
 $nd_booking_heading_subtitle = $nd_booking_is_english ? 'A five-star experience starts here.' : 'Une expérience 5 étoiles commence ici.';
 $nd_booking_urgency_title = $nd_booking_is_english ? 'This exclusive rate expires soon' : 'Cette offre exclusive expire bientôt';
 $nd_booking_urgency_text = $nd_booking_is_english ? 'Lock in today’s price and complete your reservation before the timer runs out.' : 'Confirmez votre réservation maintenant pour garantir le tarif du jour avant qu’il n’expire.';
+$nd_booking_submit_label = $nd_booking_is_english ? 'BOOK NOW' : 'RÉSERVER';
 
 $nd_booking_initial_breakdown = nd_booking_calculate_tax_breakdown( $nd_booking_trip_price );
 $nd_booking_initial_final_price = $nd_booking_initial_breakdown['total'];
@@ -153,8 +154,8 @@ $nd_booking_shortcode_right_content = '
       </div> 
       <div class="nd_booking_section nd_booking_height_20"></div>
       <div class="nd_booking_width_100_percentage nd_booking_box_sizing_border_box nd_booking_float_left">
-          <a onclick="nd_booking_validate_fields()" class="nd_booking_bg_yellow nd_options_color_white nd_booking_cursor_pointer nd_booking_font_size_11 nd_options_second_font_important nd_booking_font_weight_bolder nd_booking_letter_spacing_2 nd_booking_padding_15_35_important">'.__('CHECKOUT','nd-booking').'</a>
-          <input id="nd_booking_submit_go_to_checkout" class="nd_booking_display_none nd_booking_font_size_11 nd_options_second_font_important nd_booking_font_weight_bolder nd_booking_letter_spacing_2 nd_booking_padding_15_35_important" type="submit" value="'.__('CHECKOUT','nd-booking').'"> 
+          <a onclick="nd_booking_validate_fields()" class="nd_booking_bg_yellow nd_options_color_white nd_booking_cursor_pointer nd_booking_font_size_11 nd_options_second_font_important nd_booking_font_weight_bolder nd_booking_letter_spacing_2 nd_booking_padding_15_35_important">'.$nd_booking_submit_label.'</a>
+          <input id="nd_booking_submit_go_to_checkout" class="nd_booking_display_none nd_booking_font_size_11 nd_options_second_font_important nd_booking_font_weight_bolder nd_booking_letter_spacing_2 nd_booking_padding_15_35_important" type="submit" value="'.$nd_booking_submit_label.'"> 
       </div>  
 
 

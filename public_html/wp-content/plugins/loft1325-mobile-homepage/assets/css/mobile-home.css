@@ -1075,6 +1075,31 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
     line-height: 1.65;
 }
 
+.loft1325-mobile-home__reviews {
+    padding: 2.5rem 1.5rem 2.75rem;
+    background: #ffffff;
+    color: var(--loft1325-text);
+}
+
+.loft1325-mobile-home__reviews .loft1325-mobile-home__section-heading,
+.loft1325-mobile-home__reviews-card {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.loft1325-mobile-home__reviews-card {
+    background: #ffffff;
+    border-radius: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 32px rgba(15, 27, 45, 0.08);
+    padding: 1.25rem;
+    overflow: hidden;
+}
+
+.loft1325-mobile-home__reviews-card > * {
+    max-width: 100%;
+}
+
 .loft1325-mobile-home__room-list {
     display: grid;
     gap: 1.5rem;

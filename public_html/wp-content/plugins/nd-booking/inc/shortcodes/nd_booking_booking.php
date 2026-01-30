@@ -152,6 +152,33 @@ function nd_booking_shortcode_booking() {
             include realpath(dirname( __FILE__ ).'/include/booking/nd_booking_booking_additional_services.php'); 
             include realpath(dirname( __FILE__ ).'/include/booking/nd_booking_booking_left_content.php'); 
             include realpath(dirname( __FILE__ ).'/include/booking/nd_booking_booking_right_content.php'); 
+
+            $nd_booking_language = 'fr';
+            if ( function_exists( 'trp_get_current_language' ) ) {
+              $nd_booking_language = (string) trp_get_current_language();
+            } elseif ( function_exists( 'determine_locale' ) ) {
+              $nd_booking_language = (string) determine_locale();
+            } else {
+              $nd_booking_language = (string) get_locale();
+            }
+
+            $nd_booking_language = strtolower( substr( $nd_booking_language, 0, 2 ) );
+            $nd_booking_back_label = ( 'en' === $nd_booking_language ) ? 'Back to lofts' : 'Retour aux lofts';
+            $nd_booking_archive_url = get_post_type_archive_link( 'nd_booking_cpt_1' );
+
+            if ( ! $nd_booking_archive_url ) {
+              $nd_booking_archive_url = home_url( '/rooms/' );
+            }
+
+            if ( class_exists( 'TRP_Translate_Press' ) ) {
+              $trp_instance = TRP_Translate_Press::get_trp_instance();
+              if ( $trp_instance ) {
+                $url_converter = $trp_instance->get_component( 'url_converter' );
+                if ( $url_converter ) {
+                  $nd_booking_archive_url = $url_converter->get_url_for_language( $nd_booking_language, $nd_booking_archive_url, '' );
+                }
+              }
+            }
             
             $nd_booking_booking_styles = '
             <style>
@@ -179,6 +206,32 @@ function nd_booking_shortcode_booking() {
                 display: flex;
                 flex-direction: column;
                 gap: 24px;
+              }
+
+              .loft1325-booking-topbar {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 18px;
+              }
+
+              .loft1325-booking-back {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 16px;
+                border-radius: 999px;
+                border: 1px solid #e2e8f0;
+                background: #ffffff;
+                color: #0f172a;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 14px;
+                box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+              }
+
+              .loft1325-booking-back span {
+                font-size: 16px;
+                line-height: 1;
               }
 
               .loft1325-booking-column {
@@ -343,6 +396,12 @@ function nd_booking_shortcode_booking() {
 
             <div class="nd_booking_section loft1325-booking-page">
               '.$nd_booking_booking_styles.'
+              <div class="loft1325-booking-topbar">
+                <a class="loft1325-booking-back" href="'.esc_url( $nd_booking_archive_url ).'">
+                  <span aria-hidden="true">←</span>
+                  '.esc_html( $nd_booking_back_label ).'
+                </a>
+              </div>
               <div class="loft1325-booking-layout">
                 <div class="nd_booking_float_left nd_booking_width_33_percentage nd_booking_width_100_percentage_responsive nd_booking_padding_right_15 nd_booking_padding_0_responsive nd_booking_box_sizing_border_box loft1325-booking-column loft1325-booking-column--summary">
                     '.$nd_booking_shortcode_left_content.'
@@ -748,6 +807,4 @@ function nd_booking_validate_fields_php_function() {
 add_action( 'wp_ajax_nd_booking_validate_fields_php_function', 'nd_booking_validate_fields_php_function' );
 add_action( 'wp_ajax_nopriv_nd_booking_validate_fields_php_function', 'nd_booking_validate_fields_php_function' );
 /* **************************************** END AJAX **************************************** */
-
-
 

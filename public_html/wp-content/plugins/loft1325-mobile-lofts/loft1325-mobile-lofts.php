@@ -278,9 +278,13 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		 * @return string
 		 */
 		public function get_lofts_archive_url() {
-			$archive_url = home_url( '/rooms/' );
+			$archive_url = get_post_type_archive_link( 'nd_booking_cpt_1' );
 
-			return home_url( $path );
+			if ( ! $archive_url ) {
+				$archive_url = home_url( '/rooms/' );
+			}
+
+			return $this->localize_url( $archive_url );
 		}
 
 		/**

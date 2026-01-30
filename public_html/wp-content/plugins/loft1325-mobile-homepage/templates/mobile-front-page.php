@@ -492,6 +492,19 @@ body.loft1325-mobile-home-active #loft1325-mobile-homepage .loft1325-mobile-home
             </div>
         </section>
 
+        <?php $reviews_heading = $plugin->localize_label( 'Avis Google', 'Google reviews' ); ?>
+        <section class="loft1325-mobile-home__reviews" aria-label="<?php echo esc_attr( $reviews_heading ); ?>">
+            <div class="loft1325-mobile-home__section-heading">
+                <h2 class="loft1325-mobile-home__section-title"><?php echo esc_html( $reviews_heading ); ?></h2>
+                <p class="loft1325-mobile-home__section-description">
+                    <?php echo esc_html( $plugin->localize_label( 'Ils nous font confiance pour leurs séjours.', 'Trusted by guests for their stays.' ) ); ?>
+                </p>
+            </div>
+            <div class="loft1325-mobile-home__reviews-card">
+                <?php echo do_shortcode( '[trustindex no-registration=google]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            </div>
+        </section>
+
         <section class="loft1325-mobile-home__features" aria-labelledby="loft1325-mobile-features-heading">
             <h2 id="loft1325-mobile-features-heading" class="screen-reader-text"><?php echo esc_html( $features_heading ); ?></h2>
             <div class="loft1325-mobile-home__features-grid">
