@@ -47,6 +47,12 @@ $nd_booking_is_english = ( 'en' === $nd_booking_language );
 
 $nd_booking_breakdown_title = $nd_booking_is_english ? 'Price breakdown' : 'Détail du prix';
 $nd_booking_breakdown_subtitle = $nd_booking_is_english ? 'As shown on your invoice' : 'Comme sur la facture finale';
+$nd_booking_sidebar_heading = $nd_booking_is_english ? 'Your reservation' : 'Votre réservation';
+$nd_booking_label_checkin = $nd_booking_is_english ? 'Check-in' : 'Arrivée';
+$nd_booking_label_checkout = $nd_booking_is_english ? 'Check-out' : 'Départ';
+$nd_booking_label_guests = $nd_booking_is_english ? 'Guests' : 'Invités';
+$nd_booking_label_nights = $nd_booking_is_english ? 'Nights' : 'Nuits';
+$nd_booking_label_total = $nd_booking_is_english ? 'Total' : 'Total';
 
 $nd_booking_tax_breakdown = nd_booking_calculate_tax_breakdown( $nd_booking_trip_price );
 $nd_booking_currency = nd_booking_get_currency();
@@ -114,6 +120,8 @@ $nd_booking_new_date_to_format_l = date_format($nd_booking_new_date_to, 'l');
 $nd_booking_new_date_to_format_l = date_i18n('l',strtotime($nd_booking_date_to));
 $nd_booking_new_date_to_format_Y = date_format($nd_booking_new_date_to, 'Y');
 
+
+$nd_booking_reviews_shortcode = do_shortcode( '[trustindex no-registration=google]' );
 
 $nd_booking_shortcode_left_content .= '
 <style>
@@ -225,6 +233,11 @@ $nd_booking_shortcode_left_content .= '
     padding: 18px 22px 22px;
     border-top: 1px solid #e2e8f0;
   }
+  .loft1325-booking-sidebar .loft1325-booking-reviews {
+    padding: 18px 22px 24px;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+  }
   .loft1325-booking-sidebar .loft1325-booking-breakdown-row {
     display: flex;
     justify-content: space-between;
@@ -258,41 +271,41 @@ $nd_booking_shortcode_left_content .= '
   </div>
 
   <div class="loft1325-booking-body">
-    <p class="loft1325-booking-heading">'.__( 'Your reservation', 'nd-booking' ).'</p>
+    <p class="loft1325-booking-heading">'.$nd_booking_sidebar_heading.'</p>
     <div class="loft1325-booking-grid">
       <div class="loft1325-booking-stat">
-        <h6>'.__( 'Check-in', 'nd-booking' ).'</h6>
+        <h6>'.$nd_booking_label_checkin.'</h6>
         <div class="stat-number">'.$nd_booking_new_date_from_format_d.'</div>
         <div class="stat-subtitle"><em>'.$nd_booking_new_date_from_format_M.', '.$nd_booking_new_date_from_format_Y.'</em></div>
         <div class="stat-subtitle">'.$nd_booking_new_date_from_format_l.'</div>
       </div>
       <div class="loft1325-booking-stat">
-        <h6>'.__( 'Check-out', 'nd-booking' ).'</h6>
+        <h6>'.$nd_booking_label_checkout.'</h6>
         <div class="stat-number">'.$nd_booking_new_date_to_format_d.'</div>
         <div class="stat-subtitle"><em>'.$nd_booking_new_date_to_format_M.', '.$nd_booking_new_date_to_format_Y.'</em></div>
         <div class="stat-subtitle">'.$nd_booking_new_date_to_format_l.'</div>
       </div>
       <div class="loft1325-booking-stat">
-        <h6>'.__( 'Guests', 'nd-booking' ).'</h6>
+        <h6>'.$nd_booking_label_guests.'</h6>
         <div class="stat-number">'.$nd_booking_form_booking_guests.'</div>
-        <div class="stat-subtitle">'.__( 'Guests', 'nd-booking' ).'</div>
+        <div class="stat-subtitle">'.$nd_booking_label_guests.'</div>
       </div>
       <div class="loft1325-booking-stat">
-        <h6>'.__( 'Nights', 'nd-booking' ).'</h6>
+        <h6>'.$nd_booking_label_nights.'</h6>
         <div class="stat-number">'.nd_booking_get_number_night($nd_booking_date_from,$nd_booking_date_to).'</div>
-        <div class="stat-subtitle">'.__( 'Nights', 'nd-booking' ).'</div>
+        <div class="stat-subtitle">'.$nd_booking_label_nights.'</div>
       </div>
     </div>
 
     <div class="loft1325-booking-total">
       <div class="amount">'.$nd_booking_initial_total_formatted.' '.$nd_booking_currency.'</div>
-      <div class="label">'.__( 'Total', 'nd-booking' ).'</div>
+      <div class="label">'.$nd_booking_label_total.'</div>
     </div>
   </div>
 
   '.$nd_booking_tax_lines.'
+  <div class="loft1325-booking-reviews">
+    '.$nd_booking_reviews_shortcode.'
+  </div>
 </div>
 ';
-
-
-

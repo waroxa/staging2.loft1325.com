@@ -200,10 +200,34 @@ function nd_booking_shortcode_checkout() {
             'guests'    => '',
         );
 
+        $nd_booking_language = 'fr';
+        if ( function_exists( 'trp_get_current_language' ) ) {
+            $nd_booking_language = (string) trp_get_current_language();
+        } elseif ( function_exists( 'determine_locale' ) ) {
+            $nd_booking_language = (string) determine_locale();
+        } else {
+            $nd_booking_language = (string) get_locale();
+        }
+
+        $nd_booking_language = strtolower( substr( $nd_booking_language, 0, 2 ) );
+        $nd_booking_is_english = ( 'en' === $nd_booking_language );
+
+        $nd_booking_header_title = $nd_booking_is_english ? 'Reserve the room' : 'Réservez la chambre';
+        $nd_booking_header_subtitle = $nd_booking_is_english ? 'Reserve your stay with confidence.' : 'Réservez votre séjour en toute confiance.';
+        $nd_booking_header_timer = $nd_booking_is_english ? '9:41 remaining to secure this rate.' : '9:41 restantes pour sécuriser ce tarif.';
+        $nd_booking_label_checkin = $nd_booking_is_english ? 'Check-in:' : 'Arrivée :';
+        $nd_booking_label_checkout = $nd_booking_is_english ? 'Check-out:' : 'Départ :';
+        $nd_booking_label_nights = $nd_booking_is_english ? 'Nights:' : 'Nuits :';
+        $nd_booking_label_guests = $nd_booking_is_english ? 'Guests:' : 'Invités :';
+        $nd_booking_label_total = $nd_booking_is_english ? 'Total' : 'Total';
+        $nd_booking_label_badge = $nd_booking_is_english ? 'Best rate guaranteed' : 'Meilleur tarif garanti';
+        $nd_booking_label_taxes = $nd_booking_is_english ? 'Taxes included' : 'Taxes incluses';
+        $nd_booking_label_guest_info = $nd_booking_is_english ? 'Guest information' : 'Informations client';
+
         $nd_booking_total_nights = absint( nd_booking_get_number_night( $nd_booking_booking_form_date_from, $nd_booking_booking_form_date_to ) );
         if ( $nd_booking_total_nights > 0 ) {
             $nd_booking_meta_data['nights'] = sprintf(
-                _n( '%s nuit', '%s nuits', $nd_booking_total_nights, 'nd-booking' ),
+                $nd_booking_is_english ? _n( '%s night', '%s nights', $nd_booking_total_nights, 'nd-booking' ) : _n( '%s nuit', '%s nuits', $nd_booking_total_nights, 'nd-booking' ),
                 number_format_i18n( $nd_booking_total_nights )
             );
         }
@@ -211,7 +235,7 @@ function nd_booking_shortcode_checkout() {
         $nd_booking_total_guests = absint( $nd_booking_booking_form_guests );
         if ( $nd_booking_total_guests > 0 ) {
             $nd_booking_meta_data['guests'] = sprintf(
-                _n( '%s invité', '%s invités', $nd_booking_total_guests, 'nd-booking' ),
+                $nd_booking_is_english ? _n( '%s guest', '%s guests', $nd_booking_total_guests, 'nd-booking' ) : _n( '%s invité', '%s invités', $nd_booking_total_guests, 'nd-booking' ),
                 number_format_i18n( $nd_booking_total_guests )
             );
         }
@@ -240,12 +264,16 @@ function nd_booking_shortcode_checkout() {
         ?>
         <div class="loft-checkout-wrapper">
           <div class="checkout-header">
-            <h2><?php esc_html_e( 'Complete your reservation', 'nd-booking' ); ?></h2>
-            <p><?php esc_html_e( 'Reserve your stay with confidence.', 'nd-booking' ); ?></p>
+            <h2><?php echo esc_html( $nd_booking_header_title ); ?></h2>
+            <p><?php echo esc_html( $nd_booking_header_subtitle ); ?></p>
             <div class="checkout-countdown">
               <span class="timer-icon">⏳</span>
-              <span class="timer-text"><?php esc_html_e( '9:41 remaining to secure this rate.', 'nd-booking' ); ?></span>
+              <span class="timer-text"><?php echo esc_html( $nd_booking_header_timer ); ?></span>
             </div>
+          </div>
+
+          <div class="checkout-reviews">
+            <?php echo do_shortcode( '[trustindex no-registration=google]' ); ?>
           </div>
 
           <div class="checkout-main">
@@ -258,23 +286,23 @@ function nd_booking_shortcode_checkout() {
                   <h3><?php echo esc_html( $nd_booking_booking_title ); ?></h3>
                   <ul>
                     <?php if ( ! empty( $nd_booking_meta_data['check_in'] ) ) : ?>
-                    <li><strong><?php esc_html_e( 'Check-in:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_in'] ); ?></li>
+                    <li><strong><?php echo esc_html( $nd_booking_label_checkin ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_in'] ); ?></li>
                     <?php endif; ?>
                     <?php if ( ! empty( $nd_booking_meta_data['check_out'] ) ) : ?>
-                    <li><strong><?php esc_html_e( 'Check-out:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_out'] ); ?></li>
+                    <li><strong><?php echo esc_html( $nd_booking_label_checkout ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_out'] ); ?></li>
                     <?php endif; ?>
                     <?php if ( ! empty( $nd_booking_meta_data['nights'] ) ) : ?>
-                    <li><strong><?php esc_html_e( 'Nights:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['nights'] ); ?></li>
+                    <li><strong><?php echo esc_html( $nd_booking_label_nights ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['nights'] ); ?></li>
                     <?php endif; ?>
                     <?php if ( ! empty( $nd_booking_meta_data['guests'] ) ) : ?>
-                    <li><strong><?php esc_html_e( 'Guests:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['guests'] ); ?></li>
+                    <li><strong><?php echo esc_html( $nd_booking_label_guests ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['guests'] ); ?></li>
                     <?php endif; ?>
                   </ul>
                   <div class="summary-total">
-                    <div class="summary-badge"><?php esc_html_e( 'Best rate guaranteed', 'nd-booking' ); ?></div>
-                    <p><?php esc_html_e( 'Total', 'nd-booking' ); ?></p>
+                    <div class="summary-badge"><?php echo esc_html( $nd_booking_label_badge ); ?></div>
+                    <p><?php echo esc_html( $nd_booking_label_total ); ?></p>
                     <h2><?php echo esc_html( $nd_booking_price_total_form ); ?> <?php echo esc_html( $nd_booking_currency ); ?></h2>
-                    <p class="per-night"><?php esc_html_e( 'Taxes included', 'nd-booking' ); ?></p>
+                    <p class="per-night"><?php echo esc_html( $nd_booking_label_taxes ); ?></p>
                   </div>
                 </div>
               </div>
@@ -290,7 +318,7 @@ function nd_booking_shortcode_checkout() {
                 <span class="card-logo">Amex</span>
                 <span class="card-logo">Interac</span>
               </div>
-              <h3><?php esc_html_e( 'Guest information', 'nd-booking' ); ?></h3>
+              <h3><?php echo esc_html( $nd_booking_label_guest_info ); ?></h3>
               <?php echo do_shortcode( '[nd_booking_form_checkout]' ); ?>
             </div>
           </div>
@@ -311,6 +339,10 @@ function nd_booking_shortcode_checkout() {
         .checkout-header {
           text-align: center;
           margin: 60px 0 40px;
+        }
+        .checkout-reviews {
+          max-width: 1100px;
+          margin: 0 auto 32px;
         }
         .checkout-header h2 {
           font-size: 30px;
@@ -1115,6 +1147,4 @@ function nd_booking_shortcode_checkout() {
 }
 add_shortcode('nd_booking_checkout', 'nd_booking_shortcode_checkout');
 //END nd_booking_checkout
-
-
 
