@@ -240,11 +240,11 @@ function nd_booking_shortcode_checkout() {
         ?>
         <div class="loft-checkout-wrapper">
           <div class="checkout-header">
-            <h2>Finalisez votre réservation</h2>
-            <p>Réservez votre séjour en toute sécurité.</p>
+            <h2><?php esc_html_e( 'Complete your reservation', 'nd-booking' ); ?></h2>
+            <p><?php esc_html_e( 'Reserve your stay with confidence.', 'nd-booking' ); ?></p>
             <div class="checkout-countdown">
               <span class="timer-icon">⏳</span>
-              <span class="timer-text">9:41 restantes pour sécuriser ce tarif.</span>
+              <span class="timer-text"><?php esc_html_e( '9:41 remaining to secure this rate.', 'nd-booking' ); ?></span>
             </div>
           </div>
 
@@ -258,23 +258,23 @@ function nd_booking_shortcode_checkout() {
                   <h3><?php echo esc_html( $nd_booking_booking_title ); ?></h3>
                   <ul>
                     <?php if ( ! empty( $nd_booking_meta_data['check_in'] ) ) : ?>
-                    <li><strong>Arrivée:</strong> <?php echo esc_html( $nd_booking_meta_data['check_in'] ); ?></li>
+                    <li><strong><?php esc_html_e( 'Check-in:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_in'] ); ?></li>
                     <?php endif; ?>
                     <?php if ( ! empty( $nd_booking_meta_data['check_out'] ) ) : ?>
-                    <li><strong>Départ:</strong> <?php echo esc_html( $nd_booking_meta_data['check_out'] ); ?></li>
+                    <li><strong><?php esc_html_e( 'Check-out:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_out'] ); ?></li>
                     <?php endif; ?>
                     <?php if ( ! empty( $nd_booking_meta_data['nights'] ) ) : ?>
-                    <li><strong>Nuits:</strong> <?php echo esc_html( $nd_booking_meta_data['nights'] ); ?></li>
+                    <li><strong><?php esc_html_e( 'Nights:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['nights'] ); ?></li>
                     <?php endif; ?>
                     <?php if ( ! empty( $nd_booking_meta_data['guests'] ) ) : ?>
-                    <li><strong>Invités:</strong> <?php echo esc_html( $nd_booking_meta_data['guests'] ); ?></li>
+                    <li><strong><?php esc_html_e( 'Guests:', 'nd-booking' ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['guests'] ); ?></li>
                     <?php endif; ?>
                   </ul>
                   <div class="summary-total">
-                    <div class="summary-badge">Meilleur tarif garanti</div>
-                    <p>Total</p>
+                    <div class="summary-badge"><?php esc_html_e( 'Best rate guaranteed', 'nd-booking' ); ?></div>
+                    <p><?php esc_html_e( 'Total', 'nd-booking' ); ?></p>
                     <h2><?php echo esc_html( $nd_booking_price_total_form ); ?> <?php echo esc_html( $nd_booking_currency ); ?></h2>
-                    <p class="per-night">Taxes incluses</p>
+                    <p class="per-night"><?php esc_html_e( 'Taxes included', 'nd-booking' ); ?></p>
                   </div>
                 </div>
               </div>
@@ -282,7 +282,7 @@ function nd_booking_shortcode_checkout() {
 
             <div class="checkout-form">
               <div class="secure-banner">
-                <span class="lock-icon">🔒</span> Paiement sécurisé SSL 256-bit
+                <span class="lock-icon">🔒</span> <?php esc_html_e( 'Secure SSL payment (256-bit)', 'nd-booking' ); ?>
               </div>
               <div class="card-logos">
                 <span class="card-logo">Visa</span>
@@ -290,7 +290,7 @@ function nd_booking_shortcode_checkout() {
                 <span class="card-logo">Amex</span>
                 <span class="card-logo">Interac</span>
               </div>
-              <h3>Informations du client</h3>
+              <h3><?php esc_html_e( 'Guest information', 'nd-booking' ); ?></h3>
               <?php echo do_shortcode( '[nd_booking_form_checkout]' ); ?>
             </div>
           </div>
@@ -299,8 +299,8 @@ function nd_booking_shortcode_checkout() {
         <style>
         body {
           background: #f8fafc;
-          font-family: "Poppins", sans-serif;
-          color: #222;
+          font-family: "Inter", "Poppins", sans-serif;
+          color: #0f172a;
         }
 
         .loft-checkout-wrapper {
@@ -313,12 +313,13 @@ function nd_booking_shortcode_checkout() {
           margin: 60px 0 40px;
         }
         .checkout-header h2 {
-          font-size: 28px;
+          font-size: 30px;
           font-weight: 700;
-          color: #1b1b1b;
+          color: #0f172a;
+          letter-spacing: 0.2px;
         }
         .checkout-header p {
-          color: #666;
+          color: #475569;
           font-size: 15px;
           margin-bottom: 18px;
         }
@@ -327,13 +328,13 @@ function nd_booking_shortcode_checkout() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: #fff;
+          background: #ffffff;
           padding: 10px 18px;
           border-radius: 999px;
-          border: 1px solid rgba(27,27,27,0.1);
-          box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+          border: 1px solid rgba(15, 23, 42, 0.12);
+          box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
           font-weight: 600;
-          color: #1b1b1b;
+          color: #0f172a;
         }
 
         .timer-icon {
@@ -354,11 +355,11 @@ function nd_booking_shortcode_checkout() {
           flex: 0 0 35%;
         }
         .summary-card {
-          background: #fff;
-          border-radius: 16px;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+          background: #ffffff;
+          border-radius: 18px;
+          box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
           overflow: hidden;
-          border: 1px solid #f0f0f0;
+          border: 1px solid #e2e8f0;
         }
         .summary-image {
           width: 100%;
@@ -366,13 +367,13 @@ function nd_booking_shortcode_checkout() {
           display: block;
         }
         .summary-details {
-          padding: 24px;
+          padding: 26px;
         }
         .summary-details h3 {
           font-size: 20px;
-          font-weight: 600;
+          font-weight: 700;
           margin-bottom: 12px;
-          color: #111;
+          color: #0f172a;
         }
         .summary-details ul {
           list-style: none;
@@ -381,42 +382,42 @@ function nd_booking_shortcode_checkout() {
         }
         .summary-details li {
           font-size: 14px;
-          color: #555;
+          color: #475569;
           margin-bottom: 6px;
         }
         .summary-total {
-          background: #fff8dc;
-          border: 1px solid #FFD43B;
+          background: rgba(118, 177, 196, 0.12);
+          border: 1px solid rgba(118, 177, 196, 0.45);
           border-radius: 12px;
           text-align: center;
           padding: 18px 16px;
-          box-shadow: 0 4px 10px rgba(255,212,59,0.3);
+          box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
         }
         .summary-total h2 {
           margin: 6px 0 4px;
           font-size: 26px;
-          color: #1a1a1a;
-          letter-spacing: 0.5px;
+          color: #0f172a;
+          letter-spacing: 0.4px;
         }
         .summary-total p {
           margin: 0;
         }
         .summary-total .per-night {
           font-size: 13px;
-          color: #6b6b6b;
+          color: #475569;
           margin-top: 6px;
         }
         .summary-badge {
           display: inline-block;
-          background: #FFD43B;
-          color: #1a1a1a;
-          font-weight: 600;
+          background: #76b1c4;
+          color: #ffffff;
+          font-weight: 700;
           padding: 6px 16px;
           border-radius: 999px;
           margin-bottom: 12px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          box-shadow: 0 6px 16px rgba(255,212,59,0.4);
+          box-shadow: 0 10px 24px rgba(118, 177, 196, 0.35);
         }
 
         /* RIGHT FORM */
@@ -482,16 +483,16 @@ function nd_booking_shortcode_checkout() {
         .checkout-form input:focus,
         .checkout-form select:focus,
         .checkout-form textarea:focus {
-          border-color: #FFD43B;
+          border-color: #76b1c4;
           outline: none;
-          box-shadow: 0 0 8px rgba(255,212,59,0.35);
+          box-shadow: 0 0 0 3px rgba(118, 177, 196, 0.25);
         }
 
         /* BUTTON */
         .checkout-form .button-primary,
         .checkout-form button[type="submit"] {
-          background: #FFD43B;
-          color: #000;
+          background: #76b1c4;
+          color: #ffffff;
           border: none;
           border-radius: 30px;
           padding: 14px 20px;
@@ -504,7 +505,7 @@ function nd_booking_shortcode_checkout() {
         }
         .checkout-form .button-primary:hover,
         .checkout-form button[type="submit"]:hover {
-          background: #FFC300;
+          background: #5a93a7;
         }
 
         /* MOBILE */
@@ -1113,8 +1114,6 @@ function nd_booking_shortcode_checkout() {
 }
 add_shortcode('nd_booking_checkout', 'nd_booking_shortcode_checkout');
 //END nd_booking_checkout
-
-
 
 
 
