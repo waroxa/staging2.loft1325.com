@@ -71,10 +71,43 @@ $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler revie
 
 $normal_services = $room_data['normal_services'] ?? array();
 $extra_services  = $room_data['extra_services'] ?? array();
-$normal_services = is_array( $normal_services ) ? $normal_services : array( $normal_services );
-$extra_services  = is_array( $extra_services ) ? $extra_services : array( $extra_services );
-$normal_services = array_values( array_filter( array_map( 'trim', $normal_services ) ) );
-$extra_services  = array_values( array_filter( array_map( 'trim', $extra_services ) ) );
+
+$normalize_services = static function ( $services ) {
+	$services = is_array( $services ) ? $services : array( $services );
+	$output   = array();
+
+	foreach ( $services as $service ) {
+		$label = '';
+		$icon  = '';
+
+		if ( is_array( $service ) ) {
+			$label = $service['label'] ?? '';
+			$icon  = $service['icon'] ?? '';
+		} else {
+			$label = (string) $service;
+		}
+
+		$label = trim( (string) $label );
+		if ( '' === $label ) {
+			continue;
+		}
+
+		if ( ! is_array( $service ) ) {
+			$label = str_replace( array( '-', '_' ), ' ', $label );
+			$label = ucwords( $label );
+		}
+
+		$output[] = array(
+			'label' => $label,
+			'icon'  => (string) $icon,
+		);
+	}
+
+	return $output;
+};
+
+$normal_services = $normalize_services( $normal_services );
+$extra_services  = $normalize_services( $extra_services );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -284,11 +317,14 @@ $extra_services  = array_values( array_filter( array_map( 'trim', $extra_service
 					<?php if ( ! empty( $normal_services ) ) : ?>
 						<ul class="loft1325-mobile-loft__chip-list" aria-label="<?php echo esc_attr( $services_label ); ?>">
 							<?php foreach ( $normal_services as $service ) : ?>
-								<?php
-								$service_label = str_replace( array( '-', '_' ), ' ', $service );
-								$service_label = ucwords( $service_label );
-								?>
-								<li class="loft1325-mobile-loft__chip"><?php echo esc_html( $service_label ); ?></li>
+								<li class="loft1325-mobile-loft__chip">
+									<?php if ( ! empty( $service['icon'] ) ) : ?>
+										<span class="loft1325-mobile-loft__chip-icon" aria-hidden="true">
+											<img src="<?php echo esc_url( $service['icon'] ); ?>" alt="" loading="lazy" />
+										</span>
+									<?php endif; ?>
+									<span><?php echo esc_html( $service['label'] ); ?></span>
+								</li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
@@ -299,11 +335,14 @@ $extra_services  = array_values( array_filter( array_map( 'trim', $extra_service
 						</div>
 						<ul class="loft1325-mobile-loft__chip-list loft1325-mobile-loft__chip-list--accent" aria-label="<?php echo esc_attr( $extras_label ); ?>">
 							<?php foreach ( $extra_services as $service ) : ?>
-								<?php
-								$service_label = str_replace( array( '-', '_' ), ' ', $service );
-								$service_label = ucwords( $service_label );
-								?>
-								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow"><?php echo esc_html( $service_label ); ?></li>
+								<li class="loft1325-mobile-loft__chip loft1325-mobile-loft__chip--glow">
+									<?php if ( ! empty( $service['icon'] ) ) : ?>
+										<span class="loft1325-mobile-loft__chip-icon" aria-hidden="true">
+											<img src="<?php echo esc_url( $service['icon'] ); ?>" alt="" loading="lazy" />
+										</span>
+									<?php endif; ?>
+									<span><?php echo esc_html( $service['label'] ); ?></span>
+								</li>
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
