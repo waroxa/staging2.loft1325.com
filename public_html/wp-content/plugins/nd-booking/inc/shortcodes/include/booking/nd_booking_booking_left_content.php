@@ -135,34 +135,42 @@ $nd_booking_shortcode_left_content .= '
   }
   .loft1325-booking-sidebar .loft1325-booking-hero {
     position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #e2e8f0;
   }
   .loft1325-booking-sidebar .loft1325-booking-hero img {
     width: 100%;
     display: block;
-    height: auto;
+    height: 220px;
+    object-fit: cover;
   }
   .loft1325-booking-sidebar .loft1325-booking-hero-overlay {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
     padding: 18px;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.45) 100%);
+    text-align: center;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.65) 100%);
     color: #ffffff;
   }
   .loft1325-booking-sidebar .loft1325-booking-title {
-    font-size: 12px;
-    letter-spacing: 0.3em;
+    font-size: 13px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     font-weight: 600;
     margin: 0;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   }
   .loft1325-booking-sidebar .loft1325-booking-stars {
-    margin-top: 8px;
+    margin-top: 2px;
     font-size: 14px;
     letter-spacing: 2px;
     color: #f8d86a;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   }
   .loft1325-booking-sidebar .loft1325-booking-body {
     padding: 22px;
@@ -257,6 +265,9 @@ $nd_booking_shortcode_left_content .= '
     }
     .loft1325-booking-sidebar .loft1325-booking-grid {
       gap: 12px;
+    }
+    .loft1325-booking-sidebar .loft1325-booking-hero img {
+      height: 200px;
     }
   }
 </style>
