@@ -3,7 +3,7 @@ wp_enqueue_script( 'jquery-ui-tabs' );
 
 $nd_booking_shortcode_right_content .= '
     <div class="section loft-section-payment">
-        <h3><span class="section-icon" aria-hidden="true">💳</span> ' . esc_html__( 'Détails de paiement', 'nd-booking' ) . '</h3>
+        <h3><span class="section-icon" aria-hidden="true">💳</span> ' . esc_html__( 'Payment details', 'nd-booking' ) . '</h3>
         <div class="section-body">
             <div class="loft-payment-info">' . do_shortcode( get_option( 'nd_booking_stripe_checkout' ) ) . '</div>
             <div class="loft-payment-card">
@@ -39,8 +39,8 @@ $nd_booking_shortcode_right_content .= '
                     <input type="hidden" id="nd_booking_checkout_form_term" name="nd_booking_checkout_form_term" value="' . esc_attr( $nd_booking_booking_form_term ) . '">
                     <input type="hidden" id="nd_booking_booking_form_services" name="nd_booking_booking_form_services" value="' . esc_attr( $nd_booking_booking_form_services ) . '">
                     <input type="hidden" id="nd_booking_booking_form_action_type" name="nd_booking_booking_form_action_type" value="stripe">
-                    <input type="hidden" id="nd_booking_booking_form_payment_status" name="nd_booking_booking_form_payment_status" value="Paiement en attente">
-                    <button type="submit" class="button-primary">' . esc_html__( 'Confirmer la réservation', 'nd-booking' ) . '</button>
+                    <input type="hidden" id="nd_booking_booking_form_payment_status" name="nd_booking_booking_form_payment_status" value="' . esc_attr__( 'Pending payment', 'nd-booking' ) . '">
+                    <button type="submit" class="button-primary">' . esc_html__( 'Confirm reservation', 'nd-booking' ) . '</button>
                 </form>
                 <script type="text/javascript">
                     (function($) {

@@ -28,7 +28,7 @@ function nd_booking_woo_php() {
     $nd_booking_meta_box_room_woo_product = (int) get_post_meta( $nd_booking_rid, 'nd_booking_meta_box_room_woo_product', true );
 
     if ( $nd_booking_meta_box_room_woo_product <= 0 ) {
-        wp_send_json_error( __( 'Aucun produit WooCommerce n\'est associé à ce loft.', 'nd-booking' ), 400 );
+        wp_send_json_error( __( 'No WooCommerce product is linked to this loft.', 'nd-booking' ), 400 );
     }
 
     if ( null === WC()->cart && function_exists( 'wc_load_cart' ) ) {
@@ -549,8 +549,8 @@ function nd_booking_shortcode_search_results() {
         $nd_booking_form_action = home_url( add_query_arg( array(), $wp->request ) );
     }
 
-    $nd_booking_nights_label = sprintf( _n( '%s nuit', '%s nuits', $nd_booking_nights_number, 'nd-booking' ), number_format_i18n( $nd_booking_nights_number ) );
-    $nd_booking_guests_label = sprintf( _n( '%s invité', '%s invités', $nd_booking_archive_form_guests, 'nd-booking' ), number_format_i18n( $nd_booking_archive_form_guests ) );
+    $nd_booking_nights_label = sprintf( _n( '%s night', '%s nights', $nd_booking_nights_number, 'nd-booking' ), number_format_i18n( $nd_booking_nights_number ) );
+    $nd_booking_guests_label = sprintf( _n( '%s guest', '%s guests', $nd_booking_archive_form_guests, 'nd-booking' ), number_format_i18n( $nd_booking_archive_form_guests ) );
 
     ob_start();
     ?>
@@ -558,37 +558,37 @@ function nd_booking_shortcode_search_results() {
         <div id="nd_booking_search_main_bg" class="loft-search-toolbar nd_booking_search_form">
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--date">
-                <label for="nd_booking_archive_form_date_range_from" class="loft-search-toolbar__label"><?php esc_html_e( 'Arrivée', 'nd-booking' ); ?></label>
+                <label for="nd_booking_archive_form_date_range_from" class="loft-search-toolbar__label"><?php esc_html_e( 'Check-in', 'nd-booking' ); ?></label>
                 <div class="loft-search-toolbar__control loft-search-toolbar__control--date loft-search-toolbar__group">
                     <input type="text" id="nd_booking_archive_form_date_range_from" name="nd_booking_archive_form_date_range_from" class="loft-search-toolbar__input" value="<?php echo esc_attr( $nd_booking_date_from ); ?>" autocomplete="off" readonly />
                 </div>
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--date">
-                <label for="nd_booking_archive_form_date_range_to" class="loft-search-toolbar__label"><?php esc_html_e( 'Départ', 'nd-booking' ); ?></label>
+                <label for="nd_booking_archive_form_date_range_to" class="loft-search-toolbar__label"><?php esc_html_e( 'Check-out', 'nd-booking' ); ?></label>
                 <div class="loft-search-toolbar__control loft-search-toolbar__control--date loft-search-toolbar__group">
                     <input type="text" id="nd_booking_archive_form_date_range_to" name="nd_booking_archive_form_date_range_to" class="loft-search-toolbar__input" value="<?php echo esc_attr( $nd_booking_new_date_to_format_mdy ); ?>" autocomplete="off" readonly />
                 </div>
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--guests">
-                <label class="loft-search-toolbar__label" for="nd_booking_archive_form_guests"><?php esc_html_e( 'Invités', 'nd-booking' ); ?></label>
+                <label class="loft-search-toolbar__label" for="nd_booking_archive_form_guests"><?php esc_html_e( 'Guests', 'nd-booking' ); ?></label>
                 <div class="loft-search-toolbar__control loft-search-toolbar__control--guests loft-search-toolbar__group loft-search-toolbar__guests">
-                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php esc_attr_e( 'Diminuer le nombre d’invités', 'nd-booking' ); ?>">−</button>
+                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="down" aria-label="<?php esc_attr_e( 'Decrease guest count', 'nd-booking' ); ?>">−</button>
                     <span class="loft-search-toolbar__guests-value" id="loft_search_guest_display"><?php echo esc_html( $nd_booking_guests_label ); ?></span>
-                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php esc_attr_e( 'Augmenter le nombre d’invités', 'nd-booking' ); ?>">+</button>
+                    <button type="button" class="loft-search-toolbar__guest-btn" data-direction="up" aria-label="<?php esc_attr_e( 'Increase guest count', 'nd-booking' ); ?>">+</button>
                 </div>
                 <input type="hidden" id="nd_booking_archive_form_guests" name="nd_booking_archive_form_guests" value="<?php echo esc_attr( $nd_booking_archive_form_guests ); ?>" />
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--summary">
-                <span class="loft-search-toolbar__label"><?php esc_html_e( 'Nuits', 'nd-booking' ); ?></span>
+                <span class="loft-search-toolbar__label"><?php esc_html_e( 'Nights', 'nd-booking' ); ?></span>
                 <div class="loft-search-toolbar__summary loft-search-toolbar__group loft-search-toolbar__nights" id="nd_booking_nights_display"><?php echo esc_html( $nd_booking_nights_label ); ?></div>
             </div>
 
             <div class="loft-search-toolbar__field loft-search-toolbar__field--actions">
                 <span class="loft-search-toolbar__label">&nbsp;</span>
-                <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php esc_html_e( 'Recherche', 'nd-booking' ); ?></button>
+                <button type="submit" class="loft-search-card__btn loft-search-card__btn--primary loft-search-toolbar__submit"><?php esc_html_e( 'Search', 'nd-booking' ); ?></button>
             </div>
         </div>
 
@@ -601,10 +601,10 @@ function nd_booking_shortcode_search_results() {
 
     <script type="text/javascript">
     jQuery(document).ready(function($){
-        var nightsLabelSingular = '<?php echo esc_js( __( 'nuit', 'nd-booking' ) ); ?>';
-        var nightsLabelPlural = '<?php echo esc_js( __( 'nuits', 'nd-booking' ) ); ?>';
-        var guestsLabelSingular = '<?php echo esc_js( __( 'invité', 'nd-booking' ) ); ?>';
-        var guestsLabelPlural = '<?php echo esc_js( __( 'invités', 'nd-booking' ) ); ?>';
+        var nightsLabelSingular = '<?php echo esc_js( __( 'night', 'nd-booking' ) ); ?>';
+        var nightsLabelPlural = '<?php echo esc_js( __( 'nights', 'nd-booking' ) ); ?>';
+        var guestsLabelSingular = '<?php echo esc_js( __( 'guest', 'nd-booking' ) ); ?>';
+        var guestsLabelPlural = '<?php echo esc_js( __( 'guests', 'nd-booking' ) ); ?>';
 
         var $form = $('#nd_booking_search_cpt_1_form_sidebar');
         var $checkIn = $('#nd_booking_archive_form_date_range_from');
@@ -1466,7 +1466,7 @@ function nd_booking_sorting_php() {
                 <div id="nd_booking_search_cpt_1_no_results" class="nd_booking_section nd_booking_padding_15 nd_booking_box_sizing_border_box">
                     <div class="nd_booking_section nd_booking_bg_yellow nd_booking_padding_15_20 nd_booking_box_sizing_border_box">
                       <img class="nd_booking_float_left nd_booking_display_none_all_iphone" width="20" src="'.esc_url(plugins_url('icon-warning-white.svg', __FILE__ )).'">
-                      <h3 class="nd_booking_float_left nd_options_color_white nd_booking_color_white nd_options_first_font nd_booking_margin_left_10">'.__('Aucun résultat pour cette recherche','nd-booking').'</h3>
+                      <h3 class="nd_booking_float_left nd_options_color_white nd_booking_color_white nd_options_first_font nd_booking_margin_left_10">'.__('No results found for this search','nd-booking').'</h3>
                     </div>
                 </div>
 
