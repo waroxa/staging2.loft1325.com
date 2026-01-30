@@ -177,6 +177,27 @@ function marina_child_enqueue_search_styles() {
 add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_search_styles', 25 );
 
 /**
+ * Override the checkout order button label for booking flows.
+ *
+ * @param string $translated Translated text.
+ * @param string $text       Original text.
+ * @param string $domain     Text domain.
+ *
+ * @return string
+ */
+function marina_child_translate_place_order_button( $translated, $text, $domain ) {
+    if ( 'woocommerce' !== $domain || 'Place order' !== $text ) {
+        return $translated;
+    }
+
+    $locale    = determine_locale();
+    $is_french = 0 === strpos( $locale, 'fr' );
+
+    return $is_french ? 'Réserver maintenant' : 'Book Now';
+}
+add_filter( 'gettext', 'marina_child_translate_place_order_button', 20, 3 );
+
+/**
  * Determine whether the supplied post (or any Elementor template it references)
  * includes the ND Booking search results shortcode.
  *
