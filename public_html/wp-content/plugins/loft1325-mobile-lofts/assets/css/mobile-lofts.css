@@ -711,6 +711,9 @@ body.loft1325-mobile-lofts-archive-active a {
 }
 
 .loft1325-mobile-loft__chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
         padding: 0.65rem 0.85rem;
         border-radius: 999px;
         border: 1px solid var(--loft1325-border);
@@ -719,11 +722,32 @@ body.loft1325-mobile-lofts-archive-active a {
         font-weight: 600;
 }
 
+.loft1325-mobile-loft__chip-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+        background: rgba(118, 177, 196, 0.12);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+}
+
+.loft1325-mobile-loft__chip-icon img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+}
+
 .loft1325-mobile-loft__chip-list--accent .loft1325-mobile-loft__chip {
         background: linear-gradient(120deg, rgba(118, 177, 196, 0.85), #5fa5ba);
         color: #fff;
         border-color: transparent;
         box-shadow: 0 10px 24px rgba(118, 177, 196, 0.3);
+}
+
+.loft1325-mobile-loft__chip-list--accent .loft1325-mobile-loft__chip-icon {
+        background: rgba(255, 255, 255, 0.2);
 }
 
 .loft1325-mobile-loft__section-subheader h3 {
