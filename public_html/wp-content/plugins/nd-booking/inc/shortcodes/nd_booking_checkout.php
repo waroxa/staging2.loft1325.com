@@ -357,7 +357,7 @@ function nd_booking_shortcode_checkout() {
         .summary-card {
           background: #ffffff;
           border-radius: 18px;
-          box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
           overflow: hidden;
           border: 1px solid #e2e8f0;
         }
@@ -386,12 +386,12 @@ function nd_booking_shortcode_checkout() {
           margin-bottom: 6px;
         }
         .summary-total {
-          background: rgba(118, 177, 196, 0.12);
-          border: 1px solid rgba(118, 177, 196, 0.45);
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 12px;
           text-align: center;
           padding: 18px 16px;
-          box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+          box-shadow: none;
         }
         .summary-total h2 {
           margin: 6px 0 4px;
@@ -409,35 +409,36 @@ function nd_booking_shortcode_checkout() {
         }
         .summary-badge {
           display: inline-block;
-          background: #76b1c4;
-          color: #ffffff;
-          font-weight: 700;
+          background: #e2e8f0;
+          color: #0f172a;
+          font-weight: 600;
           padding: 6px 16px;
           border-radius: 999px;
           margin-bottom: 12px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          box-shadow: 0 10px 24px rgba(118, 177, 196, 0.35);
+          box-shadow: none;
         }
 
         /* RIGHT FORM */
         .checkout-form {
           flex: 1;
-          background: #fff;
+          background: #ffffff;
           border-radius: 16px;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
           padding: 40px;
+          border: 1px solid #e2e8f0;
         }
         .secure-banner {
-          background: #f1fff4;
-          color: #1d7a1d;
+          background: #f8fafc;
+          color: #0f172a;
           font-weight: 600;
-          border: 1px solid #b6e3b7;
+          border: 1px solid #e2e8f0;
           border-radius: 10px;
           padding: 12px 18px;
           display: inline-flex;
           align-items: center;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          box-shadow: none;
           margin-bottom: 18px;
           gap: 8px;
         }
@@ -453,13 +454,13 @@ function nd_booking_shortcode_checkout() {
         .card-logo {
           padding: 8px 14px;
           border-radius: 8px;
-          background: #f8fafc;
+          background: #ffffff;
           border: 1px solid #e2e8f0;
           font-size: 13px;
           font-weight: 600;
           letter-spacing: 0.4px;
           color: #1b1b1b;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 4px rgba(15,23,42,0.08);
+          box-shadow: none;
         }
         .checkout-form h3 {
           font-size: 20px;
@@ -1114,7 +1115,6 @@ function nd_booking_shortcode_checkout() {
 }
 add_shortcode('nd_booking_checkout', 'nd_booking_shortcode_checkout');
 //END nd_booking_checkout
-
 
 
 
