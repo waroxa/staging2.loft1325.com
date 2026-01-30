@@ -30,6 +30,13 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		private $is_mobile_template = false;
 
 		/**
+		 * Whether the mobile loft archive template is active.
+		 *
+		 * @var bool
+		 */
+		private $is_mobile_archive_template = false;
+
+		/**
 		 * Cached language code (fr or en).
 		 *
 		 * @var string|null
@@ -107,6 +114,16 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		 * @return string
 		 */
 		public function maybe_use_mobile_template( $template ) {
+			if ( $this->should_use_mobile_archive_layout() ) {
+				$archive_template = plugin_dir_path( __FILE__ ) . 'templates/mobile-lofts-archive.php';
+
+				if ( file_exists( $archive_template ) ) {
+					$this->is_mobile_archive_template = true;
+
+					return $archive_template;
+				}
+			}
+
 			if ( ! $this->should_use_mobile_layout() ) {
 				return $template;
 			}
@@ -134,6 +151,10 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 				$classes[] = 'loft1325-mobile-lofts-active';
 			}
 
+			if ( $this->is_mobile_archive_template ) {
+				$classes[] = 'loft1325-mobile-lofts-archive-active';
+			}
+
 			return $classes;
 		}
 
@@ -141,7 +162,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		 * Enqueue assets when the mobile loft template is in play.
 		 */
 		public function enqueue_assets() {
-			if ( ! $this->should_use_mobile_layout() ) {
+			if ( ! $this->should_use_mobile_layout() && ! $this->should_use_mobile_archive_layout() ) {
 				return;
 			}
 
@@ -196,6 +217,71 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 			$this->current_language = ( 'en' === $language ) ? 'en' : 'fr';
 
 			return $this->current_language;
+		}
+
+		/**
+		 * Determine if the mobile loft archive experience should render.
+		 *
+		 * @return bool
+		 */
+		public function should_use_mobile_archive_layout() {
+			if ( is_admin() || is_feed() || is_embed() ) {
+				return false;
+			}
+
+			if ( ! is_post_type_archive( 'nd_booking_cpt_1' ) ) {
+				return false;
+			}
+
+			if ( apply_filters( 'loft1325_mobile_lofts_force_archive_layout', false ) ) {
+				return true;
+			}
+
+			if ( isset( $_GET['loft1325_mobile_preview'] ) && '1' === $_GET['loft1325_mobile_preview'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				return true;
+			}
+
+			return $this->is_mobile_request();
+		}
+
+		/**
+		 * Localize a URL to the active language when TranslatePress is active.
+		 *
+		 * @param string $url Base URL.
+		 *
+		 * @return string
+		 */
+		public function localize_url( $url ) {
+			if ( ! class_exists( 'TRP_Translate_Press' ) ) {
+				return $url;
+			}
+
+			$language = $this->get_current_language();
+			$trp_instance = TRP_Translate_Press::get_trp_instance();
+
+			if ( ! $trp_instance ) {
+				return $url;
+			}
+
+			$url_converter = $trp_instance->get_component( 'url_converter' );
+
+			if ( ! $url_converter ) {
+				return $url;
+			}
+
+			return $url_converter->get_url_for_language( $language, $url, '' );
+		}
+
+		/**
+		 * Get the archive URL for lofts with language awareness.
+		 *
+		 * @return string
+		 */
+		public function get_lofts_archive_url() {
+			$archive_url = get_post_type_archive_link( 'nd_booking_cpt_1' );
+			$archive_url = $archive_url ? $archive_url : home_url( '/' );
+
+			return $this->localize_url( $archive_url );
 		}
 
 		/**

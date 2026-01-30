@@ -63,7 +63,8 @@
         });
 
         nav.addEventListener('click', function (event) {
-            if (event.target.tagName && event.target.tagName.toLowerCase() === 'a') {
+            var link = event.target.closest ? event.target.closest('a') : null;
+            if (link) {
                 closeNav();
             }
         });

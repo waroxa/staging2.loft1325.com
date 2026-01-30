@@ -706,35 +706,35 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 
             $fallbacks = array(
                 array(
-                    'title' => __( 'Gestion mobile', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Gestion mobile', 'Mobile management' ),
                     'icon'  => 'dashicons-smartphone',
                 ),
                 array(
-                    'title' => __( 'Check-in 24/7', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Check-in 24/7', '24/7 check-in' ),
                     'icon'  => 'dashicons-clock',
                 ),
                 array(
-                    'title' => __( '100% Sécurisé', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( '100% Sécurisé', '100% secure' ),
                     'icon'  => 'dashicons-lock',
                 ),
                 array(
-                    'title' => __( 'Certifié CITQ', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Certifié CITQ', 'CITQ certified' ),
                     'icon'  => 'dashicons-awards',
                 ),
                 array(
-                    'title' => __( 'Choisir chambre et date', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Choisir chambre et date', 'Choose room & dates' ),
                     'icon'  => 'dashicons-calendar-alt',
                 ),
                 array(
-                    'title' => __( 'Paiement en ligne', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Paiement en ligne', 'Online payment' ),
                     'icon'  => 'dashicons-cart',
                 ),
                 array(
-                    'title' => __( 'Confirmation paiement', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Confirmation paiement', 'Payment confirmation' ),
                     'icon'  => 'dashicons-yes',
                 ),
                 array(
-                    'title' => __( 'Recevez clé virtuelle', 'loft1325-mobile-home' ),
+                    'title' => $this->localize_label( 'Recevez clé virtuelle', 'Receive a virtual key' ),
                     'icon'  => 'dashicons-unlock',
                 ),
             );
