@@ -278,8 +278,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		 * @return string
 		 */
 		public function get_lofts_archive_url() {
-			$language = $this->get_current_language();
-			$path     = ( 'en' === $language ) ? '/en/rooms/' : '/rooms/';
+			$archive_url = home_url( '/rooms/' );
 
 			return home_url( $path );
 		}
