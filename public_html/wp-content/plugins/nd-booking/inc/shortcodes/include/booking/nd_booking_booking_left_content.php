@@ -91,23 +91,7 @@ $nd_booking_shortcode_left_content = '';
 $nd_booking_image_src = nd_booking_get_post_img_src($nd_booking_form_booking_id);
 if ( $nd_booking_image_src != '' ) { 
     
-    $nd_booking_image = '
-
-      <div class="nd_booking_section nd_booking_position_relative">
-
-          <img class="nd_booking_section" src="'.$nd_booking_image_src.'">
-
-          <div class="nd_booking_bg_greydark_alpha_gradient_3 nd_booking_position_absolute nd_booking_left_0 nd_booking_height_100_percentage nd_booking_width_100_percentage nd_booking_padding_30 nd_booking_box_sizing_border_box">
-              <div class="nd_booking_position_absolute nd_booking_top_20">
-                  <p class="nd_options_color_white nd_booking_float_left nd_booking_font_size_11 nd_booking_padding_3_5 nd_booking_bg_greydark nd_booking_letter_spacing_2 nd_booking_text_transform_uppercase">
-                    '.get_the_title($nd_booking_form_booking_id).'
-                  </p>
-              </div>
-          </div>
-
-      </div>
-
-    ';
+    $nd_booking_image = '<img class="nd_booking_section" src="'.$nd_booking_image_src.'" alt="'.esc_attr( get_the_title( $nd_booking_form_booking_id ) ).'">';
 
 }else{ 
     $nd_booking_image = '';
@@ -132,93 +116,183 @@ $nd_booking_new_date_to_format_Y = date_format($nd_booking_new_date_to, 'Y');
 
 
 $nd_booking_shortcode_left_content .= '
+<style>
+  .loft1325-booking-sidebar {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    color: #0f172a;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-hero {
+    position: relative;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-hero img {
+    width: 100%;
+    display: block;
+    height: auto;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 18px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, rgba(15, 23, 42, 0.55) 100%);
+    color: #ffffff;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-title {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-stars {
+    margin-top: 8px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #f8d86a;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-body {
+    padding: 22px;
+    background: #0f172a;
+    color: #ffffff;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-heading {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    color: #e2e8f0;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-stat {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: none;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-stat h6 {
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #cbd5f5;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-stat .stat-number {
+    font-size: 34px;
+    font-weight: 600;
+    margin: 10px 0 6px;
+    text-shadow: none;
+    color: #ffffff;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-stat .stat-subtitle {
+    font-size: 12px;
+    color: #e2e8f0;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-total {
+    margin-top: 22px;
+    padding: 18px;
+    border-radius: 16px;
+    background: #0b1220;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-total .amount {
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-total .label {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #cbd5f5;
+  }
+  .loft1325-booking-sidebar .nd_booking_tax_breakdown {
+    background: #ffffff;
+    color: #0f172a;
+    padding: 18px 22px 22px;
+    border-top: 1px solid #e2e8f0;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .loft1325-booking-sidebar .loft1325-booking-breakdown-row:last-child {
+    border-bottom: none;
+  }
+  .nd_booking_booking_alert_login_register {
+    display: none !important;
+  }
+  @media (max-width: 767px) {
+    .loft1325-booking-sidebar .loft1325-booking-body {
+      padding: 18px;
+    }
+    .loft1325-booking-sidebar .loft1325-booking-grid {
+      gap: 12px;
+    }
+  }
+</style>
 
-<div class="nd_booking_section nd_booking_box_sizing_border_box loft1325-booking-card loft1325-booking-card--dark">
-
-  '.$nd_booking_image.'
-
-
-  <!--START black section-->
-  <div id="nd_booking_book_main_bg" class="nd_booking_section nd_booking_bg_greydark nd_booking_padding_30 nd_booking_padding_0_all_iphone nd_booking_box_sizing_border_box">
-
-      <h6 class="nd_options_second_font nd_booking_margin_top_20_all_iphone nd_options_color_white nd_booking_letter_spacing_2 nd_booking_text_align_center nd_booking_font_size_12 nd_booking_font_weight_lighter">'.__('YOUR RESERVATION','nd-booking').'</h6>
-
-
-      <div class="nd_booking_section nd_booking_height_30"></div> 
-
-      <div class="nd_booking_width_50_percentage nd_booking_float_left  nd_booking_padding_right_10 nd_booking_box_sizing_border_box ">
-           <div id="nd_booking_book_bg_check_in" class="nd_booking_section nd_booking_bg_greydark_2 nd_booking_padding_20 nd_booking_box_sizing_border_box nd_booking_text_align_center">
-              <h6 class="nd_options_color_white nd_booking_color_yellow_important nd_options_second_font nd_booking_letter_spacing_2 nd_booking_font_size_12 nd_booking_font_weight_lighter">'.__('CHECK-IN','nd-booking').'</h6>
-              <div class="nd_booking_section nd_booking_height_15"></div> 
-              <h1 class="nd_booking_font_size_50 nd_booking_color_yellow_important">'.$nd_booking_new_date_from_format_d.'</h1>
-              <div class="nd_booking_section nd_booking_height_15"></div>
-              <h6 class="nd_options_color_white nd_booking_font_size_11"><i>'.$nd_booking_new_date_from_format_M.', '.$nd_booking_new_date_from_format_Y.'</i></h6>
-              <div class="nd_booking_section nd_booking_height_5"></div>
-              <h6 class="nd_options_second_font nd_options_color_grey nd_booking_font_size_11 nd_booking_letter_spacing_2 nd_booking_font_weight_lighter nd_booking_text_transform_uppercase">'.$nd_booking_new_date_from_format_l.'</h6>
-          </div>   
-      </div>
-
-      <div class="nd_booking_width_50_percentage nd_booking_float_left  nd_booking_padding_left_10 nd_booking_box_sizing_border_box ">
-           <div id="nd_booking_book_bg_check_out" class="nd_booking_section nd_booking_bg_greydark_2 nd_booking_padding_20 nd_booking_box_sizing_border_box nd_booking_text_align_center">
-              <h6 class="nd_options_color_white nd_booking_color_yellow_important nd_options_second_font nd_booking_letter_spacing_2 nd_booking_font_size_12 nd_booking_font_weight_lighter">'.__('CHECK-OUT','nd-booking').'</h6>
-              <div class="nd_booking_section nd_booking_height_15"></div> 
-              <h1 class="nd_booking_font_size_50 nd_booking_color_yellow_important">'.$nd_booking_new_date_to_format_d.'</h1>
-              <div class="nd_booking_section nd_booking_height_15"></div>
-              <h6 class="nd_options_color_white nd_booking_font_size_11"><i>'.$nd_booking_new_date_to_format_M.', '.$nd_booking_new_date_to_format_Y.'</i></h6>
-              <div class="nd_booking_section nd_booking_height_5"></div>
-              <h6 class="nd_options_second_font nd_options_color_grey nd_booking_font_size_11 nd_booking_letter_spacing_2 nd_booking_font_weight_lighter nd_booking_text_transform_uppercase">'.$nd_booking_new_date_to_format_l.'</h6>
-          </div>    
-      </div>
-
-      <div class="nd_booking_section nd_booking_height_20"></div> 
-
-      <div class="nd_booking_width_50_percentage nd_booking_float_left  nd_booking_padding_right_10 nd_booking_box_sizing_border_box ">
-           <div id="nd_booking_book_bg_guests" class="nd_booking_section nd_booking_bg_greydark_2 nd_booking_padding_20 nd_booking_box_sizing_border_box nd_booking_text_align_center">
-              <h1 class=" nd_options_color_white">'.$nd_booking_form_booking_guests.'</h1>
-              <div class="nd_booking_section nd_booking_height_10"></div> 
-              <h6 class="nd_options_second_font nd_options_color_grey nd_booking_font_size_11 nd_booking_letter_spacing_2 nd_booking_font_weight_lighter">'.__('GUESTS','nd-booking').'</h6>
-              
-          </div>   
-      </div>
-
-      <div class="nd_booking_width_50_percentage nd_booking_float_left  nd_booking_padding_left_10 nd_booking_box_sizing_border_box ">
-           <div id="nd_booking_book_bg_nights" class="nd_booking_section nd_booking_bg_greydark_2 nd_booking_padding_20 nd_booking_box_sizing_border_box nd_booking_text_align_center">
-              <h1 class=" nd_options_color_white">'.nd_booking_get_number_night($nd_booking_date_from,$nd_booking_date_to).'</h1>
-              <div class="nd_booking_section nd_booking_height_10"></div> 
-              <h6 class="nd_options_second_font nd_options_color_grey nd_booking_font_size_11 nd_booking_letter_spacing_2 nd_booking_font_weight_lighter">'.__('NIGHTS','nd-booking').'</h6>
-          </div>    
-      </div>
-
+<div class="nd_booking_section nd_booking_box_sizing_border_box loft1325-booking-sidebar">
+  <div class="loft1325-booking-hero">
+    '.$nd_booking_image.'
+    <div class="loft1325-booking-hero-overlay">
+      <p class="loft1325-booking-title">'.esc_html( get_the_title( $nd_booking_form_booking_id ) ).'</p>
+      <div class="loft1325-booking-stars" aria-hidden="true">★★★★★</div>
+    </div>
   </div>
 
-  <div id="nd_booking_book_bg_total" class="nd_booking_section nd_booking_bg_greydark_2 nd_booking_padding_30 nd_booking_box_sizing_border_box nd_booking_text_align_center">
-      <div class="nd_booking_section nd_booking_box_sizing_border_box nd_booking_text_align_center">
-
-          <div class="nd_booking_display_inline_block ">
-              <div id="nd_booking_final_trip_price_content" class="nd_booking_float_left nd_booking_text_align_right">
-                  <h1 id="nd_booking_final_trip_price" class="nd_options_color_white nd_booking_font_size_50"><span>'.$nd_booking_initial_total_formatted.'</span></h1>
-              </div>
-              <div class="nd_booking_float_right nd_booking_text_align_left nd_booking_margin_left_10">
-                  <h5 class="nd_options_second_font nd_options_color_white nd_booking_margin_top_7 nd_booking_font_size_14 nd_booking_font_weight_lighter">'.$nd_booking_currency.'<p></p>
-                  <div class="nd_booking_section nd_booking_height_5"></div>
-                  </h5><h3 class="nd_options_second_font nd_options_color_white nd_booking_font_size_14 nd_booking_letter_spacing_2 nd_booking_font_weight_lighter">/ '.__('TOTAL','nd-booking').'</h3>
-              </div>
-          </div>
-
+  <div class="loft1325-booking-body">
+    <p class="loft1325-booking-heading">'.__( 'Your reservation', 'nd-booking' ).'</p>
+    <div class="loft1325-booking-grid">
+      <div class="loft1325-booking-stat">
+        <h6>'.__( 'Check-in', 'nd-booking' ).'</h6>
+        <div class="stat-number">'.$nd_booking_new_date_from_format_d.'</div>
+        <div class="stat-subtitle"><em>'.$nd_booking_new_date_from_format_M.', '.$nd_booking_new_date_from_format_Y.'</em></div>
+        <div class="stat-subtitle">'.$nd_booking_new_date_from_format_l.'</div>
       </div>
+      <div class="loft1325-booking-stat">
+        <h6>'.__( 'Check-out', 'nd-booking' ).'</h6>
+        <div class="stat-number">'.$nd_booking_new_date_to_format_d.'</div>
+        <div class="stat-subtitle"><em>'.$nd_booking_new_date_to_format_M.', '.$nd_booking_new_date_to_format_Y.'</em></div>
+        <div class="stat-subtitle">'.$nd_booking_new_date_to_format_l.'</div>
+      </div>
+      <div class="loft1325-booking-stat">
+        <h6>'.__( 'Guests', 'nd-booking' ).'</h6>
+        <div class="stat-number">'.$nd_booking_form_booking_guests.'</div>
+        <div class="stat-subtitle">'.__( 'Guests', 'nd-booking' ).'</div>
+      </div>
+      <div class="loft1325-booking-stat">
+        <h6>'.__( 'Nights', 'nd-booking' ).'</h6>
+        <div class="stat-number">'.nd_booking_get_number_night($nd_booking_date_from,$nd_booking_date_to).'</div>
+        <div class="stat-subtitle">'.__( 'Nights', 'nd-booking' ).'</div>
+      </div>
+    </div>
 
-  </div>'.$nd_booking_tax_lines.'
+    <div class="loft1325-booking-total">
+      <div class="amount">'.$nd_booking_initial_total_formatted.' '.$nd_booking_currency.'</div>
+      <div class="label">'.__( 'Total', 'nd-booking' ).'</div>
+    </div>
+  </div>
 
-  <!--END black section-->';
-
-
-$nd_booking_shortcode_left_content .= '
+  '.$nd_booking_tax_lines.'
 </div>
-
-
 ';
-
-
 
 
 
