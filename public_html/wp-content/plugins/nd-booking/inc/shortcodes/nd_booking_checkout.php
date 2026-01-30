@@ -1,5 +1,23 @@
 <?php
 
+if ( ! function_exists( 'loft1325_nd_booking_order_button_text' ) ) {
+    /**
+     * Customize the WooCommerce checkout button label. 
+     *
+     * @param string $text Default order button text.
+     *
+     * @return string
+     */
+    function loft1325_nd_booking_order_button_text( $text ) {
+        $locale = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+        $is_french = 0 === strpos( $locale, 'fr' );
+
+        return $is_french ? 'Réserver maintenant' : 'Book Now';
+    }
+}
+
+add_filter( 'woocommerce_order_button_text', 'loft1325_nd_booking_order_button_text', 20 );
+
 function nd_booking_get_upload_path_from_token( $token ) {
     if ( empty( $token ) ) {
         return '';
@@ -1147,4 +1165,3 @@ function nd_booking_shortcode_checkout() {
 }
 add_shortcode('nd_booking_checkout', 'nd_booking_shortcode_checkout');
 //END nd_booking_checkout
-

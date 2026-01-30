@@ -501,13 +501,37 @@ function nd_booking_is_correct_date($nd_booking_date,$nd_booking_format)
 	return $nd_booking_d && $nd_booking_d->format($nd_booking_format) == $nd_booking_date;
 }
 
+function nd_booking_create_datetime_from_input($nd_booking_date) {
+
+	if ( '' === trim( (string) $nd_booking_date ) ) {
+		return null;
+	}
+
+	$nd_booking_formats = array( 'm/d/Y', 'd/m/Y', 'Y-m-d', 'Y/m/d' );
+
+	foreach ( $nd_booking_formats as $nd_booking_format ) {
+		$nd_booking_dt = DateTime::createFromFormat( $nd_booking_format, $nd_booking_date );
+		if ( $nd_booking_dt instanceof DateTime ) {
+			return $nd_booking_dt;
+		}
+	}
+
+	$nd_booking_dt = date_create( $nd_booking_date );
+
+	return ( $nd_booking_dt instanceof DateTime ) ? $nd_booking_dt : null;
+}
+
 
 function nd_booking_get_number_night($nd_booking_date_from,$nd_booking_date_to){
 
 	$nd_booking_get_number_night = 0;
 
-	$nd_booking_date_from_2 = new DateTime($nd_booking_date_from);
-	$nd_booking_date_to_2 = new DateTime($nd_booking_date_to);
+	$nd_booking_date_from_2 = nd_booking_create_datetime_from_input( $nd_booking_date_from );
+	$nd_booking_date_to_2 = nd_booking_create_datetime_from_input( $nd_booking_date_to );
+
+	if ( ! $nd_booking_date_from_2 || ! $nd_booking_date_to_2 ) {
+		return 0;
+	}
 	
 	$nd_booking_date_from_format = date_format($nd_booking_date_from_2, 'Y/m/d');
 	$nd_booking_date_to_format = date_format($nd_booking_date_to_2, 'Y/m/d');
@@ -594,9 +618,14 @@ function nd_booking_get_room_link($nd_booking_id,$nd_booking_date_from,$nd_booki
 function nd_booking_is_available_block($nd_booking_id,$nd_booking_date_from,$nd_booking_date_to){
 
 	//get dates
-	$nd_booking_new_date_from = new DateTime($nd_booking_date_from);
+	$nd_booking_new_date_from = nd_booking_create_datetime_from_input( $nd_booking_date_from );
+	$nd_booking_new_date_to = nd_booking_create_datetime_from_input( $nd_booking_date_to );
+
+	if ( ! $nd_booking_new_date_from || ! $nd_booking_new_date_to ) {
+		return 0;
+	}
+
 	$nd_booking_new_date_from_format = date_format($nd_booking_new_date_from, 'Y/m/d');
-	$nd_booking_new_date_to = new DateTime($nd_booking_date_to);
 	$nd_booking_new_date_to_format = date_format($nd_booking_new_date_to, 'Y/m/d');
 	$nd_booking_number_night_range_1 = nd_booking_get_number_night($nd_booking_new_date_from_format,$nd_booking_new_date_to_format);
 
@@ -614,13 +643,22 @@ function nd_booking_is_available_block($nd_booking_id,$nd_booking_date_from,$nd_
     	//START CICLE per numero eccezzioni
 		for ($nd_booking_meta_box_exceptions_array_i = 0; $nd_booking_meta_box_exceptions_array_i < count($nd_booking_meta_box_exceptions_array)-1; $nd_booking_meta_box_exceptions_array_i++) {
 		    
-			$nd_booking_new_date_from = new DateTime($nd_booking_date_from);
+			$nd_booking_new_date_from = nd_booking_create_datetime_from_input( $nd_booking_date_from );
+			$nd_booking_new_date_to = nd_booking_create_datetime_from_input( $nd_booking_date_to );
+
+			if ( ! $nd_booking_new_date_from || ! $nd_booking_new_date_to ) {
+				continue;
+			}
+
 			$nd_booking_new_date_from_format = date_format($nd_booking_new_date_from, 'Y/m/d');
-			$nd_booking_new_date_to = new DateTime($nd_booking_date_to);
 			$nd_booking_new_date_to_format = date_format($nd_booking_new_date_to, 'Y/m/d');
 
 
 		    $nd_booking_page_by_path = get_page_by_path($nd_booking_meta_box_exceptions_array[$nd_booking_meta_box_exceptions_array_i],OBJECT,'nd_booking_cpt_3');
+
+			if ( ! $nd_booking_page_by_path instanceof WP_Post ) {
+				continue;
+			}
 		    
 		    //info exception
 		    $nd_booking_exception_id = $nd_booking_page_by_path->ID;
@@ -629,9 +667,14 @@ function nd_booking_is_available_block($nd_booking_id,$nd_booking_date_from,$nd_
 		    $nd_booking_meta_box_cpt_3_date_range_to = get_post_meta( $nd_booking_exception_id, 'nd_booking_meta_box_cpt_3_date_range_to', true ); 
 
 		    //calculate if the date is between the range
-			$nd_booking_new_date_from_ex = new DateTime($nd_booking_meta_box_cpt_3_date_range_from  );
+			$nd_booking_new_date_from_ex = nd_booking_create_datetime_from_input( $nd_booking_meta_box_cpt_3_date_range_from );
+			$nd_booking_new_date_to_ex = nd_booking_create_datetime_from_input( $nd_booking_meta_box_cpt_3_date_range_to );
+
+			if ( ! $nd_booking_new_date_from_ex || ! $nd_booking_new_date_to_ex ) {
+				continue;
+			}
+
 			$nd_booking_new_date_from_ex_format = date_format($nd_booking_new_date_from_ex, 'Y/m/d');
-			$nd_booking_new_date_to_ex = new DateTime($nd_booking_meta_box_cpt_3_date_range_to);
 			$nd_booking_new_date_to_ex_format = date_format($nd_booking_new_date_to_ex, 'Y/m/d');
 			$nd_booking_number_night_range_2 = nd_booking_get_number_night($nd_booking_new_date_from_ex_format,$nd_booking_new_date_to_ex_format)+1;
 			
@@ -687,8 +730,12 @@ function nd_booking_is_available($nd_booking_id,$nd_booking_date_from,$nd_bookin
 	//date_1 are the dates of the search
 
 	//converte date_1
-	$nd_booking_date_from_1 = new DateTime($nd_booking_date_from);
-	$nd_booking_date_to_1 = new DateTime($nd_booking_date_to);
+	$nd_booking_date_from_1 = nd_booking_create_datetime_from_input( $nd_booking_date_from );
+	$nd_booking_date_to_1 = nd_booking_create_datetime_from_input( $nd_booking_date_to );
+
+	if ( ! $nd_booking_date_from_1 || ! $nd_booking_date_to_1 ) {
+		return '';
+	}
 	$nd_booking_date_1_from = date_format($nd_booking_date_from_1, 'Y/m/d');
 	$nd_booking_date_1_to = date_format($nd_booking_date_to_1, 'Y/m/d');
 
@@ -720,8 +767,12 @@ function nd_booking_is_available($nd_booking_id,$nd_booking_date_from,$nd_bookin
 	    	//converte date_2
 			$nd_booking_date_from_booked = $nd_booking_date->date_from; 
 			$nd_booking_date_to_booked = $nd_booking_date->date_to; 
-			$nd_booking_date_from_2 = new DateTime($nd_booking_date_from_booked);
-			$nd_booking_date_to_2 = new DateTime($nd_booking_date_to_booked);
+			$nd_booking_date_from_2 = nd_booking_create_datetime_from_input( $nd_booking_date_from_booked );
+			$nd_booking_date_to_2 = nd_booking_create_datetime_from_input( $nd_booking_date_to_booked );
+
+			if ( ! $nd_booking_date_from_2 || ! $nd_booking_date_to_2 ) {
+				continue;
+			}
 			$nd_booking_date_2_from = date_format($nd_booking_date_from_2, 'Y/m/d');
 			$nd_booking_date_2_to = date_format($nd_booking_date_to_2, 'Y/m/d');
 
@@ -1414,6 +1465,3 @@ function nd_booking_get_slug($type){
 }
 
 /* **************************************** END SETTINGS **************************************** */
-
-
-
