@@ -11,6 +11,7 @@ $plugin         = Loft1325_Mobile_Lofts::instance();
 $room_id        = get_the_ID();
 $room_data      = $plugin->get_room_data( $room_id );
 $gallery        = $plugin->get_room_gallery( $room_id );
+$slider_markup  = $plugin->get_room_slider_markup( $room_id );
 $booking_url    = $plugin->get_booking_url( $room_id );
 $booking_action = function_exists( 'nd_booking_booking_page' ) ? nd_booking_booking_page() : $booking_url;
 $booking_date_from = filter_input( INPUT_GET, 'nd_booking_archive_form_date_range_from', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
@@ -24,11 +25,18 @@ if ( ! $booking_nights && $booking_date_from && $booking_date_to && function_exi
 	$booking_nights = nd_booking_get_number_night( $booking_date_from, $booking_date_to );
 }
 
-if ( ! $booking_nights && ! $booking_date_from && ! $booking_date_to ) {
+if ( ! $booking_date_from && ! $booking_date_to ) {
+	$start_timestamp   = current_time( 'timestamp' );
+	$end_timestamp     = strtotime( '+1 day', $start_timestamp );
+	$booking_date_from = wp_date( 'm/d/Y', $start_timestamp );
+	$booking_date_to   = wp_date( 'm/d/Y', $end_timestamp );
+}
+
+if ( ! $booking_nights ) {
 	$booking_nights = 1;
 }
 
-if ( ! $booking_guests && ! $booking_date_from && ! $booking_date_to ) {
+if ( ! $booking_guests ) {
 	$booking_guests = 1;
 }
 
@@ -138,45 +146,56 @@ $extra_services  = $normalize_services( $extra_services );
 			</header>
 
 			<section class="loft1325-mobile-loft__hero" aria-label="<?php the_title_attribute(); ?>">
-				<div class="loft1325-mobile-loft__slider" data-loft-slider data-autoplay="true">
-					<div class="loft1325-mobile-loft__slider-track" data-loft-slider-track style="--loft-slider-count: <?php echo esc_attr( max( 1, count( $gallery ) ) ); ?>;">
-						<?php if ( ! empty( $gallery ) ) : ?>
-							<?php foreach ( $gallery as $image ) : ?>
-								<figure class="loft1325-mobile-loft__slide" data-loft-slide>
-									<?php if ( ! empty( $image['url'] ) ) : ?>
-										<img src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $room_data['title'] ); ?>" loading="lazy" />
-									<?php endif; ?>
+				<?php if ( $slider_markup ) : ?>
+					<div class="loft1325-mobile-loft__slider loft1325-mobile-loft__slider--rev">
+						<?php echo $slider_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<span class="loft1325-mobile-loft__slider-pill"><?php echo esc_html( $pill_label ); ?></span>
+						<div class="loft1325-mobile-loft__slider-badge">
+							<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>
+							<?php echo esc_html( $rating_label ); ?>
+						</div>
+					</div>
+				<?php else : ?>
+					<div class="loft1325-mobile-loft__slider" data-loft-slider data-autoplay="true">
+						<div class="loft1325-mobile-loft__slider-track" data-loft-slider-track style="--loft-slider-count: <?php echo esc_attr( max( 1, count( $gallery ) ) ); ?>;">
+							<?php if ( ! empty( $gallery ) ) : ?>
+								<?php foreach ( $gallery as $image ) : ?>
+									<figure class="loft1325-mobile-loft__slide" data-loft-slide>
+										<?php if ( ! empty( $image['url'] ) ) : ?>
+											<img src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $room_data['title'] ); ?>" loading="lazy" />
+										<?php endif; ?>
+									</figure>
+								<?php endforeach; ?>
+							<?php else : ?>
+								<figure class="loft1325-mobile-loft__slide loft1325-mobile-loft__slide--placeholder" data-loft-slide>
+									<div class="loft1325-mobile-loft__slide-fallback" aria-hidden="true"></div>
 								</figure>
-							<?php endforeach; ?>
-						<?php else : ?>
-							<figure class="loft1325-mobile-loft__slide loft1325-mobile-loft__slide--placeholder" data-loft-slide>
-								<div class="loft1325-mobile-loft__slide-fallback" aria-hidden="true"></div>
-							</figure>
+							<?php endif; ?>
+						</div>
+
+						<?php if ( count( $gallery ) > 1 ) : ?>
+							<div class="loft1325-mobile-loft__slider-nav" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Navigation du carrousel', 'Carousel navigation' ) ); ?>">
+								<button class="loft1325-mobile-loft__slider-btn" type="button" data-loft-prev aria-label="<?php echo esc_attr( $plugin->localize_label( 'Image précédente', 'Previous image' ) ); ?>">
+									<span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>
+								</button>
+								<button class="loft1325-mobile-loft__slider-btn" type="button" data-loft-next aria-label="<?php echo esc_attr( $plugin->localize_label( 'Image suivante', 'Next image' ) ); ?>">
+									<span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
+								</button>
+							</div>
+							<div class="loft1325-mobile-loft__slider-progress" aria-hidden="true">
+								<span class="loft1325-mobile-loft__slider-progress-fill" data-loft-progress></span>
+							</div>
+							<div class="loft1325-mobile-loft__slider-dots" role="tablist" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Sélectionner une image', 'Select an image' ) ); ?>" data-loft-dots></div>
 						<?php endif; ?>
-					</div>
 
-					<?php if ( count( $gallery ) > 1 ) : ?>
-						<div class="loft1325-mobile-loft__slider-nav" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Navigation du carrousel', 'Carousel navigation' ) ); ?>">
-							<button class="loft1325-mobile-loft__slider-btn" type="button" data-loft-prev aria-label="<?php echo esc_attr( $plugin->localize_label( 'Image précédente', 'Previous image' ) ); ?>">
-								<span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>
-							</button>
-							<button class="loft1325-mobile-loft__slider-btn" type="button" data-loft-next aria-label="<?php echo esc_attr( $plugin->localize_label( 'Image suivante', 'Next image' ) ); ?>">
-								<span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
-							</button>
+						<span class="loft1325-mobile-loft__slider-pill"><?php echo esc_html( $pill_label ); ?></span>
+						<div class="loft1325-mobile-loft__slider-badge">
+							<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>
+							<?php echo esc_html( $rating_label ); ?>
+							<span class="loft1325-mobile-loft__slider-count" data-loft-counter></span>
 						</div>
-						<div class="loft1325-mobile-loft__slider-progress" aria-hidden="true">
-							<span class="loft1325-mobile-loft__slider-progress-fill" data-loft-progress></span>
-						</div>
-						<div class="loft1325-mobile-loft__slider-dots" role="tablist" aria-label="<?php echo esc_attr( $plugin->localize_label( 'Sélectionner une image', 'Select an image' ) ); ?>" data-loft-dots></div>
-					<?php endif; ?>
-
-					<span class="loft1325-mobile-loft__slider-pill"><?php echo esc_html( $pill_label ); ?></span>
-					<div class="loft1325-mobile-loft__slider-badge">
-						<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>
-						<?php echo esc_html( $rating_label ); ?>
-						<span class="loft1325-mobile-loft__slider-count" data-loft-counter></span>
 					</div>
-				</div>
+				<?php endif; ?>
 
 				<div class="loft1325-mobile-loft__hero-card loft1325-mobile-loft__section">
 					<div class="loft1325-mobile-loft__hero-meta">
