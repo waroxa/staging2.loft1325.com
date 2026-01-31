@@ -1,13 +1,13 @@
 body.loft1325-mobile-lofts-active {
         margin: 0;
         font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-        background: #ffffff;
+        background: #f7f7f9;
         color: #0b1220;
         --brand: #76b1c4;
         --text: #0b1220;
         --muted: #5b667a;
-        --bg: #ffffff;
-        --card: #f7f8fa;
+        --bg: #f7f7f9;
+        --card: #ffffff;
         --loft1325-brand: var(--text);
         --loft1325-brand-soft: rgba(118, 177, 196, 0.12);
         --loft1325-surface: #ffffff;
@@ -273,10 +273,12 @@ body.loft1325-mobile-lofts-archive-active a {
         gap: 0.35rem;
         font-weight: 600;
         font-size: 0.98rem;
-        padding: 0.65rem 0.85rem;
+        padding: 0.6rem 0.95rem;
         border-radius: 999px;
-        background: rgba(118, 177, 196, 0.15);
-        color: var(--text);
+        background: #ffffff;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        color: #0b1220;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .loft1325-mobile-loft__crumb .dashicons {
@@ -287,12 +289,12 @@ body.loft1325-mobile-lofts-archive-active a {
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
-        padding: 0.5rem 0.75rem;
+        padding: 0.4rem 0.8rem;
         border-radius: 999px;
         font-weight: 600;
-        background: var(--text);
-        color: #fff;
-        font-size: 0.85rem;
+        background: rgba(253, 185, 19, 0.2);
+        color: #8a5b00;
+        font-size: 0.75rem;
 }
 
 .loft1325-mobile-loft__hero {
@@ -309,23 +311,6 @@ body.loft1325-mobile-lofts-archive-active a {
         box-shadow: var(--loft1325-glow);
 }
 
-.loft1325-mobile-loft__slider--rev {
-        background: #0b1220;
-}
-
-.loft1325-mobile-loft__slider--rev .rev_slider_wrapper,
-.loft1325-mobile-loft__slider--rev rs-module-wrap,
-.loft1325-mobile-loft__slider--rev rs-module {
-        width: 100% !important;
-        max-width: 100% !important;
-}
-
-.loft1325-mobile-loft__slider--rev .rev_slider_wrapper,
-.loft1325-mobile-loft__slider--rev rs-module-wrap {
-        border-radius: 24px;
-        overflow: hidden;
-}
-
 .loft1325-mobile-loft__slider-track {
         display: flex;
         width: 100%;
@@ -336,7 +321,7 @@ body.loft1325-mobile-lofts-archive-active a {
         width: 100%;
         flex: 0 0 100%;
         position: relative;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 16 / 10;
         background: linear-gradient(180deg, #1f2937 0%, #0f172a 100%);
 }
 
@@ -369,6 +354,18 @@ body.loft1325-mobile-lofts-archive-active a {
         backdrop-filter: blur(10px);
 }
 
+.loft1325-mobile-loft__slider-pill {
+        position: absolute;
+        left: 1rem;
+        bottom: 1rem;
+        background: rgba(15, 23, 42, 0.85);
+        color: #ffffff;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        border-radius: 999px;
+        font-weight: 600;
+}
+
 .loft1325-mobile-loft__slider-count {
         font-size: 0.9rem;
         color: var(--muted);
@@ -393,7 +390,7 @@ body.loft1325-mobile-lofts-archive-active a {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255, 255, 255, 0.98);
         color: #0b1220;
         box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16);
         cursor: pointer;
@@ -448,18 +445,18 @@ body.loft1325-mobile-lofts-archive-active a {
 
 .loft1325-mobile-loft__hero-card {
         position: relative;
-        margin: -1.2rem 0 0;
+        margin: 0;
         background: var(--card);
         padding: 1.5rem 1.35rem;
         border-radius: 20px;
-        box-shadow: var(--loft1325-glow);
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
         border: 1px solid var(--loft1325-border);
-        background-image: radial-gradient(circle at 30% 20%, rgba(118, 177, 196, 0.12), transparent 45%);
+        background-image: radial-gradient(circle at 30% 20%, rgba(118, 177, 196, 0.08), transparent 45%);
 }
 
 .loft1325-mobile-loft__hero-card.loft1325-mobile-loft__section {
         padding: 1.5rem 1.35rem;
-        margin: -1.2rem 0 0;
+        margin: 0;
 }
 
 .loft1325-mobile-loft__hero-meta {
@@ -583,7 +580,7 @@ body.loft1325-mobile-lofts-archive-active a {
         background: #fff;
         border-radius: 20px;
         padding: 1.5rem 1.35rem;
-        box-shadow: 0 18px 30px rgba(6, 12, 22, 0.12);
+        box-shadow: 0 18px 30px rgba(15, 23, 42, 0.12);
         border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
@@ -831,12 +828,11 @@ body.loft1325-mobile-lofts-archive-active a {
         }
 
         .loft1325-mobile-loft__slider {
-                margin-left: -0.75rem;
-                margin-right: -0.75rem;
+                margin-left: -0.6rem;
+                margin-right: -0.6rem;
         }
 
         .loft1325-mobile-loft__hero-card {
-                margin-top: -1.6rem;
                 padding: 1.35rem 1.2rem;
         }
 
