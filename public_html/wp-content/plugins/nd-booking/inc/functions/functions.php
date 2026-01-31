@@ -1206,7 +1206,19 @@ function nd_booking_checkout_page() {
   $nd_booking_checkout_page = get_option('nd_booking_checkout_page');
   $nd_booking_checkout_page_url = get_permalink($nd_booking_checkout_page);
 
-  return $nd_booking_checkout_page_url;
+  if ( $nd_booking_checkout_page_url ) {
+    return $nd_booking_checkout_page_url;
+  }
+
+  $fallback_page = get_page_by_path( 'nd-booking-pages/nd-booking-checkout' );
+  if ( $fallback_page instanceof WP_Post ) {
+    $fallback_url = get_permalink( $fallback_page->ID );
+    if ( $fallback_url ) {
+      return $fallback_url;
+    }
+  }
+
+  return home_url( '/nd-booking-pages/nd-booking-checkout/' );
 
 }
 
