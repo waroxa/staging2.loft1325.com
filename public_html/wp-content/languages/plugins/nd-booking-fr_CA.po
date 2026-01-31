@@ -2835,7 +2835,7 @@ msgstr ""
 #: inc/shortcodes/nd_booking_order.php:125
 #: inc/shortcodes/nd_booking_order.php:142
 msgid "RETURN TO SEARCH PAGE"
-msgstr ""
+msgstr "RETOUR À LA PAGE DE RECHERCHE"
 
 #: inc/shortcodes/nd_booking_account.php:114
 msgid "Url"
@@ -2900,11 +2900,11 @@ msgstr ""
 
 #: inc/shortcodes/nd_booking_booking.php:30
 msgid "Please select a"
-msgstr ""
+msgstr "Veuillez sélectionner une"
 
 #: inc/shortcodes/nd_booking_booking.php:30
 msgid "to make a reservation"
-msgstr ""
+msgstr "pour effectuer une réservation"
 
 #: inc/shortcodes/nd_booking_booking.php:137
 msgid "You are booking as guest,"
