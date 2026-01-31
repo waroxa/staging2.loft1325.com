@@ -135,7 +135,9 @@ trait File_Cacher_Trait {
 	 * @return boolean
 	 */
 	public static function is_mobile() {
-		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+		if ( isset( $_SERVER['HTTP_SEC_CH_UA_MOBILE'] ) ) {
+			$is_mobile = ( '?1' === $_SERVER['HTTP_SEC_CH_UA_MOBILE'] );
+		} elseif ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
 			$is_mobile = false;
 		} elseif ( @strpos( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) !== false // phpcs:ignore
 			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) !== false // phpcs:ignore
