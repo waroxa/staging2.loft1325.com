@@ -225,15 +225,7 @@ $nd_booking_shortcode_right_content .= '
                                 <a href="' . esc_url( $loft_mobile_room_link ) . '" style=" border:2px solid #FFDA44; background-color:#FFDA44; color:#FFFFFF;" class=" nd_booking_float_left nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_cursor_pointer nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2">'.__('BOOK NOW','nd-booking').' '.__('FOR','nd-booking').' '.$nd_booking_trip_price.' '.nd_booking_get_currency().'</a>';
                             } else {
                                 $nd_booking_shortcode_right_content .= '
-                                <form class="nd_booking_float_left '.$nd_booking_insub_woo_class.'" action="'.esc_url( $loft_booking_action ).'" method="post">
-                                    <input type="hidden" name="nd_booking_form_booking_arrive_advs" value="1" />
-                                    <input type="hidden" name="nd_booking_form_booking_arrive_sr" value="0" />
-                                    <input type="hidden" name="nd_booking_form_booking_id" value="'.esc_attr( $loft_booking_id ).'" />
-                                    <input type="hidden" name="nd_booking_form_booking_date_from" value="'.esc_attr( $nd_booking_date_from ).'" />
-                                    <input type="hidden" name="nd_booking_form_booking_date_to" value="'.esc_attr( $nd_booking_date_to ).'" />
-                                    <input type="hidden" name="nd_booking_form_booking_guests" value="'.esc_attr( $nd_booking_archive_form_guests ).'" />
-                                    <button type="submit" style=" border:2px solid #FFDA44; background-color:#FFDA44; color:#FFFFFF;" class=" nd_booking_float_left nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_cursor_pointer nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2">'.__('BOOK NOW','nd-booking').' '.__('FOR','nd-booking').' '.$nd_booking_trip_price.' '.nd_booking_get_currency().'</button>
-                                </form>';
+                                <a href="' . esc_url( $nd_booking_r_permalink ) . '" style=" border:2px solid #FFDA44; background-color:#FFDA44; color:#FFFFFF;" class=" nd_booking_float_left nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_cursor_pointer nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2 ' . esc_attr( $nd_booking_insub_woo_class ) . '">'.__('BOOK NOW','nd-booking').' '.__('FOR','nd-booking').' '.$nd_booking_trip_price.' '.nd_booking_get_currency().'</a>';
                             }
 
                             include realpath(dirname( __FILE__ ).'/nd_booking_info_price_hover_btn.php'); 
