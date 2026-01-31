@@ -835,7 +835,10 @@
 }
 
 #nd_booking_single_cpt_1_header_image .rev_slider,
-#nd_booking_single_cpt_1_header_image .rev_slider li,
+#nd_booking_single_cpt_1_header_image .rev_slider li {
+    width: 100% !important;
+}
+
 #nd_booking_single_cpt_1_header_image .rev_slider img,
 #nd_booking_single_cpt_1_header_image .tp-bgimg {
     width: 100% !important;
@@ -856,9 +859,16 @@
 }
 
 @media (max-width: 600px) {
+    #nd_booking_single_cpt_1_header_image {
+        max-width: calc(100% - 32px);
+        margin: 0 auto;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
     #nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
     #nd_booking_single_cpt_1_header_image .rev_slider {
-        margin: 0 !important;
+        margin: 0 auto !important;
         width: 100% !important;
     }
 }
