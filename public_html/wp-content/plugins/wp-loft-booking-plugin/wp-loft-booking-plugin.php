@@ -186,6 +186,10 @@ function wp_loft_booking_apply_default_search_params() {
         return;
     }
 
+    if ( ! empty( $_SERVER['REQUEST_METHOD'] ) && 'GET' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
+        return;
+    }
+
     $has_dates = ! empty( $_GET['nd_booking_archive_form_date_range_from'] ) || ! empty( $_GET['nd_booking_archive_form_date_range_to'] );
     $has_nights = ! empty( $_GET['nd_booking_archive_form_nights'] );
     $has_guests = ! empty( $_GET['nd_booking_archive_form_guests'] );
