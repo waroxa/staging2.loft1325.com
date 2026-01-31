@@ -17,7 +17,7 @@ function wp_loft_display_search_results() {
     $branch_id = $wpdb->get_var($wpdb->prepare("SELECT id FROM {$wpdb->prefix}loft_branches WHERE building_id = %d", $building_id));
     if (!$branch_id) return '<p style="color: red;">Please select a valid branch.</p>';
 
-    $query = "SELECT u.id, u.unit_name, u.max_adults, u.max_children, u.status, u.price_per_night FROM {$wpdb->prefix}loft_units AS u WHERE u.branch_id = %d AND u.max_adults >= %d AND u.max_children >= %d AND u.status = 'Available'";
+    $query = "SELECT u.id, u.unit_name, u.max_adults, u.max_children, u.status, u.price_per_night FROM {$wpdb->prefix}loft_units AS u WHERE u.branch_id = %d AND u.max_adults >= %d AND u.max_children >= %d AND LOWER(u.status) = 'available'";
     $units = $wpdb->get_results($wpdb->prepare($query, $branch_id, $adults, $children));
 
     if (!empty($units)) {
@@ -52,7 +52,7 @@ function custom_booking_search_results() {
     // Fetch units that match the search criteria. Use COALESCE to treat
     // NULL capacities as a large number so units with unspecified limits
     // are still returned in results.
-    $where   = array("u.status = 'Available'", 'u.branch_id = %d', 'COALESCE(u.max_adults, 999) >= %d', 'COALESCE(u.max_children, 999) >= %d');
+    $where   = array("LOWER(u.status) = 'available'", 'u.branch_id = %d', 'COALESCE(u.max_adults, 999) >= %d', 'COALESCE(u.max_children, 999) >= %d');
     $params  = array($branch_id, $adults, $children);
 
     if ($requested_type) {
@@ -97,11 +97,15 @@ function custom_booking_search_results() {
 
     $cta_url = function_exists('nd_booking_search_page') ? nd_booking_search_page() : home_url('/');
 
+    $locale = function_exists('determine_locale') ? determine_locale() : get_locale();
+    $is_french = stripos($locale, 'fr') === 0;
+    $unavailable_label = $is_french ? 'non disponible' : 'unavailable';
+
     $output = '<div class="custom-nd-booking-results">';
     $output .= '<p class="available-summary">'
-            . 'Simple: ' . ($simple_count ? $simple_count : '<span class="not-available">non disponible</span>')
-            . ', Double: ' . ($double_count ? $double_count : '<span class="not-available">non disponible</span>')
-            . ', Penthouse: ' . ($penthouse_count ? $penthouse_count : '<span class="not-available">non disponible</span>')
+            . 'Simple: ' . ($simple_count ? $simple_count : '<span class="not-available">' . esc_html($unavailable_label) . '</span>')
+            . ', Double: ' . ($double_count ? $double_count : '<span class="not-available">' . esc_html($unavailable_label) . '</span>')
+            . ', Penthouse: ' . ($penthouse_count ? $penthouse_count : '<span class="not-available">' . esc_html($unavailable_label) . '</span>')
             . '</p>';
     if (!empty($results)) {
         foreach ($results as $result) {
