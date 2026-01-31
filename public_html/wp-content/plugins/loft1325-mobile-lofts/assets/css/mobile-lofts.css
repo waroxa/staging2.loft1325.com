@@ -311,6 +311,14 @@ body.loft1325-mobile-lofts-archive-active a {
         box-shadow: var(--loft1325-glow);
 }
 
+.loft1325-mobile-loft__slider--rev .rev_slider_wrapper,
+.loft1325-mobile-loft__slider--rev .rev_slider {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 24px;
+        overflow: hidden;
+}
+
 .loft1325-mobile-loft__slider-track {
         display: flex;
         width: 100%;
