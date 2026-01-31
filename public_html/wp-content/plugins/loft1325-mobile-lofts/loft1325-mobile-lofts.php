@@ -569,7 +569,12 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		public function get_room_slider_markup( $post_id ) {
 			$featured_replace = get_post_meta( $post_id, 'nd_booking_meta_box_featured_image_replace', true );
 			if ( '' === trim( $featured_replace ) ) {
-				return '';
+				$fallback_shortcode = $this->get_fallback_slider_shortcode( $post_id );
+				if ( '' === $fallback_shortcode ) {
+					return '';
+				}
+
+				$featured_replace = $fallback_shortcode;
 			}
 
 			$markup = do_shortcode( $featured_replace );
@@ -590,7 +595,12 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		private function get_featured_replace_gallery( $post_id ) {
 			$featured_replace = get_post_meta( $post_id, 'nd_booking_meta_box_featured_image_replace', true );
 			if ( '' === trim( $featured_replace ) ) {
-				return array();
+				$fallback_shortcode = $this->get_fallback_slider_shortcode( $post_id );
+				if ( '' === $fallback_shortcode ) {
+					return array();
+				}
+
+				$featured_replace = $fallback_shortcode;
 			}
 
 			$markup = do_shortcode( $featured_replace );
@@ -731,6 +741,33 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 				'url' => $src ? $src[0] : '',
 				'alt' => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
 			);
+		}
+
+		/**
+		 * Return a Rev Slider shortcode based on the room type.
+		 *
+		 * @param int $post_id Room post ID.
+		 *
+		 * @return string
+		 */
+		private function get_fallback_slider_shortcode( $post_id ) {
+			$slug  = (string) get_post_field( 'post_name', $post_id );
+			$title = strtoupper( (string) get_the_title( $post_id ) );
+			$alias = '';
+
+			if ( stripos( $slug, 'penthouse' ) !== false || stripos( $title, 'PENTHOUSE' ) !== false ) {
+				$alias = 'penthouse';
+			} elseif ( stripos( $slug, 'occupation-double' ) !== false || preg_match( '/\(\s*DOUBLE\s*\)/i', $title ) ) {
+				$alias = 'occupation-double';
+			} elseif ( stripos( $slug, 'occupation-simple' ) !== false || preg_match( '/\(\s*SIMPLE\s*\)/i', $title ) ) {
+				$alias = 'occupation-simple';
+			}
+
+			if ( '' === $alias ) {
+				return '';
+			}
+
+			return '[rev_slider alias="' . esc_attr( $alias ) . '"]';
 		}
 	}
 }

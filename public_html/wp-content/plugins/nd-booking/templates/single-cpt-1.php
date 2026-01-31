@@ -270,7 +270,7 @@ if(have_posts()) :
 
     	//date
     	$nd_booking_date_from = date('m/d/Y');
-        $nd_booking_date_to = date('Y-m-d', strtotime(' + 1 days'));
+        $nd_booking_date_to = date('m/d/Y', strtotime(' + 1 days'));
         $nd_booking_archive_form_guests = 1;
         $nd_booking_nights_number = 1;
         $nd_booking_date_number_from_front = date('d');
@@ -333,7 +333,7 @@ if(have_posts()) :
 
 			                <input type="hidden" id="nd_booking_date_month_from" class="nd_booking_section nd_booking_margin_top_20">
 			                <input type="hidden" id="nd_booking_date_number_from" class="nd_booking_section nd_booking_margin_top_20">
-			                <input placeholder="Check In" class="nd_booking_section nd_booking_margin_top_30 nd_booking_margin_0_all_iphone nd_booking_border_width_0_important nd_booking_padding_0_important nd_booking_height_0_important" type="text" name="nd_booking_archive_form_date_range_from" id="nd_booking_archive_form_date_range_from" value="" />
+			                <input placeholder="Check In" class="nd_booking_section nd_booking_margin_top_30 nd_booking_margin_0_all_iphone nd_booking_border_width_0_important nd_booking_padding_0_important nd_booking_height_0_important" type="text" name="nd_booking_archive_form_date_range_from" id="nd_booking_archive_form_date_range_from" value="'.$nd_booking_date_from.'" />
 			            </div>
 			            <div id="nd_booking_single_cpt_1_calendar_checkout" class="nd_booking_width_50_percentage nd_booking_float_left nd_booking_padding_15 nd_booking_padding_0_all_iphone nd_booking_padding_bottom_0 nd_booking_box_sizing_border_box">
 
@@ -356,7 +356,7 @@ if(have_posts()) :
 
 			                <input type="hidden" id="nd_booking_date_month_to" class="nd_booking_section nd_booking_margin_top_20">
 			                <input type="hidden" id="nd_booking_date_number_to" class="nd_booking_section nd_booking_margin_top_20">
-			                <input placeholder="Check Out" class="nd_booking_section nd_booking_margin_top_30 nd_booking_margin_0_all_iphone nd_booking_border_width_0_important nd_booking_padding_0_important nd_booking_height_0_important" type="text" name="nd_booking_archive_form_date_range_to" id="nd_booking_archive_form_date_range_to" value="" />
+			                <input placeholder="Check Out" class="nd_booking_section nd_booking_margin_top_30 nd_booking_margin_0_all_iphone nd_booking_border_width_0_important nd_booking_padding_0_important nd_booking_height_0_important" type="text" name="nd_booking_archive_form_date_range_to" id="nd_booking_archive_form_date_range_to" value="'.$nd_booking_date_to.'" />
 			                
 			            </div>  
 

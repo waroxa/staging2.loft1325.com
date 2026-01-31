@@ -883,3 +883,22 @@
 #nd_booking_single_cpt_1_calendar .nd_booking_bg_greydark_2 h6 {
     text-shadow: none !important;
 }
+
+/* Single room reserve button consistency */
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_yellow,
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_yellow:visited {
+    background: var(--loft1325-accent) !important;
+    border-color: var(--loft1325-accent) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 16px 32px var(--loft1325-accent-shadow);
+    font-size: 14px !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase;
+}
+
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_yellow:hover,
+#nd_booking_single_cpt_1_calendar .nd_booking_bg_yellow:focus {
+    background: var(--loft1325-accent-strong) !important;
+    border-color: var(--loft1325-accent-strong) !important;
+    box-shadow: 0 20px 36px var(--loft1325-accent-shadow);
+}
