@@ -229,6 +229,37 @@ if(have_posts()) :
 		$nd_booking_id_room = get_post_meta( get_the_ID(), 'nd_booking_id_room', true );
 		if ( $nd_booking_id_room == '' ) { $nd_booking_id_room = $nd_booking_id; }else{ $nd_booking_id_room = $nd_booking_id_room; }	    
 
+		global $wpdb;
+		$nd_booking_locale = function_exists('determine_locale') ? determine_locale() : get_locale();
+		$nd_booking_is_french = stripos($nd_booking_locale, 'fr') === 0;
+		$nd_booking_unavailable_label = $nd_booking_is_french ? 'Indisponible' : 'Unavailable';
+		$nd_booking_penthouse_unavailable_label = $nd_booking_is_french ? 'Penthouse indisponible' : 'Penthouse unavailable';
+		$nd_booking_room_type = '';
+		$nd_booking_available_count = null;
+		$nd_booking_title_upper = strtoupper($nd_booking_title);
+
+		if ( preg_match('/\(\s*SIMPLE\s*\)/i', $nd_booking_title_upper) ) {
+			$nd_booking_room_type = 'simple';
+		} elseif ( preg_match('/\(\s*DOUBLE\s*\)/i', $nd_booking_title_upper) ) {
+			$nd_booking_room_type = 'double';
+		} elseif ( stripos($nd_booking_title_upper, 'PENTHOUSE') !== false ) {
+			$nd_booking_room_type = 'penthouse';
+		}
+
+		if ( $nd_booking_room_type !== '' ) {
+			$nd_booking_like = $nd_booking_room_type === 'penthouse'
+				? '%penthouse%'
+				: '%(' . $nd_booking_room_type . ')%';
+			$nd_booking_available_count = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}loft_units WHERE LOWER(status) = 'available' AND LOWER(unit_name) LIKE %s",
+					$nd_booking_like
+				)
+			);
+		}
+		$nd_booking_room_unavailable = $nd_booking_room_type === 'penthouse'
+			|| ($nd_booking_available_count !== null && $nd_booking_available_count < 1);
+
 
 	    //START calendar widget
 	    $nd_booking_meta_box_max_people = get_post_meta( get_the_ID(), 'nd_booking_meta_box_max_people', true );
@@ -260,6 +291,13 @@ if(have_posts()) :
 
         if ( $nd_booking_meta_box_room_woo_product != 0 ) {
         	$nd_booking_form_btn = '<a class="nd_options_text_align_center nd_options_box_sizing_border_box nd_options_color_white nd_booking_width_100_percentage nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_bg_yellow nd_booking_cursor_pointer nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2" href="'.nd_booking_search_page().'">'.__('BOOK THROUGH SEARCH PAGE','nd-booking').'</a>';
+        }
+
+        if ( $nd_booking_room_unavailable ) {
+        	$nd_booking_unavailable_text = $nd_booking_room_type === 'penthouse'
+        		? $nd_booking_penthouse_unavailable_label
+        		: $nd_booking_unavailable_label;
+        	$nd_booking_form_btn = '<span class="nd_options_text_align_center nd_options_box_sizing_border_box nd_options_color_white nd_booking_width_100_percentage nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_bg_grey nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2" aria-disabled="true">' . esc_html($nd_booking_unavailable_text) . '</span>';
         }
 
         
