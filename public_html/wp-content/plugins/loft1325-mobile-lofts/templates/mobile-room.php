@@ -28,6 +28,10 @@ if ( ! $booking_nights && ! $booking_date_from && ! $booking_date_to ) {
 	$booking_nights = 1;
 }
 
+if ( ! $booking_guests && ! $booking_date_from && ! $booking_date_to ) {
+	$booking_guests = 1;
+}
+
 $room_id_room = get_post_meta( $room_id, 'nd_booking_id_room', true );
 if ( ! $room_id_room ) {
 	$room_id_room = $room_id;
@@ -44,8 +48,14 @@ $booking_payload = array_filter(
 	)
 );
 
-if ( ! $has_booking_params && $booking_nights ) {
-	$booking_url = add_query_arg( 'nd_booking_archive_form_nights', $booking_nights, $booking_url );
+if ( ! $has_booking_params ) {
+	if ( $booking_nights ) {
+		$booking_url = add_query_arg( 'nd_booking_archive_form_nights', $booking_nights, $booking_url );
+	}
+
+	if ( $booking_guests ) {
+		$booking_url = add_query_arg( 'nd_booking_archive_form_guests', $booking_guests, $booking_url );
+	}
 }
 $language       = $plugin->get_current_language();
 $archive_url    = $plugin->get_lofts_archive_url();

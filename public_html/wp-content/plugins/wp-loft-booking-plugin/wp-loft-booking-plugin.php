@@ -181,6 +181,74 @@ function wp_loft_booking_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'wp_loft_booking_enqueue_scripts');
 
+function wp_loft_booking_apply_default_search_params() {
+    if ( is_admin() || wp_doing_ajax() ) {
+        return;
+    }
+
+    $has_dates = ! empty( $_GET['nd_booking_archive_form_date_range_from'] ) || ! empty( $_GET['nd_booking_archive_form_date_range_to'] );
+    $has_nights = ! empty( $_GET['nd_booking_archive_form_nights'] );
+    $has_guests = ! empty( $_GET['nd_booking_archive_form_guests'] );
+
+    if ( $has_dates || $has_nights || $has_guests ) {
+        return;
+    }
+
+    if ( ! function_exists( 'nd_booking_booking_page' ) && ! function_exists( 'nd_booking_search_page' ) ) {
+        return;
+    }
+
+    $targets = array();
+
+    if ( function_exists( 'nd_booking_booking_page' ) ) {
+        $targets[] = wp_parse_url( nd_booking_booking_page(), PHP_URL_PATH );
+    }
+
+    if ( function_exists( 'nd_booking_search_page' ) ) {
+        $targets[] = wp_parse_url( nd_booking_search_page(), PHP_URL_PATH );
+    }
+
+    $targets = array_filter(
+        array_map(
+            static function ( $path ) {
+                return '/' . trim( (string) $path, '/' );
+            },
+            $targets
+        )
+    );
+
+    if ( empty( $targets ) ) {
+        return;
+    }
+
+    global $wp;
+    if ( ! $wp instanceof WP ) {
+        return;
+    }
+
+    $current_path = '/' . trim( $wp->request, '/' );
+    if ( ! in_array( $current_path, $targets, true ) ) {
+        return;
+    }
+
+    $current_url = home_url( $wp->request );
+    if ( ! empty( $_GET ) ) {
+        $current_url = add_query_arg( wp_unslash( $_GET ), $current_url );
+    }
+
+    $redirect_url = add_query_arg(
+        array(
+            'nd_booking_archive_form_nights' => 1,
+            'nd_booking_archive_form_guests' => 1,
+        ),
+        $current_url
+    );
+
+    wp_safe_redirect( $redirect_url );
+    exit;
+}
+add_action( 'template_redirect', 'wp_loft_booking_apply_default_search_params' );
+
 function wp_loft_booking_enqueue_admin_scripts() {
     wp_enqueue_script('jquery-ui-datepicker');
     wp_enqueue_style('jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
