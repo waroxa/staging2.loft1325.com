@@ -252,11 +252,16 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		 * @return string
 		 */
 		public function localize_url( $url ) {
+			$language = $this->get_current_language();
+
+			if ( 'fr' === $language ) {
+				return $this->strip_default_language_prefix( $url );
+			}
+
 			if ( ! class_exists( 'TRP_Translate_Press' ) ) {
 				return $url;
 			}
 
-			$language = $this->get_current_language();
 			$trp_instance = TRP_Translate_Press::get_trp_instance();
 
 			if ( ! $trp_instance ) {
@@ -270,6 +275,34 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 			}
 
 			return $url_converter->get_url_for_language( $language, $url, '' );
+		}
+
+		/**
+		 * Ensure default language URLs do not include the /fr/ prefix.
+		 *
+		 * @param string $url URL to normalize.
+		 *
+		 * @return string
+		 */
+		private function strip_default_language_prefix( $url ) {
+			$home_default = home_url( '/' );
+			$home_french  = home_url( '/fr/' );
+
+			if ( 0 === strpos( $url, $home_french ) ) {
+				$relative = ltrim( substr( $url, strlen( $home_french ) ), '/' );
+
+				return $home_default . $relative;
+			}
+
+			if ( 0 === strpos( $url, '/fr/' ) ) {
+				return '/' . ltrim( substr( $url, 4 ), '/' );
+			}
+
+			if ( rtrim( $url, '/' ) === rtrim( home_url( '/fr' ), '/' ) ) {
+				return $home_default;
+			}
+
+			return $url;
 		}
 
 		/**
