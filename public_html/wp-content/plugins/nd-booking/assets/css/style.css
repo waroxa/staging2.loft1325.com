@@ -475,6 +475,33 @@ body.single-causes .single-featured-image-header { display: none; }
     #nd_booking_single_cause_tab_list li { width: 100%; margin: 0px; }
 }
 
+/* Loft1325 mobile single room header alignment + slider image fill */
+@media only screen and (max-width: 600px) {
+    #nd_booking_single_cpt_1_header_image {
+        max-width: calc(100% - 32px);
+        margin: 0 auto;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    #nd_booking_single_cpt_1_header_image .rev_slider_wrapper,
+    #nd_booking_single_cpt_1_header_image .rev_slider {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        overflow: hidden;
+    }
+
+    #nd_booking_single_cpt_1_header_image .rev_slider img,
+    #nd_booking_single_cpt_1_header_image .tp-bgimg {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+        background-size: cover !important;
+        background-position: center !important;
+    }
+}
+
 /* all responsive*/
 @media only screen and (min-width: 320px) and (max-width: 1199px) {
   	
