@@ -3,7 +3,9 @@ $nd_booking_checkout_tax_breakdown = isset( $nd_booking_tax_breakdown ) && is_ar
     ? $nd_booking_tax_breakdown
     : nd_booking_calculate_tax_breakdown_from_total( $nd_booking_booking_form_final_price );
 
-$nd_booking_booking_original_price = isset( $nd_booking_booking_original_price ) ? $nd_booking_booking_original_price : $nd_booking_booking_form_final_price;
+$nd_booking_booking_original_price = isset( $nd_booking_booking_original_price )
+    ? $nd_booking_booking_original_price
+    : $nd_booking_booking_form_final_price;
 
 $nd_booking_checkout_currency              = nd_booking_get_currency();
 $nd_booking_checkout_subtotal_formatted    = nd_booking_format_decimal( $nd_booking_checkout_tax_breakdown['base'] );
