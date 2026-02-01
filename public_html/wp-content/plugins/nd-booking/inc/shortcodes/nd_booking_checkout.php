@@ -105,6 +105,18 @@ function nd_booking_shortcode_checkout() {
         $nd_booking_booking_form_final_price = floatval( $nd_booking_booking_form_final_price );
         $nd_booking_booking_form_base_price = floatval( $nd_booking_booking_form_base_price );
 
+        $nd_booking_booking_original_price = $nd_booking_booking_form_final_price;
+        $nd_booking_booking_original_base_price = $nd_booking_booking_form_base_price;
+        $nd_booking_coupon_value = 0;
+        if ( '' !== $nd_booking_booking_form_coupon ) {
+            $nd_booking_coupon_value = floatval( nd_booking_get_coupon_value( $nd_booking_booking_form_coupon ) );
+            if ( $nd_booking_coupon_value > 0 ) {
+                $nd_booking_discount_multiplier = max( 0, 1 - ( $nd_booking_coupon_value / 100 ) );
+                $nd_booking_booking_form_base_price = round( $nd_booking_booking_form_base_price * $nd_booking_discount_multiplier, 2 );
+                $nd_booking_booking_form_final_price = round( $nd_booking_booking_form_final_price * $nd_booking_discount_multiplier, 2 );
+            }
+        }
+
         if ( isset( $_POST['guest_id_number'] ) ) {
             $nd_booking_guest_id_number = sanitize_text_field( $_POST['guest_id_number'] );
         } else {

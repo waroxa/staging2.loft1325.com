@@ -32,10 +32,9 @@ $nd_booking_guest_label = sprintf(
     number_format_i18n( $nd_booking_guest_total )
 );
 
-$nd_booking_booking_original_price = $nd_booking_booking_form_final_price;
-if ( '' !== $nd_booking_booking_form_coupon ) {
-    $nd_booking_booking_form_final_price = $nd_booking_booking_form_final_price - ( $nd_booking_booking_form_final_price * nd_booking_get_coupon_value( $nd_booking_booking_form_coupon ) / 100 );
-}
+$nd_booking_booking_original_price = isset( $nd_booking_booking_original_price )
+    ? $nd_booking_booking_original_price
+    : $nd_booking_booking_form_final_price;
 
 $nd_booking_currency      = nd_booking_get_currency();
 $nd_booking_display_total = nd_booking_format_decimal( $nd_booking_booking_form_final_price );
