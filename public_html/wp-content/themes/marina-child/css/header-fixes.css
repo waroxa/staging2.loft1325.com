@@ -1215,10 +1215,41 @@ body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-sear
     border: 1px solid rgba(148, 163, 184, 0.25);
 }
 
+.loft-payment-form .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkout-form #card-element,
+.checkout-form .StripeElement {
+    width: 100%;
+    padding: 12px 14px;
+    min-height: 52px;
+    box-sizing: border-box;
+}
+
+.loft-payment-free-message {
+    background: rgba(16, 185, 129, 0.1);
+    color: #065f46;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
 .loft-card-errors {
     color: #b91c1c;
     font-weight: 600;
     margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+    .checkout-form #card-element,
+    .checkout-form .StripeElement {
+        padding: 14px 16px;
+        min-height: 56px;
+    }
 }
 
 @media (min-width: 900px) {
