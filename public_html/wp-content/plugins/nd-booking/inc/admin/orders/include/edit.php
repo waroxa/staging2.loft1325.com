@@ -115,6 +115,16 @@ if ( empty($nd_booking_orders) ) {
 
     $guest_id_front  = esc_url( get_post_meta( $nd_booking_order->id, 'guest_id_front', true ) );
     $guest_id_back   = esc_url( get_post_meta( $nd_booking_order->id, 'guest_id_back', true ) );
+    $guest_id_front_id = absint( get_post_meta( $nd_booking_order->id, 'guest_id_front_id', true ) );
+    $guest_id_back_id  = absint( get_post_meta( $nd_booking_order->id, 'guest_id_back_id', true ) );
+    if ( ! $guest_id_front_id && $guest_id_front ) {
+      $guest_id_front_id = absint( attachment_url_to_postid( $guest_id_front ) );
+    }
+    if ( ! $guest_id_back_id && $guest_id_back ) {
+      $guest_id_back_id = absint( attachment_url_to_postid( $guest_id_back ) );
+    }
+    $guest_id_front_url = $guest_id_front_id ? wp_get_attachment_url( $guest_id_front_id ) : $guest_id_front;
+    $guest_id_back_url  = $guest_id_back_id ? wp_get_attachment_url( $guest_id_back_id ) : $guest_id_back;
     $guest_id_number = sanitize_text_field( get_post_meta( $nd_booking_order->id, 'guest_id_number', true ) );
     $guest_id_type   = sanitize_text_field( get_post_meta( $nd_booking_order->id, 'guest_id_type', true ) );
 
@@ -270,8 +280,10 @@ if ( empty($nd_booking_orders) ) {
             $nd_booking_result .= '<div class="nd_booking_section nd_booking_margin_top_20"><h3>'.__('Guest ID','nd-booking').'</h3>';
             if ( $guest_id_number != '' ) { $nd_booking_result .= '<p>'.__('ID Number','nd-booking').': '.esc_html($guest_id_number).'</p>'; }
             if ( $guest_id_type != '' ) { $nd_booking_result .= '<p>'.__('ID Type','nd-booking').': '.esc_html($guest_id_type).'</p>'; }
-            if ( $guest_id_front != '' ) { $nd_booking_result .= '<p><a href="'.$guest_id_front.'" target="_blank"><img src="'.$guest_id_front.'" width="150" /></a></p>'; }
-            if ( $guest_id_back != '' ) { $nd_booking_result .= '<p><a href="'.$guest_id_back.'" target="_blank"><img src="'.$guest_id_back.'" width="150" /></a></p>'; }
+            if ( $guest_id_front_id ) { $nd_booking_result .= '<p>'.__('Front ID Upload ID','nd-booking').': '.esc_html($guest_id_front_id).'</p>'; }
+            if ( $guest_id_front_url ) { $nd_booking_result .= '<p><a href="'.$guest_id_front_url.'" target="_blank"><img src="'.$guest_id_front_url.'" width="150" /></a></p>'; }
+            if ( $guest_id_back_id ) { $nd_booking_result .= '<p>'.__('Back ID Upload ID','nd-booking').': '.esc_html($guest_id_back_id).'</p>'; }
+            if ( $guest_id_back_url ) { $nd_booking_result .= '<p><a href="'.$guest_id_back_url.'" target="_blank"><img src="'.$guest_id_back_url.'" width="150" /></a></p>'; }
             $nd_booking_result .= '</div>';
           }
 
