@@ -1074,13 +1074,26 @@ function nd_booking_shortcode_checkout() {
 
                 // START check the response
                 $nd_booking_http_response_code = wp_remote_retrieve_response_code( $nd_booking_response );
+                $nd_booking_response_body       = wp_remote_retrieve_body( $nd_booking_response );
 
                 if ( 200 !== $nd_booking_http_response_code ) {
-                    error_log( 'nd_booking: Stripe request failed with code '. $nd_booking_http_response_code .' and body: '. wp_remote_retrieve_body( $nd_booking_response ) );
+                    $nd_booking_error_message = '';
+                    $nd_booking_error_data = json_decode( $nd_booking_response_body );
+                    if ( is_object( $nd_booking_error_data ) && isset( $nd_booking_error_data->error->message ) ) {
+                        $nd_booking_error_message = $nd_booking_error_data->error->message;
+                    }
+
+                    error_log(
+                        'nd_booking: Stripe request failed with code '. $nd_booking_http_response_code .' and body: '. $nd_booking_response_body
+                    );
+
+                    if ( '' !== $nd_booking_error_message ) {
+                        return '<p>'. esc_html( $nd_booking_error_message ) .'</p>';
+                    }
+
                     return '<p>'. esc_html__( 'Unable to process payment at this time. Please contact support.', 'nd-booking' ) .'</p>';
                 }
 
-                $nd_booking_response_body = wp_remote_retrieve_body( $nd_booking_response );
                 $nd_booking_stripe_data   = json_decode( $nd_booking_response_body );
 
                 if ( ! is_object( $nd_booking_stripe_data ) ) {
@@ -1089,7 +1102,17 @@ function nd_booking_shortcode_checkout() {
                 }
 
                 if ( empty( $nd_booking_stripe_data->paid ) ) {
+                    $nd_booking_failure_message = '';
+                    if ( isset( $nd_booking_stripe_data->failure_message ) ) {
+                        $nd_booking_failure_message = (string) $nd_booking_stripe_data->failure_message;
+                    }
+
                     error_log( 'nd_booking: Stripe charge not paid. Response: '. $nd_booking_response_body );
+
+                    if ( '' !== $nd_booking_failure_message ) {
+                        return '<p>'. esc_html( $nd_booking_failure_message ) .'</p>';
+                    }
+
                     return '<p>'. esc_html__( 'Payment was not completed. Please try again.', 'nd-booking' ) .'</p>';
                 }
 
