@@ -163,6 +163,7 @@ $nd_booking_shortcode_left_content .= '
     text-transform: uppercase;
     font-weight: 600;
     margin: 0;
+    color: #ffffff;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   }
   .loft1325-booking-sidebar .loft1325-booking-stars {

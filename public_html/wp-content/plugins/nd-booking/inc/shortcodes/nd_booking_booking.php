@@ -170,7 +170,9 @@ function nd_booking_shortcode_booking() {
               $nd_booking_archive_url = home_url( '/rooms/' );
             }
 
-            if ( class_exists( 'TRP_Translate_Press' ) ) {
+            if ( 'fr' === $nd_booking_language ) {
+              $nd_booking_archive_url = home_url( '/rooms/' );
+            } elseif ( class_exists( 'TRP_Translate_Press' ) ) {
               $trp_instance = TRP_Translate_Press::get_trp_instance();
               if ( $trp_instance ) {
                 $url_converter = $trp_instance->get_component( 'url_converter' );

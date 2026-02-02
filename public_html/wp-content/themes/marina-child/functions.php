@@ -749,6 +749,74 @@ function marina_child_translate_booking_alerts( $translation, $text, $domain ) {
 add_filter( 'gettext', 'marina_child_translate_booking_alerts', 10, 3 );
 
 /**
+ * Ensure language switcher links stay valid on ND Booking core pages.
+ *
+ * @param string $new_url       Converted URL.
+ * @param string $url           Source URL.
+ * @param string $language      Target language.
+ * @param string $abs_home      Absolute home URL.
+ * @param string $lang_from_url Language detected from URL.
+ * @param string $url_slug      Language slug.
+ *
+ * @return string
+ */
+function marina_child_fix_booking_switcher_urls( $new_url, $url, $language, $abs_home, $lang_from_url, $url_slug ) {
+    $probe_url = $url ? $url : $new_url;
+
+    if ( ! $probe_url ) {
+        return $new_url;
+    }
+
+    $parsed = wp_parse_url( $probe_url );
+
+    if ( empty( $parsed['path'] ) ) {
+        return $new_url;
+    }
+
+    $path = ltrim( $parsed['path'], '/' );
+
+    if ( $lang_from_url ) {
+        $lang_prefix = trim( (string) $lang_from_url, '/' );
+        if ( '' !== $lang_prefix && 0 === strpos( $path, $lang_prefix . '/' ) ) {
+            $path = substr( $path, strlen( $lang_prefix ) + 1 );
+        }
+    }
+
+    $target_paths = array(
+        'nd-booking-pages/nd-booking-page',
+        'nd-booking-pages/nd-booking-checkout',
+    );
+
+    foreach ( $target_paths as $target_path ) {
+        if ( 0 !== strpos( $path, $target_path ) ) {
+            continue;
+        }
+
+        $default_language = '';
+        if ( class_exists( 'TRP_Translate_Press' ) ) {
+            $trp_settings = get_option( 'trp_settings', array() );
+            if ( isset( $trp_settings['default-language'] ) ) {
+                $default_language = strtolower( substr( (string) $trp_settings['default-language'], 0, 2 ) );
+            }
+        }
+
+        $language = strtolower( substr( (string) $language, 0, 2 ) );
+        $prefix   = '';
+
+        if ( $language && ( ! $default_language || $language !== $default_language ) ) {
+            $prefix = $language . '/';
+        }
+
+        $normalized_path = $prefix . trailingslashit( $target_path );
+
+        return home_url( '/' . $normalized_path );
+    }
+
+    return $new_url;
+}
+add_filter( 'trp_get_url_for_language', 'marina_child_fix_booking_switcher_urls', 10, 6 );
+
+/**
  * Prevent search submissions from resolving as 404s so results can render.
  */
 function marina_child_prevent_search_404() {
