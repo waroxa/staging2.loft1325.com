@@ -947,6 +947,7 @@
     border: none;
     box-shadow: 0 16px 30px rgba(11, 27, 43, 0.2);
     font-size: 13px;
+    margin-bottom: 16px;
 }
 
 .checkout-reviews {
