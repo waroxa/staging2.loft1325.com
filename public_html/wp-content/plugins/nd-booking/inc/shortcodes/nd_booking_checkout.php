@@ -119,6 +119,12 @@ function nd_booking_shortcode_checkout() {
 
     if( isset( $_POST['nd_booking_form_booking_arrive'] ) ) {  $nd_booking_form_booking_arrive = sanitize_text_field($_POST['nd_booking_form_booking_arrive']); }else{ $nd_booking_form_booking_arrive = '';}
     if( isset( $_POST['nd_booking_form_checkout_arrive'] ) ) {  $nd_booking_form_checkout_arrive = sanitize_text_field($_POST['nd_booking_form_checkout_arrive']); }else{ $nd_booking_form_checkout_arrive = '';}
+    if ( '' === $nd_booking_form_booking_arrive && '' === $nd_booking_form_checkout_arrive && isset( $_SESSION['nd_booking_checkout_payload'] ) && is_array( $_SESSION['nd_booking_checkout_payload'] ) ) {
+        $nd_booking_form_booking_arrive = '1';
+        foreach ( $_SESSION['nd_booking_checkout_payload'] as $nd_booking_payload_key => $nd_booking_payload_value ) {
+            $_POST[ $nd_booking_payload_key ] = $nd_booking_payload_value;
+        }
+    }
 
 
     //ARRIVE FROM BOOKING FORM
@@ -234,12 +240,20 @@ function nd_booking_shortcode_checkout() {
             );
         }
 
+        if ( '' === $nd_booking_guest_id_front_token && isset( $_POST['nd_booking_guest_id_front_token'] ) ) {
+            $nd_booking_guest_id_front_token = sanitize_text_field( $_POST['nd_booking_guest_id_front_token'] );
+        }
+        if ( '' === $nd_booking_guest_id_back_token && isset( $_POST['nd_booking_guest_id_back_token'] ) ) {
+            $nd_booking_guest_id_back_token = sanitize_text_field( $_POST['nd_booking_guest_id_back_token'] );
+        }
+
         $nd_booking_guest_id_front = $nd_booking_guest_id_front_token;
         $nd_booking_guest_id_back  = $nd_booking_guest_id_back_token;
 
         //ids
-        $nd_booking_booking_form_post_id = sanitize_text_field($_POST['nd_booking_booking_form_post_id']);
-        $nd_booking_ids_array = explode('-', $nd_booking_booking_form_post_id ); 
+        $nd_booking_booking_form_post_id_raw = sanitize_text_field($_POST['nd_booking_booking_form_post_id']);
+        $nd_booking_booking_form_post_id = $nd_booking_booking_form_post_id_raw;
+        $nd_booking_ids_array = explode('-', $nd_booking_booking_form_post_id );
         $nd_booking_booking_form_post_id = $nd_booking_ids_array[0];
         $nd_booking_id_room = $nd_booking_ids_array[1];
 
@@ -271,6 +285,33 @@ function nd_booking_shortcode_checkout() {
             $_SESSION['nd_booking_tax_qst'] = $nd_booking_tax_qst;
             $_SESSION['nd_booking_tax_total'] = $nd_booking_total_tax_amount;
             $_SESSION['nd_booking_final_price'] = $nd_booking_booking_form_final_price;
+            $_SESSION['nd_booking_checkout_payload'] = array(
+                'nd_booking_form_booking_arrive' => '1',
+                'nd_booking_booking_form_final_price' => $nd_booking_booking_form_final_price,
+                'nd_booking_booking_form_base_price' => $nd_booking_booking_form_base_price,
+                'nd_booking_booking_form_date_from' => $nd_booking_booking_form_date_from,
+                'nd_booking_booking_form_date_to' => $nd_booking_booking_form_date_to,
+                'nd_booking_booking_form_guests' => $nd_booking_booking_form_guests,
+                'nd_booking_booking_form_name' => $nd_booking_booking_form_name,
+                'nd_booking_booking_form_surname' => $nd_booking_booking_form_surname,
+                'nd_booking_booking_form_email' => $nd_booking_booking_form_email,
+                'nd_booking_booking_form_phone' => $nd_booking_booking_form_phone,
+                'nd_booking_booking_form_address' => $nd_booking_booking_form_address,
+                'nd_booking_booking_form_city' => $nd_booking_booking_form_city,
+                'nd_booking_booking_form_country' => $nd_booking_booking_form_country,
+                'nd_booking_booking_form_zip' => $nd_booking_booking_form_zip,
+                'nd_booking_booking_form_requests' => $nd_booking_booking_form_requests,
+                'nd_booking_booking_form_arrival' => $nd_booking_booking_form_arrival,
+                'nd_booking_booking_form_coupon' => $nd_booking_booking_form_coupon,
+                'nd_booking_booking_form_term' => $nd_booking_booking_form_term,
+                'nd_booking_booking_form_post_id' => $nd_booking_booking_form_post_id_raw,
+                'nd_booking_booking_form_post_title' => $nd_booking_booking_form_post_title,
+                'nd_booking_booking_checkbox_services_id' => $nd_booking_booking_form_services,
+                'guest_id_number' => $nd_booking_guest_id_number,
+                'guest_id_type' => $nd_booking_guest_id_type,
+                'nd_booking_guest_id_front_token' => $nd_booking_guest_id_front_token,
+                'nd_booking_guest_id_back_token' => $nd_booking_guest_id_back_token,
+            );
         }
 
         include realpath(dirname( __FILE__ ).'/include/checkout/nd_booking_checkout_left_content.php');
