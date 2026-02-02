@@ -636,12 +636,12 @@ function nd_booking_shortcode_checkout() {
         .checkout-form #card-element:focus-within {
           border-color: #76b1c4;
           outline: none;
-          box-shadow: 0 0 0 3px rgba(118, 177, 196, 0.25);
+          box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
         }
 
         .checkout-form .button-primary,
         .checkout-form button[type="submit"] {
-          background: #76b1c4;
+          background: linear-gradient(135deg, #f59e0b, #b45309);
           color: #ffffff;
           border: none;
           border-radius: 999px;
