@@ -317,8 +317,8 @@ function nd_booking_shortcode_checkout() {
             <div class="trust-item">
               <span class="trust-icon">🛎️</span>
               <div>
-                <strong><?php echo esc_html( $nd_booking_is_english ? 'Concierge on demand' : 'Concierge sur demande' ); ?></strong>
-                <p><?php echo esc_html( $nd_booking_is_english ? 'Self-serve luxury with instant support when you need it.' : 'Luxe en libre-service avec assistance instantanée.' ); ?></p>
+                <strong><?php echo esc_html( $nd_booking_is_english ? 'Digital key delivery' : 'Clé numérique envoyée' ); ?></strong>
+                <p><?php echo esc_html( $nd_booking_is_english ? 'Key created digitally and sent to your mobile and email for access.' : 'Clé créée numériquement et envoyée à votre mobile et votre courriel pour accéder.' ); ?></p>
               </div>
             </div>
             <div class="trust-item">
@@ -641,7 +641,7 @@ function nd_booking_shortcode_checkout() {
 
         .checkout-form .button-primary,
         .checkout-form button[type="submit"] {
-          background: linear-gradient(135deg, #f59e0b, #b45309);
+          background: linear-gradient(135deg, #76b1c4, #5a93a7);
           color: #ffffff;
           border: none;
           border-radius: 999px;
@@ -659,7 +659,7 @@ function nd_booking_shortcode_checkout() {
         .checkout-form button[type="submit"]:hover,
         .checkout-form .button-primary:focus,
         .checkout-form button[type="submit"]:focus {
-          background: #5a93a7;
+          background: linear-gradient(135deg, #8cc3d4, #5a93a7);
           box-shadow: 0 22px 38px rgba(118, 177, 196, 0.45);
         }
 
