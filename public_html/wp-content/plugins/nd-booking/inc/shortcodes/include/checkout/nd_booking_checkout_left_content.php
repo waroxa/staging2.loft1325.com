@@ -37,7 +37,11 @@ $nd_booking_booking_original_price = isset( $nd_booking_booking_original_price )
     : $nd_booking_booking_form_final_price;
 
 $nd_booking_currency      = nd_booking_get_currency();
-$nd_booking_display_total = nd_booking_format_decimal( $nd_booking_booking_form_final_price );
+$nd_booking_display_total = nd_booking_format_decimal(
+    isset( $nd_booking_tax_breakdown['total'] )
+        ? $nd_booking_tax_breakdown['total']
+        : $nd_booking_booking_form_final_price
+);
 $nd_booking_original_total = nd_booking_format_decimal( $nd_booking_booking_original_price );
 
 $nd_booking_average_rate = $nd_booking_total_nights > 0 ? $nd_booking_booking_form_final_price / $nd_booking_total_nights : 0;
