@@ -789,6 +789,13 @@
     opacity: 1;
 }
 
+.nd_booking_unavailable_button {
+    background: #f8fafc !important;
+    color: #111827 !important;
+    border: 1px solid #cbd5f5 !important;
+    box-shadow: none !important;
+}
+
 .nicdark_bg_greydark,
 .nd_booking_bg_greydark,
 .nd_booking_bg_greydark_2 {
