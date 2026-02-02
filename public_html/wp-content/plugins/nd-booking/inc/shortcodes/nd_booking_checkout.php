@@ -1014,22 +1014,32 @@ function nd_booking_shortcode_checkout() {
             $nd_booking_id_room = $nd_booking_ids_array[1];
 
 
-            $nd_booking_stripe_token = sanitize_text_field($_POST['stripeToken']);
+            $nd_booking_booking_form_final_price = floatval( $nd_booking_booking_form_final_price );
+            $nd_booking_is_free_payment = ( $nd_booking_booking_form_final_price <= 0.01 );
 
-            //call the api stripe only if we are not in dev mode
-            if ( get_option('nd_booking_plugin_dev_mode') == 1 ){
+            if ( 'free' === $nd_booking_booking_form_action_type || $nd_booking_is_free_payment ) {
+                $nd_booking_booking_form_action_type = 'free';
+                $nd_booking_booking_form_payment_status = 'Completed';
+                $nd_booking_booking_form_currency = nd_booking_get_currency();
+                $nd_booking_paypal_tx = 'free-' . wp_generate_uuid4();
+                $nd_booking_paypal_error = 0;
+            } else {
+                $nd_booking_stripe_token = sanitize_text_field($_POST['stripeToken']);
 
-                $nd_booking_paypal_tx = rand(100000000,999999999);   
+                //call the api stripe only if we are not in dev mode
+                if ( get_option('nd_booking_plugin_dev_mode') == 1 ){
 
-            }else{
+                    $nd_booking_paypal_tx = rand(100000000,999999999);   
 
-                //stripe data
-                $nd_booking_amount = $nd_booking_booking_form_final_price*100;
-                $nd_booking_currency = get_option('nd_booking_stripe_currency');
-                $nd_booking_description = $nd_booking_checkout_form_post_title.' - '.$nd_booking_booking_form_name.' '.$nd_booking_booking_form_surname.' - '.$nd_booking_booking_form_date_from.' '.$nd_booking_booking_form_date_to;
-                $nd_booking_source = $nd_booking_stripe_token;
-                $nd_booking_stripe_secret_key = get_option('nd_booking_stripe_secret_key');
-                $nd_booking_url = 'https://api.stripe.com/v1/charges';
+                }else{
+
+                    //stripe data
+                    $nd_booking_amount = $nd_booking_booking_form_final_price*100;
+                    $nd_booking_currency = get_option('nd_booking_stripe_currency');
+                    $nd_booking_description = $nd_booking_checkout_form_post_title.' - '.$nd_booking_booking_form_name.' '.$nd_booking_booking_form_surname.' - '.$nd_booking_booking_form_date_from.' '.$nd_booking_booking_form_date_to;
+                    $nd_booking_source = $nd_booking_stripe_token;
+                    $nd_booking_stripe_secret_key = get_option('nd_booking_stripe_secret_key');
+                    $nd_booking_url = 'https://api.stripe.com/v1/charges';
 
 
                 //prepare the request
@@ -1129,11 +1139,12 @@ function nd_booking_shortcode_checkout() {
                 //get currency
                 $nd_booking_booking_form_currency = nd_booking_get_currency();
 
-                $nd_booking_paypal_error = 0;
-                //END check the response
+                    $nd_booking_paypal_error = 0;
+                    //END check the response
 
+                }
+                //end call
             }
-            //end call
 
 
 
@@ -1323,6 +1334,8 @@ function nd_booking_shortcode_checkout() {
             $nd_booking_booking_form_action_type_lang = __('Payment on arrive','nd-booking');
         }elseif ( $nd_booking_booking_form_action_type == 'booking_request' ) {
             $nd_booking_booking_form_action_type_lang = __('Booking Request','nd-booking');
+        }elseif ( $nd_booking_booking_form_action_type == 'free' ) {
+            $nd_booking_booking_form_action_type_lang = __('Coupon (100% discount)','nd-booking');
         }elseif ( $nd_booking_booking_form_action_type == 'stripe' ) {
             $nd_booking_booking_form_action_type_lang = __('Stripe','nd-booking');
         }else{
