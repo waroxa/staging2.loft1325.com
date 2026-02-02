@@ -1150,12 +1150,54 @@ function nd_booking_search_page() {
 
 }
 
+function nd_booking_get_translated_url( $url ) {
+
+  if ( ! $url ) {
+    return $url;
+  }
+
+  $language = '';
+  if ( function_exists( 'trp_get_current_language' ) ) {
+    $language = (string) trp_get_current_language();
+  } elseif ( function_exists( 'determine_locale' ) ) {
+    $language = (string) determine_locale();
+  } else {
+    $language = (string) get_locale();
+  }
+
+  $language = strtolower( substr( $language, 0, 2 ) );
+  $default_language = '';
+  if ( class_exists( 'TRP_Translate_Press' ) ) {
+    $trp_settings = get_option( 'trp_settings', [] );
+    if ( isset( $trp_settings['default-language'] ) ) {
+      $default_language = strtolower( substr( (string) $trp_settings['default-language'], 0, 2 ) );
+    }
+  }
+
+  if ( $default_language && $language === $default_language ) {
+    return $url;
+  }
+
+  if ( class_exists( 'TRP_Translate_Press' ) && $language ) {
+    $trp_instance = TRP_Translate_Press::get_trp_instance();
+    if ( $trp_instance ) {
+      $url_converter = $trp_instance->get_component( 'url_converter' );
+      if ( $url_converter ) {
+        return $url_converter->get_url_for_language( $language, $url, '' );
+      }
+    }
+  }
+
+  return $url;
+
+}
+
 function nd_booking_booking_page() {
 
   $nd_booking_booking_page = get_option('nd_booking_booking_page');
   $nd_booking_booking_page_url = get_permalink($nd_booking_booking_page);
 
-  return $nd_booking_booking_page_url;
+  return nd_booking_get_translated_url( $nd_booking_booking_page_url );
 
 }
 
@@ -1207,18 +1249,18 @@ function nd_booking_checkout_page() {
   $nd_booking_checkout_page_url = get_permalink($nd_booking_checkout_page);
 
   if ( $nd_booking_checkout_page_url ) {
-    return $nd_booking_checkout_page_url;
+    return nd_booking_get_translated_url( $nd_booking_checkout_page_url );
   }
 
   $fallback_page = get_page_by_path( 'nd-booking-pages/nd-booking-checkout' );
   if ( $fallback_page instanceof WP_Post ) {
     $fallback_url = get_permalink( $fallback_page->ID );
     if ( $fallback_url ) {
-      return $fallback_url;
+      return nd_booking_get_translated_url( $fallback_url );
     }
   }
 
-  return home_url( '/nd-booking-pages/nd-booking-checkout/' );
+  return nd_booking_get_translated_url( home_url( '/nd-booking-pages/nd-booking-checkout/' ) );
 
 }
 
