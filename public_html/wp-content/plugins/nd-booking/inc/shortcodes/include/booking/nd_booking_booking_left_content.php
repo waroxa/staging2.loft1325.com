@@ -174,7 +174,7 @@ $nd_booking_shortcode_left_content .= '
   }
   .loft1325-booking-sidebar .loft1325-booking-body {
     padding: 22px;
-    background: #0f172a;
+    background: linear-gradient(180deg, #76b1c4 0%, #5fa6bb 100%);
     color: #ffffff;
   }
   .loft1325-booking-sidebar .loft1325-booking-heading {
@@ -183,7 +183,7 @@ $nd_booking_shortcode_left_content .= '
     letter-spacing: 0.3em;
     text-transform: uppercase;
     margin: 0 0 18px;
-    color: #e2e8f0;
+    color: #eaf7fb;
   }
   .loft1325-booking-sidebar .loft1325-booking-grid {
     display: grid;
@@ -203,7 +203,7 @@ $nd_booking_shortcode_left_content .= '
     font-size: 11px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: #cbd5f5;
+    color: #eaf7fb;
   }
   .loft1325-booking-sidebar .loft1325-booking-stat .stat-number {
     font-size: 34px;
@@ -214,14 +214,14 @@ $nd_booking_shortcode_left_content .= '
   }
   .loft1325-booking-sidebar .loft1325-booking-stat .stat-subtitle {
     font-size: 12px;
-    color: #e2e8f0;
+    color: #f2fbfd;
   }
   .loft1325-booking-sidebar .loft1325-booking-total {
     margin-top: 22px;
     padding: 18px;
     border-radius: 16px;
-    background: #0b1220;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(11, 27, 43, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     text-align: center;
   }
   .loft1325-booking-sidebar .loft1325-booking-total .amount {
@@ -233,7 +233,7 @@ $nd_booking_shortcode_left_content .= '
     font-size: 12px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #cbd5f5;
+    color: #eaf7fb;
   }
   .loft1325-booking-sidebar .nd_booking_tax_breakdown {
     background: #ffffff;

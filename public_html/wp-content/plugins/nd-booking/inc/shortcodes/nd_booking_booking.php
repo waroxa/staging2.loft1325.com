@@ -187,6 +187,9 @@ function nd_booking_shortcode_booking() {
               .loft1325-booking-page {
                 font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
                 color: #0f172a;
+                background: radial-gradient(circle at top, rgba(118, 177, 196, 0.2) 0%, #f8fafc 55%, #eef2f7 100%);
+                padding: 24px 18px 80px;
+                position: relative;
               }
 
               .loft1325-booking-page h1,
@@ -210,8 +213,10 @@ function nd_booking_shortcode_booking() {
 
               .loft1325-booking-topbar {
                 display: flex;
-                justify-content: center;
+                justify-content: flex-start;
                 margin-bottom: 18px;
+                position: relative;
+                z-index: 10;
               }
 
               .loft1325-booking-back {
@@ -227,6 +232,7 @@ function nd_booking_shortcode_booking() {
                 font-weight: 600;
                 font-size: 14px;
                 box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+                pointer-events: auto;
               }
 
               .loft1325-booking-back span {
@@ -265,8 +271,8 @@ function nd_booking_shortcode_booking() {
                 display: flex;
                 gap: 14px;
                 align-items: flex-start;
-                background: rgba(15, 23, 42, 0.05);
-                border: 1px solid rgba(15, 23, 42, 0.12);
+                background: rgba(118, 177, 196, 0.16);
+                border: 1px solid rgba(118, 177, 196, 0.35);
                 border-radius: 14px;
                 padding: 16px 18px;
                 margin-bottom: 24px;
@@ -276,7 +282,7 @@ function nd_booking_shortcode_booking() {
                 width: 38px;
                 height: 38px;
                 border-radius: 12px;
-                background: #0f172a;
+                background: #0b1b2b;
                 color: #ffffff;
                 display: inline-flex;
                 align-items: center;
@@ -807,4 +813,3 @@ function nd_booking_validate_fields_php_function() {
 add_action( 'wp_ajax_nd_booking_validate_fields_php_function', 'nd_booking_validate_fields_php_function' );
 add_action( 'wp_ajax_nopriv_nd_booking_validate_fields_php_function', 'nd_booking_validate_fields_php_function' );
 /* **************************************** END AJAX **************************************** */
-
