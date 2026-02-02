@@ -306,6 +306,30 @@ function nd_booking_shortcode_checkout() {
             <?php echo do_shortcode( '[trustindex no-registration=google]' ); ?>
           </div>
 
+          <div class="checkout-trust">
+            <div class="trust-item">
+              <span class="trust-icon">⭐</span>
+              <div>
+                <strong><?php echo esc_html( $nd_booking_is_english ? 'Five-star comfort' : 'Confort cinq étoiles' ); ?></strong>
+                <p><?php echo esc_html( $nd_booking_is_english ? 'Architect-designed lofts with curated hotel services.' : 'Lofts conçus par architecte avec services hôteliers.' ); ?></p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">🛎️</span>
+              <div>
+                <strong><?php echo esc_html( $nd_booking_is_english ? 'Concierge on demand' : 'Concierge sur demande' ); ?></strong>
+                <p><?php echo esc_html( $nd_booking_is_english ? 'Self-serve luxury with instant support when you need it.' : 'Luxe en libre-service avec assistance instantanée.' ); ?></p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">🔐</span>
+              <div>
+                <strong><?php echo esc_html( $nd_booking_is_english ? 'Secure payment' : 'Paiement sécurisé' ); ?></strong>
+                <p><?php echo esc_html( $nd_booking_is_english ? 'Your card is encrypted with bank-grade security.' : 'Votre carte est chiffrée avec sécurité bancaire.' ); ?></p>
+              </div>
+            </div>
+          </div>
+
           <div class="checkout-main">
             <div class="checkout-summary">
               <div class="summary-card">
@@ -314,7 +338,7 @@ function nd_booking_shortcode_checkout() {
                 <?php endif; ?>
                 <div class="summary-details">
                   <h3><?php echo esc_html( $nd_booking_booking_title ); ?></h3>
-                  <ul>
+                  <ul class="summary-list">
                     <?php if ( ! empty( $nd_booking_meta_data['check_in'] ) ) : ?>
                     <li><strong><?php echo esc_html( $nd_booking_label_checkin ); ?></strong> <?php echo esc_html( $nd_booking_meta_data['check_in'] ); ?></li>
                     <?php endif; ?>
@@ -356,232 +380,341 @@ function nd_booking_shortcode_checkout() {
 
         <style>
         body {
-          background: #f8fafc;
+          background: #f4f9fb;
           font-family: "Inter", "Poppins", sans-serif;
-          color: #0f172a;
+          color: #0b1b2b;
         }
 
         .loft-checkout-wrapper {
-          padding: 0 24px 80px;
+          position: relative;
+          padding: 28px 18px 90px;
+          background: radial-gradient(circle at top, rgba(118, 177, 196, 0.22) 0%, #f8fafc 50%, #eef2f7 100%);
+          overflow: hidden;
         }
 
-        /* HEADER */
+        .loft-checkout-wrapper::before {
+          content: "";
+          position: absolute;
+          inset: -140px auto auto -140px;
+          width: 300px;
+          height: 300px;
+          background: radial-gradient(circle, rgba(118, 177, 196, 0.3), rgba(118, 177, 196, 0));
+          pointer-events: none;
+        }
+
         .checkout-header {
-          text-align: center;
-          margin: 60px 0 40px;
+          text-align: left;
+          margin: 24px 0 20px;
         }
-        .checkout-reviews {
-          max-width: 1100px;
-          margin: 0 auto 32px;
-        }
+
         .checkout-header h2 {
-          font-size: 30px;
+          font-size: 28px;
           font-weight: 700;
-          color: #0f172a;
-          letter-spacing: 0.2px;
+          letter-spacing: 0.4px;
+          color: #0b1b2b;
         }
+
         .checkout-header p {
-          color: #475569;
-          font-size: 15px;
-          margin-bottom: 18px;
+          color: #52606d;
+          font-size: 14px;
+          margin-bottom: 14px;
         }
 
         .checkout-countdown {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: #ffffff;
-          padding: 10px 18px;
+          background: #0f172a;
+          color: #e2f3f7;
+          padding: 10px 16px;
           border-radius: 999px;
-          border: 1px solid rgba(15, 23, 42, 0.12);
-          box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+          box-shadow: 0 16px 30px rgba(118, 177, 196, 0.25);
           font-weight: 600;
-          color: #0f172a;
+          font-size: 12px;
         }
 
-        .timer-icon {
-          font-size: 16px;
+        .checkout-reviews {
+          max-width: 1100px;
+          margin: 0 auto 18px;
         }
 
-        /* MAIN LAYOUT */
-        .checkout-main {
+        .checkout-trust {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+          max-width: 1100px;
+          margin: 0 auto 28px;
+        }
+
+        .trust-item {
           display: flex;
-          flex-wrap: wrap;
-          gap: 40px;
+          gap: 12px;
+          align-items: flex-start;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 16px;
+          padding: 14px 16px;
+          border: 1px solid rgba(148, 163, 184, 0.25);
+          box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .trust-icon {
+          font-size: 20px;
+        }
+
+        .trust-item strong {
+          display: block;
+          font-size: 14px;
+          color: #0b1b2b;
+          margin-bottom: 4px;
+        }
+
+        .trust-item p {
+          margin: 0;
+          font-size: 12px;
+          color: #64748b;
+        }
+
+        .checkout-main {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 26px;
           max-width: 1100px;
           margin: 0 auto;
         }
 
-        /* LEFT SUMMARY */
         .checkout-summary {
-          flex: 0 0 35%;
+          width: 100%;
         }
+
         .summary-card {
           background: #ffffff;
-          border-radius: 18px;
-          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+          border-radius: 20px;
+          box-shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
           overflow: hidden;
-          border: 1px solid #e2e8f0;
+          border: 1px solid rgba(148, 163, 184, 0.25);
         }
+
         .summary-image {
           width: 100%;
           height: auto;
           display: block;
         }
+
         .summary-details {
-          padding: 26px;
+          padding: 22px;
         }
+
         .summary-details h3 {
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
-          margin-bottom: 12px;
-          color: #0f172a;
+          margin-bottom: 10px;
+          color: #0b1b2b;
         }
-        .summary-details ul {
+
+        .summary-list {
           list-style: none;
           padding: 0;
-          margin: 0 0 20px;
+          margin: 0 0 18px;
         }
-        .summary-details li {
-          font-size: 14px;
-          color: #475569;
+
+        .summary-list li {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+          font-size: 13px;
+          color: #425466;
           margin-bottom: 6px;
         }
+
+        .summary-list li strong {
+          color: #0b1b2b;
+        }
+
         .summary-total {
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-radius: 12px;
+          background: linear-gradient(135deg, rgba(118, 177, 196, 0.18), rgba(118, 177, 196, 0.05));
+          border: 1px solid rgba(118, 177, 196, 0.45);
+          border-radius: 14px;
           text-align: center;
-          padding: 18px 16px;
-          box-shadow: none;
+          padding: 16px 14px;
         }
+
         .summary-total h2 {
-          margin: 6px 0 4px;
-          font-size: 26px;
-          color: #0f172a;
-          letter-spacing: 0.4px;
+          margin: 6px 0 2px;
+          font-size: 24px;
+          color: #0b1b2b;
+          letter-spacing: 0.3px;
         }
+
         .summary-total p {
           margin: 0;
         }
+
         .summary-total .per-night {
-          font-size: 13px;
+          font-size: 12px;
           color: #475569;
           margin-top: 6px;
         }
+
         .summary-badge {
           display: inline-block;
-          background: #e2e8f0;
-          color: #0f172a;
+          background: #76b1c4;
+          color: #ffffff;
           font-weight: 600;
           padding: 6px 16px;
           border-radius: 999px;
-          margin-bottom: 12px;
+          margin-bottom: 10px;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
-          box-shadow: none;
+          letter-spacing: 0.18em;
+          font-size: 10px;
         }
 
-        /* RIGHT FORM */
         .checkout-form {
-          flex: 1;
           background: #ffffff;
-          border-radius: 16px;
-          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-          padding: 40px;
-          border: 1px solid #e2e8f0;
+          border-radius: 22px;
+          box-shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+          padding: 28px;
+          border: 1px solid rgba(148, 163, 184, 0.25);
         }
+
         .secure-banner {
-          background: #f8fafc;
-          color: #0f172a;
+          background: #0f172a;
+          color: #e2f3f7;
           font-weight: 600;
-          border: 1px solid #e2e8f0;
-          border-radius: 10px;
-          padding: 12px 18px;
+          border-radius: 14px;
+          padding: 12px 16px;
           display: inline-flex;
           align-items: center;
-          box-shadow: none;
-          margin-bottom: 18px;
+          box-shadow: 0 12px 24px rgba(118, 177, 196, 0.25);
+          margin-bottom: 16px;
           gap: 8px;
+          font-size: 12px;
         }
-        .lock-icon {
-          font-size: 16px;
-        }
+
         .card-logos {
           display: flex;
-          gap: 10px;
-          margin-bottom: 25px;
+          gap: 8px;
+          margin-bottom: 22px;
           flex-wrap: wrap;
         }
+
         .card-logo {
-          padding: 8px 14px;
-          border-radius: 8px;
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          font-size: 13px;
+          padding: 8px 12px;
+          border-radius: 999px;
+          background: #f8fafc;
+          border: 1px solid rgba(148, 163, 184, 0.4);
+          font-size: 12px;
           font-weight: 600;
           letter-spacing: 0.4px;
           color: #1b1b1b;
-          box-shadow: none;
         }
+
         .checkout-form h3 {
           font-size: 20px;
           font-weight: 700;
-          color: #1b1b1b;
-          margin-bottom: 25px;
+          color: #0b1b2b;
+          margin-bottom: 20px;
         }
 
-        /* INPUTS */
         .checkout-form input,
         .checkout-form select,
-        .checkout-form textarea {
+        .checkout-form textarea,
+        .checkout-form #card-element {
           width: 100%;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          border: 1px solid rgba(148, 163, 184, 0.45);
+          border-radius: 14px;
           padding: 12px 14px;
           margin-bottom: 16px;
           font-size: 15px;
+          background: #f8fafc;
           transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
         }
+
         .checkout-form input:focus,
         .checkout-form select:focus,
-        .checkout-form textarea:focus {
+        .checkout-form textarea:focus,
+        .checkout-form #card-element:focus-within {
           border-color: #76b1c4;
           outline: none;
           box-shadow: 0 0 0 3px rgba(118, 177, 196, 0.25);
         }
 
-        /* BUTTON */
         .checkout-form .button-primary,
         .checkout-form button[type="submit"] {
           background: #76b1c4;
           color: #ffffff;
           border: none;
-          border-radius: 30px;
-          padding: 14px 20px;
+          border-radius: 999px;
+          padding: 16px 20px;
           width: 100%;
           font-weight: 700;
           text-transform: uppercase;
           cursor: pointer;
           transition: 0.3s ease;
-          letter-spacing: 1px;
-        }
-        .checkout-form .button-primary:hover,
-        .checkout-form button[type="submit"]:hover {
-          background: #5a93a7;
+          letter-spacing: 0.2em;
+          box-shadow: 0 18px 30px rgba(118, 177, 196, 0.35);
         }
 
-        /* MOBILE */
-        @media (max-width: 768px) {
+        .checkout-form .button-primary:hover,
+        .checkout-form button[type="submit"]:hover,
+        .checkout-form .button-primary:focus,
+        .checkout-form button[type="submit"]:focus {
+          background: #5a93a7;
+          box-shadow: 0 22px 38px rgba(118, 177, 196, 0.45);
+        }
+
+        .loft-section-payment,
+        .section {
+          border-radius: 18px;
+          background: #f9fafb;
+          padding: 18px;
+          border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .loft-payment-card {
+          border-radius: 16px;
+          background: #ffffff;
+          padding: 16px;
+          border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .loft-card-errors {
+          color: #b91c1c;
+          font-weight: 600;
+          margin-top: 10px;
+        }
+
+        @media (min-width: 900px) {
+          .loft-checkout-wrapper {
+            padding: 48px 32px 120px;
+          }
+
+          .checkout-header {
+            text-align: center;
+            margin: 48px 0 32px;
+          }
+
+          .checkout-header h2 {
+            font-size: 40px;
+          }
+
+          .checkout-trust {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+
           .checkout-main {
-            flex-direction: column;
+            grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+            gap: 36px;
           }
-          .checkout-summary,
-          .checkout-form {
-            flex: 1;
+
+          .checkout-summary {
+            position: sticky;
+            top: 24px;
+            align-self: start;
           }
+
           .checkout-form {
-            padding: 32px;
+            padding: 38px;
           }
         }
         </style>
