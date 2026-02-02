@@ -297,7 +297,7 @@ if(have_posts()) :
         	$nd_booking_unavailable_text = $nd_booking_room_type === 'penthouse'
         		? $nd_booking_penthouse_unavailable_label
         		: $nd_booking_unavailable_label;
-        	$nd_booking_form_btn = '<span class="nd_options_text_align_center nd_options_box_sizing_border_box nd_options_color_white nd_booking_width_100_percentage nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_bg_grey nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2" aria-disabled="true">' . esc_html($nd_booking_unavailable_text) . '</span>';
+        	$nd_booking_form_btn = '<span class="nd_options_text_align_center nd_options_box_sizing_border_box nd_options_color_white nd_booking_width_100_percentage nd_booking_padding_15_30_important nd_options_second_font_important nd_booking_border_radius_0_important nd_booking_bg_grey nd_booking_display_inline_block nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2 nd_booking_unavailable_button" aria-disabled="true">' . esc_html($nd_booking_unavailable_text) . '</span>';
         }
 
         
