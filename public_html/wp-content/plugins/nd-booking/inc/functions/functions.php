@@ -1166,6 +1166,17 @@ function nd_booking_get_translated_url( $url ) {
   }
 
   $language = strtolower( substr( $language, 0, 2 ) );
+  $default_language = '';
+  if ( class_exists( 'TRP_Translate_Press' ) ) {
+    $trp_settings = get_option( 'trp_settings', [] );
+    if ( isset( $trp_settings['default-language'] ) ) {
+      $default_language = strtolower( substr( (string) $trp_settings['default-language'], 0, 2 ) );
+    }
+  }
+
+  if ( $default_language && $language === $default_language ) {
+    return $url;
+  }
 
   if ( class_exists( 'TRP_Translate_Press' ) && $language ) {
     $trp_instance = TRP_Translate_Press::get_trp_instance();
