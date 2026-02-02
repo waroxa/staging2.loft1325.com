@@ -304,6 +304,17 @@ function nd_booking_shortcode_checkout() {
 
         $nd_booking_language = strtolower( substr( $nd_booking_language, 0, 2 ) );
         $nd_booking_is_english = ( 'en' === $nd_booking_language );
+        $nd_booking_request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+        $nd_booking_request_path = $nd_booking_request_uri ? wp_parse_url( $nd_booking_request_uri, PHP_URL_PATH ) : '';
+        if ( $nd_booking_request_path ) {
+            $nd_booking_request_path = trim( $nd_booking_request_path, '/' );
+            if ( '' !== $nd_booking_request_path ) {
+                $nd_booking_request_segments = explode( '/', $nd_booking_request_path );
+                if ( isset( $nd_booking_request_segments[0] ) && 'en' === strtolower( $nd_booking_request_segments[0] ) ) {
+                    $nd_booking_is_english = true;
+                }
+            }
+        }
 
         $nd_booking_header_title = $nd_booking_is_english ? 'Reserve the room' : 'Réservez la chambre';
         $nd_booking_header_subtitle = $nd_booking_is_english ? 'Reserve your stay with confidence.' : 'Réservez votre séjour en toute confiance.';
@@ -316,6 +327,7 @@ function nd_booking_shortcode_checkout() {
         $nd_booking_label_badge = $nd_booking_is_english ? 'Best rate guaranteed' : 'Meilleur tarif garanti';
         $nd_booking_label_taxes = $nd_booking_is_english ? 'Taxes included' : 'Taxes incluses';
         $nd_booking_label_guest_info = $nd_booking_is_english ? 'Guest information' : 'Informations client';
+        $nd_booking_label_secure = $nd_booking_is_english ? 'Secure SSL payment (256-bit)' : 'Paiement sécurisé SSL (256-bit)';
 
         $nd_booking_total_nights = absint( nd_booking_get_number_night( $nd_booking_booking_form_date_from, $nd_booking_booking_form_date_to ) );
         if ( $nd_booking_total_nights > 0 ) {
@@ -427,7 +439,7 @@ function nd_booking_shortcode_checkout() {
 
             <div class="checkout-form">
               <div class="secure-banner">
-                <span class="lock-icon">🔒</span> <?php esc_html_e( 'Secure SSL payment (256-bit)', 'nd-booking' ); ?>
+                <span class="lock-icon">🔒</span> <?php echo esc_html( $nd_booking_label_secure ); ?>
               </div>
               <div class="card-logos">
                 <span class="card-logo">Visa</span>
