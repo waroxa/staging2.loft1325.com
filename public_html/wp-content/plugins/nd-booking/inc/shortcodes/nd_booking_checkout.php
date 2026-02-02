@@ -380,7 +380,7 @@ function nd_booking_shortcode_checkout() {
 
         <style>
         body {
-          background: #f3f4f6;
+          background: #f4f9fb;
           font-family: "Inter", "Poppins", sans-serif;
           color: #0b1b2b;
         }
@@ -388,7 +388,7 @@ function nd_booking_shortcode_checkout() {
         .loft-checkout-wrapper {
           position: relative;
           padding: 28px 18px 90px;
-          background: radial-gradient(circle at top, #fff7ed 0%, #f8fafc 50%, #eef2f7 100%);
+          background: radial-gradient(circle at top, rgba(118, 177, 196, 0.22) 0%, #f8fafc 50%, #eef2f7 100%);
           overflow: hidden;
         }
 
@@ -398,7 +398,7 @@ function nd_booking_shortcode_checkout() {
           inset: -140px auto auto -140px;
           width: 300px;
           height: 300px;
-          background: radial-gradient(circle, rgba(245, 158, 11, 0.25), rgba(245, 158, 11, 0));
+          background: radial-gradient(circle, rgba(118, 177, 196, 0.3), rgba(118, 177, 196, 0));
           pointer-events: none;
         }
 
@@ -424,11 +424,11 @@ function nd_booking_shortcode_checkout() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: #0b1b2b;
-          color: #f8fafc;
+          background: #0f172a;
+          color: #e2f3f7;
           padding: 10px 16px;
           border-radius: 999px;
-          box-shadow: 0 16px 30px rgba(11, 27, 43, 0.2);
+          box-shadow: 0 16px 30px rgba(118, 177, 196, 0.25);
           font-weight: 600;
           font-size: 12px;
         }
@@ -531,8 +531,8 @@ function nd_booking_shortcode_checkout() {
         }
 
         .summary-total {
-          background: linear-gradient(135deg, #fff7ed, #fef3c7);
-          border: 1px solid rgba(245, 158, 11, 0.35);
+          background: linear-gradient(135deg, rgba(118, 177, 196, 0.18), rgba(118, 177, 196, 0.05));
+          border: 1px solid rgba(118, 177, 196, 0.45);
           border-radius: 14px;
           text-align: center;
           padding: 16px 14px;
@@ -557,8 +557,8 @@ function nd_booking_shortcode_checkout() {
 
         .summary-badge {
           display: inline-block;
-          background: #0b1b2b;
-          color: #fef3c7;
+          background: #76b1c4;
+          color: #ffffff;
           font-weight: 600;
           padding: 6px 16px;
           border-radius: 999px;
@@ -577,14 +577,14 @@ function nd_booking_shortcode_checkout() {
         }
 
         .secure-banner {
-          background: rgba(15, 23, 42, 0.92);
-          color: #f8fafc;
+          background: #0f172a;
+          color: #e2f3f7;
           font-weight: 600;
           border-radius: 14px;
           padding: 12px 16px;
           display: inline-flex;
           align-items: center;
-          box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
+          box-shadow: 0 12px 24px rgba(118, 177, 196, 0.25);
           margin-bottom: 16px;
           gap: 8px;
           font-size: 12px;
@@ -634,7 +634,7 @@ function nd_booking_shortcode_checkout() {
         .checkout-form select:focus,
         .checkout-form textarea:focus,
         .checkout-form #card-element:focus-within {
-          border-color: #d97706;
+          border-color: #76b1c4;
           outline: none;
           box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
         }
@@ -652,15 +652,15 @@ function nd_booking_shortcode_checkout() {
           cursor: pointer;
           transition: 0.3s ease;
           letter-spacing: 0.2em;
-          box-shadow: 0 18px 30px rgba(180, 83, 9, 0.35);
+          box-shadow: 0 18px 30px rgba(118, 177, 196, 0.35);
         }
 
         .checkout-form .button-primary:hover,
         .checkout-form button[type="submit"]:hover,
         .checkout-form .button-primary:focus,
         .checkout-form button[type="submit"]:focus {
-          background: linear-gradient(135deg, #fbbf24, #92400e);
-          box-shadow: 0 22px 38px rgba(180, 83, 9, 0.45);
+          background: #5a93a7;
+          box-shadow: 0 22px 38px rgba(118, 177, 196, 0.45);
         }
 
         .loft-section-payment,
