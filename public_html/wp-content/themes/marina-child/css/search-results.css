@@ -27,6 +27,10 @@
     }
 }
 
+body.loft-rooms-mobile .loft-search-page {
+    grid-template-columns: 1fr;
+}
+
 .loft-search-sidebar {
     background: #fff;
     border-radius: 26px;
@@ -45,6 +49,10 @@
     .loft-search-sidebar {
         position: static;
     }
+}
+
+body.loft-rooms-mobile .loft-search-sidebar {
+    position: static;
 }
 
 .loft-search-sidebar__intro {

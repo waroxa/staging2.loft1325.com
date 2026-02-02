@@ -176,6 +176,40 @@ function marina_child_enqueue_search_styles() {
 add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_search_styles', 25 );
 
 /**
+ * Add a body class to force the mobile booking layout on the rooms page.
+ *
+ * @param array $classes Body classes.
+ *
+ * @return array
+ */
+function marina_child_add_rooms_mobile_class( array $classes ) : array {
+    $is_rooms = false;
+
+    if ( is_page() ) {
+        $page = get_post();
+
+        if ( $page instanceof WP_Post && 'rooms' === $page->post_name ) {
+            $is_rooms = true;
+        }
+    }
+
+    if ( ! $is_rooms && isset( $_SERVER['REQUEST_URI'] ) ) {
+        $path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+
+        if ( '/rooms/' === trailingslashit( $path ) ) {
+            $is_rooms = true;
+        }
+    }
+
+    if ( $is_rooms ) {
+        $classes[] = 'loft-rooms-mobile';
+    }
+
+    return $classes;
+}
+add_filter( 'body_class', 'marina_child_add_rooms_mobile_class' );
+
+/**
  * Override the checkout order button label for booking flows.
  *
  * @param string $translated Translated text.

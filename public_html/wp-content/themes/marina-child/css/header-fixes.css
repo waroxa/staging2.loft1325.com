@@ -717,6 +717,111 @@
     }
 }
 
+body.loft-rooms-mobile .nd_booking_search_form {
+    margin: 0 auto 32px;
+    padding: 20px;
+    gap: 20px;
+}
+
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__field {
+    flex: 1 1 100%;
+}
+
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__field--actions {
+    min-width: 0;
+}
+
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__control,
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__summary,
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__guests,
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__nights {
+    padding: 0 16px;
+    height: 52px;
+}
+
+body.loft-rooms-mobile .nd_booking_search_form .loft-search-toolbar__control--date .loft-search-toolbar__input {
+    padding: 12px 48px 12px 16px;
+}
+
+body.loft-rooms-mobile .nd_booking_search_form button.loft-search-toolbar__submit {
+    padding: 14px 20px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card {
+    grid-template-columns: 1fr;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__media-img {
+    min-height: 220px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__content {
+    padding: 22px 20px !important;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__body {
+    flex-direction: column;
+    gap: 18px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__sidebar {
+    width: 100%;
+    flex: 1 1 auto;
+    align-items: stretch;
+    text-align: center;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__rate,
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__actions {
+    align-items: center;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__btn {
+    width: 100%;
+    padding: 14px 20px !important;
+    font-size: 13px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .nd_booking_masonry_content {
+    gap: 22px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card {
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__media-overlay {
+    top: 16px;
+    left: 16px;
+    gap: 8px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__title {
+    font-size: 22px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__meta {
+    width: 100%;
+    justify-content: center;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__feature-text {
+    font-size: 12px;
+    letter-spacing: 1.2px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__amenities {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 16px;
+    margin-top: 10px;
+}
+
+body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-search-card__details-link {
+    align-self: center;
+}
+
 /* Improve CTA contrast across Elementor and ND Booking buttons */
 .elementor-button,
 .elementor-button:visited,
