@@ -1,0 +1,160 @@
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: 'Sora', sans-serif;
+  background: #fbf4ee;
+  color: #3d2a20;
+}
+
+.mobile-shell {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 0 18px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero {
+  margin: 0 -18px;
+}
+
+.hero-slider {
+  position: relative;
+}
+
+.hero-slide {
+  min-height: 52vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.hero-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(58, 35, 24, 0.1), rgba(58, 35, 24, 0.55));
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 22px;
+  left: 18px;
+  right: 18px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #fff6ef;
+}
+
+.hero-name {
+  font-family: 'Italiana', serif;
+  font-size: 24px;
+  letter-spacing: 0.25em;
+}
+
+.hero-city {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.hero-dots {
+  position: absolute;
+  bottom: 16px;
+  right: 18px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 246, 239, 0.35);
+}
+
+.dot.active {
+  background: #fff6ef;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.address {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8c6c5b;
+}
+
+.tagline {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(61, 42, 32, 0.12);
+}
+
+.booking {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.booking-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(61, 42, 32, 0.14);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #8c6c5b;
+}
+
+.field input,
+.field select {
+  border: none;
+  border-bottom: 1px solid rgba(61, 42, 32, 0.22);
+  background: transparent;
+  color: #3d2a20;
+  font-size: 13px;
+  padding: 4px 0;
+  font-family: 'Sora', sans-serif;
+}
+
+.signature {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.signature p {
+  margin: 0;
+  color: #4c3529;
+}
