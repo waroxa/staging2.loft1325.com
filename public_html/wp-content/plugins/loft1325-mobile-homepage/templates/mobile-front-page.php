@@ -7,373 +7,344 @@
 
 defined( 'ABSPATH' ) || exit;
 
-get_header();
-?>
+?><!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lofts 1325 · Mobile Booking</title>
+  <?php wp_head(); ?>
+  <style>
+    :root {
+      color-scheme: light;
+      --black: #0b0b0b;
+      --white: #ffffff;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-300: #d7d7d7;
+      --gray-500: #7a7a7a;
+      --shadow: 0 18px 32px rgba(0, 0, 0, 0.08);
+    }
 
-<style id="loft1325-mobile-home-inline-style">
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-:root {
-  color-scheme: light;
-  --black: #0b0b0b;
-  --white: #ffffff;
-  --gray-100: #f5f5f5;
-  --gray-200: #e5e5e5;
-  --gray-300: #d7d7d7;
-  --gray-500: #7a7a7a;
-  --shadow: 0 18px 32px rgba(0, 0, 0, 0.08);
-}
+    body {
+      font-family: "Inter", "Helvetica Neue", sans-serif;
+      background: var(--white);
+      color: var(--black);
+    }
 
-#loft1325-mobile-homepage * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Inter", "Helvetica Neue", sans-serif;
-}
+    .mobile-shell {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+    }
 
-#loft1325-mobile-homepage {
-  font-family: "Inter", "Helvetica Neue", sans-serif;
-  background: var(--white);
-  color: var(--black);
-  isolation: isolate;
-}
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+    }
 
-#loft1325-mobile-homepage button,
-#loft1325-mobile-homepage input,
-#loft1325-mobile-homepage select,
-#loft1325-mobile-homepage textarea {
-  font: inherit;
-  color: inherit;
-  letter-spacing: inherit;
-  text-transform: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  background: none;
-  box-shadow: none;
-}
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+    }
 
-#loft1325-mobile-homepage img {
-  max-width: 100%;
-}
+    .logo {
+      height: 26px;
+      width: auto;
+    }
 
-#loft1325-mobile-homepage a {
-  color: inherit;
-  text-decoration: none;
-}
+    .icon-button {
+      border: 1px solid var(--black);
+      background: transparent;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      line-height: 1;
+      color: var(--black);
+    }
 
-#loft1325-mobile-homepage .mobile-shell {
-  max-width: 430px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: var(--white);
-  display: flex;
-  flex-direction: column;
-}
+    .hero {
+      padding: 20px;
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+    }
 
-#loft1325-mobile-homepage .header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
-}
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
 
-#loft1325-mobile-homepage .header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-}
+    .hero p {
+      font-size: 14px;
+      color: var(--gray-500);
+    }
 
-#loft1325-mobile-homepage .logo {
-  height: 26px;
-  width: auto;
-}
+    .search-panel {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
 
-#loft1325-mobile-homepage .icon-button {
-  border: 1px solid var(--black);
-  background: transparent;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  line-height: 1;
-  color: var(--black);
-  padding: 0;
-}
+    .search-tile {
+      border: 1px solid var(--black);
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background: var(--white);
+    }
 
-#loft1325-mobile-homepage .icon-button svg {
-  width: 18px;
-  height: 18px;
-  display: block;
-  stroke: currentColor;
-}
+    .search-tile span {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
 
-#loft1325-mobile-homepage .hero {
-  padding: 20px;
-  background: var(--gray-100);
-  border-bottom: 1px solid var(--gray-200);
-}
+    .search-tile strong {
+      font-size: 15px;
+      letter-spacing: 0.03em;
+    }
 
-#loft1325-mobile-homepage .hero h1 {
-  font-family: "Playfair Display", serif;
-  font-size: 26px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
+    .filters {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
 
-#loft1325-mobile-homepage .hero p {
-  font-size: 14px;
-  color: var(--gray-500);
-}
+    .filters label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
 
-#loft1325-mobile-homepage .search-panel {
-  margin-top: 18px;
-  display: grid;
-  gap: 12px;
-}
+    .filters input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--black);
+    }
 
-#loft1325-mobile-homepage .search-tile {
-  border: 1px solid var(--black);
-  padding: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  background: var(--white);
-}
+    .room-list {
+      padding: 20px;
+      display: grid;
+      gap: 20px;
+    }
 
-#loft1325-mobile-homepage .search-tile span {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-}
+    .room-card {
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
 
-#loft1325-mobile-homepage .search-tile strong {
-  font-size: 15px;
-  letter-spacing: 0.03em;
-}
+    .room-card img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+    }
 
-#loft1325-mobile-homepage .filters {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--gray-200);
-}
+    .room-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
 
-#loft1325-mobile-homepage .filters label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-}
+    .room-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
 
-#loft1325-mobile-homepage .filters input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--black);
-}
+    .room-meta {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
 
-#loft1325-mobile-homepage .room-list {
-  padding: 20px;
-  display: grid;
-  gap: 20px;
-}
+    .room-features {
+      font-size: 13px;
+      line-height: 1.6;
+    }
 
-#loft1325-mobile-homepage .room-card {
-  border: 1px solid var(--gray-200);
-  background: var(--white);
-  box-shadow: var(--shadow);
-}
+    .rate-block {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
 
-#loft1325-mobile-homepage .room-card img {
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  display: block;
-}
+    .rate-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
 
-#loft1325-mobile-homepage .room-body {
-  padding: 16px;
-  display: grid;
-  gap: 12px;
-}
+    .rate-row strong {
+      font-size: 18px;
+    }
 
-#loft1325-mobile-homepage .room-title {
-  font-size: 20px;
-  font-weight: 600;
-}
+    .primary-button {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--black);
+      color: var(--white);
+      border: 1px solid var(--black);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 12px;
+    }
 
-#loft1325-mobile-homepage .room-meta {
-  font-size: 13px;
-  color: var(--gray-500);
-}
+    .sticky-bar {
+      position: sticky;
+      bottom: 0;
+      z-index: 8;
+      border-top: 1px solid var(--gray-200);
+      background: var(--white);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
 
-#loft1325-mobile-homepage .room-features {
-  font-size: 13px;
-  line-height: 1.6;
-}
+    .sticky-price {
+      font-size: 16px;
+      font-weight: 600;
+    }
 
-#loft1325-mobile-homepage .rate-block {
-  border-top: 1px solid var(--gray-200);
-  padding-top: 12px;
-  display: grid;
-  gap: 10px;
-}
+    .sticky-note {
+      font-size: 12px;
+      color: var(--gray-500);
+    }
 
-#loft1325-mobile-homepage .rate-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-}
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 20;
+    }
 
-#loft1325-mobile-homepage .rate-row strong {
-  font-size: 18px;
-}
+    .modal.active {
+      display: flex;
+    }
 
-#loft1325-mobile-homepage .primary-button {
-  width: 100%;
-  padding: 12px 14px;
-  background: var(--black);
-  color: var(--white);
-  border: 1px solid var(--black);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 12px;
-}
+    .modal-content {
+      width: 100%;
+      max-width: 420px;
+      background: var(--white);
+      border: 1px solid var(--black);
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
 
-#loft1325-mobile-homepage .sticky-bar {
-  position: sticky;
-  bottom: 0;
-  z-index: 8;
-  border-top: 1px solid var(--gray-200);
-  background: var(--white);
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-#loft1325-mobile-homepage .sticky-price {
-  font-size: 16px;
-  font-weight: 600;
-}
+    .modal-header h2 {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
 
-#loft1325-mobile-homepage .sticky-note {
-  font-size: 12px;
-  color: var(--gray-500);
-}
+    .date-grid {
+      display: grid;
+      gap: 12px;
+    }
 
-#loft1325-mobile-homepage .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 20;
-}
+    .date-grid label {
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
 
-#loft1325-mobile-homepage .modal.active {
-  display: flex;
-}
+    .date-grid input {
+      border: 1px solid var(--gray-300);
+      padding: 10px;
+      font-size: 15px;
+    }
 
-#loft1325-mobile-homepage .modal-content {
-  width: 100%;
-  max-width: 420px;
-  background: var(--white);
-  border: 1px solid var(--black);
-  padding: 20px;
-  display: grid;
-  gap: 16px;
-}
+    .guest-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--gray-300);
+      padding: 12px;
+    }
 
-#loft1325-mobile-homepage .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .counter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-#loft1325-mobile-homepage .modal-header h2 {
-  font-size: 18px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
+    .counter button {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--black);
+      background: transparent;
+      font-size: 18px;
+    }
 
-#loft1325-mobile-homepage .date-grid {
-  display: grid;
-  gap: 12px;
-}
+    .counter span {
+      min-width: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
 
-#loft1325-mobile-homepage .date-grid label {
-  display: grid;
-  gap: 6px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-}
+    @media (min-width: 768px) {
+      body {
+        display: flex;
+        justify-content: center;
+        background: var(--gray-100);
+        padding: 40px 0;
+      }
 
-#loft1325-mobile-homepage .date-grid input {
-  border: 1px solid var(--gray-300);
-  padding: 10px;
-  font-size: 15px;
-}
-
-#loft1325-mobile-homepage .guest-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid var(--gray-300);
-  padding: 12px;
-}
-
-#loft1325-mobile-homepage .counter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#loft1325-mobile-homepage .counter button {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--black);
-  background: transparent;
-  font-size: 18px;
-}
-
-#loft1325-mobile-homepage .counter span {
-  min-width: 20px;
-  text-align: center;
-  font-weight: 600;
-}
-
-@media (min-width: 768px) {
-  #loft1325-mobile-homepage {
-    display: flex;
-    justify-content: center;
-    background: var(--gray-100);
-    padding: 40px 0;
-  }
-
-  #loft1325-mobile-homepage .mobile-shell {
-    border: 1px solid var(--gray-300);
-    box-shadow: var(--shadow);
-  }
-}
-</style>
-
-<div id="loft1325-mobile-homepage">
+      .mobile-shell {
+        border: 1px solid var(--gray-300);
+        box-shadow: var(--shadow);
+      }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+</head>
+<body>
   <main class="mobile-shell">
     <header class="header">
       <div class="header-inner">
@@ -409,12 +380,7 @@ get_header();
         <input type="checkbox" checked />
         Utiliser les points
       </label>
-      <button class="icon-button" type="button" aria-label="Filtrer">
-        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-          <path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Z" fill="none" stroke-width="1.6"/>
-          <path d="M4.9 13.4 3 12l1.9-1.4.3-2.4 2.3-.7L9 5.9 12 4l3 1.9 1.8 1.6 2.3.7.3 2.4L21 12l-1.6 1.4-.3 2.4-2.3.7-1.8 1.6L12 20l-3-1.9-1.8-1.6-2.3-.7-.3-2.4Z" fill="none" stroke-width="1.6"/>
-        </svg>
-      </button>
+      <button class="icon-button" type="button" aria-label="Filtrer">⚙</button>
     </section>
 
     <section class="room-list">
@@ -542,10 +508,9 @@ get_header();
       <button class="primary-button" type="button" id="applySearch">Rechercher</button>
     </div>
   </div>
-</div>
 
-<script>
-  (() => {
+  <?php wp_footer(); ?>
+  <script>
     const modal = document.getElementById('searchModal');
     const openSearch = document.getElementById('openSearch');
     const openGuests = document.getElementById('openGuests');
@@ -585,42 +550,37 @@ get_header();
       modal.setAttribute('aria-hidden', 'true');
     }
 
-    if (openSearch && openGuests && closeModal && applySearch) {
-      openSearch.addEventListener('click', openModal);
-      openGuests.addEventListener('click', openModal);
-      closeModal.addEventListener('click', closeModalView);
+    openSearch.addEventListener('click', openModal);
+    openGuests.addEventListener('click', openModal);
+    closeModal.addEventListener('click', closeModalView);
 
-      modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-          closeModalView();
-        }
-      });
-
-      document.querySelectorAll('#loft1325-mobile-homepage .counter').forEach((counter) => {
-        const minus = counter.querySelector('.minus');
-        const plus = counter.querySelector('.plus');
-        const target = document.getElementById(counter.dataset.target);
-
-        minus.addEventListener('click', () => {
-          const value = Math.max(0, Number(target.textContent) - 1);
-          target.textContent = value;
-        });
-
-        plus.addEventListener('click', () => {
-          target.textContent = Number(target.textContent) + 1;
-        });
-      });
-
-      applySearch.addEventListener('click', () => {
-        updateSummary();
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
         closeModalView();
+      }
+    });
+
+    document.querySelectorAll('.counter').forEach((counter) => {
+      const minus = counter.querySelector('.minus');
+      const plus = counter.querySelector('.plus');
+      const target = document.getElementById(counter.dataset.target);
+
+      minus.addEventListener('click', () => {
+        const value = Math.max(0, Number(target.textContent) - 1);
+        target.textContent = value;
       });
-    }
+
+      plus.addEventListener('click', () => {
+        target.textContent = Number(target.textContent) + 1;
+      });
+    });
+
+    applySearch.addEventListener('click', () => {
+      updateSummary();
+      closeModalView();
+    });
 
     updateSummary();
-  })();
-</script>
-
-<?php
-get_footer();
-?>
+  </script>
+</body>
+</html>
