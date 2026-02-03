@@ -14,7 +14,13 @@
     <header class="header">
       <div class="header-inner">
         <button class="icon-button" type="button" aria-label="Ouvrir le menu">≡</button>
-        <img class="logo" src="/wp-content/uploads/2022/11/logo-new-4.png" alt="Lofts 1325" />
+        <img
+          class="logo"
+          src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png"
+          srcset="https://loft1325.com/wp-content/uploads/2024/06/Asset-1-300x108.png 300w, https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png 518w"
+          sizes="(max-width: 430px) 180px, 220px"
+          alt="Lofts 1325"
+        />
         <button class="icon-button" type="button" aria-label="Accéder au profil">⋯</button>
       </div>
     </header>
@@ -45,7 +51,7 @@
     <section class="room-list">
       <article class="room-card">
         <img
-          src="https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=900&q=80"
+          src="/wp-content/uploads/2022/04/room01.jpg"
           alt="Suite signature"
         />
         <div class="room-body">
@@ -68,7 +74,7 @@
 
       <article class="room-card">
         <img
-          src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=900&q=80"
+          src="/wp-content/uploads/2022/04/room05.jpg"
           alt="Suite penthouse"
         />
         <div class="room-body">
@@ -91,7 +97,7 @@
 
       <article class="room-card">
         <img
-          src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=900&q=80"
+          src="/wp-content/uploads/2022/04/room06.jpg"
           alt="Loft atelier"
         />
         <div class="room-body">
