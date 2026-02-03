@@ -11,16 +11,25 @@
 </head>
 <body>
   <div class="wrapper">
-    <header class="header">
-      <span>Loft 1325 · Virtual Hotel</span>
+    <header class="topbar">
+      <div>
+        <strong>Loft 1325</strong>
+        <span>Virtual Hotel · Hôtel virtuel</span>
+      </div>
+      <button class="menu" type="button">Menu</button>
+    </header>
+
+    <section class="hero">
       <h1>Tap in. Unlock. Wow.</h1>
-      <p>Designed for modern travelers who want a glamorous stay without the front desk.</p>
+      <p>Self check-in, digital keys, instant bill payments, and split payments for the whole crew.</p>
       <div class="hero-slider">
-        <div class="hero-image" id="heroImage"></div>
+        <div class="hero-image" id="heroImage">
+          <span class="hero-label">Hero image placeholder 01</span>
+        </div>
         <span class="hero-tag">Girls' weekend ready</span>
         <div class="dots" id="heroDots"></div>
       </div>
-    </header>
+    </section>
 
     <div class="card">
       <h3>Reserve your loft</h3>
@@ -49,19 +58,54 @@
     </div>
 
     <section class="section">
+      <div class="insights">
+        <div class="insight-card">
+          <h3>Sentiment snapshot</h3>
+          <ul>
+            <li><strong>Tone:</strong> “not wow,” “feels dead.”</li>
+            <li><strong>Pain points:</strong> needs to impress affluent friends.</li>
+            <li><strong>Desire:</strong> wants to shop/browse rooms.</li>
+          </ul>
+        </div>
+        <div class="insight-card">
+          <h3>Design response</h3>
+          <ul>
+            <li>Glam gradients and gold accents for instant impact.</li>
+            <li>Editorial typography + luxe spacing for prestige.</li>
+            <li>Room preview cards like a curated boutique.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="trust">
+        <div class="trust-card">
+          <strong>Rated 4.9 by guests</strong>
+          <span>“The easiest keyless stay I’ve ever booked.”</span>
+        </div>
+        <div class="trust-card">
+          <strong>Digital concierge</strong>
+          <span>24/7 chat, digital keys, and instant receipts.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h3>What makes it unforgettable</h3>
+      <span class="subline">Des moments wow · sans attente</span>
       <div class="story">
         <div class="story-card">
           <strong>Self check-in, elevated</strong>
-          <span>Keyless entry, late-night access, and concierge messaging 24/7.</span>
+          <span>Keyless entry and glam lighting ready for content.</span>
+        </div>
+        <div class="story-card">
+          <strong>Instant bill control</strong>
+          <span>Pay, split, and extend in seconds. No front desk.</span>
         </div>
         <div class="story-card">
           <strong>Spaces made for photos</strong>
-          <span>Designer furniture, soft lighting, and balcony views to impress your crew.</span>
-        </div>
-        <div class="story-card">
-          <strong>Pay + extend with a tap</strong>
-          <span>Manage bills, extend nights, and add services without a call.</span>
+          <span>Designer textures and boutique styling to impress.</span>
         </div>
       </div>
     </section>
@@ -69,8 +113,16 @@
     <section class="section">
       <h3>Meet the lofts</h3>
       <div class="gallery">
-        <img src="/wp-content/themes/marina/img/6.jpg" alt="Loft living room" />
-        <img src="/wp-content/themes/marina/img/8.jpg" alt="Loft bedroom" />
+        <div class="room-card">
+          <div class="room-image">Room image placeholder</div>
+          <strong>Glow Suite</strong>
+          <p>Statement lighting, plush bedding, and mirror moments.</p>
+        </div>
+        <div class="room-card">
+          <div class="room-image">Room image placeholder</div>
+          <strong>City Luxe Loft</strong>
+          <p>Kitchenette, glam seating, and a view for content.</p>
+        </div>
       </div>
     </section>
 
@@ -82,11 +134,19 @@
   </div>
 
   <script>
-    // Update the hero slider images here.
     const heroSlides = [
-      '/wp-content/themes/marina/img/2.jpg',
-      '/wp-content/themes/marina/img/4.jpg',
-      '/wp-content/themes/marina/img/9.jpg'
+      {
+        label: 'Hero image placeholder 01',
+        background: 'linear-gradient(135deg, #0f172a, #1e3a8a)'
+      },
+      {
+        label: 'Hero image placeholder 02',
+        background: 'linear-gradient(135deg, #1f2937, #0f172a)'
+      },
+      {
+        label: 'Hero image placeholder 03',
+        background: 'linear-gradient(135deg, #1e1b4b, #0f172a)'
+      }
     ];
 
     const heroImage = document.getElementById('heroImage');
@@ -106,7 +166,8 @@
 
     function showSlide(index) {
       heroIndex = index % heroSlides.length;
-      heroImage.style.backgroundImage = `url('${heroSlides[heroIndex]}')`;
+      heroImage.style.backgroundImage = heroSlides[heroIndex].background;
+      heroImage.querySelector('.hero-label').textContent = heroSlides[heroIndex].label;
       renderDots();
     }
 

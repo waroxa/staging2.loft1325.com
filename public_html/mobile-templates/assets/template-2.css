@@ -27,22 +27,44 @@ body {
   min-height: 100vh;
 }
 
-.header {
-  padding: 20px;
-  background: linear-gradient(135deg, #0c1b3f, #003B95);
-  color: #fff;
-  border-bottom-left-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
 }
 
-.header h1 {
+.topbar span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.menu {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+}
+
+.hero {
+  padding: 20px 18px 0;
+}
+
+.hero h1 {
   margin: 0 0 8px;
   font-size: 1.65rem;
 }
 
-.header p {
+.hero p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
 }
 
 .hero-slider {
@@ -57,6 +79,18 @@ body {
   height: 220px;
   background-size: cover;
   background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-label {
+  background: rgba(255, 255, 255, 0.88);
+  color: #111827;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .hero-tag {
@@ -147,6 +181,47 @@ body {
   padding: 20px 18px 0;
 }
 
+.subline {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.insights {
+  display: grid;
+  gap: 12px;
+}
+
+.insight-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+}
+
+.insight-card h3 {
+  margin-top: 0;
+}
+
+.insight-card ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.trust {
+  display: grid;
+  gap: 12px;
+}
+
+.trust-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+}
+
 .story {
   display: grid;
   gap: 12px;
@@ -169,9 +244,23 @@ body {
   gap: 12px;
 }
 
-.gallery img {
-  width: 100%;
+.room-card {
+  background: #fff;
   border-radius: 18px;
+  padding: 14px;
+  border: 1px solid var(--line);
+}
+
+.room-image {
+  height: 160px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e2e8f0, #fde68a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #7c5c0a;
+  margin-bottom: 8px;
 }
 
 .bottom-cta {
