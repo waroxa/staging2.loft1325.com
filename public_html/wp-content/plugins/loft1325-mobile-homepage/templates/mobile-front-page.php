@@ -11,6 +11,8 @@ get_header();
 ?>
 
 <style id="loft1325-mobile-home-inline-style">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+
 :root {
   color-scheme: light;
   --black: #0b0b0b;
@@ -26,12 +28,38 @@ get_header();
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
 }
 
 #loft1325-mobile-homepage {
   font-family: "Inter", "Helvetica Neue", sans-serif;
   background: var(--white);
   color: var(--black);
+  isolation: isolate;
+}
+
+#loft1325-mobile-homepage button,
+#loft1325-mobile-homepage input,
+#loft1325-mobile-homepage select,
+#loft1325-mobile-homepage textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  box-shadow: none;
+}
+
+#loft1325-mobile-homepage img {
+  max-width: 100%;
+}
+
+#loft1325-mobile-homepage a {
+  color: inherit;
+  text-decoration: none;
 }
 
 #loft1325-mobile-homepage .mobile-shell {
@@ -75,6 +103,14 @@ get_header();
   font-size: 18px;
   line-height: 1;
   color: var(--black);
+  padding: 0;
+}
+
+#loft1325-mobile-homepage .icon-button svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  stroke: currentColor;
 }
 
 #loft1325-mobile-homepage .hero {
@@ -373,7 +409,12 @@ get_header();
         <input type="checkbox" checked />
         Utiliser les points
       </label>
-      <button class="icon-button" type="button" aria-label="Filtrer">⚙</button>
+      <button class="icon-button" type="button" aria-label="Filtrer">
+        <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+          <path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Z" fill="none" stroke-width="1.6"/>
+          <path d="M4.9 13.4 3 12l1.9-1.4.3-2.4 2.3-.7L9 5.9 12 4l3 1.9 1.8 1.6 2.3.7.3 2.4L21 12l-1.6 1.4-.3 2.4-2.3.7-1.8 1.6L12 20l-3-1.9-1.8-1.6-2.3-.7-.3-2.4Z" fill="none" stroke-width="1.6"/>
+        </svg>
+      </button>
     </section>
 
     <section class="room-list">
