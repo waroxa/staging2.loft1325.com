@@ -52,7 +52,8 @@ body {
   border-radius: 999px;
   padding: 8px 14px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
+  text-align: right;
 }
 
 .hero {
@@ -73,6 +74,9 @@ body {
   background-size: cover;
   background-position: center;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-slide::after {
@@ -80,6 +84,17 @@ body {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(2, 6, 23, 0.05) 0%, rgba(2, 6, 23, 0.65) 100%);
+}
+
+.hero-label {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.85);
+  color: #111827;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .hero-content {
@@ -96,6 +111,13 @@ body {
   margin: 0;
   color: rgba(255, 255, 255, 0.85);
   font-size: 0.95rem;
+}
+
+.subline {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .hero-actions {
@@ -184,10 +206,33 @@ body {
   box-shadow: 0 12px 24px rgba(253, 185, 19, 0.35);
 }
 
+.insights {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.insight-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  border: 1px solid var(--line);
+}
+
+.insight-card h3 {
+  margin-top: 0;
+}
+
+.insight-card ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
 .trust {
   display: grid;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 6px;
 }
 
 .trust-card {
@@ -228,10 +273,17 @@ body {
   border: 1px solid var(--line);
 }
 
-.room-card img {
+.room-image {
   width: 100%;
   border-radius: 14px;
   margin-bottom: 10px;
+  height: 180px;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5f5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #475569;
 }
 
 .footer-cta {

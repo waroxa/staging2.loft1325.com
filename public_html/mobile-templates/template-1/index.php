@@ -13,16 +13,19 @@
   <div class="page">
     <header class="topbar">
       <div class="logo">LOFT 1325</div>
-      <div class="pill">Self-Serve Hotel</div>
+      <div class="pill">Self-Serve Hotel · Hôtel autonome</div>
     </header>
 
     <section class="hero">
       <div class="hero-card">
-        <div class="hero-slide" id="heroSlide"></div>
+        <div class="hero-slide" id="heroSlide">
+          <span class="hero-label">Hero image placeholder 01</span>
+        </div>
         <div class="slider-dots" id="heroDots"></div>
         <div class="hero-content">
           <h1>Luxury stays, zero waiting.</h1>
-          <p>Private lofts in Val-d'Or with digital keys, in-room workspaces, and a wow-worthy vibe.</p>
+          <p>Self check-in, digital keys, instant bill payments, and split-the-bill ease.</p>
+          <span class="subline">Arrivée autonome · clés numériques instantanées</span>
           <div class="hero-actions">
             <button class="button-primary" type="button">Book in 60 sec</button>
             <button class="button-secondary" type="button">Explore rooms</button>
@@ -54,7 +57,28 @@
           </div>
         </div>
         <button class="booking-submit" type="button">Search lofts</button>
-        <p class="note">Pay your stay, extend nights, and handle bills straight from your phone.</p>
+        <p class="note">Pay your stay, extend nights, and split payments from your phone.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="insights">
+        <div class="insight-card">
+          <h3>Sentiment snapshot</h3>
+          <ul>
+            <li><strong>Tone:</strong> yearning for “wow,” feels flat or “dead.”</li>
+            <li><strong>Pain points:</strong> needs to impress affluent friends; wants more glam.</li>
+            <li><strong>Desire:</strong> wants to browse rooms like shopping.</li>
+          </ul>
+        </div>
+        <div class="insight-card">
+          <h3>Design response</h3>
+          <ul>
+            <li>Hero imagery + glow gradients create instant wow.</li>
+            <li>Luxury cues: elevated typography, gold accents, soft shadows.</li>
+            <li>Room previews feel like a boutique catalog.</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -62,37 +86,38 @@
       <div class="trust">
         <div class="trust-card">
           <strong>Google Reviews 4.9 ★</strong>
-          <span>Guests love the clean design + instant check-in.</span>
+          <span>“The most photogenic self-check-in I’ve tried.”</span>
         </div>
         <div class="trust-card">
-          <strong>Self-Serve Experience</strong>
-          <span>Digital keys, virtual concierge, and receipts in one tap.</span>
+          <strong>Digital-first stay</strong>
+          <span>Keyless entry, instant receipts, and split payments built in.</span>
         </div>
       </div>
     </section>
 
     <section class="section">
       <h3>Why her friends will say WOW</h3>
+      <span class="subline">Des moments qui impressionnent · tout en simplicité</span>
       <div class="feature-list">
         <div class="feature">
           <span>01</span>
           <div>
             <strong>Arrive like a VIP</strong>
-            <p>Smart entry, mood lighting, and curated playlists ready for photos.</p>
+            <p>Self check-in, digital keys, and glam lighting for content-ready moments.</p>
           </div>
         </div>
         <div class="feature">
           <span>02</span>
           <div>
-            <strong>Pay & extend instantly</strong>
-            <p>No front desk. Add nights or pay bills on your phone.</p>
+            <strong>Instant bills + split payments</strong>
+            <p>Pay, extend, and split costs without waiting for a front desk.</p>
           </div>
         </div>
         <div class="feature">
           <span>03</span>
           <div>
-            <strong>Location of choice</strong>
-            <p>Stay steps from dining, shops, and the city lights.</p>
+            <strong>Shop the rooms</strong>
+            <p>Swipeable previews to pick your perfect glam vibe.</p>
           </div>
         </div>
       </div>
@@ -100,9 +125,9 @@
 
     <section class="section">
       <div class="room-card">
-        <img src="/wp-content/themes/marina/img/3.jpg" alt="Loft interior" />
-        <h4>Signature Loft + Penthouse Energy</h4>
-        <p>Bright, modern suites with plush bedding, kitchenettes, and luxury touches.</p>
+        <div class="room-image">Room image placeholder</div>
+        <h4>Signature Loft · Penthouse Energy</h4>
+        <p>Plush bedding, curated art, and statement lighting for wow-worthy arrivals.</p>
         <button class="button-primary" type="button">See all lofts</button>
       </div>
     </section>
@@ -110,18 +135,26 @@
     <section class="section">
       <div class="footer-cta">
         <h3>Ready for the wow moment?</h3>
-        <p>Book the stay, split the bill, and arrive hands-free.</p>
+        <p>Book, pay, and receive your digital key in minutes.</p>
         <button type="button">Start booking</button>
       </div>
     </section>
   </div>
 
   <script>
-    // Update the hero slider images here.
     const heroSlides = [
-      '/wp-content/themes/marina/img/1.jpg',
-      '/wp-content/themes/marina/img/5.jpg',
-      '/wp-content/themes/marina/img/7.jpg'
+      {
+        label: 'Hero image placeholder 01',
+        background: 'linear-gradient(135deg, #0f172a, #334155)'
+      },
+      {
+        label: 'Hero image placeholder 02',
+        background: 'linear-gradient(135deg, #1e1b4b, #312e81)'
+      },
+      {
+        label: 'Hero image placeholder 03',
+        background: 'linear-gradient(135deg, #0f172a, #475569)'
+      }
     ];
 
     const heroSlide = document.getElementById('heroSlide');
@@ -141,7 +174,8 @@
 
     function showSlide(index) {
       heroIndex = index % heroSlides.length;
-      heroSlide.style.backgroundImage = `url('${heroSlides[heroIndex]}')`;
+      heroSlide.style.backgroundImage = heroSlides[heroIndex].background;
+      heroSlide.querySelector('.hero-label').textContent = heroSlides[heroIndex].label;
       renderDots();
     }
 

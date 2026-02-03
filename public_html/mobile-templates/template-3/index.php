@@ -12,17 +12,22 @@
 <body>
   <div class="shell">
     <nav class="nav">
-      <span>LOFT 1325</span>
-      <span>Val-d'Or</span>
+      <div>
+        <strong>LOFT 1325</strong>
+        <span>Self-serve · Hôtel autonome</span>
+      </div>
+      <button class="nav-button" type="button">Menu</button>
     </nav>
 
     <section class="hero">
       <div class="hero-card">
-        <div class="hero-image" id="heroImage"></div>
+        <div class="hero-image" id="heroImage">
+          <span class="hero-label">Hero image placeholder 01</span>
+        </div>
         <div class="dots" id="heroDots"></div>
         <div class="hero-body">
           <h1>Make the arrival the main event.</h1>
-          <p>Luxury lofts with virtual keys, split payments, and photo-ready spaces.</p>
+          <p>Self check-in, digital keys, instant bill payments, and split payments built in.</p>
           <div class="hero-buttons">
             <button class="primary" type="button">Book now</button>
             <button class="secondary" type="button">View lofts</button>
@@ -54,7 +59,42 @@
         </div>
       </div>
       <button class="search-button" type="button">Check availability</button>
-      <div class="bubble">Self-serve bills + instant receipts. No waiting, no stress.</div>
+      <div class="bubble">Split bills, pay instantly, and extend nights with one tap.</div>
+    </section>
+
+    <section class="panel">
+      <div class="insights">
+        <div class="insight-card">
+          <h3>Sentiment snapshot</h3>
+          <ul>
+            <li><strong>Tone:</strong> wants more wow and energy.</li>
+            <li><strong>Pain points:</strong> must impress affluent friends.</li>
+            <li><strong>Desire:</strong> shop/browse rooms before booking.</li>
+          </ul>
+        </div>
+        <div class="insight-card">
+          <h3>Design response</h3>
+          <ul>
+            <li>Polished gradients and bold contrast for glam.</li>
+            <li>Sticky navigation and cards for easy browsing.</li>
+            <li>Room tiles feel like a premium catalog.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Trusted by luxury-loving guests</h3>
+      <div class="trust">
+        <div class="trust-card">
+          <strong>4.9 ★ average</strong>
+          <span>“Keyless check-in felt instantly upscale.”</span>
+        </div>
+        <div class="trust-card">
+          <strong>Instant everything</strong>
+          <span>Digital keys + instant receipts + split payments.</span>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
@@ -66,12 +106,12 @@
       </div>
       <div class="cards">
         <div class="card">
-          <img src="/wp-content/themes/marina/img/4.jpg" alt="Loft lifestyle" />
+          <div class="room-image">Room image placeholder</div>
           <strong>Signature suites</strong>
           <p>Soft textures, curated art, and space to unwind together.</p>
         </div>
         <div class="card">
-          <img src="/wp-content/themes/marina/img/9.jpg" alt="Loft lounge" />
+          <div class="room-image">Room image placeholder</div>
           <strong>Late-night ready</strong>
           <p>24/7 virtual concierge and instant support from your phone.</p>
         </div>
@@ -86,11 +126,19 @@
   </div>
 
   <script>
-    // Update the hero slider images here.
     const heroSlides = [
-      '/wp-content/themes/marina/img/5.jpg',
-      '/wp-content/themes/marina/img/2.jpg',
-      '/wp-content/themes/marina/img/7.jpg'
+      {
+        label: 'Hero image placeholder 01',
+        background: 'linear-gradient(135deg, #0f172a, #1e293b)'
+      },
+      {
+        label: 'Hero image placeholder 02',
+        background: 'linear-gradient(135deg, #1e1b4b, #312e81)'
+      },
+      {
+        label: 'Hero image placeholder 03',
+        background: 'linear-gradient(135deg, #111827, #1f2937)'
+      }
     ];
 
     const heroImage = document.getElementById('heroImage');
@@ -110,7 +158,8 @@
 
     function showSlide(index) {
       heroIndex = index % heroSlides.length;
-      heroImage.style.backgroundImage = `url('${heroSlides[heroIndex]}')`;
+      heroImage.style.backgroundImage = heroSlides[heroIndex].background;
+      heroImage.querySelector('.hero-label').textContent = heroSlides[heroIndex].label;
       renderDots();
     }
 
