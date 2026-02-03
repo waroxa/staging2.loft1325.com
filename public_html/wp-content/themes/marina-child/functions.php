@@ -848,6 +848,126 @@ function marina_child_fix_booking_switcher_urls( $new_url, $url, $language, $abs
 
     return $new_url;
 }
+
+/**
+ * Register mobile template preview routes.
+ */
+function marina_child_register_loft_template_routes() {
+    add_rewrite_rule( '^template-classic/?$', 'index.php?loft_template=classic', 'top' );
+    add_rewrite_rule( '^template-luxe/?$', 'index.php?loft_template=luxe', 'top' );
+    add_rewrite_rule( '^template-skyline/?$', 'index.php?loft_template=skyline', 'top' );
+}
+add_action( 'init', 'marina_child_register_loft_template_routes' );
+
+/**
+ * Whitelist the loft template query variable.
+ *
+ * @param array $vars Query vars.
+ *
+ * @return array
+ */
+function marina_child_add_loft_template_query_var( array $vars ) : array {
+    $vars[] = 'loft_template';
+
+    return $vars;
+}
+add_filter( 'query_vars', 'marina_child_add_loft_template_query_var' );
+
+/**
+ * Determine which Loft template is requested.
+ *
+ * @return string
+ */
+function marina_child_get_loft_template() : string {
+    $template = get_query_var( 'loft_template' );
+
+    if ( ! $template && isset( $_GET['loft_template'] ) ) {
+        $template = sanitize_key( wp_unslash( $_GET['loft_template'] ) );
+    }
+
+    $allowed = array( 'classic', 'luxe', 'skyline' );
+
+    return in_array( $template, $allowed, true ) ? $template : '';
+}
+
+/**
+ * Load the custom Loft template files when requested.
+ *
+ * @param string $template Template path.
+ *
+ * @return string
+ */
+function marina_child_template_include_loft_templates( $template ) {
+    $loft_template = marina_child_get_loft_template();
+
+    if ( '' === $loft_template ) {
+        return $template;
+    }
+
+    $candidate = trailingslashit( get_stylesheet_directory() ) . 'templates/loft-template-' . $loft_template . '.php';
+
+    if ( file_exists( $candidate ) ) {
+        return $candidate;
+    }
+
+    return $template;
+}
+add_filter( 'template_include', 'marina_child_template_include_loft_templates' );
+
+/**
+ * Enqueue assets for Loft template previews.
+ */
+function marina_child_enqueue_loft_template_assets() {
+    $loft_template = marina_child_get_loft_template();
+
+    if ( '' === $loft_template ) {
+        return;
+    }
+
+    $template_css_path = get_stylesheet_directory() . '/css/mobile-templates.css';
+    $template_js_path  = get_stylesheet_directory() . '/js/loft-template-slider.js';
+
+    if ( file_exists( $template_css_path ) ) {
+        wp_enqueue_style(
+            'marina-child-loft-templates',
+            get_stylesheet_directory_uri() . '/css/mobile-templates.css',
+            array( 'marina-child-header-fixes' ),
+            (string) filemtime( $template_css_path )
+        );
+    }
+
+    if ( file_exists( $template_js_path ) ) {
+        wp_enqueue_script(
+            'marina-child-loft-template-slider',
+            get_stylesheet_directory_uri() . '/js/loft-template-slider.js',
+            array(),
+            (string) filemtime( $template_js_path ),
+            true
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_loft_template_assets', 30 );
+
+/**
+ * Add body classes for Loft template previews.
+ *
+ * @param array $classes Body classes.
+ *
+ * @return array
+ */
+function marina_child_add_loft_template_body_class( array $classes ) : array {
+    $loft_template = marina_child_get_loft_template();
+
+    if ( '' === $loft_template ) {
+        return $classes;
+    }
+
+    $classes[] = 'loft-template';
+    $classes[] = 'loft-template-' . $loft_template;
+
+    return $classes;
+}
+add_filter( 'body_class', 'marina_child_add_loft_template_body_class' );
 add_filter( 'trp_get_url_for_language', 'marina_child_fix_booking_switcher_urls', 10, 6 );
 
 /**
