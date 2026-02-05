@@ -232,17 +232,6 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
 
             wp_enqueue_style( 'loft1325-mobile-home', $style_uri, array(), $version );
 
-            if ( $use_mobile_room_style ) {
-                $room_style_path = plugin_dir_path( __FILE__ ) . 'assets/css/mobile-room.css';
-                $room_style_uri  = plugin_dir_url( __FILE__ ) . 'assets/css/mobile-room.css';
-                $room_version     = file_exists( $room_style_path ) ? (string) filemtime( $room_style_path ) : '1.0.0';
-                wp_enqueue_style( 'loft1325-mobile-room', $room_style_uri, array( 'loft1325-mobile-home' ), $room_version );
-            }
-
-            if ( ! $use_mobile_layout ) {
-                return;
-            }
-
             wp_enqueue_style( 'flatpickr', 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css', array(), '4.6.13' );
 
             $fonts_url = 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap';
@@ -284,6 +273,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
         /**
          * Ensure the ND Booking search dependencies are available for the mobile form.
          */
+
         public function enqueue_search_dependencies() {
             wp_enqueue_script( 'jquery-ui-datepicker' );
 
@@ -996,6 +986,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 'restaurant_logo_3' => __( 'Restaurant Logo 3', 'loft1325-mobile-home' ),
                 'restaurant_logo_4' => __( 'Restaurant Logo 4', 'loft1325-mobile-home' ),
                 'restaurant_logo_5' => __( 'Restaurant Logo 5', 'loft1325-mobile-home' ),
+                'restaurant_logo_6' => __( 'Restaurant Logo 6', 'loft1325-mobile-home' ),
             );
 
             foreach ( $restaurant_logo_settings as $key => $label ) {

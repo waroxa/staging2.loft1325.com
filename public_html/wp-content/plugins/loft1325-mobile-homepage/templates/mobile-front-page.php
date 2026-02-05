@@ -785,31 +785,48 @@ $strings  = array(
             'file'    => 'chocolats-favoris.svg',
             'setting' => 'restaurant_logo_5',
         ),
+        array(
+            'name'    => 'Restaurant 6',
+            'file'    => '',
+            'setting' => 'restaurant_logo_6',
+        ),
     );
     ?>
 
-    <section class="restaurant-section">
-      <h2><?php echo esc_html( 'en' === $language ? 'Restaurants' : 'Restaurants' ); ?></h2>
-      <div class="restaurant-grid">
-        <?php foreach ( $restaurant_logos as $restaurant ) : ?>
-          <div class="restaurant-card">
-            <?php
-            $restaurant_logo_id  = (int) get_theme_mod( 'loft1325_mobile_home_' . $restaurant['setting'], 0 );
-            $restaurant_logo_url = $restaurant_logo_id ? wp_get_attachment_image_url( $restaurant_logo_id, 'medium' ) : '';
+    <?php
+    $restaurant_logo_items = array();
 
-            if ( ! $restaurant_logo_url ) {
-                $restaurant_logo_url = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/restaurants/' . $restaurant['file'];
-            }
-            ?>
-            <img
-              src="<?php echo esc_url( $restaurant_logo_url ); ?>"
-              alt="<?php echo esc_attr( $restaurant['name'] ); ?>"
-              loading="lazy"
-            />
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </section>
+    foreach ( $restaurant_logos as $restaurant ) {
+        $restaurant_logo_id  = (int) get_theme_mod( 'loft1325_mobile_home_' . $restaurant['setting'], 0 );
+        $restaurant_logo_url = $restaurant_logo_id ? wp_get_attachment_image_url( $restaurant_logo_id, 'medium' ) : '';
+
+        if ( ! $restaurant_logo_url ) {
+            continue;
+        }
+
+        $restaurant_logo_items[] = array(
+            'name' => $restaurant['name'],
+            'url'  => $restaurant_logo_url,
+        );
+    }
+    ?>
+
+    <?php if ( ! empty( $restaurant_logo_items ) ) : ?>
+      <section class="restaurant-section">
+        <h2><?php echo esc_html( 'en' === $language ? 'Restaurants' : 'Restaurants' ); ?></h2>
+        <div class="restaurant-grid">
+          <?php foreach ( $restaurant_logo_items as $restaurant ) : ?>
+            <div class="restaurant-card">
+              <img
+                src="<?php echo esc_url( $restaurant['url'] ); ?>"
+                alt="<?php echo esc_attr( $restaurant['name'] ); ?>"
+                loading="lazy"
+              />
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </section>
+    <?php endif; ?>
 
     <section class="sticky-bar">
       <div>
