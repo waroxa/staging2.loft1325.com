@@ -40,6 +40,45 @@ body.loft1325-mobile-lofts-active .loft1325-mobile-loft__muted {
   color: #666666 !important;
 }
 
+/* Keep perk/highlight blocks readable after neutral homepage overrides. */
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks {
+  background: linear-gradient(180deg, #f7fbff 0%, #f1f7fc 100%) !important;
+  border: 1px solid #dbeaf3 !important;
+  box-shadow: none !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-header h2,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk small,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk .dashicons {
+  color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill {
+  background: #eaf4fb !important;
+  border: 1px solid #d0e6f5 !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk {
+  background: #ffffff !important;
+  border: 1px solid #dfe8f0 !important;
+  box-shadow: 0 8px 18px rgba(10, 20, 32, 0.06) !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__reviews {
+  background: #ffffff !important;
+  border-color: #dfe8f0 !important;
+}
+
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks * {
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
 @media (max-width: 767px) {
   body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
     padding-left: 16px;
