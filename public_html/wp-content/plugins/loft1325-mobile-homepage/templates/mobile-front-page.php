@@ -475,6 +475,7 @@ $strings  = array(
       padding: 4px 8px;
       font-size: 12px;
       font-weight: 600;
+      color: var(--black);
       white-space: nowrap;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
       z-index: 2;
@@ -662,76 +663,65 @@ $strings  = array(
       <button class="icon-button" type="button" aria-label="Filtrer">⚙</button>
     </section>
 
-    <section class="room-list">
-      <article class="room-card">
-        <img
-          src="/wp-content/uploads/2022/04/room01.jpg"
-          alt="Suite signature"
-        />
-        <div class="room-body">
-          <div>
-            <p class="room-title">Suite Signature</p>
-            <p class="room-meta">À partir de 340 $CA · par nuit</p>
-          </div>
-          <p class="room-features">
-            Lit King · 420 pieds carrés · Salle de bain marbre · Salon privé
-          </p>
-          <div class="rate-block">
-            <div class="rate-row">
-              <span>Tarif membre Loft Circle</span>
-              <strong>340 $CA</strong>
-            </div>
-            <button class="primary-button" type="button">Réserver maintenant</button>
-          </div>
-        </div>
-      </article>
+    <?php
+    $mobile_homepage = class_exists( 'Loft1325_Mobile_Homepage' ) ? Loft1325_Mobile_Homepage::instance() : null;
+    $room_cards      = $mobile_homepage ? $mobile_homepage->get_room_cards() : array();
+    $price_prefix    = 'en' === $language ? 'From' : 'À partir de';
+    $per_night       = 'en' === $language ? 'per night' : 'par nuit';
+    $room_button     = 'en' === $language ? 'Book now' : 'Réserver maintenant';
+    $member_label    = 'en' === $language ? 'Member rate' : 'Tarif membre Loft Circle';
+    ?>
 
-      <article class="room-card">
-        <img
-          src="/wp-content/uploads/2022/04/room05.jpg"
-          alt="Suite penthouse"
-        />
-        <div class="room-body">
-          <div>
-            <p class="room-title">Suite Penthouse</p>
-            <p class="room-meta">À partir de 454 $CA · par nuit</p>
-          </div>
-          <p class="room-features">
-            Terrasse privée · Vue sur le fleuve · Service majordome · 2 salles d'eau
-          </p>
-          <div class="rate-block">
-            <div class="rate-row">
-              <span>Tarif flexible</span>
-              <strong>454 $CA</strong>
+    <?php if ( ! empty( $room_cards ) ) : ?>
+      <section class="room-list">
+        <?php foreach ( $room_cards as $room ) : ?>
+          <article class="room-card">
+            <?php if ( ! empty( $room['image'] ) ) : ?>
+              <img
+                src="<?php echo esc_url( $room['image'] ); ?>"
+                alt="<?php echo esc_attr( $room['title'] ); ?>"
+              />
+            <?php endif; ?>
+            <div class="room-body">
+              <div>
+                <p class="room-title"><?php echo esc_html( $room['title'] ); ?></p>
+                <?php if ( '' !== $room['price'] ) : ?>
+                  <p class="room-meta">
+                    <?php
+                    printf(
+                        '%s %s %s · %s',
+                        esc_html( $price_prefix ),
+                        esc_html( number_format_i18n( (float) $room['price'] ) ),
+                        esc_html( $room['currency'] ? $room['currency'] : '$CA' ),
+                        esc_html( $per_night )
+                    );
+                    ?>
+                  </p>
+                <?php endif; ?>
+              </div>
+              <p class="room-features"><?php echo esc_html( $room['excerpt'] ); ?></p>
+              <div class="rate-block">
+                <div class="rate-row">
+                  <span><?php echo esc_html( $member_label ); ?></span>
+                  <?php if ( '' !== $room['price'] ) : ?>
+                    <strong>
+                      <?php
+                      printf(
+                          '%s %s',
+                          esc_html( number_format_i18n( (float) $room['price'] ) ),
+                          esc_html( $room['currency'] ? $room['currency'] : '$CA' )
+                      );
+                      ?>
+                    </strong>
+                  <?php endif; ?>
+                </div>
+                <a class="primary-button" href="<?php echo esc_url( $room['permalink'] ); ?>"><?php echo esc_html( $room_button ); ?></a>
+              </div>
             </div>
-            <button class="primary-button" type="button">Réserver maintenant</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="room-card">
-        <img
-          src="/wp-content/uploads/2022/04/room06.jpg"
-          alt="Loft atelier"
-        />
-        <div class="room-body">
-          <div>
-            <p class="room-title">Loft Atelier</p>
-            <p class="room-meta">À partir de 523 $CA · par nuit</p>
-          </div>
-          <p class="room-features">
-            Plafonds 14 pieds · Bar discret · Accès galerie · Accueil privé
-          </p>
-          <div class="rate-block">
-            <div class="rate-row">
-              <span>Forfait coeur à coeur</span>
-              <strong>523 $CA</strong>
-            </div>
-            <button class="primary-button" type="button">Réserver maintenant</button>
-          </div>
-        </div>
-      </article>
-    </section>
+          </article>
+        <?php endforeach; ?>
+      </section>
+    <?php endif; ?>
 
     <section class="sticky-bar">
       <div>
