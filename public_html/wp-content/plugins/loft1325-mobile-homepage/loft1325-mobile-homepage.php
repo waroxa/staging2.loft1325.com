@@ -228,6 +228,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             $version    = file_exists( $style_path ) ? (string) filemtime( $style_path ) : '1.0.0';
 
             wp_enqueue_style( 'loft1325-mobile-home', $style_uri, array(), $version );
+
             wp_enqueue_style( 'flatpickr', 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css', array(), '4.6.13' );
 
             $fonts_url = 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap';
@@ -248,6 +249,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
         /**
          * Ensure the ND Booking search dependencies are available for the mobile form.
          */
+
         public function enqueue_search_dependencies() {
             wp_enqueue_script( 'jquery-ui-datepicker' );
 
@@ -948,6 +950,38 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                     'type'     => 'url',
                 )
             );
+
+
+            $restaurant_logo_settings = array(
+                'restaurant_logo_1' => __( 'Restaurant Logo 1', 'loft1325-mobile-home' ),
+                'restaurant_logo_2' => __( 'Restaurant Logo 2', 'loft1325-mobile-home' ),
+                'restaurant_logo_3' => __( 'Restaurant Logo 3', 'loft1325-mobile-home' ),
+                'restaurant_logo_4' => __( 'Restaurant Logo 4', 'loft1325-mobile-home' ),
+                'restaurant_logo_5' => __( 'Restaurant Logo 5', 'loft1325-mobile-home' ),
+                'restaurant_logo_6' => __( 'Restaurant Logo 6', 'loft1325-mobile-home' ),
+            );
+
+            foreach ( $restaurant_logo_settings as $key => $label ) {
+                $wp_customize->add_setting(
+                    'loft1325_mobile_home_' . $key,
+                    array(
+                        'default'           => 0,
+                        'sanitize_callback' => 'absint',
+                    )
+                );
+
+                $wp_customize->add_control(
+                    new WP_Customize_Media_Control(
+                        $wp_customize,
+                        'loft1325_mobile_home_' . $key,
+                        array(
+                            'label'     => $label,
+                            'section'   => 'loft1325_mobile_home',
+                            'mime_type' => 'image',
+                        )
+                    )
+                );
+            }
 
             $wp_customize->add_setting(
                 'loft1325_mobile_home_hero_background',

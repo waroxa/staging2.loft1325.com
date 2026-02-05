@@ -180,6 +180,13 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 
 			wp_enqueue_style( 'loft1325-mobile-lofts', $style_uri, array(), $style_ver );
 
+			if ( $this->should_use_mobile_layout() ) {
+				$match_path = plugin_dir_path( __FILE__ ) . 'assets/css/mobile-home-match.css';
+				$match_uri  = plugin_dir_url( __FILE__ ) . 'assets/css/mobile-home-match.css';
+				$match_ver  = file_exists( $match_path ) ? (string) filemtime( $match_path ) : '1.0.0';
+				wp_enqueue_style( 'loft1325-mobile-lofts-home-match', $match_uri, array( 'loft1325-mobile-lofts' ), $match_ver );
+			}
+
 			$script_path = plugin_dir_path( __FILE__ ) . 'assets/js/mobile-lofts.js';
 			$script_uri  = plugin_dir_url( __FILE__ ) . 'assets/js/mobile-lofts.js';
 			$script_ver  = file_exists( $script_path ) ? (string) filemtime( $script_path ) : '1.0.0';

@@ -1,0 +1,48 @@
+/* Align ND mobile room pages with the black/white homepage mobile aesthetic. */
+body.loft1325-mobile-lofts-active {
+  background: #ffffff;
+  color: #0b0b0b;
+}
+
+body.loft1325-mobile-lofts-active #loft1325-mobile-loftpage,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
+  background: #ffffff;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__topbar,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__booking,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__card {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-color: #e5e5e5 !important;
+  background: #ffffff !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__cta,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__book,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft button[type="submit"],
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft .nd_booking_bg_orange {
+  background: #0b0b0b !important;
+  color: #ffffff !important;
+  border-color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active h1,
+body.loft1325-mobile-lofts-active h2,
+body.loft1325-mobile-lofts-active h3 {
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__meta,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__muted {
+  color: #666666 !important;
+}
+
+@media (max-width: 767px) {
+  body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
