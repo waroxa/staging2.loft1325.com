@@ -217,7 +217,10 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
          * Enqueue assets required for the mobile homepage.
          */
         public function enqueue_assets() {
-            if ( ! $this->should_use_mobile_layout() ) {
+            $use_mobile_layout = $this->should_use_mobile_layout();
+            $use_mobile_room_style = $this->should_style_mobile_room_pages();
+
+            if ( ! $use_mobile_layout && ! $use_mobile_room_style ) {
                 return;
             }
 
@@ -244,6 +247,27 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             wp_enqueue_script( 'loft1325-mobile-home', $script_uri, array( 'jquery', 'jquery-ui-datepicker', 'flatpickr', 'flatpickr-range-plugin' ), $script_ver, true );
 
             $this->enqueue_search_dependencies();
+        }
+
+        /**
+         * Determine whether mobile room-detail styling should be applied.
+         *
+         * @return bool
+         */
+        private function should_style_mobile_room_pages() {
+            if ( is_admin() || is_feed() || is_embed() ) {
+                return false;
+            }
+
+            if ( ! $this->ensure_dependencies_ready() ) {
+                return false;
+            }
+
+            if ( ! is_singular( 'nd_booking_cpt_1' ) ) {
+                return false;
+            }
+
+            return $this->is_mobile_request();
         }
 
         /**
@@ -307,6 +331,10 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
         public function filter_body_class( $classes ) {
             if ( $this->is_mobile_template ) {
                 $classes[] = 'loft1325-mobile-home-active';
+            }
+
+            if ( $this->should_style_mobile_room_pages() ) {
+                $classes[] = 'loft1325-mobile-room-active';
             }
 
             return $classes;
