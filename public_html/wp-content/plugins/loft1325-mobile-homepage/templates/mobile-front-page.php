@@ -761,24 +761,29 @@ $strings  = array(
     <?php
     $restaurant_logos = array(
         array(
-            'name' => "L'oeufrier",
-            'file' => 'oeufrier.svg',
+            'name'    => "L'oeufrier",
+            'file'    => 'oeufrier.svg',
+            'setting' => 'restaurant_logo_1',
         ),
         array(
-            'name' => 'Fiesta',
-            'file' => 'fiesta.svg',
+            'name'    => 'Fiesta',
+            'file'    => 'fiesta.svg',
+            'setting' => 'restaurant_logo_2',
         ),
         array(
-            'name' => 'Toukiparc',
-            'file' => 'toukiparc.svg',
+            'name'    => 'Toukiparc',
+            'file'    => 'toukiparc.svg',
+            'setting' => 'restaurant_logo_3',
         ),
         array(
-            'name' => 'Bâton Rouge',
-            'file' => 'baton-rouge.svg',
+            'name'    => 'Bâton Rouge',
+            'file'    => 'baton-rouge.svg',
+            'setting' => 'restaurant_logo_4',
         ),
         array(
-            'name' => 'Chocolats Favoris',
-            'file' => 'chocolats-favoris.svg',
+            'name'    => 'Chocolats Favoris',
+            'file'    => 'chocolats-favoris.svg',
+            'setting' => 'restaurant_logo_5',
         ),
     );
     ?>
@@ -788,8 +793,16 @@ $strings  = array(
       <div class="restaurant-grid">
         <?php foreach ( $restaurant_logos as $restaurant ) : ?>
           <div class="restaurant-card">
+            <?php
+            $restaurant_logo_id  = (int) get_theme_mod( 'loft1325_mobile_home_' . $restaurant['setting'], 0 );
+            $restaurant_logo_url = $restaurant_logo_id ? wp_get_attachment_image_url( $restaurant_logo_id, 'medium' ) : '';
+
+            if ( ! $restaurant_logo_url ) {
+                $restaurant_logo_url = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/restaurants/' . $restaurant['file'];
+            }
+            ?>
             <img
-              src="<?php echo esc_url( plugins_url( 'assets/images/restaurants/' . $restaurant['file'], __DIR__ ) ); ?>"
+              src="<?php echo esc_url( $restaurant_logo_url ); ?>"
               alt="<?php echo esc_attr( $restaurant['name'] ); ?>"
               loading="lazy"
             />
