@@ -208,6 +208,41 @@ $strings  = array(
       line-height: 1.6;
     }
 
+    .restaurant-section {
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .restaurant-section h2 {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .restaurant-card {
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      min-height: 110px;
+    }
+
+    .restaurant-card img {
+      width: 100%;
+      height: auto;
+      max-height: 70px;
+      object-fit: contain;
+    }
+
     .rate-block {
       border-top: 1px solid var(--gray-200);
       padding-top: 12px;
@@ -722,6 +757,46 @@ $strings  = array(
         <?php endforeach; ?>
       </section>
     <?php endif; ?>
+
+    <?php
+    $restaurant_logos = array(
+        array(
+            'name' => "L'oeufrier",
+            'file' => 'oeufrier.svg',
+        ),
+        array(
+            'name' => 'Fiesta',
+            'file' => 'fiesta.svg',
+        ),
+        array(
+            'name' => 'Toukiparc',
+            'file' => 'toukiparc.svg',
+        ),
+        array(
+            'name' => 'Bâton Rouge',
+            'file' => 'baton-rouge.svg',
+        ),
+        array(
+            'name' => 'Chocolats Favoris',
+            'file' => 'chocolats-favoris.svg',
+        ),
+    );
+    ?>
+
+    <section class="restaurant-section">
+      <h2><?php echo esc_html( 'en' === $language ? 'Restaurants' : 'Restaurants' ); ?></h2>
+      <div class="restaurant-grid">
+        <?php foreach ( $restaurant_logos as $restaurant ) : ?>
+          <div class="restaurant-card">
+            <img
+              src="<?php echo esc_url( plugins_url( 'assets/images/restaurants/' . $restaurant['file'], __DIR__ ) ); ?>"
+              alt="<?php echo esc_attr( $restaurant['name'] ); ?>"
+              loading="lazy"
+            />
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </section>
 
     <section class="sticky-bar">
       <div>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" role="img" aria-label="Chocolats Favoris">
+  <rect width="320" height="160" rx="20" fill="#ffffff"/>
+  <text x="160" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#c62828">CHOCOLATS</text>
+  <text x="160" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="46" font-weight="700" fill="#c62828">FAVORIS</text>
+</svg>
