@@ -1,0 +1,70 @@
+body.loft1325-mobile-room-active {
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+  background: #ffffff;
+  color: #0b0b0b;
+}
+
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_header_image {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_header_image h1,
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_header_image h2,
+body.loft1325-mobile-room-active h1,
+body.loft1325-mobile-room-active h2,
+body.loft1325-mobile-room-active h3 {
+  font-family: "Inter", "Helvetica Neue", sans-serif !important;
+  letter-spacing: 0.02em;
+}
+
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar {
+  background: #ffffff;
+  border: 1px solid #d7d7d7;
+  border-radius: 0;
+  padding: 10px;
+}
+
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar input,
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar select,
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar button,
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar a {
+  border-radius: 0 !important;
+}
+
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar .nd_booking_bg_orange,
+body.loft1325-mobile-room-active #nd_booking_single_cpt_1_calendar .nd_options_bg_orange,
+body.loft1325-mobile-room-active .nd_booking_bg_orange {
+  background-color: #0b0b0b !important;
+  color: #ffffff !important;
+}
+
+body.loft1325-mobile-room-active .nd_booking_border_1_solid_grey,
+body.loft1325-mobile-room-active .nd_booking_border_bottom_1_solid_grey,
+body.loft1325-mobile-room-active .nd_booking_border_top_1_solid_grey,
+body.loft1325-mobile-room-active .nd_booking_single_cpt_1_divider {
+  border-color: #e5e5e5 !important;
+}
+
+body.loft1325-mobile-room-active .nd_booking_width_33_percentage_responsive,
+body.loft1325-mobile-room-active .nd_booking_width_66_percentage_responsive,
+body.loft1325-mobile-room-active .nd_booking_width_100_percentage_responsive {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+@media (max-width: 767px) {
+  body.loft1325-mobile-room-active #nd_booking_single_cpt_1_header_image_space_top {
+    height: 80px !important;
+  }
+
+  body.loft1325-mobile-room-active #nd_booking_single_cpt_1_header_image_space_bottom {
+    height: 32px !important;
+  }
+
+  body.loft1325-mobile-room-active #nd_booking_single_cpt_1_header_image_tab ul {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

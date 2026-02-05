@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" role="img" aria-label="Bâton Rouge">
+  <rect width="320" height="160" rx="20" fill="#ffffff"/>
+  <text x="160" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#b71c1c">BÂTON ROUGE</text>
+  <text x="160" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#555555">Steakhouse &amp; Bar</text>
+</svg>

@@ -7,8 +7,28 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$locale   = get_locale();
+$language = strpos( $locale, 'en_' ) === 0 ? 'en' : 'fr';
+$strings  = array(
+    'search_title'           => $language === 'en' ? 'SEARCH' : 'RECHERCHER',
+    'dates_label'            => $language === 'en' ? 'DATES' : 'DATES',
+    'guests_label'           => $language === 'en' ? 'GUESTS' : 'CLIENTÈLE VOYAGEURS',
+    'adults_label'           => $language === 'en' ? 'Adults (Ages 18 or above)' : 'Adultes (18 ans ou plus)',
+    'children_label'         => $language === 'en' ? 'Children (Ages 0-17)' : 'Enfants (0-17 ans)',
+    'no_checkin'             => $language === 'en' ? 'No check-in' : "Pas d'enregistrement",
+    'no_checkout'            => $language === 'en' ? 'No check-out' : 'Pas de départ',
+    'summary_sub'            => $language === 'en' ? 'Excluding taxes and fees' : 'Hors taxes et frais',
+    'cta'                    => $language === 'en' ? 'SEARCH' : 'RECHERCHE',
+    'error_unavailable'      => $language === 'en' ? 'Selected dates include unavailable nights.' : 'Les dates choisies incluent des nuits indisponibles.',
+    'summary_template'       => $language === 'en' ? 'From %1$s CA$ total for %2$s nights' : 'A partir de %1$s $CA total pour %2$s nuits',
+    'summary_template_empty' => $language === 'en' ? 'From %1$s CA$ total for %2$s night' : 'A partir de %1$s $CA total pour %2$s nuit',
+    'month_label'            => $language === 'en' ? 'FEBRUARY 2026' : 'FÉVRIER 2026',
+    'next_month'             => $language === 'en' ? 'Next month' : 'Mois suivant',
+    'close'                  => $language === 'en' ? 'Close' : 'Fermer',
+);
+
 ?><!DOCTYPE html>
-<html lang="fr">
+<html lang="<?php echo esc_attr( $language ); ?>">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -188,6 +208,41 @@ defined( 'ABSPATH' ) || exit;
       line-height: 1.6;
     }
 
+    .restaurant-section {
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .restaurant-section h2 {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .restaurant-card {
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      min-height: 110px;
+    }
+
+    .restaurant-card img {
+      width: 100%;
+      height: auto;
+      max-height: 70px;
+      object-fit: contain;
+    }
+
     .rate-block {
       border-top: 1px solid var(--gray-200);
       padding-top: 12px;
@@ -262,15 +317,15 @@ defined( 'ABSPATH' ) || exit;
       background: var(--white);
       display: flex;
       flex-direction: column;
-      gap: 28px;
-      padding: 18px 18px 120px;
+      gap: 24px;
+      padding: 18px 18px 140px;
       overflow-y: auto;
     }
 
     .dates-modal__header {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: center;
       position: relative;
       padding-top: 6px;
     }
@@ -279,12 +334,11 @@ defined( 'ABSPATH' ) || exit;
       font-size: 16px;
       text-transform: uppercase;
       letter-spacing: 0.2em;
+      justify-self: center;
     }
 
     .dates-modal__header .icon-button {
-      position: absolute;
-      right: 0;
-      top: 0;
+      justify-self: end;
       border: none;
       font-size: 22px;
     }
@@ -302,12 +356,17 @@ defined( 'ABSPATH' ) || exit;
     }
 
     .dates-modal__month {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.08em;
+    }
+
+    .dates-modal__month-label {
+      justify-self: center;
+      text-align: center;
     }
 
     .dates-modal__chevron {
@@ -316,6 +375,7 @@ defined( 'ABSPATH' ) || exit;
       font-size: 28px;
       line-height: 1;
       color: var(--black);
+      justify-self: end;
     }
 
     .calendar {
@@ -337,14 +397,15 @@ defined( 'ABSPATH' ) || exit;
     }
 
     .calendar-day {
-      border: 1px solid transparent;
-      background: transparent;
-      min-height: 56px;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 4px;
+      padding: 6px;
       position: relative;
       font-size: 14px;
       color: var(--black);
@@ -353,6 +414,11 @@ defined( 'ABSPATH' ) || exit;
     .calendar-day.is-empty {
       border: none;
       background: transparent;
+    }
+
+    .calendar-day .day-number {
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .calendar-day .day-price {
@@ -369,18 +435,26 @@ defined( 'ABSPATH' ) || exit;
       color: var(--white);
     }
 
+    .calendar-day.is-start .day-price,
+    .calendar-day.is-end .day-price {
+      color: var(--white);
+    }
+
     .calendar-day.is-start,
     .calendar-day.is-end {
-      border: 2px solid var(--black);
-      background: var(--white);
-      color: var(--black);
+      background: var(--black);
+      color: var(--white);
       z-index: 1;
     }
 
     .calendar-day.is-start.is-range,
     .calendar-day.is-end.is-range {
-      background: var(--white);
-      color: var(--black);
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .calendar-day.is-active-end {
+      box-shadow: inset 0 0 0 2px var(--white);
     }
 
     .calendar-day.is-disabled {
@@ -396,27 +470,61 @@ defined( 'ABSPATH' ) || exit;
     .calendar-day.no-checkout::after {
       content: "";
       position: absolute;
-      width: 12px;
-      height: 12px;
-      border-top: 2px solid var(--gray-300);
-      border-right: 2px solid var(--gray-300);
-      top: 4px;
-      right: 6px;
-      transform: rotate(135deg);
+      width: 0;
+      height: 0;
+      border-top: 10px solid var(--gray-300);
+      border-right: 10px solid transparent;
+      top: 0;
+      left: 0;
+      opacity: 0.7;
     }
 
     .calendar-day.no-checkout::after {
+      border-top: 10px solid var(--gray-300);
+      border-right: 10px solid transparent;
       top: auto;
-      bottom: 4px;
-      right: 6px;
-      transform: rotate(-45deg);
+      left: auto;
+      bottom: 0;
+      right: 0;
+      transform: rotate(180deg);
     }
 
-    .calendar-day .soldout-mark {
+    .calendar-day.is-soldout::after {
+      content: "×";
       position: absolute;
-      font-size: 24px;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
       color: var(--gray-500);
-      opacity: 0.7;
+      opacity: 0.8;
+    }
+
+    .calendar-tooltip {
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--white);
+      border: 1px solid var(--black);
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      white-space: nowrap;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      z-index: 2;
+    }
+
+    .calendar-tooltip::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 6px 0;
+      border-style: solid;
+      border-color: var(--white) transparent transparent transparent;
     }
 
     .calendar-legend {
@@ -424,6 +532,10 @@ defined( 'ABSPATH' ) || exit;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       font-size: 12px;
+    }
+
+    .calendar-legend.is-hidden {
+      display: none;
     }
 
     .legend-item {
@@ -434,19 +546,13 @@ defined( 'ABSPATH' ) || exit;
       background: linear-gradient(135deg, transparent 45%, rgba(0, 0, 0, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, transparent 55%);
     }
 
-    .price-summary {
-      display: grid;
-      gap: 4px;
+    .legend-item.is-hidden {
+      display: none;
     }
 
-    .price-line {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .price-sub {
+    .calendar-error {
       font-size: 12px;
-      color: var(--gray-500);
+      color: #b91c1c;
     }
 
     .guests-section {
@@ -493,27 +599,46 @@ defined( 'ABSPATH' ) || exit;
       font-weight: 600;
     }
 
-    .dates-modal__sticky {
+    .dates-modal__footer {
       position: sticky;
       bottom: 0;
       background: var(--white);
       border-top: 1px solid var(--gray-200);
-      padding: 12px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      padding: 14px 0 10px;
+      display: grid;
+      gap: 10px;
     }
 
-    .dates-modal__caret {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--black);
+    .dates-modal__summary {
+      display: grid;
+      gap: 4px;
+    }
+
+    .dates-modal__summary-line {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .dates-modal__summary-sub {
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    .dates-modal__cta {
+      width: 100%;
+      border: none;
       background: var(--black);
       color: var(--white);
-      font-size: 16px;
-      line-height: 1;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .dates-modal__cta:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     @media (min-width: 768px) {
@@ -573,75 +698,117 @@ defined( 'ABSPATH' ) || exit;
       <button class="icon-button" type="button" aria-label="Filtrer">⚙</button>
     </section>
 
-    <section class="room-list">
-      <article class="room-card">
-        <img
-          src="/wp-content/uploads/2022/04/room01.jpg"
-          alt="Suite signature"
-        />
-        <div class="room-body">
-          <div>
-            <p class="room-title">Suite Signature</p>
-            <p class="room-meta">À partir de 340 $CA · par nuit</p>
-          </div>
-          <p class="room-features">
-            Lit King · 420 pieds carrés · Salle de bain marbre · Salon privé
-          </p>
-          <div class="rate-block">
-            <div class="rate-row">
-              <span>Tarif membre Loft Circle</span>
-              <strong>340 $CA</strong>
-            </div>
-            <button class="primary-button" type="button">Réserver maintenant</button>
-          </div>
-        </div>
-      </article>
+    <?php
+    $mobile_homepage = class_exists( 'Loft1325_Mobile_Homepage' ) ? Loft1325_Mobile_Homepage::instance() : null;
+    $room_cards      = $mobile_homepage ? $mobile_homepage->get_room_cards() : array();
+    $price_prefix    = 'en' === $language ? 'From' : 'À partir de';
+    $per_night       = 'en' === $language ? 'per night' : 'par nuit';
+    $room_button     = 'en' === $language ? 'Book now' : 'Réserver maintenant';
+    $member_label    = 'en' === $language ? 'Member rate' : 'Tarif membre Loft Circle';
+    ?>
 
-      <article class="room-card">
-        <img
-          src="/wp-content/uploads/2022/04/room05.jpg"
-          alt="Suite penthouse"
-        />
-        <div class="room-body">
-          <div>
-            <p class="room-title">Suite Penthouse</p>
-            <p class="room-meta">À partir de 454 $CA · par nuit</p>
-          </div>
-          <p class="room-features">
-            Terrasse privée · Vue sur le fleuve · Service majordome · 2 salles d'eau
-          </p>
-          <div class="rate-block">
-            <div class="rate-row">
-              <span>Tarif flexible</span>
-              <strong>454 $CA</strong>
+    <?php if ( ! empty( $room_cards ) ) : ?>
+      <section class="room-list">
+        <?php foreach ( $room_cards as $room ) : ?>
+          <article class="room-card">
+            <?php if ( ! empty( $room['image'] ) ) : ?>
+              <img
+                src="<?php echo esc_url( $room['image'] ); ?>"
+                alt="<?php echo esc_attr( $room['title'] ); ?>"
+              />
+            <?php endif; ?>
+            <div class="room-body">
+              <div>
+                <p class="room-title"><?php echo esc_html( $room['title'] ); ?></p>
+                <?php if ( '' !== $room['price'] ) : ?>
+                  <p class="room-meta">
+                    <?php
+                    printf(
+                        '%s %s %s · %s',
+                        esc_html( $price_prefix ),
+                        esc_html( number_format_i18n( (float) $room['price'] ) ),
+                        esc_html( $room['currency'] ? $room['currency'] : '$CA' ),
+                        esc_html( $per_night )
+                    );
+                    ?>
+                  </p>
+                <?php endif; ?>
+              </div>
+              <p class="room-features"><?php echo esc_html( $room['excerpt'] ); ?></p>
+              <div class="rate-block">
+                <div class="rate-row">
+                  <span><?php echo esc_html( $member_label ); ?></span>
+                  <?php if ( '' !== $room['price'] ) : ?>
+                    <strong>
+                      <?php
+                      printf(
+                          '%s %s',
+                          esc_html( number_format_i18n( (float) $room['price'] ) ),
+                          esc_html( $room['currency'] ? $room['currency'] : '$CA' )
+                      );
+                      ?>
+                    </strong>
+                  <?php endif; ?>
+                </div>
+                <a class="primary-button" href="<?php echo esc_url( $room['permalink'] ); ?>"><?php echo esc_html( $room_button ); ?></a>
+              </div>
             </div>
-            <button class="primary-button" type="button">Réserver maintenant</button>
-          </div>
-        </div>
-      </article>
+          </article>
+        <?php endforeach; ?>
+      </section>
+    <?php endif; ?>
 
-      <article class="room-card">
-        <img
-          src="/wp-content/uploads/2022/04/room06.jpg"
-          alt="Loft atelier"
-        />
-        <div class="room-body">
-          <div>
-            <p class="room-title">Loft Atelier</p>
-            <p class="room-meta">À partir de 523 $CA · par nuit</p>
+    <?php
+    $restaurant_logos = array(
+        array(
+            'name'    => "L'oeufrier",
+            'file'    => 'oeufrier.svg',
+            'setting' => 'restaurant_logo_1',
+        ),
+        array(
+            'name'    => 'Fiesta',
+            'file'    => 'fiesta.svg',
+            'setting' => 'restaurant_logo_2',
+        ),
+        array(
+            'name'    => 'Toukiparc',
+            'file'    => 'toukiparc.svg',
+            'setting' => 'restaurant_logo_3',
+        ),
+        array(
+            'name'    => 'Bâton Rouge',
+            'file'    => 'baton-rouge.svg',
+            'setting' => 'restaurant_logo_4',
+        ),
+        array(
+            'name'    => 'Chocolats Favoris',
+            'file'    => 'chocolats-favoris.svg',
+            'setting' => 'restaurant_logo_5',
+        ),
+    );
+    ?>
+
+    <section class="restaurant-section">
+      <h2><?php echo esc_html( 'en' === $language ? 'Restaurants' : 'Restaurants' ); ?></h2>
+      <div class="restaurant-grid">
+        <?php foreach ( $restaurant_logos as $restaurant ) : ?>
+          <div class="restaurant-card">
+            <?php
+            $restaurant_logo_id  = (int) get_theme_mod( 'loft1325_mobile_home_' . $restaurant['setting'], 0 );
+            $restaurant_logo_url = $restaurant_logo_id ? wp_get_attachment_image_url( $restaurant_logo_id, 'medium' ) : '';
+
+            if ( ! $restaurant_logo_url ) {
+                $restaurant_logo_url = plugin_dir_url( dirname( __FILE__ ) ) . 'assets/images/restaurants/' . $restaurant['file'];
+            }
+            ?>
+            <img
+              src="<?php echo esc_url( $restaurant_logo_url ); ?>"
+              alt="<?php echo esc_attr( $restaurant['name'] ); ?>"
+              loading="lazy"
+            />
           </div>
-          <p class="room-features">
-            Plafonds 14 pieds · Bar discret · Accès galerie · Accueil privé
-          </p>
-          <div class="rate-block">
-            <div class="rate-row">
-              <span>Forfait coeur à coeur</span>
-              <strong>523 $CA</strong>
-            </div>
-            <button class="primary-button" type="button">Réserver maintenant</button>
-          </div>
-        </div>
-      </article>
+        <?php endforeach; ?>
+      </div>
     </section>
 
     <section class="sticky-bar">
@@ -656,46 +823,54 @@ defined( 'ABSPATH' ) || exit;
   <div class="modal dates-modal" id="searchModal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
       <div class="dates-modal__header">
-        <h2 id="searchTitle">SEARCH</h2>
-        <button class="icon-button" type="button" id="closeModal" aria-label="Fermer">×</button>
+        <span></span>
+        <h2 id="searchTitle"><?php echo esc_html( $strings['search_title'] ); ?></h2>
+        <button class="icon-button" type="button" id="closeModal" aria-label="<?php echo esc_attr( $strings['close'] ); ?>">×</button>
       </div>
 
       <section class="dates-modal__section">
-        <div class="dates-modal__section-title">DATES</div>
+        <div class="dates-modal__section-title"><?php echo esc_html( $strings['dates_label'] ); ?></div>
         <div class="dates-modal__month">
-          <span id="calendarMonthLabel">FEBRUARY 2026</span>
-          <button class="dates-modal__chevron" type="button" id="nextMonth" aria-label="Mois suivant">›</button>
+          <span></span>
+          <span class="dates-modal__month-label" id="calendarMonthLabel"><?php echo esc_html( $strings['month_label'] ); ?></span>
+          <button class="dates-modal__chevron" type="button" id="nextMonth" aria-label="<?php echo esc_attr( $strings['next_month'] ); ?>">›</button>
         </div>
 
         <div class="calendar">
           <div class="calendar-weekdays">
-            <span>S</span>
-            <span>M</span>
-            <span>T</span>
-            <span>W</span>
-            <span>T</span>
-            <span>F</span>
-            <span>S</span>
+            <?php if ( 'en' === $language ) : ?>
+              <span>M</span>
+              <span>T</span>
+              <span>W</span>
+              <span>T</span>
+              <span>F</span>
+              <span>S</span>
+              <span>S</span>
+            <?php else : ?>
+              <span>L</span>
+              <span>M</span>
+              <span>M</span>
+              <span>J</span>
+              <span>V</span>
+              <span>S</span>
+              <span>D</span>
+            <?php endif; ?>
           </div>
           <div class="calendar-grid" id="calendarGrid"></div>
         </div>
 
-        <div class="calendar-legend">
-          <span class="legend-item legend-checkin">No Check-in</span>
-          <span class="legend-item legend-checkout">No Check-out</span>
+        <div class="calendar-legend" id="calendarLegend">
+          <span class="legend-item legend-checkin"><?php echo esc_html( $strings['no_checkin'] ); ?></span>
+          <span class="legend-item legend-checkout"><?php echo esc_html( $strings['no_checkout'] ); ?></span>
         </div>
-
-        <div class="price-summary">
-          <p class="price-line" id="priceSummary">From CA$237 total for 1 night</p>
-          <p class="price-sub">Excluding taxes and fees</p>
-        </div>
+        <p class="calendar-error" id="calendarError" hidden><?php echo esc_html( $strings['error_unavailable'] ); ?></p>
       </section>
 
       <section class="dates-modal__section guests-section">
-        <div class="dates-modal__section-title">GUESTS</div>
+        <div class="dates-modal__section-title"><?php echo esc_html( $strings['guests_label'] ); ?></div>
         <div class="guest-card">
           <div>
-            <p class="guest-title">Adults (Ages 18 or above)</p>
+            <p class="guest-title"><?php echo esc_html( $strings['adults_label'] ); ?></p>
             <p class="guest-sub"> </p>
           </div>
           <div class="counter" data-target="adultCount">
@@ -706,7 +881,7 @@ defined( 'ABSPATH' ) || exit;
         </div>
         <div class="guest-card">
           <div>
-            <p class="guest-title">Children (Ages 0-17)</p>
+            <p class="guest-title"><?php echo esc_html( $strings['children_label'] ); ?></p>
             <p class="guest-sub"> </p>
           </div>
           <div class="counter" data-target="childCount">
@@ -717,12 +892,12 @@ defined( 'ABSPATH' ) || exit;
         </div>
       </section>
 
-      <div class="dates-modal__sticky">
-        <div>
-          <p class="sticky-price" id="modalStickyPrice">CA$237.00</p>
-          <p class="sticky-note">You have found the best price!</p>
+      <div class="dates-modal__footer">
+        <div class="dates-modal__summary">
+          <p class="dates-modal__summary-line" id="priceSummary"></p>
+          <p class="dates-modal__summary-sub"><?php echo esc_html( $strings['summary_sub'] ); ?></p>
         </div>
-        <button class="dates-modal__caret" type="button" aria-label="Collapse">⌃</button>
+        <button class="dates-modal__cta" type="button" id="modalSearchButton" disabled><?php echo esc_html( $strings['cta'] ); ?></button>
       </div>
     </div>
   </div>
@@ -739,31 +914,124 @@ defined( 'ABSPATH' ) || exit;
     const calendarMonthLabel = document.getElementById('calendarMonthLabel');
     const nextMonthButton = document.getElementById('nextMonth');
     const priceSummary = document.getElementById('priceSummary');
-    const modalStickyPrice = document.getElementById('modalStickyPrice');
+    const calendarLegend = document.getElementById('calendarLegend');
+    const calendarError = document.getElementById('calendarError');
+    const modalSearchButton = document.getElementById('modalSearchButton');
 
     const adultCount = document.getElementById('adultCount');
     const childCount = document.getElementById('childCount');
+
+    const uiCopy = <?php echo wp_json_encode( $strings ); ?>;
+    const language = document.documentElement.lang === 'en' ? 'en' : 'fr';
 
     const TOTAL_UNITS = 22;
     const state = {
       selectedStart: null,
       selectedEnd: null,
+      activeEnd: null,
       currentMonth: startOfMonth(new Date()),
       ratesCache: new Map(),
       occupancyCache: new Map(),
-      restrictionsCache: new Map()
+      restrictionsCache: new Map(),
+      tooltipDate: null
+    };
+
+    // Configurable pricing engine inputs (single object for revenue rules + guardrails).
+    const pricingConfig = {
+      baseRate: 240,
+      minRate: 180,
+      maxRate: 850,
+      dayOfWeekMultipliers: {
+        0: 1.08,
+        1: 1.0,
+        2: 1.0,
+        3: 1.0,
+        4: 1.05,
+        5: 1.12,
+        6: 1.15
+      },
+      seasonalMultipliers: [
+        { startMonth: 5, endMonth: 8, multiplier: 1.12 },
+        { startMonth: 11, endMonth: 11, multiplier: 1.18 }
+      ],
+      leadTime: {
+        long: { threshold: 30, multiplier: 1.04 },
+        short: { threshold: 7, highOcc: 1.12, lowOcc: 0.9 }
+      },
+      occupancyTargets: {
+        high: 0.7,
+        peak: 0.85
+      },
+      occupancyMultipliers: {
+        high: 1.08,
+        peak: 1.18
+      },
+      specialEventMultipliers: {},
+      rounding: {
+        strategy: 'psychological',
+        endings: [4, 9]
+      },
+      losDiscount: {
+        enabled: false,
+        minNights: 3,
+        multiplier: 0.95
+      }
     };
 
     function formatDate(dateValue) {
       if (!dateValue) return '';
-      return dateValue.toLocaleDateString('fr-CA', {
+      return dateValue.toLocaleDateString(language === 'en' ? 'en-CA' : 'fr-CA', {
         month: 'short',
         day: '2-digit'
       });
     }
 
     function formatCurrency(value) {
-      return `CA$${value.toFixed(0)}`;
+      return `${value.toFixed(0)}`;
+    }
+
+    function formatTooltip(value) {
+      const rounded = formatCurrency(value);
+      return language === 'en' ? `CA$${rounded}` : `${rounded} $CA`;
+    }
+
+    function setTooltipDate(iso) {
+      state.tooltipDate = iso;
+    }
+
+    function clearTooltip() {
+      state.tooltipDate = null;
+    }
+
+    function showCalendarError() {
+      if (calendarError) {
+        calendarError.removeAttribute('hidden');
+      }
+    }
+
+    function hideCalendarError() {
+      if (calendarError) {
+        calendarError.setAttribute('hidden', 'hidden');
+      }
+    }
+
+    function updateLegendVisibility(restrictions, monthStart, monthEnd) {
+      if (!calendarLegend) return;
+      let hasCheckIn = false;
+      let hasCheckOut = false;
+      const cursor = new Date(monthStart);
+      while (cursor <= monthEnd) {
+        const restriction = restrictions[toISODate(cursor)];
+        if (restriction?.noCheckIn) hasCheckIn = true;
+        if (restriction?.noCheckOut) hasCheckOut = true;
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      calendarLegend.classList.toggle('is-hidden', !(hasCheckIn || hasCheckOut));
+      const items = calendarLegend.querySelectorAll('.legend-item');
+      if (items.length >= 2) {
+        items[0].classList.toggle('is-hidden', !hasCheckIn);
+        items[1].classList.toggle('is-hidden', !hasCheckOut);
+      }
     }
 
     function toISODate(date) {
@@ -801,10 +1069,15 @@ defined( 'ABSPATH' ) || exit;
     }
 
     function updateSummary() {
-      const arrival = state.selectedStart ? formatDate(state.selectedStart) : '19 févr.';
-      const depart = state.selectedEnd ? formatDate(state.selectedEnd) : '21 févr.';
+      const arrival = state.selectedStart ? formatDate(state.selectedStart) : '--';
+      const depart = state.selectedEnd ? formatDate(state.selectedEnd) : '--';
       dateSummary.textContent = `${arrival} · ${depart}`;
-      guestSummary.textContent = `${adultCount.textContent} adultes · ${childCount.textContent} enfant`;
+      if (language === 'en') {
+        guestSummary.textContent = `${adultCount.textContent} adults · ${childCount.textContent} children`;
+      } else {
+        const childLabel = Number(childCount.textContent) > 1 ? 'enfants' : 'enfant';
+        guestSummary.textContent = `${adultCount.textContent} adultes · ${childCount.textContent} ${childLabel}`;
+      }
     }
 
     function openModal() {
@@ -820,7 +1093,7 @@ defined( 'ABSPATH' ) || exit;
     }
 
     function getMonthLabel(date) {
-      return date.toLocaleDateString('en-US', {
+      return date.toLocaleDateString(language === 'en' ? 'en-CA' : 'fr-CA', {
         month: 'long',
         year: 'numeric'
       }).toUpperCase();
@@ -828,18 +1101,6 @@ defined( 'ABSPATH' ) || exit;
 
     function getMonthKey(start, end, guests) {
       return `${toISODate(start)}_${toISODate(end)}_${guests}`;
-    }
-
-    function mockRatesForRange(start, end) {
-      const data = {};
-      const cursor = new Date(start);
-      while (cursor <= end) {
-        const base = 220 + (cursor.getMonth() + 1) * 7;
-        const price = base + (cursor.getDate() % 8) * 18;
-        data[toISODate(cursor)] = price;
-        cursor.setDate(cursor.getDate() + 1);
-      }
-      return data;
     }
 
     function mockOccupancyForRange(start, end) {
@@ -869,16 +1130,84 @@ defined( 'ABSPATH' ) || exit;
       return data;
     }
 
-    async function getDailyRates(monthStart, monthEnd, guestCount, promoCode) {
+    function getSeasonalMultiplier(date) {
+      const month = date.getMonth();
+      const seasonal = pricingConfig.seasonalMultipliers.find((entry) => {
+        if (entry.startMonth <= entry.endMonth) {
+          return month >= entry.startMonth && month <= entry.endMonth;
+        }
+        return month >= entry.startMonth || month <= entry.endMonth;
+      });
+      return seasonal ? seasonal.multiplier : 1;
+    }
+
+    function applyPsychologicalRounding(value) {
+      const base = Math.floor(value / 10) * 10;
+      const candidates = pricingConfig.rounding.endings.map((ending) => base + ending);
+      candidates.push(base + 10 + pricingConfig.rounding.endings[0]);
+      return candidates.reduce((closest, candidate) => {
+        return Math.abs(candidate - value) < Math.abs(closest - value) ? candidate : closest;
+      }, candidates[0]);
+    }
+
+    function nightlyRate(date, options) {
+      const dowMultiplier = pricingConfig.dayOfWeekMultipliers[date.getDay()] || 1;
+      const seasonalMultiplier = getSeasonalMultiplier(date);
+      let rate = pricingConfig.baseRate * dowMultiplier * seasonalMultiplier;
+
+      if (options.specialEventMultiplier) {
+        rate *= options.specialEventMultiplier;
+      }
+
+      if (options.leadTimeDays > pricingConfig.leadTime.long.threshold) {
+        rate *= pricingConfig.leadTime.long.multiplier;
+      } else if (options.leadTimeDays < pricingConfig.leadTime.short.threshold) {
+        if (options.occupancyPercent >= pricingConfig.occupancyTargets.high) {
+          rate *= pricingConfig.leadTime.short.highOcc;
+        } else if (options.occupancyPercent < 0.35) {
+          rate *= pricingConfig.leadTime.short.lowOcc;
+        }
+      }
+
+      if (options.occupancyPercent >= pricingConfig.occupancyTargets.peak) {
+        rate *= pricingConfig.occupancyMultipliers.peak;
+      } else if (options.occupancyPercent >= pricingConfig.occupancyTargets.high) {
+        rate *= pricingConfig.occupancyMultipliers.high;
+      }
+
+      if (options.pickupVelocity && options.pickupVelocity > 1) {
+        rate *= Math.min(1.05 + (options.pickupVelocity - 1) * 0.02, 1.12);
+      }
+
+      rate = Math.max(pricingConfig.minRate, Math.min(pricingConfig.maxRate, rate));
+      rate = applyPsychologicalRounding(rate);
+      return Math.round(rate);
+    }
+
+    async function getDailyRates(monthStart, monthEnd, guestCount, promoCode, occupancyByDate) {
       const key = getMonthKey(monthStart, monthEnd, guestCount);
       if (state.ratesCache.has(key)) {
         return state.ratesCache.get(key);
       }
 
-      // TODO: Replace with real rates endpoint.
-      // Example: const response = await fetch(`/api/rates?start=${toISODate(monthStart)}&end=${toISODate(monthEnd)}&guests=${guestCount}&promo=${promoCode || ''}`);
-      // const data = await response.json();
-      const data = mockRatesForRange(monthStart, monthEnd);
+      const data = {};
+      const cursor = new Date(monthStart);
+      const today = new Date();
+      const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      while (cursor <= monthEnd) {
+        const iso = toISODate(cursor);
+        const occupiedUnits = occupancyByDate[iso] ?? 0;
+        const occupancyPercent = TOTAL_UNITS ? occupiedUnits / TOTAL_UNITS : 0;
+        const leadTimeDays = Math.max(0, Math.ceil((cursor - todayMidnight) / 86400000));
+        const specialEventMultiplier = pricingConfig.specialEventMultipliers[iso] || null;
+        data[iso] = nightlyRate(cursor, {
+          leadTimeDays,
+          occupancyPercent,
+          pickupVelocity: null,
+          specialEventMultiplier
+        });
+        cursor.setDate(cursor.getDate() + 1);
+      }
       state.ratesCache.set(key, data);
       return data;
     }
@@ -890,7 +1219,7 @@ defined( 'ABSPATH' ) || exit;
       }
 
       // TODO: Replace with Butterfly adapter call.
-      // Example: const response = await fetch(`/api/butterfly/occupancy?start=${toISODate(startDate)}&end=${toISODate(endDate)}`);
+      // Example: const response = await fetch(`/wp-json/loft-booking/v1/occupancy?start=${toISODate(startDate)}&end=${toISODate(endDate)}`);
       // const data = await response.json();
       const data = mockOccupancyForRange(startDate, endDate);
       state.occupancyCache.set(key, data);
@@ -916,11 +1245,13 @@ defined( 'ABSPATH' ) || exit;
       const nextEnd = endOfMonth(nextStart);
       const guests = Number(adultCount.textContent) + Number(childCount.textContent);
 
-      await Promise.all([
-        getDailyRates(monthStart, monthEnd, guests),
-        getDailyRates(nextStart, nextEnd, guests),
+      const [occupancy, restrictions] = await Promise.all([
         getOccupancyByDateRange(monthStart, nextEnd),
         getRestrictionsByDateRange(monthStart, nextEnd)
+      ]);
+      await Promise.all([
+        getDailyRates(monthStart, monthEnd, guests, null, occupancy),
+        getDailyRates(nextStart, nextEnd, guests, null, occupancy)
       ]);
     }
 
@@ -929,17 +1260,25 @@ defined( 'ABSPATH' ) || exit;
       const monthEnd = endOfMonth(monthStart);
       const guests = Number(adultCount.textContent) + Number(childCount.textContent);
 
-      const [rates, occupancy, restrictions] = await Promise.all([
-        getDailyRates(monthStart, monthEnd, guests),
+      const [occupancy, restrictions] = await Promise.all([
         getOccupancyByDateRange(monthStart, monthEnd),
         getRestrictionsByDateRange(monthStart, monthEnd)
       ]);
+      const rates = await getDailyRates(monthStart, monthEnd, guests, null, occupancy);
 
       calendarMonthLabel.textContent = getMonthLabel(monthStart);
       calendarGrid.innerHTML = '';
+      hideCalendarError();
+      if (state.tooltipDate) {
+        const tooltipDate = new Date(state.tooltipDate);
+        if (tooltipDate < monthStart || tooltipDate > monthEnd) {
+          clearTooltip();
+        }
+      }
 
       const firstDay = monthStart.getDay();
-      for (let i = 0; i < firstDay; i += 1) {
+      const mondayStartOffset = (firstDay + 6) % 7;
+      for (let i = 0; i < mondayStartOffset; i += 1) {
         const emptyCell = document.createElement('div');
         emptyCell.className = 'calendar-day is-empty';
         calendarGrid.appendChild(emptyCell);
@@ -957,11 +1296,15 @@ defined( 'ABSPATH' ) || exit;
         const soldOut = occupiedUnits >= TOTAL_UNITS;
         const isPast = date < todayMidnight;
         const isDisabled = soldOut || isPast;
+        const isActiveEnd =
+          (state.activeEnd === 'start' && isSameDay(date, state.selectedStart)) ||
+          (state.activeEnd === 'end' && isSameDay(date, state.selectedEnd));
 
         const cell = document.createElement('button');
         cell.type = 'button';
         cell.className = 'calendar-day';
         cell.dataset.date = iso;
+        cell.dataset.price = price || '';
 
         if (restriction.noCheckIn) {
           cell.classList.add('no-checkin');
@@ -975,6 +1318,7 @@ defined( 'ABSPATH' ) || exit;
         if (isDisabled) {
           cell.classList.add('is-disabled');
         }
+        cell.disabled = isDisabled;
         if (isSameDay(date, state.selectedStart)) {
           cell.classList.add('is-start');
         }
@@ -983,6 +1327,9 @@ defined( 'ABSPATH' ) || exit;
         }
         if (isBetween(date, state.selectedStart, state.selectedEnd)) {
           cell.classList.add('is-range');
+        }
+        if (isActiveEnd) {
+          cell.classList.add('is-active-end');
         }
 
         const dayNumber = document.createElement('span');
@@ -997,36 +1344,55 @@ defined( 'ABSPATH' ) || exit;
           dayPrice.textContent = '';
         }
 
-        const soldOutMark = document.createElement('span');
-        soldOutMark.className = 'soldout-mark';
-        if (soldOut && date >= todayMidnight) {
-          soldOutMark.textContent = '×';
+        cell.append(dayNumber, dayPrice);
+
+        if (state.tooltipDate === iso && price) {
+          const tooltip = document.createElement('div');
+          tooltip.className = 'calendar-tooltip';
+          tooltip.textContent = formatTooltip(price);
+          cell.appendChild(tooltip);
         }
 
-        cell.append(dayNumber, dayPrice, soldOutMark);
-
         if (!isDisabled) {
-          cell.addEventListener('click', () => handleDateClick(date, restriction));
+          cell.addEventListener('click', () => {
+            setTooltipDate(iso);
+            handleDateClick(date, restriction);
+          });
         }
 
         calendarGrid.appendChild(cell);
       }
 
       updatePriceSummary(rates);
+      updateLegendVisibility(restrictions, monthStart, monthEnd);
     }
 
     function updatePriceSummary(rates) {
-      let price = null;
-      if (state.selectedStart) {
-        price = rates[toISODate(state.selectedStart)];
-      }
-      if (!price) {
+      let total = 0;
+      let nights = 0;
+      if (state.selectedStart && state.selectedEnd) {
+        const nightsArray = daysBetween(state.selectedStart, new Date(state.selectedEnd.getTime() - 86400000));
+        nights = nightsArray.length;
+        total = nightsArray.reduce((sum, date) => {
+          const price = rates[toISODate(date)] || 0;
+          return sum + price;
+        }, 0);
+        if (pricingConfig.losDiscount.enabled && nights >= pricingConfig.losDiscount.minNights) {
+          // Enable only after validating conversion impact; defaults OFF.
+          total = Math.round(total * pricingConfig.losDiscount.multiplier);
+        }
+      } else {
         const values = Object.values(rates).filter(Boolean);
-        price = values.length ? Math.min(...values) : 0;
+        total = values.length ? Math.min(...values) : 0;
+        nights = 1;
       }
-      const formatted = formatCurrency(price || 0);
-      priceSummary.textContent = `From ${formatted} total for 1 night`;
-      modalStickyPrice.textContent = `${formatted}.00`;
+      const formatted = formatCurrency(total || 0);
+      if (nights === 1) {
+        priceSummary.textContent = uiCopy.summary_template_empty.replace('%1$s', formatted).replace('%2$s', nights);
+      } else {
+        priceSummary.textContent = uiCopy.summary_template.replace('%1$s', formatted).replace('%2$s', nights);
+      }
+      modalSearchButton.disabled = !(state.selectedStart && state.selectedEnd);
     }
 
     function isRangeAvailable(start, end, occupancy, restrictions) {
@@ -1048,26 +1414,45 @@ defined( 'ABSPATH' ) || exit;
       const occupancy = await getOccupancyByDateRange(monthStart, monthEnd);
       const restrictions = await getRestrictionsByDateRange(monthStart, monthEnd);
 
+      hideCalendarError();
+
       if (!state.selectedStart || (state.selectedStart && state.selectedEnd)) {
         if (restriction.noCheckIn) return;
         state.selectedStart = date;
         state.selectedEnd = null;
+        state.activeEnd = 'start';
       } else if (state.selectedStart && !state.selectedEnd) {
-        if (date <= state.selectedStart) {
-          if (restriction.noCheckIn) return;
-          state.selectedStart = date;
-          state.selectedEnd = null;
-        } else {
-          const rangeOk = isRangeAvailable(state.selectedStart, date, occupancy, restrictions);
-          if (!rangeOk) {
-            state.selectedStart = date;
-            state.selectedEnd = null;
-          } else {
-            const endRestriction = restrictions[toISODate(date)] || { noCheckOut: false };
-            if (endRestriction.noCheckOut) return;
-            state.selectedEnd = date;
-          }
+        let start = state.selectedStart;
+        let end = date;
+        if (end.getTime() === start.getTime()) {
+          state.activeEnd = 'start';
+          renderCalendar();
+          return;
         }
+        if (end < start) {
+          const temp = start;
+          start = end;
+          end = temp;
+        }
+
+        const startRestriction = restrictions[toISODate(start)] || { noCheckIn: false };
+        const endRestriction = restrictions[toISODate(end)] || { noCheckOut: false };
+        if (startRestriction.noCheckIn || endRestriction.noCheckOut) {
+          showCalendarError();
+          renderCalendar();
+          return;
+        }
+
+        const rangeOk = isRangeAvailable(start, end, occupancy, restrictions);
+        if (!rangeOk) {
+          showCalendarError();
+          renderCalendar();
+          return;
+        }
+
+        state.selectedStart = start;
+        state.selectedEnd = end;
+        state.activeEnd = 'end';
       }
       updateSummary();
       renderCalendar();
