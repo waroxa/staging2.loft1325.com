@@ -804,6 +804,48 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
             $params[] = '%' . $wpdb->esc_like($requested_type) . '%';
         }
 
+        if (null !== $debug) {
+            $total_units = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$units_table}");
+            $total_available = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$units_table} WHERE LOWER(status) = 'available'");
+            $debug[] = sprintf('Units total: %d (available: %d).', $total_units, $total_available);
+
+            if ($requested_type !== '') {
+                $matching_total = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(*) FROM {$units_table} WHERE UPPER(unit_name) LIKE %s",
+                        '%' . $wpdb->esc_like($requested_type) . '%'
+                    )
+                );
+                $matching_available = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(*) FROM {$units_table} WHERE UPPER(unit_name) LIKE %s AND LOWER(status) = 'available'",
+                        '%' . $wpdb->esc_like($requested_type) . '%'
+                    )
+                );
+                $debug[] = sprintf(
+                    'Units matching type "%s": %d (available: %d).',
+                    $requested_type,
+                    $matching_total,
+                    $matching_available
+                );
+
+                $status_rows = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT LOWER(status) AS status, COUNT(*) AS count FROM {$units_table} WHERE UPPER(unit_name) LIKE %s GROUP BY LOWER(status) ORDER BY count DESC",
+                        '%' . $wpdb->esc_like($requested_type) . '%'
+                    ),
+                    ARRAY_A
+                );
+                if (!empty($status_rows)) {
+                    $parts = [];
+                    foreach ($status_rows as $row) {
+                        $parts[] = sprintf('%s=%d', $row['status'] !== '' ? $row['status'] : '(empty)', (int) $row['count']);
+                    }
+                    $debug[] = sprintf('Status breakdown for type "%s": %s.', $requested_type, implode(', ', $parts));
+                }
+            }
+        }
+
         $sql = "SELECT id, unit_name, unit_id_api FROM {$units_table} WHERE " . implode(' AND ', $where) . ' ORDER BY unit_name ASC';
         $units = empty($params) ? $wpdb->get_results($sql, ARRAY_A) : $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
 
@@ -812,6 +854,25 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
         }
 
         if (empty($units)) {
+            if (null !== $debug && $requested_type !== '') {
+                $samples = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT unit_name, status, unit_id_api FROM {$units_table} WHERE UPPER(unit_name) LIKE %s ORDER BY unit_name ASC LIMIT 5",
+                        '%' . $wpdb->esc_like($requested_type) . '%'
+                    ),
+                    ARRAY_A
+                );
+                if (!empty($samples)) {
+                    foreach ($samples as $sample) {
+                        $debug[] = sprintf(
+                            'Sample unit: %s (status=%s, api_id=%s).',
+                            (string) ($sample['unit_name'] ?? 'n/a'),
+                            (string) ($sample['status'] ?? 'n/a'),
+                            (string) ($sample['unit_id_api'] ?? 'n/a')
+                        );
+                    }
+                }
+            }
             return new WP_Error('loft_checkout_unavailable', 'this room is no longer available for the selected dates.');
         }
 
