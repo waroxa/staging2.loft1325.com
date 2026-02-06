@@ -101,6 +101,25 @@ $strings  = array(
       color: var(--black);
     }
 
+    .language-toggle {
+      width: auto;
+      min-width: 78px;
+      padding: 0 10px;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .language-toggle__label {
+      opacity: 0.45;
+    }
+
+    .language-toggle__label.is-active {
+      opacity: 1;
+    }
+
     .hero {
       padding: 20px;
       background: var(--gray-100);
@@ -118,6 +137,22 @@ $strings  = array(
     .hero p {
       font-size: 14px;
       color: var(--gray-500);
+    }
+
+    .hero-tagline {
+      font-family: "Playfair Display", serif;
+      font-size: 27px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .hero-copy {
+      font-size: 14px;
+      color: var(--gray-500);
+      max-width: 330px;
     }
 
     .search-panel {
@@ -145,27 +180,6 @@ $strings  = array(
     .search-tile strong {
       font-size: 15px;
       letter-spacing: 0.03em;
-    }
-
-    .filters {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--gray-200);
-    }
-
-    .filters label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-    }
-
-    .filters input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--black);
     }
 
     .room-list {
@@ -671,13 +685,18 @@ $strings  = array(
           sizes="(max-width: 430px) 180px, 220px"
           alt="Lofts 1325"
         />
-        <button class="icon-button" type="button" aria-label="Accéder au profil">⋯</button>
+        <button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="Changer la langue">
+          <span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span>
+          <span>·</span>
+          <span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
+        </button>
       </div>
     </header>
 
     <section class="hero">
       <h1>Sélectionner une chambre</h1>
-      <p>Mobile-only, noir &amp; blanc, avec réservation intégrée.</p>
+      <p class="hero-tagline"><?php echo 'en' === $language ? 'VIRTUAL HOTEL<br />EXPERIENCE' : 'EXPÉRIENCE HÔTELIÈRE<br />100 % VIRTUELLE'; ?></p>
+      <p class="hero-copy"><?php echo 'en' === $language ? 'Enjoy the comfort of home with a hotel experience, and manage everything from your phone.' : "Le confort d'une maison avec l'expérience hôtelière, gérez tout depuis votre mobile."; ?></p>
       <div class="search-panel">
         <button class="search-tile" id="openSearch" type="button">
           <span>Dates</span>
@@ -688,14 +707,6 @@ $strings  = array(
           <strong id="guestSummary">2 adultes · 0 enfant</strong>
         </button>
       </div>
-    </section>
-
-    <section class="filters">
-      <label>
-        <input type="checkbox" checked />
-        Utiliser les points
-      </label>
-      <button class="icon-button" type="button" aria-label="Filtrer">⚙</button>
     </section>
 
     <?php
@@ -934,6 +945,7 @@ $strings  = array(
     const calendarLegend = document.getElementById('calendarLegend');
     const calendarError = document.getElementById('calendarError');
     const modalSearchButton = document.getElementById('modalSearchButton');
+    const headerLanguageToggle = document.getElementById('headerLanguageToggle');
 
     const adultCount = document.getElementById('adultCount');
     const childCount = document.getElementById('childCount');
@@ -1049,6 +1061,48 @@ $strings  = array(
         items[0].classList.toggle('is-hidden', !hasCheckIn);
         items[1].classList.toggle('is-hidden', !hasCheckOut);
       }
+    }
+
+
+    function getLanguageUrl(targetLanguage) {
+      const switcherLinks = document.querySelectorAll('#trp-floater-ls-language-list a[href], .trp-language-switcher-container a[href]');
+      for (const link of switcherLinks) {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') {
+          continue;
+        }
+
+        try {
+          const url = new URL(href, window.location.origin);
+          const pathSegments = url.pathname.replace(/^\/+/, '').split('/');
+          const firstSegment = (pathSegments[0] || '').toLowerCase();
+
+          if (targetLanguage === 'en' && firstSegment === 'en') {
+            return url.toString();
+          }
+
+          if (targetLanguage === 'fr' && firstSegment !== 'en') {
+            return url.toString();
+          }
+        } catch (error) {
+          continue;
+        }
+      }
+
+      const fallbackUrl = new URL(window.location.href);
+      const segments = fallbackUrl.pathname.replace(/^\/+/, '').split('/').filter(Boolean);
+
+      if (targetLanguage === 'en') {
+        if (segments[0] !== 'en') {
+          segments.unshift('en');
+        }
+      } else if (segments[0] === 'en') {
+        segments.shift();
+      }
+
+      fallbackUrl.pathname = `/${segments.join('/')}${segments.length ? '/' : ''}`;
+
+      return fallbackUrl.toString();
     }
 
     function toISODate(date) {
@@ -1484,6 +1538,14 @@ $strings  = array(
         closeModalView();
       }
     });
+
+
+    if (headerLanguageToggle) {
+      headerLanguageToggle.addEventListener('click', () => {
+        const targetLanguage = language === 'en' ? 'fr' : 'en';
+        window.location.href = getLanguageUrl(targetLanguage);
+      });
+    }
 
     nextMonthButton.addEventListener('click', () => {
       state.currentMonth = addMonths(state.currentMonth, 1);
