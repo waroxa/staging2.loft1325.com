@@ -4,6 +4,7 @@ defined('ABSPATH') || exit;
 add_action('admin_init', 'wp_loft_booking_handle_bulk_receipts');
 add_action('admin_init', 'wp_loft_booking_handle_booking_actions');
 add_action('wp_ajax_wplb_admin_price_preview', 'wp_loft_booking_admin_price_preview');
+add_action('wp_ajax_wplb_admin_key_availability_check', 'wp_loft_booking_admin_key_availability_check');
 
 function wp_loft_booking_bookings_page() {
     global $wpdb;
@@ -169,6 +170,73 @@ function wp_loft_booking_bookings_page() {
             </table>
             <p><button type="submit" class="button button-primary">Run test checkout</button></p>
         </form>
+
+
+        <h2>Key availability tester</h2>
+        <p>Admin test tool: check whether a room type still has a safe available loft/key window for selected dates (before charging).</p>
+        <table class="form-table" role="presentation" id="wplb-key-availability-tool" style="margin-bottom:24px;">
+            <tr>
+                <th scope="row"><label for="wplb_key_room_type">Room type</label></th>
+                <td>
+                    <input type="text" id="wplb_key_room_type" class="regular-text" placeholder="SIMPLE / DOUBLE / PENTHOUSE" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="wplb_key_checkin">Check-in / Check-out</label></th>
+                <td>
+                    <input type="date" id="wplb_key_checkin" />
+                    <input type="date" id="wplb_key_checkout" />
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>
+                    <button type="button" class="button" id="wplb_key_check_btn">Check available key/unit</button>
+                    <p id="wplb_key_check_result" class="description" style="margin-top:8px;"></p>
+                </td>
+            </tr>
+        </table>
+        <script>
+        (function(){
+            const btn = document.getElementById('wplb_key_check_btn');
+            if (!btn) return;
+            const result = document.getElementById('wplb_key_check_result');
+            btn.addEventListener('click', function(){
+                const roomType = (document.getElementById('wplb_key_room_type') || {}).value || '';
+                const checkin = (document.getElementById('wplb_key_checkin') || {}).value || '';
+                const checkout = (document.getElementById('wplb_key_checkout') || {}).value || '';
+
+                result.textContent = 'Checking…';
+
+                const params = new URLSearchParams();
+                params.append('action', 'wplb_admin_key_availability_check');
+                params.append('nonce', '<?php echo esc_js(wp_create_nonce('wplb_admin_key_availability')); ?>');
+                params.append('room_type', roomType);
+                params.append('checkin', checkin);
+                params.append('checkout', checkout);
+
+                fetch(ajaxurl, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                    body: params.toString()
+                }).then(r => r.json()).then(data => {
+                    if (!data || !data.success) {
+                        const message = data && data.data && data.data.message ? data.data.message : 'Unable to check availability.';
+                        result.textContent = message;
+                        result.style.color = '#b91c1c';
+                        return;
+                    }
+
+                    const payload = data.data || {};
+                    result.style.color = '#065f46';
+                    result.textContent = 'Available unit: ' + (payload.unit_name || 'N/A') + ' (local #' + (payload.unit_id || 'n/a') + ', Butterfly unit #' + (payload.unit_id_api || 'n/a') + ')';
+                }).catch(() => {
+                    result.textContent = 'Unable to check availability.';
+                    result.style.color = '#b91c1c';
+                });
+            });
+        })();
+        </script>
 
         <h2>Airbnb-style discounts</h2>
         <p>Control the weekly and monthly discount percentages that mirror Airbnb’s flexible pricing rules. Set the values to 0% to disable discounts entirely.</p>
@@ -998,6 +1066,46 @@ function wp_loft_booking_admin_price_preview()
     ];
 
     wp_send_json_success($response);
+}
+
+
+function wp_loft_booking_admin_key_availability_check()
+{
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error(['message' => __('Unauthorized request.', 'wp-loft-booking')], 403);
+    }
+
+    $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+
+    if (!wp_verify_nonce($nonce, 'wplb_admin_key_availability')) {
+        wp_send_json_error(['message' => __('Invalid request. Please refresh and try again.', 'wp-loft-booking')], 400);
+    }
+
+    $room_type = isset($_POST['room_type']) ? sanitize_text_field(wp_unslash($_POST['room_type'])) : '';
+    $checkin   = isset($_POST['checkin']) ? sanitize_text_field(wp_unslash($_POST['checkin'])) : '';
+    $checkout  = isset($_POST['checkout']) ? sanitize_text_field(wp_unslash($_POST['checkout'])) : '';
+
+    if ('' === $room_type || '' === $checkin || '' === $checkout) {
+        wp_send_json_error(['message' => __('Room type, check-in, and check-out are required.', 'wp-loft-booking')], 400);
+    }
+
+    if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
+        wp_send_json_error(['message' => __('Availability checker is unavailable.', 'wp-loft-booking')], 500);
+    }
+
+    $availability = wp_loft_booking_find_checkout_available_unit($room_type, $checkin, $checkout);
+
+    if (is_wp_error($availability)) {
+        wp_send_json_error(['message' => $availability->get_error_message()], 409);
+    }
+
+    wp_send_json_success([
+        'unit_id'     => (int) ($availability['id'] ?? 0),
+        'unit_name'   => (string) ($availability['unit_name'] ?? ''),
+        'unit_id_api' => (int) ($availability['unit_id_api'] ?? 0),
+        'starts_at'   => (string) ($availability['starts_at'] ?? ''),
+        'ends_at'     => (string) ($availability['ends_at'] ?? ''),
+    ]);
 }
 
 function wp_loft_booking_handle_bulk_receipts() {
