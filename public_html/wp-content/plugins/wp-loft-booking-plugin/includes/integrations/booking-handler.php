@@ -590,7 +590,7 @@ if (!function_exists('wp_loft_booking_find_available_unit_for_type')) {
         global $wpdb;
 
         $units_table = $wpdb->prefix . 'loft_units';
-        $where       = ["status = 'available'"];
+        $where       = ["LOWER(status) = 'available'"];
         $params      = [];
 
         if ($requested_type !== '') {
@@ -661,7 +661,7 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
         $checkout_utc   = $window['checkout_utc'];
 
         $units_table = $wpdb->prefix . 'loft_units';
-        $where       = ["status = 'available'"];
+        $where       = ["LOWER(status) = 'available'"];
         $params      = [];
 
         if ($requested_type !== '') {
@@ -796,7 +796,7 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
         }
 
         $units_table = $wpdb->prefix . 'loft_units';
-        $where       = ["status = 'available'"];
+        $where       = ["LOWER(status) = 'available'"];
         $params      = [];
 
         if ($requested_type !== '') {
