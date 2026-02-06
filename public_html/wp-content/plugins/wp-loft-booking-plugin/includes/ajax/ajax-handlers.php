@@ -348,7 +348,7 @@ function wp_loft_booking_sync_units_only() {
 
 
 
-function wp_loft_booking_sync_units() {
+function wp_loft_booking_sync_units($respond_with_json = true, &$debug = null) {
     $messages           = [];
     $tenant_result      = null;
     $keychain_synced    = null;
@@ -358,7 +358,7 @@ function wp_loft_booking_sync_units() {
         $tenant_result = wp_loft_booking_fetch_and_save_tenants();
 
         if (is_wp_error($tenant_result)) {
-            if (wp_doing_ajax()) {
+            if ($respond_with_json && wp_doing_ajax()) {
                 wp_send_json_error($tenant_result->get_error_message());
             }
 
@@ -367,6 +367,10 @@ function wp_loft_booking_sync_units() {
 
         if (is_array($tenant_result) && !empty($tenant_result['message'])) {
             $messages[] = $tenant_result['message'];
+        }
+
+        if (null !== $debug) {
+            $debug[] = 'Tenants sync completed (full sync).';
         }
     }
 
@@ -388,13 +392,16 @@ function wp_loft_booking_sync_units() {
 
         if ($keychain_synced) {
             $messages[] = '🔑 Keychains synced successfully.';
+            if (null !== $debug) {
+                $debug[] = 'Keychains sync completed (full sync).';
+            }
         }
     }
 
     $unit_result = wp_loft_booking_sync_units_only();
 
     if (is_wp_error($unit_result)) {
-        if (wp_doing_ajax()) {
+        if ($respond_with_json && wp_doing_ajax()) {
             wp_send_json_error($unit_result->get_error_message());
         }
 
@@ -409,7 +416,7 @@ function wp_loft_booking_sync_units() {
         $keychains_relinked = wp_loft_booking_relink_keychains_to_units();
 
         if ($keychains_relinked instanceof WP_Error) {
-            if (wp_doing_ajax()) {
+            if ($respond_with_json && wp_doing_ajax()) {
                 wp_send_json_error($keychains_relinked->get_error_message());
             }
 
@@ -430,11 +437,11 @@ function wp_loft_booking_sync_units() {
         $message = '✅ Full sync completed.';
     }
 
-    if (wp_doing_ajax()) {
+    if ($respond_with_json && wp_doing_ajax()) {
         wp_send_json_success($message);
     }
 
-    return [
+    $payload = [
         'success'          => true,
         'message'          => $message,
         'tenants'          => $tenant_result,
@@ -442,6 +449,12 @@ function wp_loft_booking_sync_units() {
         'keychains_relinked' => $keychains_relinked,
         'units'            => $unit_result,
     ];
+
+    if (null !== $debug) {
+        $debug[] = $message;
+    }
+
+    return $payload;
 }
 
 add_action('wp_ajax_wp_loft_booking_sync_units', 'wp_loft_booking_sync_units');
@@ -581,4 +594,3 @@ function wp_loft_booking_sync_keychains_handler() {
 }
 
 // add_action('wp_ajax_wp_loft_booking_sync_tenants', 'wp_loft_booking_fetch_and_save_tenants');
-
