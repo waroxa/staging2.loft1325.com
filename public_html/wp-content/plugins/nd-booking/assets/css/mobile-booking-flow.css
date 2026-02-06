@@ -1,0 +1,105 @@
+@media (max-width: 767px) {
+  body.nd-booking-flow-page {
+    background: #ffffff;
+    color: #030213;
+  }
+
+  body.nd-booking-flow-page h1,
+  body.nd-booking-flow-page h2,
+  body.nd-booking-flow-page h3,
+  body.nd-booking-flow-page h4,
+  body.nd-booking-flow-page .nd_options_first_font,
+  body.nd-booking-flow-page .nd_options_second_font {
+    color: #030213 !important;
+  }
+
+  body.nd-booking-flow-page .elementor-section-wrap,
+  body.nd-booking-flow-page .elementor-widget-container,
+  body.nd-booking-flow-page .nd_booking_section,
+  body.nd-booking-flow-page .woocommerce,
+  body.nd-booking-flow-page .woocommerce-checkout,
+  body.nd-booking-flow-page .woocommerce-cart,
+  body.nd-booking-flow-page form.checkout,
+  body.nd-booking-flow-page .checkout,
+  body.nd-booking-flow-page .nd_booking_section > div {
+    background: #ffffff !important;
+    border-color: #e5e7eb !important;
+    box-shadow: none !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_bg_greydark,
+  body.nd-booking-flow-page .nd_booking_bg_greydark_2,
+  body.nd-booking-flow-page .nicdark_bg_greydark,
+  body.nd-booking-flow-page .nicdark_bg_greydark_2 {
+    background: #ffffff !important;
+    color: #030213 !important;
+  }
+
+  body.nd-booking-flow-page input,
+  body.nd-booking-flow-page select,
+  body.nd-booking-flow-page textarea,
+  body.nd-booking-flow-page .select2-selection,
+  body.nd-booking-flow-page .nd_booking_section_box_search_field {
+    border: 1px solid #111827 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #030213 !important;
+    box-shadow: none !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_label_search,
+  body.nd-booking-flow-page label,
+  body.nd-booking-flow-page .woocommerce form .form-row label {
+    color: #374151 !important;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  body.nd-booking-flow-page .nd_booking_bg_yellow,
+  body.nd-booking-flow-page .nd_booking_button,
+  body.nd-booking-flow-page button,
+  body.nd-booking-flow-page .button,
+  body.nd-booking-flow-page .wc-proceed-to-checkout a.checkout-button,
+  body.nd-booking-flow-page #place_order,
+  body.nd-booking-flow-page .elementor-button {
+    background: #030213 !important;
+    border: 1px solid #030213 !important;
+    border-radius: 0 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+
+  body.nd-booking-flow-page .nd_booking_bg_yellow:hover,
+  body.nd-booking-flow-page .nd_booking_button:hover,
+  body.nd-booking-flow-page button:hover,
+  body.nd-booking-flow-page .button:hover,
+  body.nd-booking-flow-page #place_order:hover,
+  body.nd-booking-flow-page .elementor-button:hover {
+    background: #111827 !important;
+    border-color: #111827 !important;
+    color: #ffffff !important;
+  }
+
+  body.nd-booking-flow-page .woocommerce table.shop_table,
+  body.nd-booking-flow-page .woocommerce-checkout-review-order,
+  body.nd-booking-flow-page .woocommerce-billing-fields,
+  body.nd-booking-flow-page #order_review,
+  body.nd-booking-flow-page .woocommerce-checkout #payment,
+  body.nd-booking-flow-page .woocommerce-checkout #payment div.payment_box,
+  body.nd-booking-flow-page .woocommerce table.shop_table th,
+  body.nd-booking-flow-page .woocommerce table.shop_table td {
+    border-color: #e5e7eb !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #030213 !important;
+    box-shadow: none !important;
+  }
+
+  body.nd-booking-flow-page #trp-floater-ls {
+    z-index: 40;
+  }
+}

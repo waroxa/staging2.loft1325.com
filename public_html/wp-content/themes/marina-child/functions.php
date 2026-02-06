@@ -970,6 +970,7 @@ function marina_child_add_loft_template_body_class( array $classes ) : array {
 add_filter( 'body_class', 'marina_child_add_loft_template_body_class' );
 add_filter( 'trp_get_url_for_language', 'marina_child_fix_booking_switcher_urls', 10, 6 );
 
+
 /**
  * Prevent search submissions from resolving as 404s so results can render.
  */
