@@ -10,7 +10,17 @@ defined( 'ABSPATH' ) || exit;
 $locale   = get_locale();
 $language = strpos( $locale, 'en_' ) === 0 ? 'en' : 'fr';
 $strings  = array(
+    'menu_label'             => $language === 'en' ? 'Open menu' : 'Ouvrir le menu',
+    'menu_close'             => $language === 'en' ? 'Close menu' : 'Fermer le menu',
+    'menu_title'             => $language === 'en' ? 'Menu' : 'Menu',
+    'hero_title'             => $language === 'en' ? 'Select a room' : 'Sélectionner une chambre',
+    'hero_tagline'           => $language === 'en' ? 'VIRTUAL HOTEL<br />EXPERIENCE' : 'EXPÉRIENCE HÔTELIÈRE<br />100 % VIRTUELLE',
+    'hero_copy'              => $language === 'en' ? 'Enjoy the comfort of home with a hotel experience, and manage everything from your phone.' : "Le confort d'une maison avec l'expérience hôtelière, gérez tout depuis votre mobile.",
     'search_title'           => $language === 'en' ? 'SEARCH' : 'RECHERCHER',
+    'dates_tile_label'       => $language === 'en' ? 'Dates' : 'Dates',
+    'guests_tile_label'      => $language === 'en' ? 'Guests' : 'Voyageurs',
+    'date_placeholder'       => $language === 'en' ? 'Add dates' : 'Ajouter des dates',
+    'guest_placeholder'      => $language === 'en' ? 'Add guests' : 'Ajouter des voyageurs',
     'dates_label'            => $language === 'en' ? 'DATES' : 'DATES',
     'guests_label'           => $language === 'en' ? 'GUESTS' : 'CLIENTÈLE VOYAGEURS',
     'adults_label'           => $language === 'en' ? 'Adults (Ages 18 or above)' : 'Adultes (18 ans ou plus)',
@@ -19,6 +29,12 @@ $strings  = array(
     'no_checkout'            => $language === 'en' ? 'No check-out' : 'Pas de départ',
     'summary_sub'            => $language === 'en' ? 'Excluding taxes and fees' : 'Hors taxes et frais',
     'cta'                    => $language === 'en' ? 'SEARCH' : 'RECHERCHE',
+    'finalize_cta'           => $language === 'en' ? 'Finalize' : 'Finaliser',
+    'sticky_note'            => $language === 'en' ? 'You found the best rate.' : 'Vous avez trouvé le meilleur prix.',
+    'adult_singular'         => $language === 'en' ? 'adult' : 'adulte',
+    'adult_plural'           => $language === 'en' ? 'adults' : 'adultes',
+    'child_singular'         => $language === 'en' ? 'child' : 'enfant',
+    'child_plural'           => $language === 'en' ? 'children' : 'enfants',
     'error_unavailable'      => $language === 'en' ? 'Selected dates include unavailable nights.' : 'Les dates choisies incluent des nuits indisponibles.',
     'summary_template'       => $language === 'en' ? 'From %1$s CA$ total for %2$s nights' : 'A partir de %1$s $CA total pour %2$s nuits',
     'summary_template_empty' => $language === 'en' ? 'From %1$s CA$ total for %2$s night' : 'A partir de %1$s $CA total pour %2$s nuit',
@@ -118,6 +134,61 @@ $strings  = array(
 
     .language-toggle__label.is-active {
       opacity: 1;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      z-index: 30;
+    }
+
+    .mobile-menu.is-open {
+      display: block;
+    }
+
+    .mobile-menu__panel {
+      background: var(--white);
+      height: 100%;
+      width: min(320px, 84%);
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-menu__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-menu__title {
+      font-size: 14px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .mobile-menu__close {
+      border: none;
+      background: transparent;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .mobile-menu__list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      font-size: 16px;
+    }
+
+    .mobile-menu__list a {
+      color: var(--black);
+      text-decoration: none;
+      font-weight: 500;
     }
 
     .hero {
@@ -677,7 +748,7 @@ $strings  = array(
   <main class="mobile-shell">
     <header class="header">
       <div class="header-inner">
-        <button class="icon-button" type="button" aria-label="Ouvrir le menu">≡</button>
+        <button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $strings['menu_label'] ); ?>">≡</button>
         <img
           class="logo"
           src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png"
@@ -685,7 +756,7 @@ $strings  = array(
           sizes="(max-width: 430px) 180px, 220px"
           alt="Lofts 1325"
         />
-        <button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="Changer la langue">
+        <button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( 'en' === $language ? 'Change language' : 'Changer la langue' ); ?>">
           <span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span>
           <span>·</span>
           <span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
@@ -693,18 +764,38 @@ $strings  = array(
       </div>
     </header>
 
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
+        <div class="mobile-menu__header">
+          <p class="mobile-menu__title" id="mobileMenuTitle"><?php echo esc_html( $strings['menu_title'] ); ?></p>
+          <button class="mobile-menu__close" type="button" id="closeMenu" aria-label="<?php echo esc_attr( $strings['menu_close'] ); ?>">×</button>
+        </div>
+        <?php
+        echo wp_nav_menu(
+            array(
+                'theme_location' => 'main-menu',
+                'container'      => false,
+                'menu_class'     => 'mobile-menu__list',
+                'fallback_cb'    => 'wp_page_menu',
+                'echo'           => false,
+            )
+        );
+        ?>
+      </div>
+    </div>
+
     <section class="hero">
-      <h1>Sélectionner une chambre</h1>
-      <p class="hero-tagline"><?php echo 'en' === $language ? 'VIRTUAL HOTEL<br />EXPERIENCE' : 'EXPÉRIENCE HÔTELIÈRE<br />100 % VIRTUELLE'; ?></p>
-      <p class="hero-copy"><?php echo 'en' === $language ? 'Enjoy the comfort of home with a hotel experience, and manage everything from your phone.' : "Le confort d'une maison avec l'expérience hôtelière, gérez tout depuis votre mobile."; ?></p>
+      <h1><?php echo esc_html( $strings['hero_title'] ); ?></h1>
+      <p class="hero-tagline"><?php echo wp_kses_post( $strings['hero_tagline'] ); ?></p>
+      <p class="hero-copy"><?php echo esc_html( $strings['hero_copy'] ); ?></p>
       <div class="search-panel">
         <button class="search-tile" id="openSearch" type="button">
-          <span>Dates</span>
-          <strong id="dateSummary">19 févr. · 21 févr.</strong>
+          <span><?php echo esc_html( $strings['dates_tile_label'] ); ?></span>
+          <strong id="dateSummary"></strong>
         </button>
         <button class="search-tile" id="openGuests" type="button">
-          <span>Voyageurs</span>
-          <strong id="guestSummary">2 adultes · 0 enfant</strong>
+          <span><?php echo esc_html( $strings['guests_tile_label'] ); ?></span>
+          <strong id="guestSummary"></strong>
         </button>
       </div>
     </section>
@@ -842,9 +933,9 @@ $strings  = array(
     <section class="sticky-bar">
       <div>
         <p class="sticky-price">340,00 $CA</p>
-        <p class="sticky-note">Vous avez trouvé le meilleur prix.</p>
+        <p class="sticky-note"><?php echo esc_html( $strings['sticky_note'] ); ?></p>
       </div>
-      <button class="primary-button" type="button">Finaliser</button>
+      <button class="primary-button" type="button" id="finalizeButton"><?php echo esc_html( $strings['finalize_cta'] ); ?></button>
     </section>
   </main>
 
@@ -946,12 +1037,17 @@ $strings  = array(
     const calendarError = document.getElementById('calendarError');
     const modalSearchButton = document.getElementById('modalSearchButton');
     const headerLanguageToggle = document.getElementById('headerLanguageToggle');
+    const openMenu = document.getElementById('openMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const finalizeButton = document.getElementById('finalizeButton');
 
     const adultCount = document.getElementById('adultCount');
     const childCount = document.getElementById('childCount');
 
     const uiCopy = <?php echo wp_json_encode( $strings ); ?>;
     const language = document.documentElement.lang === 'en' ? 'en' : 'fr';
+    const searchBaseUrl = <?php echo wp_json_encode( home_url( '/rooms/' ) ); ?>;
 
     const TOTAL_UNITS = 22;
     const state = {
@@ -1140,15 +1236,12 @@ $strings  = array(
     }
 
     function updateSummary() {
-      const arrival = state.selectedStart ? formatDate(state.selectedStart) : '--';
-      const depart = state.selectedEnd ? formatDate(state.selectedEnd) : '--';
+      const arrival = state.selectedStart ? formatDate(state.selectedStart) : uiCopy.date_placeholder;
+      const depart = state.selectedEnd ? formatDate(state.selectedEnd) : uiCopy.date_placeholder;
       dateSummary.textContent = `${arrival} · ${depart}`;
-      if (language === 'en') {
-        guestSummary.textContent = `${adultCount.textContent} adults · ${childCount.textContent} children`;
-      } else {
-        const childLabel = Number(childCount.textContent) > 1 ? 'enfants' : 'enfant';
-        guestSummary.textContent = `${adultCount.textContent} adultes · ${childCount.textContent} ${childLabel}`;
-      }
+      const adultLabel = Number(adultCount.textContent) > 1 ? uiCopy.adult_plural : uiCopy.adult_singular;
+      const childLabel = Number(childCount.textContent) > 1 ? uiCopy.child_plural : uiCopy.child_singular;
+      guestSummary.textContent = `${adultCount.textContent} ${adultLabel} · ${childCount.textContent} ${childLabel}`;
     }
 
     function openModal() {
@@ -1161,6 +1254,39 @@ $strings  = array(
     function closeModalView() {
       modal.classList.remove('active');
       modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function openMenuPanel() {
+      if (!mobileMenu) return;
+      mobileMenu.classList.add('is-open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeMenuPanel() {
+      if (!mobileMenu) return;
+      mobileMenu.classList.remove('is-open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+
+    function buildSearchUrl() {
+      const url = new URL(searchBaseUrl, window.location.origin);
+      const guests = Math.max(1, Number(adultCount.textContent) + Number(childCount.textContent));
+      if (state.selectedStart) {
+        url.searchParams.set('nd_booking_archive_form_date_range_from', toISODate(state.selectedStart));
+      }
+      if (state.selectedEnd) {
+        url.searchParams.set('nd_booking_archive_form_date_range_to', toISODate(state.selectedEnd));
+      }
+      url.searchParams.set('nd_booking_archive_form_guests', guests.toString());
+      return url.toString();
+    }
+
+    function handleSearchRedirect() {
+      if (!state.selectedStart || !state.selectedEnd) {
+        openModal();
+        return;
+      }
+      window.location.href = buildSearchUrl();
     }
 
     function getMonthLabel(date) {
@@ -1547,6 +1673,26 @@ $strings  = array(
       });
     }
 
+    if (openMenu) {
+      openMenu.addEventListener('click', openMenuPanel);
+    }
+
+    if (closeMenu) {
+      closeMenu.addEventListener('click', closeMenuPanel);
+    }
+
+    if (mobileMenu) {
+      mobileMenu.addEventListener('click', (event) => {
+        if (event.target === mobileMenu) {
+          closeMenuPanel();
+        }
+      });
+
+      mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeMenuPanel);
+      });
+    }
+
     nextMonthButton.addEventListener('click', () => {
       state.currentMonth = addMonths(state.currentMonth, 1);
       preloadMonths();
@@ -1573,6 +1719,14 @@ $strings  = array(
         updateSummary();
       });
     });
+
+    if (modalSearchButton) {
+      modalSearchButton.addEventListener('click', handleSearchRedirect);
+    }
+
+    if (finalizeButton) {
+      finalizeButton.addEventListener('click', handleSearchRedirect);
+    }
 
     updateSummary();
   </script>
