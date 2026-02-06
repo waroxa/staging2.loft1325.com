@@ -484,7 +484,13 @@ if (!function_exists('wp_loft_booking_unit_is_available_for_range')) {
             )
         );
 
-        if (!$unit || strtolower((string) $unit->status) !== 'available') {
+        if (!$unit) {
+            return false;
+        }
+
+        $unit_status = strtolower((string) $unit->status);
+
+        if ($unit_status === 'unavailable') {
             return false;
         }
 
@@ -498,6 +504,7 @@ if (!function_exists('wp_loft_booking_unit_is_available_for_range')) {
 
         $unit_label     = wp_loft_booking_format_unit_label((string) ($unit->unit_name ?? ''));
         $normalized_key = wp_loft_booking_normalize_unit_label_for_lookup($unit_label);
+        $tenant_name_candidates = [];
 
         if ($normalized_key !== '') {
             $tenant_rows = $wpdb->get_results(
@@ -514,6 +521,10 @@ if (!function_exists('wp_loft_booking_unit_is_available_for_range')) {
                 $tenant_unit_label = wp_loft_booking_normalize_unit_label_for_lookup((string) ($tenant['unit_label'] ?? ''));
                 $tenant_name       = trim(sprintf('%s %s', $tenant['first_name'] ?? '', $tenant['last_name'] ?? ''));
                 $tenant_name_label = wp_loft_booking_normalize_unit_label_for_lookup($tenant_name);
+
+                if ($tenant_name !== '') {
+                    $tenant_name_candidates[] = $tenant_name;
+                }
 
                 if ($tenant_unit_label !== $normalized_key && $tenant_name_label !== $normalized_key) {
                     continue;
@@ -536,14 +547,28 @@ if (!function_exists('wp_loft_booking_unit_is_available_for_range')) {
             }
         }
 
-        $overlap = (int) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$keychains_table} WHERE unit_id = %d AND valid_from < %s AND valid_until > %s",
-                $unit_id,
-                $checkout_utc->format('Y-m-d H:i:s'),
-                $checkin_utc->format('Y-m-d H:i:s')
-            )
-        );
+        $keychain_conditions = ["(unit_id = %d)"];
+        $keychain_params     = [$unit_id];
+
+        if ($unit_label !== '') {
+            $keychain_conditions[] = "name LIKE %s";
+            $keychain_params[]     = '%' . $wpdb->esc_like($unit_label) . '%';
+        }
+
+        $tenant_name_candidates = array_unique(array_filter($tenant_name_candidates));
+
+        foreach ($tenant_name_candidates as $tenant_name) {
+            $keychain_conditions[] = "name LIKE %s";
+            $keychain_params[]     = '%' . $wpdb->esc_like($tenant_name) . '%';
+        }
+
+        $where_keys = implode(' OR ', $keychain_conditions);
+        $overlap_sql = "SELECT COUNT(*) FROM {$keychains_table} WHERE ({$where_keys}) AND valid_from < %s AND valid_until > %s";
+
+        $keychain_params[] = $checkout_utc->format('Y-m-d H:i:s');
+        $keychain_params[] = $checkin_utc->format('Y-m-d H:i:s');
+
+        $overlap = (int) $wpdb->get_var($wpdb->prepare($overlap_sql, ...$keychain_params));
 
         return $overlap === 0;
     }
@@ -606,6 +631,14 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
     function wp_loft_booking_find_checkout_available_unit($requested_label, $date_from, $date_to)
     {
         global $wpdb;
+
+        if (function_exists('wp_loft_booking_fetch_and_save_tenants')) {
+            $tenant_sync = wp_loft_booking_fetch_and_save_tenants();
+
+            if (is_wp_error($tenant_sync)) {
+                return $tenant_sync;
+            }
+        }
 
         if (function_exists('wp_loft_booking_sync_keychains')) {
             $sync_result = wp_loft_booking_sync_keychains();
@@ -702,6 +735,22 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
     function wp_loft_booking_list_checkout_available_units($requested_label, $date_from, $date_to)
     {
         global $wpdb;
+
+        if (function_exists('wp_loft_booking_fetch_and_save_tenants')) {
+            $tenant_sync = wp_loft_booking_fetch_and_save_tenants();
+
+            if (is_wp_error($tenant_sync)) {
+                return $tenant_sync;
+            }
+        }
+
+        if (function_exists('wp_loft_booking_sync_keychains')) {
+            $sync_result = wp_loft_booking_sync_keychains();
+
+            if (is_wp_error($sync_result)) {
+                return $sync_result;
+            }
+        }
 
         $requested_type = wp_loft_booking_detect_room_type($requested_label);
         $window         = wp_loft_booking_calculate_booking_window($date_from, $date_to);

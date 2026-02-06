@@ -201,12 +201,23 @@ function wp_loft_booking_bookings_page() {
             const btn = document.getElementById('wplb_key_check_btn');
             if (!btn) return;
             const result = document.getElementById('wplb_key_check_result');
+            const setLoadingState = function(isLoading) {
+                if (isLoading) {
+                    btn.disabled = true;
+                    btn.classList.add('disabled');
+                    result.style.color = '#334155';
+                    result.innerHTML = '<span class="spinner is-active" style="float:none;margin:0 6px 0 0;"></span>Syncing ButterflyMX data & checking availability…';
+                } else {
+                    btn.disabled = false;
+                    btn.classList.remove('disabled');
+                }
+            };
             btn.addEventListener('click', function(){
                 const roomType = (document.getElementById('wplb_key_room_type') || {}).value || '';
                 const checkin = (document.getElementById('wplb_key_checkin') || {}).value || '';
                 const checkout = (document.getElementById('wplb_key_checkout') || {}).value || '';
 
-                result.textContent = 'Checking…';
+                setLoadingState(true);
 
                 const params = new URLSearchParams();
                 params.append('action', 'wplb_admin_key_availability_check');
@@ -220,6 +231,7 @@ function wp_loft_booking_bookings_page() {
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                     body: params.toString()
                 }).then(r => r.json()).then(data => {
+                    setLoadingState(false);
                     if (!data || !data.success) {
                         const message = data && data.data && data.data.message ? data.data.message : 'Unable to check availability.';
                         result.textContent = message;
@@ -326,6 +338,7 @@ function wp_loft_booking_bookings_page() {
 
                     result.appendChild(wrapper);
                 }).catch(() => {
+                    setLoadingState(false);
                     result.textContent = 'Unable to check availability.';
                     result.style.color = '#b91c1c';
                 });
