@@ -882,6 +882,10 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
             $debug[] = sprintf('Candidate units found: %d', is_array($units) ? count($units) : 0);
         }
 
+        if (null !== $debug) {
+            $debug[] = sprintf('Candidate units found: %d', is_array($units) ? count($units) : 0);
+        }
+
         if (empty($units)) {
             if (null !== $debug && $requested_type !== '') {
                 $samples = $wpdb->get_results(
