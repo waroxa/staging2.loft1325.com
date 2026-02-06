@@ -657,6 +657,127 @@ function wp_loft_booking_sync_keychains() {
     return true;
 }
 
+/**
+ * Sync keychains without emitting admin UI output.
+ *
+ * @return true|WP_Error
+ */
+function wp_loft_booking_sync_keychains_for_system() {
+    global $wpdb;
+
+    $kc_table    = $wpdb->prefix . 'loft_keychains';
+    $vk_table    = $wpdb->prefix . 'loft_virtual_keys';
+    $kc_vk_table = $wpdb->prefix . 'loft_keychain_virtual_keys';
+
+    $fetched = wp_loft_booking_sync_keychains_from_api();
+
+    if (is_wp_error($fetched)) {
+        return $fetched;
+    }
+
+    if (empty($fetched)) {
+        return new WP_Error('wp_loft_booking_empty_keychains', 'No keychains were returned from ButterflyMX.');
+    }
+
+    $existing_key_ids = $wpdb->get_col("SELECT key_id FROM $kc_vk_table");
+    if (!empty($existing_key_ids)) {
+        $placeholders = implode(', ', array_fill(0, count($existing_key_ids), '%d'));
+        $wpdb->query($wpdb->prepare("DELETE FROM $vk_table WHERE id IN ($placeholders)", $existing_key_ids));
+    }
+
+    $wpdb->query("DELETE FROM $kc_vk_table");
+    $wpdb->query("DELETE FROM $kc_table");
+
+    foreach ($fetched as $kc) {
+        $virtual_keys = array_map(
+            static function ($vk) {
+                if (!is_array($vk)) {
+                    return [
+                        'id'     => $vk,
+                        'type'   => '',
+                        'status' => '',
+                    ];
+                }
+
+                return $vk;
+            },
+            $kc['virtual_keys'] ?? []
+        );
+
+        $people = array_map(
+            static function ($person) {
+                if (!is_array($person)) {
+                    return [];
+                }
+
+                $first = sanitize_text_field($person['first_name'] ?? '');
+                $last  = sanitize_text_field($person['last_name'] ?? '');
+
+                return [
+                    'id'         => sanitize_text_field($person['id'] ?? ''),
+                    'type'       => sanitize_text_field($person['type'] ?? ''),
+                    'first_name' => $first,
+                    'last_name'  => $last,
+                    'email'      => sanitize_email($person['email'] ?? ''),
+                ];
+            },
+            $kc['people'] ?? []
+        );
+
+        $normalized_people = array_values(array_filter(
+            $people,
+            static function ($person) {
+                return !empty($person['first_name']) || !empty($person['last_name']) || !empty($person['email']);
+            }
+        ));
+
+        $wpdb->insert($kc_table, [
+            'keychain_id'  => isset($kc['keychain_id']) ? intval($kc['keychain_id']) : null,
+            'tenant_id'    => isset($kc['tenant_id']) && $kc['tenant_id'] ? intval($kc['tenant_id']) : null,
+            'unit_id'      => isset($kc['unit_id']) && $kc['unit_id'] ? intval($kc['unit_id']) : null,
+            'name'         => sanitize_text_field($kc['name'] ?? ''),
+            'valid_from'   => $kc['valid_from'] ?? null,
+            'valid_until'  => $kc['valid_until'] ?? null,
+            'people_count' => count($normalized_people),
+            'people_json'  => empty($normalized_people) ? null : wp_json_encode($normalized_people),
+        ]);
+
+        $kc_id = $wpdb->insert_id;
+
+        foreach ($virtual_keys as $vk) {
+            $vk_id     = sanitize_text_field($vk['id'] ?? '');
+            $vk_label  = sanitize_text_field($vk['label'] ?? (($kc['name'] ?? '') . ' Key'));
+            $vk_type   = sanitize_text_field($vk['type'] ?? '');
+            $vk_status = sanitize_text_field($vk['status'] ?? 'active');
+
+            if ($vk_type === '') {
+                $vk_type = 'keychain';
+            }
+
+            $wpdb->insert($vk_table, [
+                'name'           => $vk_label,
+                'booking_id'     => null,
+                'virtual_key_id' => $vk_id,
+                'pin_code'       => isset($vk['pin_code']) ? sanitize_text_field($vk['pin_code']) : null,
+                'qr_code_url'    => isset($vk['qr_code_url']) ? esc_url_raw($vk['qr_code_url']) : null,
+                'key_status'     => $vk_status ?: 'active',
+                'key_type'       => $vk_type,
+            ]);
+
+            $saved_vk_id = $wpdb->insert_id;
+
+            if ($kc_id && $saved_vk_id) {
+                $wpdb->insert($kc_vk_table, [
+                    'keychain_id' => $kc_id,
+                    'key_id'      => $saved_vk_id,
+                ]);
+            }
+        }
+    }
+
+    return true;
+}
+
 function wp_loft_booking_fetch_keychains_from_api() {
     $token_v4 = get_option('butterflymx_access_token_v4');
     $token_v3 = get_option('butterflymx_access_token_v3');
@@ -1089,6 +1210,5 @@ function wp_loft_booking_save_keychain_data($booking_id, $unit_id, $keychain_id,
         ]);
     }
 }
-
 
 

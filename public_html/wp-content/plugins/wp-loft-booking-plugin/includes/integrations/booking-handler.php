@@ -646,8 +646,8 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
             }
         }
 
-        if (function_exists('wp_loft_booking_sync_keychains')) {
-            $sync_result = wp_loft_booking_sync_keychains();
+        if (function_exists('wp_loft_booking_sync_keychains_for_system')) {
+            $sync_result = wp_loft_booking_sync_keychains_for_system();
 
             if (is_wp_error($sync_result)) {
                 return $sync_result;
@@ -771,8 +771,8 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
             }
         }
 
-        if (function_exists('wp_loft_booking_sync_keychains')) {
-            $sync_result = wp_loft_booking_sync_keychains();
+        if (function_exists('wp_loft_booking_sync_keychains_for_system')) {
+            $sync_result = wp_loft_booking_sync_keychains_for_system();
 
             if (is_wp_error($sync_result)) {
                 if (null !== $debug) {
