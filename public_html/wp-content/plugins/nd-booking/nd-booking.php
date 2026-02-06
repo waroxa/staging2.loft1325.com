@@ -97,10 +97,50 @@ function nd_booking_scripts() {
   //basic css plugin
   wp_enqueue_style( 'nd_booking_style', esc_url(plugins_url('assets/css/style.css', __FILE__ )) );
 
+  //mobile booking flow polish
+  wp_enqueue_style( 'nd_booking_mobile_flow', esc_url(plugins_url('assets/css/mobile-booking-flow.css', __FILE__ )), array( 'nd_booking_style' ), false, false );
+
   wp_enqueue_script('jquery');
   
 }
 add_action( 'wp_enqueue_scripts', 'nd_booking_scripts' );
+
+
+/**
+ * Add body classes for ND Booking flow pages to enable scoped styling.
+ *
+ * @param array $classes Existing body classes.
+ *
+ * @return array
+ */
+function nd_booking_add_flow_body_classes( $classes ) {
+
+  if ( is_admin() || ! isset( $_SERVER['REQUEST_URI'] ) ) {
+    return $classes;
+  }
+
+  $request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+
+  if ( '' === $request_path ) {
+    return $classes;
+  }
+
+  $normalized_path = trim( trailingslashit( $request_path ), '/' );
+  $normalized_path = preg_replace( '#^[a-z]{2}/#', '', $normalized_path );
+
+  if ( 'nd-booking-pages/nd-booking-page' === $normalized_path ) {
+    $classes[] = 'nd-booking-flow-page';
+    $classes[] = 'nd-booking-flow-room-selection';
+  }
+
+  if ( 'nd-booking-pages/nd-booking-checkout' === $normalized_path ) {
+    $classes[] = 'nd-booking-flow-page';
+    $classes[] = 'nd-booking-flow-checkout';
+  }
+
+  return $classes;
+}
+add_filter( 'body_class', 'nd_booking_add_flow_body_classes' );
 
 
 //START add admin custom css
