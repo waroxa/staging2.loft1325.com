@@ -21,6 +21,10 @@ $from_label = $plugin->localize_label( 'À partir de', 'From' );
 $per_night  = $plugin->localize_label( 'par nuit', 'per night' );
 $empty_price = $plugin->localize_label( 'Tarif sur demande', 'Rate on request' );
 $back_label  = $plugin->localize_label( 'Retour accueil', 'Back home' );
+$menu_label  = $plugin->localize_label( 'Ouvrir le menu', 'Open menu' );
+$menu_close  = $plugin->localize_label( 'Fermer le menu', 'Close menu' );
+$menu_title  = $plugin->localize_label( 'Menu', 'Menu' );
+$language_label = $plugin->localize_label( 'Changer la langue', 'Change language' );
 
 $lofts_query = new WP_Query(
 	array(
@@ -44,6 +48,44 @@ $lofts_query = new WP_Query(
 <body <?php body_class(); ?>>
 	<?php wp_body_open(); ?>
 	<main id="loft1325-mobile-lofts-archive" class="loft1325-mobile-lofts-archive">
+		<header class="header loft1325-mobile-header">
+			<div class="header-inner">
+				<button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $menu_label ); ?>">≡</button>
+				<img
+					class="logo"
+					src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png"
+					srcset="https://loft1325.com/wp-content/uploads/2024/06/Asset-1-300x108.png 300w, https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png 518w"
+					sizes="(max-width: 430px) 180px, 220px"
+					alt="Lofts 1325"
+				/>
+				<button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( $language_label ); ?>">
+					<span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span>
+					<span>·</span>
+					<span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
+				</button>
+			</div>
+		</header>
+
+		<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+			<div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
+				<div class="mobile-menu__header">
+					<p class="mobile-menu__title" id="mobileMenuTitle"><?php echo esc_html( $menu_title ); ?></p>
+					<button class="mobile-menu__close" type="button" id="closeMenu" aria-label="<?php echo esc_attr( $menu_close ); ?>">×</button>
+				</div>
+				<?php
+				echo wp_nav_menu(
+					array(
+						'theme_location' => 'main-menu',
+						'container'      => false,
+						'menu_class'     => 'mobile-menu__list',
+						'fallback_cb'    => 'wp_page_menu',
+						'echo'           => false,
+					)
+				);
+				?>
+			</div>
+		</div>
+
 		<header class="loft1325-mobile-lofts-archive__topbar">
 			<a class="loft1325-mobile-lofts-archive__crumb" href="<?php echo esc_url( $home_url ); ?>">
 				<span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>

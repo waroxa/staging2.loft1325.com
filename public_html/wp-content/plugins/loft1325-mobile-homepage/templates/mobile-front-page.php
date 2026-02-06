@@ -20,6 +20,7 @@ $strings  = array(
     'dates_tile_label'       => $language === 'en' ? 'Dates' : 'Dates',
     'guests_tile_label'      => $language === 'en' ? 'Guests' : 'Voyageurs',
     'date_placeholder'       => $language === 'en' ? 'Add dates' : 'Ajouter des dates',
+    'date_range_placeholder' => $language === 'en' ? 'Select your dates' : 'Sélectionnez vos dates',
     'guest_placeholder'      => $language === 'en' ? 'Add guests' : 'Ajouter des voyageurs',
     'dates_label'            => $language === 'en' ? 'DATES' : 'DATES',
     'guests_label'           => $language === 'en' ? 'GUESTS' : 'CLIENTÈLE VOYAGEURS',
@@ -1236,9 +1237,13 @@ $strings  = array(
     }
 
     function updateSummary() {
-      const arrival = state.selectedStart ? formatDate(state.selectedStart) : uiCopy.date_placeholder;
-      const depart = state.selectedEnd ? formatDate(state.selectedEnd) : uiCopy.date_placeholder;
-      dateSummary.textContent = `${arrival} · ${depart}`;
+      if (!state.selectedStart && !state.selectedEnd) {
+        dateSummary.textContent = uiCopy.date_range_placeholder;
+      } else {
+        const arrival = state.selectedStart ? formatDate(state.selectedStart) : uiCopy.date_placeholder;
+        const depart = state.selectedEnd ? formatDate(state.selectedEnd) : uiCopy.date_placeholder;
+        dateSummary.textContent = `${arrival} · ${depart}`;
+      }
       const adultLabel = Number(adultCount.textContent) > 1 ? uiCopy.adult_plural : uiCopy.adult_singular;
       const childLabel = Number(childCount.textContent) > 1 ? uiCopy.child_plural : uiCopy.child_singular;
       guestSummary.textContent = `${adultCount.textContent} ${adultLabel} · ${childCount.textContent} ${childLabel}`;

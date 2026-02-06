@@ -100,6 +100,13 @@ function nd_booking_scripts() {
   //mobile booking flow polish
   wp_enqueue_style( 'nd_booking_mobile_flow', esc_url(plugins_url('assets/css/mobile-booking-flow.css', __FILE__ )), array( 'nd_booking_style' ), false, false );
 
+  if ( nd_booking_is_mobile_flow_room_selection() ) {
+    $script_path = plugin_dir_path( __FILE__ ) . 'assets/js/mobile-booking-flow.js';
+    $script_uri  = plugins_url( 'assets/js/mobile-booking-flow.js', __FILE__ );
+    $script_ver  = file_exists( $script_path ) ? (string) filemtime( $script_path ) : '1.0.0';
+    wp_enqueue_script( 'nd_booking_mobile_flow', esc_url( $script_uri ), array(), $script_ver, true );
+  }
+
   wp_enqueue_script('jquery');
   
 }
@@ -141,6 +148,106 @@ function nd_booking_add_flow_body_classes( $classes ) {
   return $classes;
 }
 add_filter( 'body_class', 'nd_booking_add_flow_body_classes' );
+
+/**
+ * Determine if the current request is the ND Booking room selection page on mobile.
+ *
+ * @return bool
+ */
+function nd_booking_is_mobile_flow_room_selection() {
+  if ( is_admin() || is_feed() || is_embed() ) {
+    return false;
+  }
+
+  if ( ! wp_is_mobile() ) {
+    return false;
+  }
+
+  $booking_page_id = (int) get_option( 'nd_booking_booking_page' );
+
+  if ( $booking_page_id && is_page( $booking_page_id ) ) {
+    return true;
+  }
+
+  if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+    return false;
+  }
+
+  $request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+
+  if ( '' === $request_path ) {
+    return false;
+  }
+
+  $normalized_path = trim( trailingslashit( $request_path ), '/' );
+  $normalized_path = preg_replace( '#^[a-z]{2}/#', '', $normalized_path );
+
+  return 'nd-booking-pages/nd-booking-page' === $normalized_path;
+}
+
+/**
+ * Render the mobile header for the booking flow page.
+ */
+function nd_booking_render_mobile_flow_header() {
+  if ( ! nd_booking_is_mobile_flow_room_selection() ) {
+    return;
+  }
+
+  $language = 'fr';
+  if ( function_exists( 'trp_get_current_language' ) ) {
+    $language = (string) trp_get_current_language();
+  } else {
+    $language = function_exists( 'determine_locale' ) ? (string) determine_locale() : get_locale();
+  }
+
+  $language = strtolower( substr( $language, 0, 2 ) );
+  $language = ( 'en' === $language ) ? 'en' : 'fr';
+
+  $menu_label = ( 'en' === $language ) ? 'Open menu' : 'Ouvrir le menu';
+  $menu_close = ( 'en' === $language ) ? 'Close menu' : 'Fermer le menu';
+  $menu_title = ( 'en' === $language ) ? 'Menu' : 'Menu';
+  $language_label = ( 'en' === $language ) ? 'Change language' : 'Changer la langue';
+  ?>
+  <header class="header loft1325-mobile-booking-header">
+    <div class="header-inner">
+      <button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $menu_label ); ?>">≡</button>
+      <img
+        class="logo"
+        src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png"
+        srcset="https://loft1325.com/wp-content/uploads/2024/06/Asset-1-300x108.png 300w, https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png 518w"
+        sizes="(max-width: 430px) 180px, 220px"
+        alt="Lofts 1325"
+      />
+      <button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( $language_label ); ?>">
+        <span class="language-toggle__label<?php echo ( 'fr' === $language ) ? ' is-active' : ''; ?>">FR</span>
+        <span>·</span>
+        <span class="language-toggle__label<?php echo ( 'en' === $language ) ? ' is-active' : ''; ?>">EN</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
+      <div class="mobile-menu__header">
+        <p class="mobile-menu__title" id="mobileMenuTitle"><?php echo esc_html( $menu_title ); ?></p>
+        <button class="mobile-menu__close" type="button" id="closeMenu" aria-label="<?php echo esc_attr( $menu_close ); ?>">×</button>
+      </div>
+      <?php
+      echo wp_nav_menu(
+        array(
+          'theme_location' => 'main-menu',
+          'container'      => false,
+          'menu_class'     => 'mobile-menu__list',
+          'fallback_cb'    => 'wp_page_menu',
+          'echo'           => false,
+        )
+      );
+      ?>
+    </div>
+  </div>
+  <?php
+}
+add_action( 'wp_body_open', 'nd_booking_render_mobile_flow_header' );
 
 
 //START add admin custom css
@@ -225,6 +332,5 @@ function nd_booking_get_plugin_version(){
     return $nd_booking_plugin_version;
 
 }
-
 
 
