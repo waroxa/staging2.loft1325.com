@@ -1,12 +1,12 @@
 body.loft1325-mobile-lofts-active {
         margin: 0;
         font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-        background: #f7f7f9;
+        background: #ffffff;
         color: #0b1220;
         --brand: #76b1c4;
         --text: #0b1220;
         --muted: #5b667a;
-        --bg: #f7f7f9;
+        --bg: #ffffff;
         --card: #ffffff;
         --loft1325-brand: var(--text);
         --loft1325-brand-soft: rgba(118, 177, 196, 0.12);
@@ -26,7 +26,7 @@ body.loft1325-mobile-lofts-active a {
 body.loft1325-mobile-lofts-archive-active {
         margin: 0;
         font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-        background: #f7f7f9;
+        background: #ffffff;
         color: #0b1220;
         overflow-x: hidden;
 }
@@ -54,11 +54,138 @@ body.loft1325-mobile-lofts-archive-active a {
         gap: 1.75rem;
 }
 
+body.loft1325-mobile-lofts-archive-active .header,
+body.loft1325-mobile-lofts-active .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #ffffff;
+        border-bottom: 1px solid #e5e5e5;
+        margin: 0 -1.25rem;
+        padding: 0 1.25rem;
+}
+
+body.loft1325-mobile-lofts-archive-active .header-inner,
+body.loft1325-mobile-lofts-active .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+}
+
+body.loft1325-mobile-lofts-archive-active .logo,
+body.loft1325-mobile-lofts-active .logo {
+        height: 26px;
+        width: auto;
+}
+
+body.loft1325-mobile-lofts-archive-active .icon-button,
+body.loft1325-mobile-lofts-active .icon-button {
+        border: 1px solid #0b0b0b;
+        background: transparent;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        line-height: 1;
+        color: #0b0b0b;
+}
+
+body.loft1325-mobile-lofts-archive-active .language-toggle,
+body.loft1325-mobile-lofts-active .language-toggle {
+        width: auto;
+        min-width: 78px;
+        padding: 0 10px;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+}
+
+body.loft1325-mobile-lofts-archive-active .language-toggle__label,
+body.loft1325-mobile-lofts-active .language-toggle__label {
+        opacity: 0.45;
+}
+
+body.loft1325-mobile-lofts-archive-active .language-toggle__label.is-active,
+body.loft1325-mobile-lofts-active .language-toggle__label.is-active {
+        opacity: 1;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu,
+body.loft1325-mobile-lofts-active .mobile-menu {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        display: none;
+        z-index: 30;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu.is-open,
+body.loft1325-mobile-lofts-active .mobile-menu.is-open {
+        display: block;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu__panel,
+body.loft1325-mobile-lofts-active .mobile-menu__panel {
+        background: #ffffff;
+        height: 100%;
+        width: min(320px, 84%);
+        padding: 22px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        box-shadow: 0 18px 32px rgba(0, 0, 0, 0.08);
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu__header,
+body.loft1325-mobile-lofts-active .mobile-menu__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu__title,
+body.loft1325-mobile-lofts-active .mobile-menu__title {
+        font-size: 14px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu__close,
+body.loft1325-mobile-lofts-active .mobile-menu__close {
+        border: none;
+        background: transparent;
+        font-size: 26px;
+        line-height: 1;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu__list,
+body.loft1325-mobile-lofts-active .mobile-menu__list {
+        list-style: none;
+        display: grid;
+        gap: 12px;
+        font-size: 16px;
+        padding: 0;
+        margin: 0;
+}
+
+body.loft1325-mobile-lofts-archive-active .mobile-menu__list a,
+body.loft1325-mobile-lofts-active .mobile-menu__list a {
+        color: #0b0b0b;
+        text-decoration: none;
+        font-weight: 500;
+}
+
 .loft1325-mobile-lofts-archive__topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1.35rem 0 0.4rem;
+        padding: 0.75rem 0 0.4rem;
 }
 
 .loft1325-mobile-lofts-archive__crumb {
@@ -67,16 +194,15 @@ body.loft1325-mobile-lofts-archive-active a {
         gap: 0.45rem;
         padding: 0.6rem 0.95rem;
         border-radius: 999px;
-        background: #ffffff;
-        border: 1px solid rgba(15, 23, 42, 0.08);
+        background: #f5f5f5;
+        border: 1px solid #e5e5e5;
         font-weight: 600;
         font-size: 0.85rem;
-        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .loft1325-mobile-lofts-archive__badge {
-        background: rgba(253, 185, 19, 0.2);
-        color: #8a5b00;
+        background: #f5efe3;
+        color: #7a4f00;
         font-weight: 600;
         font-size: 0.75rem;
         padding: 0.4rem 0.8rem;
@@ -84,22 +210,24 @@ body.loft1325-mobile-lofts-archive-active a {
 }
 
 .loft1325-mobile-lofts-archive__hero {
-        background: #ffffff;
-        border-radius: 24px;
+        background: #f5f5f5;
+        border-radius: 18px;
         padding: 1.5rem;
-        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+        border: 1px solid #e5e5e5;
 }
 
 .loft1325-mobile-lofts-archive__hero h1 {
         margin: 0 0 0.65rem;
         font-size: 1.8rem;
         font-family: 'Playfair Display', serif;
-        color: #0f172a;
+        color: #0b0b0b;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
 }
 
 .loft1325-mobile-lofts-archive__hero p {
         margin: 0;
-        color: #64748b;
+        color: #7a7a7a;
         line-height: 1.6;
 }
 
@@ -110,9 +238,9 @@ body.loft1325-mobile-lofts-archive-active a {
 
 .loft1325-mobile-lofts-archive__card {
         background: #ffffff;
-        border-radius: 24px;
+        border-radius: 18px;
         overflow: hidden;
-        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
+        border: 1px solid #e5e5e5;
 }
 
 .loft1325-mobile-lofts-archive__card-link {
@@ -164,7 +292,7 @@ body.loft1325-mobile-lofts-archive-active a {
         justify-content: space-between;
         align-items: center;
         font-size: 0.8rem;
-        color: #64748b;
+        color: #7a7a7a;
 }
 
 .loft1325-mobile-lofts-archive__stars {
@@ -176,12 +304,12 @@ body.loft1325-mobile-lofts-archive-active a {
 .loft1325-mobile-lofts-archive__content h2 {
         margin: 0;
         font-size: 1.2rem;
-        color: #0f172a;
+        color: #0b0b0b;
 }
 
 .loft1325-mobile-lofts-archive__content p {
         margin: 0;
-        color: #475569;
+        color: #7a7a7a;
         line-height: 1.5;
 }
 
@@ -197,8 +325,8 @@ body.loft1325-mobile-lofts-archive-active a {
         gap: 0.35rem;
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
-        background: #f1f5f9;
-        color: #0f172a;
+        background: #f5f5f5;
+        color: #0b0b0b;
         font-size: 0.75rem;
         font-weight: 600;
 }
@@ -213,19 +341,19 @@ body.loft1325-mobile-lofts-archive-active a {
 .loft1325-mobile-lofts-archive__price-label {
         display: block;
         font-size: 0.75rem;
-        color: #94a3b8;
+        color: #7a7a7a;
 }
 
 .loft1325-mobile-lofts-archive__price-row strong {
         display: block;
         font-size: 1.1rem;
-        color: #0f172a;
+        color: #0b0b0b;
 }
 
 .loft1325-mobile-lofts-archive__price-row small {
         display: block;
         font-size: 0.75rem;
-        color: #94a3b8;
+        color: #7a7a7a;
 }
 
 .loft1325-mobile-lofts-archive__cta {
@@ -234,11 +362,10 @@ body.loft1325-mobile-lofts-archive-active a {
         justify-content: center;
         padding: 0.65rem 1.1rem;
         border-radius: 999px;
-        background: #003b95;
+        background: #0b0b0b;
         color: #ffffff;
         font-size: 0.85rem;
         font-weight: 700;
-        box-shadow: 0 10px 20px rgba(0, 59, 149, 0.25);
 }
 
 .loft1325-mobile-lofts-archive__empty {
