@@ -548,6 +548,98 @@ if (!function_exists('wp_loft_booking_find_available_unit_for_type')) {
     }
 }
 
+
+if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
+    /**
+     * Re-check room-type availability right before checkout/payment.
+     *
+     * This guard combines local occupancy checks with ButterflyMX keychain conflict
+     * checks so checkout can fail safely before charging a card.
+     *
+     * @param string $requested_label Requested room/loft label from checkout.
+     * @param string $date_from       Check-in date string.
+     * @param string $date_to         Check-out date string.
+     *
+     * @return array|WP_Error Available unit payload or WP_Error when none exists.
+     */
+    function wp_loft_booking_find_checkout_available_unit($requested_label, $date_from, $date_to)
+    {
+        global $wpdb;
+
+        $requested_type = wp_loft_booking_detect_room_type($requested_label);
+        $window = wp_loft_booking_calculate_booking_window($date_from, $date_to);
+
+        if (is_wp_error($window)) {
+            return $window;
+        }
+
+        $checkin_local  = $window['checkin_local'];
+        $checkout_local = $window['checkout_local'];
+        $checkin_utc    = $window['checkin_utc'];
+        $checkout_utc   = $window['checkout_utc'];
+
+        $units_table = $wpdb->prefix . 'loft_units';
+        $where       = ["status = 'available'"];
+        $params      = [];
+
+        if ($requested_type !== '') {
+            $where[]  = 'UPPER(unit_name) LIKE %s';
+            $params[] = '%' . $wpdb->esc_like($requested_type) . '%';
+        }
+
+        $sql = "SELECT id, unit_name, unit_id_api FROM {$units_table} WHERE " . implode(' AND ', $where) . ' ORDER BY unit_name ASC';
+        $units = empty($params) ? $wpdb->get_results($sql, ARRAY_A) : $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
+
+        if (empty($units)) {
+            return new WP_Error('loft_checkout_unavailable', 'this room is no longer available for the selected dates.');
+        }
+
+        foreach ($units as $unit) {
+            $unit_id = isset($unit['id']) ? (int) $unit['id'] : 0;
+
+            if (!$unit_id) {
+                continue;
+            }
+
+            if (!wp_loft_booking_unit_is_available_for_range($unit_id, $checkin_local, $checkout_local, $checkin_utc, $checkout_utc)) {
+                continue;
+            }
+
+            if (function_exists('wp_loft_booking_fetch_butterflymx_keychain_conflicts')) {
+                $api_unit_id = isset($unit['unit_id_api']) ? (int) $unit['unit_id_api'] : 0;
+
+                if ($api_unit_id > 0) {
+                    $conflicts = wp_loft_booking_fetch_butterflymx_keychain_conflicts(
+                        $api_unit_id,
+                        $window['starts_at'],
+                        $window['ends_at'],
+                        wp_loft_booking_get_butterflymx_environment(),
+                        (string) ($unit['unit_name'] ?? '')
+                    );
+
+                    if (is_wp_error($conflicts)) {
+                        return $conflicts;
+                    }
+
+                    if (!empty($conflicts)) {
+                        continue;
+                    }
+                }
+            }
+
+            return [
+                'id'         => $unit_id,
+                'unit_name'  => (string) ($unit['unit_name'] ?? ''),
+                'unit_id_api'=> isset($unit['unit_id_api']) ? (int) $unit['unit_id_api'] : 0,
+                'starts_at'  => $window['starts_at'],
+                'ends_at'    => $window['ends_at'],
+            ];
+        }
+
+        return new WP_Error('loft_checkout_unavailable', 'this room is no longer available for the selected dates.');
+    }
+}
+
 if (!function_exists('wp_loft_booking_apply_virtual_key_lead_time')) {
     /**
      * Ensure the virtual key check-in time respects the minimum lead time.

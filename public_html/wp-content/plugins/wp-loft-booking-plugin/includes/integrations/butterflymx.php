@@ -1497,6 +1497,179 @@ function wp_loft_booking_prepare_butterflymx_recipients( $recipients ) {
     return array_values( array_unique( $sanitized ) );
 }
 
+/**
+ * Convert a ButterflyMX date value into a UNIX timestamp.
+ *
+ * @param mixed $value Datetime string returned by ButterflyMX.
+ *
+ * @return int|null Timestamp when parseable, null otherwise.
+ */
+function wp_loft_booking_parse_butterflymx_timestamp( $value ) {
+    if ( ! is_string( $value ) || '' === trim( $value ) ) {
+        return null;
+    }
+
+    $timestamp = strtotime( $value );
+
+    if ( false === $timestamp ) {
+        return null;
+    }
+
+    return (int) $timestamp;
+}
+
+/**
+ * Normalize a ButterflyMX keychain/unit label for resilient matching.
+ *
+ * @param string $label Raw keychain or unit label.
+ *
+ * @return string Normalized label.
+ */
+function wp_loft_booking_normalize_butterflymx_label( $label ) {
+    $label = strtoupper( trim( (string) $label ) );
+
+    if ( '' === $label ) {
+        return '';
+    }
+
+    return preg_replace( '/[^A-Z0-9]/', '', $label );
+}
+
+/**
+ * Fetch potentially conflicting ButterflyMX keychains for a unit/time window.
+ *
+ * @param int    $target_unit_id Unit API id the new key would be attached to.
+ * @param string $starts_at_utc  Requested start datetime in UTC ISO format.
+ * @param string $ends_at_utc    Requested end datetime in UTC ISO format.
+ * @param string $environment    ButterflyMX environment.
+ * @param string $unit_label     Human-readable unit label used in keychain names.
+ *
+ * @return array|WP_Error Array of conflict summaries, or WP_Error if API retrieval fails.
+ */
+function wp_loft_booking_fetch_butterflymx_keychain_conflicts( $target_unit_id, $starts_at_utc, $ends_at_utc, $environment = 'production', $unit_label = '' ) {
+    $token = get_butterflymx_access_token( 'v4' );
+
+    if ( empty( $token ) ) {
+        return new WP_Error( 'no_token', 'ButterflyMX access token missing.' );
+    }
+
+    $base_url         = wp_loft_booking_get_butterflymx_base_url( $environment );
+    $page             = 1;
+    $per_page         = 100;
+    $max_pages        = 20;
+    $requested_start  = wp_loft_booking_parse_butterflymx_timestamp( $starts_at_utc );
+    $requested_end    = wp_loft_booking_parse_butterflymx_timestamp( $ends_at_utc );
+    $target_unit_id   = (int) $target_unit_id;
+    $normalized_label = wp_loft_booking_normalize_butterflymx_label( $unit_label );
+    $conflicts        = array();
+
+    if ( ! $requested_start || ! $requested_end || $requested_start >= $requested_end ) {
+        return array();
+    }
+
+    while ( $page <= $max_pages ) {
+        $url = add_query_arg(
+            array(
+                'page'     => $page,
+                'per_page' => $per_page,
+            ),
+            $base_url . '/keychains'
+        );
+
+        $response = wp_remote_get(
+            $url,
+            array(
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type'  => 'application/json',
+                ),
+                'timeout' => 20,
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error( 'http_request_failed', $response->get_error_message() );
+        }
+
+        $status   = wp_remote_retrieve_response_code( $response );
+        $raw_body = wp_remote_retrieve_body( $response );
+        $data     = json_decode( $raw_body, true );
+
+        if ( $status >= 300 ) {
+            return new WP_Error(
+                'http_error',
+                sprintf( 'ButterflyMX keychain listing failed with status %d.', (int) $status ),
+                array( 'status' => $status, 'body' => is_array( $data ) ? $data : $raw_body )
+            );
+        }
+
+        $rows = $data['data'] ?? array();
+
+        if ( ! is_array( $rows ) || empty( $rows ) ) {
+            break;
+        }
+
+        foreach ( $rows as $row ) {
+            if ( ! is_array( $row ) ) {
+                continue;
+            }
+
+            $attributes = isset( $row['attributes'] ) && is_array( $row['attributes'] ) ? $row['attributes'] : array();
+
+            $keychain_name = (string) ( $attributes['name'] ?? '' );
+            $keychain_id   = isset( $row['id'] ) ? (int) $row['id'] : 0;
+            $remote_unit   = isset( $attributes['unit_id'] ) ? (int) $attributes['unit_id'] : 0;
+
+            if ( ! $remote_unit && ! empty( $row['relationships']['unit']['data']['id'] ) ) {
+                $remote_unit = (int) $row['relationships']['unit']['data']['id'];
+            }
+
+            $remote_start = wp_loft_booking_parse_butterflymx_timestamp( $attributes['starts_at'] ?? ( $attributes['valid_from'] ?? null ) );
+            $remote_end   = wp_loft_booking_parse_butterflymx_timestamp( $attributes['ends_at'] ?? ( $attributes['valid_until'] ?? null ) );
+
+            if ( ! $remote_start || ! $remote_end || $remote_start >= $remote_end ) {
+                continue;
+            }
+
+            $overlaps_window = ( $remote_start < $requested_end ) && ( $remote_end > $requested_start );
+
+            if ( ! $overlaps_window ) {
+                continue;
+            }
+
+            $matches_unit_id = ( $remote_unit > 0 && $remote_unit === $target_unit_id );
+            $matches_label   = false;
+
+            if ( '' !== $normalized_label && '' !== $keychain_name ) {
+                $matches_label = false !== strpos(
+                    wp_loft_booking_normalize_butterflymx_label( $keychain_name ),
+                    $normalized_label
+                );
+            }
+
+            if ( ! $matches_unit_id && ! $matches_label ) {
+                continue;
+            }
+
+            $conflicts[] = array(
+                'id'        => $keychain_id,
+                'name'      => $keychain_name,
+                'unit_id'   => $remote_unit,
+                'starts_at' => gmdate( 'c', $remote_start ),
+                'ends_at'   => gmdate( 'c', $remote_end ),
+            );
+        }
+
+        if ( count( $rows ) < $per_page ) {
+            break;
+        }
+
+        $page++;
+    }
+
+    return $conflicts;
+}
+
 function wp_loft_booking_create_visitor_pass_for_unit(
     $building_id,
     $target_unit_id,
@@ -1585,6 +1758,34 @@ function wp_loft_booking_create_visitor_pass_for_unit(
         if ( ! empty( $sanitized ) ) {
             $payload['keychain']['recipients'] = $sanitized;
         }
+    }
+
+    $conflicts = wp_loft_booking_fetch_butterflymx_keychain_conflicts(
+        (int) $target_unit_id,
+        $starts_at_utc,
+        $ends_at_utc,
+        $environment,
+        $unit_label
+    );
+
+    if ( is_wp_error( $conflicts ) ) {
+        return $conflicts;
+    }
+
+    if ( ! empty( $conflicts ) ) {
+        error_log(
+            sprintf(
+                '🚫 ButterflyMX conflict guard blocked key creation for unit %d. Existing keychains: %s',
+                (int) $target_unit_id,
+                wp_json_encode( $conflicts, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+            )
+        );
+
+        return new WP_Error(
+            'butterflymx_conflicting_keychain',
+            'Cannot create visitor pass: an overlapping keychain already exists for this loft.',
+            array( 'conflicts' => $conflicts )
+        );
     }
 
     $resp = wp_remote_post(
@@ -1737,6 +1938,5 @@ function wp_loft_booking_create_keychain_with_vk($tenant, $unit_id_api, $access_
 }
 
 // add_action('nd_booking_after_booking_completed', 'handle_successful_booking', 10, 1);
-
 
 

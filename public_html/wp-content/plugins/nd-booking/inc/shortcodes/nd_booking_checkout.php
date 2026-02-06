@@ -1013,6 +1013,17 @@ function nd_booking_shortcode_checkout() {
             $nd_booking_checkout_form_post_id = $nd_booking_ids_array[0];
             $nd_booking_id_room = $nd_booking_ids_array[1];
 
+            if ( function_exists( 'wp_loft_booking_find_checkout_available_unit' ) ) {
+                $nd_booking_checkout_availability = wp_loft_booking_find_checkout_available_unit(
+                    $nd_booking_checkout_form_post_title,
+                    $nd_booking_booking_form_date_from,
+                    $nd_booking_booking_form_date_to
+                );
+
+                if ( is_wp_error( $nd_booking_checkout_availability ) ) {
+                    return '<p>' . esc_html__( 'this room is no longer available for the selected dates.', 'nd-booking' ) . '</p>';
+                }
+            }
 
             $nd_booking_booking_form_final_price = floatval( $nd_booking_booking_form_final_price );
             $nd_booking_is_free_payment = ( $nd_booking_booking_form_final_price <= 0.01 );
