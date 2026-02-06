@@ -1299,11 +1299,23 @@ function wp_loft_booking_find_butterflymx_tenant_id_for_unit( $unit_label ) {
         return (int) $tenant_id;
     }
 
+    $tenant_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT tenant_id FROM {$tenants_table} WHERE CONCAT(first_name, ' ', last_name) LIKE %s ORDER BY id DESC LIMIT 1",
+            '%' . $wpdb->esc_like( $unit_label ) . '%'
+        )
+    );
+
+    if ( $tenant_id ) {
+        return (int) $tenant_id;
+    }
+
     if ( preg_match( '/(\d{1,4})/', $unit_label, $match ) ) {
         $pattern   = '%' . $wpdb->esc_like( $match[1] ) . '%';
         $tenant_id = $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT tenant_id FROM {$tenants_table} WHERE unit_label LIKE %s ORDER BY id DESC LIMIT 1",
+                "SELECT tenant_id FROM {$tenants_table} WHERE unit_label LIKE %s OR CONCAT(first_name, ' ', last_name) LIKE %s ORDER BY id DESC LIMIT 1",
+                $pattern,
                 $pattern
             )
         );
@@ -1938,5 +1950,4 @@ function wp_loft_booking_create_keychain_with_vk($tenant, $unit_id_api, $access_
 }
 
 // add_action('nd_booking_after_booking_completed', 'handle_successful_booking', 10, 1);
-
 
