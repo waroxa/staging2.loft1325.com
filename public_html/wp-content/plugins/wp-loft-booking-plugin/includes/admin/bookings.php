@@ -228,8 +228,103 @@ function wp_loft_booking_bookings_page() {
                     }
 
                     const payload = data.data || {};
+                    const units = Array.isArray(payload.units) ? payload.units : [];
+                    const pricing = payload.pricing || null;
+                    const currency = pricing && pricing.currency ? pricing.currency : 'CAD';
+                    const formatter = new Intl.NumberFormat(undefined, {
+                        style: 'currency',
+                        currency: currency
+                    });
+
                     result.style.color = '#065f46';
-                    result.textContent = 'Available unit: ' + (payload.unit_name || 'N/A') + ' (local #' + (payload.unit_id || 'n/a') + ', Butterfly unit #' + (payload.unit_id_api || 'n/a') + ')';
+                    result.textContent = '';
+                    result.innerHTML = '';
+
+                    const wrapper = document.createElement('div');
+
+                    if (!units.length) {
+                        const none = document.createElement('div');
+                        none.textContent = 'No available units found for these dates.';
+                        wrapper.appendChild(none);
+                    } else {
+                        const heading = document.createElement('div');
+                        heading.textContent = `Available units (${units.length}):`;
+                        heading.style.fontWeight = '600';
+                        wrapper.appendChild(heading);
+
+                        const list = document.createElement('ul');
+                        list.style.margin = '6px 0 0 18px';
+
+                        units.forEach((unit) => {
+                            const item = document.createElement('li');
+                            const unitName = unit.unit_name || 'N/A';
+                            const unitId = unit.id || 'n/a';
+                            const apiId = unit.unit_id_api || 'n/a';
+                            item.textContent = `${unitName} (local #${unitId}, Butterfly unit #${apiId})`;
+                            list.appendChild(item);
+                        });
+
+                        wrapper.appendChild(list);
+                    }
+
+                    if (pricing) {
+                        const pricingWrap = document.createElement('div');
+                        pricingWrap.style.marginTop = '8px';
+
+                        const pricingHeading = document.createElement('div');
+                        pricingHeading.textContent = 'Full price breakdown:';
+                        pricingHeading.style.fontWeight = '600';
+                        pricingWrap.appendChild(pricingHeading);
+
+                        const breakdown = document.createElement('ul');
+                        breakdown.style.margin = '6px 0 0 18px';
+
+                        const nights = document.createElement('li');
+                        nights.textContent = `Nights: ${pricing.nights || 0}`;
+                        breakdown.appendChild(nights);
+
+                        const nightlyRate = document.createElement('li');
+                        nightlyRate.textContent = `Nightly rate: ${formatter.format(pricing.nightly_rate || 0)}`;
+                        breakdown.appendChild(nightlyRate);
+
+                        const subtotal = document.createElement('li');
+                        subtotal.textContent = `Subtotal: ${formatter.format(pricing.subtotal || 0)}`;
+                        breakdown.appendChild(subtotal);
+
+                        if (pricing.discount && (pricing.discount.amount || pricing.discount.percent)) {
+                            const discount = document.createElement('li');
+                            const discountAmount = pricing.discount.amount ? formatter.format(pricing.discount.amount) : formatter.format(0);
+                            const discountPercent = pricing.discount.percent ? ` (${pricing.discount.percent}%)` : '';
+                            const discountLabel = pricing.discount.label ? `${pricing.discount.label} ` : '';
+                            discount.textContent = `Discount: -${discountAmount}${discountPercent} ${discountLabel}`.trim();
+                            breakdown.appendChild(discount);
+                        }
+
+                        if (pricing.taxes && Object.keys(pricing.taxes).length) {
+                            Object.values(pricing.taxes).forEach((tax) => {
+                                const taxItem = document.createElement('li');
+                                const taxLabel = tax.display_label || tax.label || 'Tax';
+                                const taxAmount = tax.amount || 0;
+                                taxItem.textContent = `${taxLabel}: ${formatter.format(taxAmount)}`;
+                                breakdown.appendChild(taxItem);
+                            });
+                        }
+
+                        const total = document.createElement('li');
+                        total.textContent = `Total: ${formatter.format(pricing.total || 0)}`;
+                        total.style.fontWeight = '600';
+                        breakdown.appendChild(total);
+
+                        pricingWrap.appendChild(breakdown);
+                        wrapper.appendChild(pricingWrap);
+                    } else {
+                        const pricingNote = document.createElement('div');
+                        pricingNote.style.marginTop = '8px';
+                        pricingNote.textContent = 'Pricing breakdown unavailable for this room type.';
+                        wrapper.appendChild(pricingNote);
+                    }
+
+                    result.appendChild(wrapper);
                 }).catch(() => {
                     result.textContent = 'Unable to check availability.';
                     result.style.color = '#b91c1c';
@@ -1019,6 +1114,31 @@ function wp_loft_booking_calculate_price_summary($room_id, $checkin, $checkout, 
     return $summary;
 }
 
+function wp_loft_booking_find_room_id_for_type($room_type) {
+    $requested_type = function_exists('wp_loft_booking_detect_room_type')
+        ? wp_loft_booking_detect_room_type($room_type)
+        : '';
+
+    if (empty($requested_type)) {
+        return 0;
+    }
+
+    $rooms = get_posts([
+        'post_type'      => 'nd_booking_cpt_1',
+        'posts_per_page' => -1,
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+    ]);
+
+    foreach ($rooms as $room) {
+        if (function_exists('wp_loft_booking_detect_room_type') && wp_loft_booking_detect_room_type($room->post_title) === $requested_type) {
+            return (int) $room->ID;
+        }
+    }
+
+    return 0;
+}
+
 function wp_loft_booking_admin_price_preview()
 {
     if (!current_user_can('manage_options')) {
@@ -1089,22 +1209,51 @@ function wp_loft_booking_admin_key_availability_check()
         wp_send_json_error(['message' => __('Room type, check-in, and check-out are required.', 'wp-loft-booking')], 400);
     }
 
-    if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
+    if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
         wp_send_json_error(['message' => __('Availability checker is unavailable.', 'wp-loft-booking')], 500);
     }
 
-    $availability = wp_loft_booking_find_checkout_available_unit($room_type, $checkin, $checkout);
+    $availability = wp_loft_booking_list_checkout_available_units($room_type, $checkin, $checkout);
 
     if (is_wp_error($availability)) {
         wp_send_json_error(['message' => $availability->get_error_message()], 409);
     }
 
+    $pricing = null;
+    $room_id = wp_loft_booking_find_room_id_for_type($room_type);
+
+    if ($room_id) {
+        $summary = wp_loft_booking_calculate_price_summary($room_id, $checkin, $checkout, 1);
+
+        if (!empty($summary['nights'])) {
+            $tax_breakdown = function_exists('nd_booking_calculate_tax_breakdown')
+                ? nd_booking_calculate_tax_breakdown($summary['subtotal'])
+                : [
+                    'taxes'     => [],
+                    'total_tax' => 0.0,
+                    'total'     => $summary['subtotal'],
+                ];
+
+            $pricing = [
+                'room_id'      => $room_id,
+                'room_name'    => get_the_title($room_id),
+                'subtotal'     => $summary['subtotal'],
+                'discount'     => $summary['discount'],
+                'nights'       => $summary['nights'],
+                'nightly_rate' => $summary['nightly_rate'],
+                'tax_total'    => isset($tax_breakdown['total_tax']) ? (float) $tax_breakdown['total_tax'] : 0.0,
+                'taxes'        => $tax_breakdown['taxes'] ?? [],
+                'total'        => isset($tax_breakdown['total']) ? (float) $tax_breakdown['total'] : $summary['subtotal'],
+                'currency'     => get_option('stripe_currency', 'CAD'),
+            ];
+        }
+    }
+
     wp_send_json_success([
-        'unit_id'     => (int) ($availability['id'] ?? 0),
-        'unit_name'   => (string) ($availability['unit_name'] ?? ''),
-        'unit_id_api' => (int) ($availability['unit_id_api'] ?? 0),
+        'units'       => $availability['units'] ?? [],
         'starts_at'   => (string) ($availability['starts_at'] ?? ''),
         'ends_at'     => (string) ($availability['ends_at'] ?? ''),
+        'pricing'     => $pricing,
     ]);
 }
 
