@@ -232,15 +232,103 @@ function wp_loft_booking_bookings_page() {
                     body: params.toString()
                 }).then(r => r.json()).then(data => {
                     setLoadingState(false);
+                    const payload = data && data.data ? data.data : {};
+                    const report = payload.report || null;
+
+                    const renderReport = function(reportData) {
+                        if (!reportData || !reportData.units || !reportData.units.length) {
+                            return null;
+                        }
+
+                        const reportWrap = document.createElement('div');
+                        reportWrap.style.marginTop = '12px';
+
+                        const reportHeading = document.createElement('div');
+                        reportHeading.textContent = 'ButterflyMX report';
+                        reportHeading.style.fontWeight = '600';
+                        reportHeading.style.marginBottom = '6px';
+                        reportWrap.appendChild(reportHeading);
+
+                        const meta = document.createElement('div');
+                        const windowLabel = reportData.window_local ? `Window: ${reportData.window_local}` : '';
+                        const generatedLabel = reportData.generated_at ? `Generated: ${reportData.generated_at}` : '';
+                        meta.textContent = [windowLabel, generatedLabel].filter(Boolean).join(' · ');
+                        meta.style.color = '#475569';
+                        meta.style.marginBottom = '8px';
+                        reportWrap.appendChild(meta);
+
+                        const table = document.createElement('table');
+                        table.style.width = '100%';
+                        table.style.borderCollapse = 'collapse';
+
+                        const headerRow = document.createElement('tr');
+                        ['Unit', 'Local status', 'Local available until', 'ButterflyMX conflicts'].forEach((label) => {
+                            const th = document.createElement('th');
+                            th.textContent = label;
+                            th.style.textAlign = 'left';
+                            th.style.padding = '6px 8px';
+                            th.style.borderBottom = '1px solid #e2e8f0';
+                            th.style.fontWeight = '600';
+                            headerRow.appendChild(th);
+                        });
+                        table.appendChild(headerRow);
+
+                        reportData.units.forEach((unit) => {
+                            const row = document.createElement('tr');
+
+                            const unitCell = document.createElement('td');
+                            unitCell.textContent = unit.unit_name || 'N/A';
+                            unitCell.style.padding = '6px 8px';
+                            unitCell.style.borderBottom = '1px solid #f1f5f9';
+                            row.appendChild(unitCell);
+
+                            const statusCell = document.createElement('td');
+                            statusCell.textContent = unit.local_status || 'n/a';
+                            statusCell.style.padding = '6px 8px';
+                            statusCell.style.borderBottom = '1px solid #f1f5f9';
+                            row.appendChild(statusCell);
+
+                            const untilCell = document.createElement('td');
+                            untilCell.textContent = unit.local_available_until || '—';
+                            untilCell.style.padding = '6px 8px';
+                            untilCell.style.borderBottom = '1px solid #f1f5f9';
+                            row.appendChild(untilCell);
+
+                            const conflictsCell = document.createElement('td');
+                            conflictsCell.style.padding = '6px 8px';
+                            conflictsCell.style.borderBottom = '1px solid #f1f5f9';
+                            const conflicts = Array.isArray(unit.api_conflicts) ? unit.api_conflicts : [];
+                            if (!conflicts.length) {
+                                conflictsCell.textContent = 'None';
+                            } else {
+                                const conflictList = document.createElement('ul');
+                                conflictList.style.margin = '0 0 0 16px';
+                                conflicts.forEach((conflict) => {
+                                    const item = document.createElement('li');
+                                    const label = conflict.name ? `${conflict.name} ` : '';
+                                    item.textContent = `${label}(${conflict.starts_at || 'n/a'} → ${conflict.ends_at || 'n/a'})`;
+                                    conflictList.appendChild(item);
+                                });
+                                conflictsCell.appendChild(conflictList);
+                            }
+                            row.appendChild(conflictsCell);
+
+                            table.appendChild(row);
+                        });
+
+                        reportWrap.appendChild(table);
+                        return reportWrap;
+                    };
+
                     if (!data || !data.success) {
-                        const message = data && data.data && data.data.message ? data.data.message : 'Unable to check availability.';
+                        const message = payload.message ? payload.message : 'Unable to check availability.';
                         result.textContent = '';
                         result.style.color = '#b91c1c';
                         const messageWrap = document.createElement('div');
                         messageWrap.textContent = message;
                         result.appendChild(messageWrap);
 
-                        const debug = data && data.data && Array.isArray(data.data.debug) ? data.data.debug : [];
+                        const debug = Array.isArray(payload.debug) ? payload.debug : [];
                         if (debug.length) {
                             const debugWrap = document.createElement('details');
                             debugWrap.style.marginTop = '8px';
@@ -257,10 +345,14 @@ function wp_loft_booking_bookings_page() {
                             debugWrap.appendChild(debugList);
                             result.appendChild(debugWrap);
                         }
+
+                        const reportWrap = renderReport(report);
+                        if (reportWrap) {
+                            result.appendChild(reportWrap);
+                        }
                         return;
                     }
 
-                    const payload = data.data || {};
                     const units = Array.isArray(payload.units) ? payload.units : [];
                     const pricing = payload.pricing || null;
                     const debug = Array.isArray(payload.debug) ? payload.debug : [];
@@ -373,6 +465,11 @@ function wp_loft_booking_bookings_page() {
                         });
                         debugWrap.appendChild(debugList);
                         wrapper.appendChild(debugWrap);
+                    }
+
+                    const reportWrap = renderReport(report);
+                    if (reportWrap) {
+                        wrapper.appendChild(reportWrap);
                     }
 
                     result.appendChild(wrapper);
@@ -1267,11 +1364,13 @@ function wp_loft_booking_admin_key_availability_check()
 
     $debug        = [];
     $availability = wp_loft_booking_list_checkout_available_units($room_type, $checkin, $checkout, $debug);
+    $report       = wp_loft_booking_build_butterflymx_report($room_type, $checkin, $checkout, $debug);
 
     if (is_wp_error($availability)) {
         wp_send_json_error([
             'message' => $availability->get_error_message(),
             'debug'   => $debug,
+            'report'  => $report,
         ], 409);
     }
 
@@ -1311,7 +1410,146 @@ function wp_loft_booking_admin_key_availability_check()
         'ends_at'     => (string) ($availability['ends_at'] ?? ''),
         'pricing'     => $pricing,
         'debug'       => $debug,
+        'report'      => $report,
     ]);
+}
+
+function wp_loft_booking_build_butterflymx_report($room_type, $checkin, $checkout, &$debug = null) {
+    global $wpdb;
+
+    $report = [
+        'generated_at' => current_time('mysql'),
+        'room_type'    => $room_type,
+        'window_local' => '',
+        'window_utc'   => '',
+        'units'        => [],
+    ];
+
+    if (!function_exists('wp_loft_booking_calculate_booking_window')) {
+        return $report;
+    }
+
+    $window = wp_loft_booking_calculate_booking_window($checkin, $checkout);
+    if (is_wp_error($window)) {
+        if (null !== $debug) {
+            $debug[] = sprintf('ButterflyMX report window error: %s', $window->get_error_message());
+        }
+        return $report;
+    }
+
+    $checkin_local  = $window['checkin_local'];
+    $checkout_local = $window['checkout_local'];
+    $checkin_utc    = $window['checkin_utc'];
+    $checkout_utc   = $window['checkout_utc'];
+
+    $report['window_local'] = sprintf('%s → %s', $checkin_local->format('Y-m-d H:i:s'), $checkout_local->format('Y-m-d H:i:s'));
+    $report['window_utc']   = sprintf('%s → %s', $checkin_utc->format('Y-m-d H:i:s'), $checkout_utc->format('Y-m-d H:i:s'));
+
+    $requested_type = wp_loft_booking_detect_room_type($room_type);
+    $units_table    = $wpdb->prefix . 'loft_units';
+    $units_params   = [];
+    $units_where    = [];
+
+    if ($requested_type !== '') {
+        $units_where[]  = 'UPPER(unit_name) LIKE %s';
+        $units_params[] = '%' . $wpdb->esc_like($requested_type) . '%';
+    }
+
+    $units_sql = "SELECT id, unit_name, unit_id_api, status, availability_until FROM {$units_table}";
+    if (!empty($units_where)) {
+        $units_sql .= ' WHERE ' . implode(' AND ', $units_where);
+    }
+    $units_sql .= ' ORDER BY unit_name ASC';
+
+    $units = !empty($units_params)
+        ? $wpdb->get_results($wpdb->prepare($units_sql, ...$units_params), ARRAY_A)
+        : $wpdb->get_results($units_sql, ARRAY_A);
+
+    if (!function_exists('wp_loft_booking_sync_keychains_from_api')) {
+        if (null !== $debug) {
+            $debug[] = 'ButterflyMX report skipped: keychain API helper missing.';
+        }
+        return $report;
+    }
+
+    $keychains = wp_loft_booking_sync_keychains_from_api();
+    if (is_wp_error($keychains)) {
+        if (null !== $debug) {
+            $debug[] = sprintf('ButterflyMX report keychain error: %s', $keychains->get_error_message());
+        }
+        return $report;
+    }
+
+    $checkin_ts  = $checkin_local->getTimestamp();
+    $checkout_ts = $checkout_local->getTimestamp();
+
+    $conflicts_by_api   = [];
+    $conflicts_by_label = [];
+
+    foreach ($keychains as $keychain) {
+        $start_raw = $keychain['valid_from'] ?? null;
+        $end_raw   = $keychain['valid_until'] ?? null;
+        $start_ts  = $start_raw ? strtotime($start_raw) : false;
+        $end_ts    = $end_raw ? strtotime($end_raw) : false;
+
+        if (!$start_ts || !$end_ts || $start_ts >= $end_ts) {
+            continue;
+        }
+
+        if (!($start_ts < $checkout_ts && $end_ts > $checkin_ts)) {
+            continue;
+        }
+
+        $conflict = [
+            'id'        => $keychain['keychain_id'] ?? null,
+            'name'      => $keychain['name'] ?? '',
+            'starts_at' => $start_raw,
+            'ends_at'   => $end_raw,
+        ];
+
+        $api_unit_id = isset($keychain['external_unit_api_id']) ? (int) $keychain['external_unit_api_id'] : 0;
+        if ($api_unit_id > 0) {
+            $conflicts_by_api[$api_unit_id][] = $conflict;
+        }
+
+        if (function_exists('wp_loft_booking_normalize_loft_label')) {
+            $normalized_label = wp_loft_booking_normalize_loft_label((string) ($keychain['name'] ?? ''));
+        } else {
+            $normalized_label = strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) ($keychain['name'] ?? '')));
+        }
+
+        if (!empty($normalized_label)) {
+            $conflicts_by_label[$normalized_label][] = $conflict;
+        }
+    }
+
+    foreach ($units as $unit) {
+        $unit_api_id = isset($unit['unit_id_api']) ? (int) $unit['unit_id_api'] : 0;
+        $unit_label  = (string) ($unit['unit_name'] ?? '');
+
+        if (function_exists('wp_loft_booking_normalize_loft_label')) {
+            $normalized_unit = wp_loft_booking_normalize_loft_label($unit_label);
+        } else {
+            $normalized_unit = strtoupper(preg_replace('/[^A-Z0-9]/', '', $unit_label));
+        }
+
+        $conflicts = [];
+
+        if ($unit_api_id > 0 && !empty($conflicts_by_api[$unit_api_id])) {
+            $conflicts = $conflicts_by_api[$unit_api_id];
+        } elseif (!empty($normalized_unit) && !empty($conflicts_by_label[$normalized_unit])) {
+            $conflicts = $conflicts_by_label[$normalized_unit];
+        }
+
+        $report['units'][] = [
+            'unit_name'            => $unit_label,
+            'local_status'         => $unit['status'] ?? '',
+            'local_available_until'=> $unit['availability_until'] ?? '',
+            'api_conflicts'        => $conflicts,
+        ];
+    }
+
+    return $report;
 }
 
 function wp_loft_booking_handle_bulk_receipts() {
