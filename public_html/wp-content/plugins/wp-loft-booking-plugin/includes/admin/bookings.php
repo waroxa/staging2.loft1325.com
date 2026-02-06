@@ -234,14 +234,36 @@ function wp_loft_booking_bookings_page() {
                     setLoadingState(false);
                     if (!data || !data.success) {
                         const message = data && data.data && data.data.message ? data.data.message : 'Unable to check availability.';
-                        result.textContent = message;
+                        result.textContent = '';
                         result.style.color = '#b91c1c';
+                        const messageWrap = document.createElement('div');
+                        messageWrap.textContent = message;
+                        result.appendChild(messageWrap);
+
+                        const debug = data && data.data && Array.isArray(data.data.debug) ? data.data.debug : [];
+                        if (debug.length) {
+                            const debugWrap = document.createElement('details');
+                            debugWrap.style.marginTop = '8px';
+                            const summary = document.createElement('summary');
+                            summary.textContent = 'Diagnostics';
+                            debugWrap.appendChild(summary);
+                            const debugList = document.createElement('ul');
+                            debugList.style.margin = '6px 0 0 18px';
+                            debug.forEach((entry) => {
+                                const item = document.createElement('li');
+                                item.textContent = entry;
+                                debugList.appendChild(item);
+                            });
+                            debugWrap.appendChild(debugList);
+                            result.appendChild(debugWrap);
+                        }
                         return;
                     }
 
                     const payload = data.data || {};
                     const units = Array.isArray(payload.units) ? payload.units : [];
                     const pricing = payload.pricing || null;
+                    const debug = Array.isArray(payload.debug) ? payload.debug : [];
                     const currency = pricing && pricing.currency ? pricing.currency : 'CAD';
                     const formatter = new Intl.NumberFormat(undefined, {
                         style: 'currency',
@@ -334,6 +356,23 @@ function wp_loft_booking_bookings_page() {
                         pricingNote.style.marginTop = '8px';
                         pricingNote.textContent = 'Pricing breakdown unavailable for this room type.';
                         wrapper.appendChild(pricingNote);
+                    }
+
+                    if (debug.length) {
+                        const debugWrap = document.createElement('details');
+                        debugWrap.style.marginTop = '8px';
+                        const summary = document.createElement('summary');
+                        summary.textContent = 'Diagnostics';
+                        debugWrap.appendChild(summary);
+                        const debugList = document.createElement('ul');
+                        debugList.style.margin = '6px 0 0 18px';
+                        debug.forEach((entry) => {
+                            const item = document.createElement('li');
+                            item.textContent = entry;
+                            debugList.appendChild(item);
+                        });
+                        debugWrap.appendChild(debugList);
+                        wrapper.appendChild(debugWrap);
                     }
 
                     result.appendChild(wrapper);
@@ -1226,10 +1265,14 @@ function wp_loft_booking_admin_key_availability_check()
         wp_send_json_error(['message' => __('Availability checker is unavailable.', 'wp-loft-booking')], 500);
     }
 
-    $availability = wp_loft_booking_list_checkout_available_units($room_type, $checkin, $checkout);
+    $debug        = [];
+    $availability = wp_loft_booking_list_checkout_available_units($room_type, $checkin, $checkout, $debug);
 
     if (is_wp_error($availability)) {
-        wp_send_json_error(['message' => $availability->get_error_message()], 409);
+        wp_send_json_error([
+            'message' => $availability->get_error_message(),
+            'debug'   => $debug,
+        ], 409);
     }
 
     $pricing = null;
@@ -1267,6 +1310,7 @@ function wp_loft_booking_admin_key_availability_check()
         'starts_at'   => (string) ($availability['starts_at'] ?? ''),
         'ends_at'     => (string) ($availability['ends_at'] ?? ''),
         'pricing'     => $pricing,
+        'debug'       => $debug,
     ]);
 }
 

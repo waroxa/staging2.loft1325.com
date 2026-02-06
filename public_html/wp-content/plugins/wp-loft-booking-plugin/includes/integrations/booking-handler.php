@@ -732,15 +732,27 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
      *
      * @return array|WP_Error Available units payload or WP_Error when none exists.
      */
-    function wp_loft_booking_list_checkout_available_units($requested_label, $date_from, $date_to)
+    function wp_loft_booking_list_checkout_available_units($requested_label, $date_from, $date_to, &$debug = null)
     {
         global $wpdb;
+
+        if (null !== $debug) {
+            $debug = is_array($debug) ? $debug : [];
+            $debug[] = sprintf('Requested label: %s', $requested_label !== '' ? $requested_label : '(empty)');
+        }
 
         if (function_exists('wp_loft_booking_fetch_and_save_tenants')) {
             $tenant_sync = wp_loft_booking_fetch_and_save_tenants();
 
             if (is_wp_error($tenant_sync)) {
+                if (null !== $debug) {
+                    $debug[] = sprintf('Tenant sync failed: %s', $tenant_sync->get_error_message());
+                }
                 return $tenant_sync;
+            }
+
+            if (null !== $debug) {
+                $debug[] = 'Tenant sync completed.';
             }
         }
 
@@ -748,14 +760,28 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
             $sync_result = wp_loft_booking_sync_keychains();
 
             if (is_wp_error($sync_result)) {
+                if (null !== $debug) {
+                    $debug[] = sprintf('Keychain sync failed: %s', $sync_result->get_error_message());
+                }
                 return $sync_result;
+            }
+
+            if (null !== $debug) {
+                $debug[] = 'Keychain sync completed.';
             }
         }
 
         $requested_type = wp_loft_booking_detect_room_type($requested_label);
         $window         = wp_loft_booking_calculate_booking_window($date_from, $date_to);
 
+        if (null !== $debug) {
+            $debug[] = sprintf('Detected room type: %s', $requested_type !== '' ? $requested_type : '(none)');
+        }
+
         if (is_wp_error($window)) {
+            if (null !== $debug) {
+                $debug[] = sprintf('Date window error: %s', $window->get_error_message());
+            }
             return $window;
         }
 
@@ -763,6 +789,11 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
         $checkout_local = $window['checkout_local'];
         $checkin_utc    = $window['checkin_utc'];
         $checkout_utc   = $window['checkout_utc'];
+
+        if (null !== $debug) {
+            $debug[] = sprintf('Window: %s → %s (local)', $checkin_local->format('Y-m-d H:i:s'), $checkout_local->format('Y-m-d H:i:s'));
+            $debug[] = sprintf('Window: %s → %s (UTC)', $checkin_utc->format('Y-m-d H:i:s'), $checkout_utc->format('Y-m-d H:i:s'));
+        }
 
         $units_table = $wpdb->prefix . 'loft_units';
         $where       = ["status = 'available'"];
@@ -775,6 +806,10 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
 
         $sql = "SELECT id, unit_name, unit_id_api FROM {$units_table} WHERE " . implode(' AND ', $where) . ' ORDER BY unit_name ASC';
         $units = empty($params) ? $wpdb->get_results($sql, ARRAY_A) : $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
+
+        if (null !== $debug) {
+            $debug[] = sprintf('Candidate units found: %d', is_array($units) ? count($units) : 0);
+        }
 
         if (empty($units)) {
             return new WP_Error('loft_checkout_unavailable', 'this room is no longer available for the selected dates.');
@@ -790,6 +825,9 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
             }
 
             if (!wp_loft_booking_unit_is_available_for_range($unit_id, $checkin_local, $checkout_local, $checkin_utc, $checkout_utc)) {
+                if (null !== $debug) {
+                    $debug[] = sprintf('Unit %s (#%d) blocked by internal booking window.', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id);
+                }
                 continue;
             }
 
@@ -806,15 +844,24 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
                     );
 
                     if (is_wp_error($conflicts)) {
+                        if (null !== $debug) {
+                            $debug[] = sprintf('Unit %s (#%d) conflict lookup failed: %s', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id, $conflicts->get_error_message());
+                        }
                         return $conflicts;
                     }
 
                     if (!empty($conflicts)) {
+                        if (null !== $debug) {
+                            $debug[] = sprintf('Unit %s (#%d) blocked by %d keychain conflicts.', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id, count($conflicts));
+                        }
                         continue;
                     }
                 }
             }
 
+            if (null !== $debug) {
+                $debug[] = sprintf('Unit %s (#%d) available.', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id);
+            }
             $available_units[] = [
                 'id'         => $unit_id,
                 'unit_name'  => (string) ($unit['unit_name'] ?? ''),
@@ -823,6 +870,9 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
         }
 
         if (empty($available_units)) {
+            if (null !== $debug) {
+                $debug[] = 'No available units remained after filters.';
+            }
             return new WP_Error('loft_checkout_unavailable', 'this room is no longer available for the selected dates.');
         }
 
