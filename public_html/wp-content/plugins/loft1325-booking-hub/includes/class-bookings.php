@@ -67,7 +67,16 @@ class Loft1325_Bookings {
         $lofts_table = $wpdb->prefix . 'loft1325_lofts';
 
         $query = $wpdb->prepare(
-            \"SELECT b.*, l.loft_name, l.loft_type\n            FROM {$bookings_table} b\n            LEFT JOIN {$lofts_table} l ON b.loft_id = l.id\n            WHERE b.status IN ('confirmed','checked_in','tentative')\n            AND %s < b.check_out_utc\n            AND %s > b.check_in_utc\n            ORDER BY b.check_in_utc ASC\",\n            $start_utc,\n            $end_utc\n        );
+            "SELECT b.*, l.loft_name, l.loft_type
+            FROM {$bookings_table} b
+            LEFT JOIN {$lofts_table} l ON b.loft_id = l.id
+            WHERE b.status IN ('confirmed','checked_in','tentative')
+            AND %s < b.check_out_utc
+            AND %s > b.check_in_utc
+            ORDER BY b.check_in_utc ASC",
+            $start_utc,
+            $end_utc
+        );
 
         return $wpdb->get_results( $query, ARRAY_A );
     }
@@ -277,9 +286,9 @@ class Loft1325_Bookings {
         $unit_id = isset( $keychain['unit_id'] ) ? absint( $keychain['unit_id'] ) : 0;
 
         if ( $tenant_id ) {
-            $loft = $wpdb->get_row( $wpdb->prepare( \"SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d\", $tenant_id ), ARRAY_A );
+            $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d", $tenant_id ), ARRAY_A );
         } elseif ( $unit_id ) {
-            $loft = $wpdb->get_row( $wpdb->prepare( \"SELECT * FROM {$lofts_table} WHERE butterfly_unit_id = %d\", $unit_id ), ARRAY_A );
+            $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_unit_id = %d", $unit_id ), ARRAY_A );
         } else {
             $loft = null;
         }
@@ -289,7 +298,7 @@ class Loft1325_Bookings {
             return;
         }
 
-        $existing = $wpdb->get_var( $wpdb->prepare( \"SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d\", $keychain_id ) );
+        $existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d", $keychain_id ) );
 
         $check_in = isset( $keychain['starts_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['starts_at'] ) ) : null;
         $check_out = isset( $keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['ends_at'] ) ) : null;
