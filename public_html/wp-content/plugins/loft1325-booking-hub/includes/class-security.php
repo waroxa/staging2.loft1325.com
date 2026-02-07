@@ -55,10 +55,16 @@ class Loft1325_Security {
 
         $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
         $settings = loft1325_get_settings();
+        $stored_hash = isset( $settings['password_hash'] ) ? (string) $settings['password_hash'] : '';
 
-        if ( ! wp_check_password( $password, $settings['password_hash'] ) ) {
-            wp_safe_redirect( add_query_arg( 'loft1325_locked', '1', wp_get_referer() ) );
-            exit;
+        if ( ! wp_check_password( $password, $stored_hash ) ) {
+            if ( $stored_hash && hash_equals( $stored_hash, $password ) ) {
+                $settings['password_hash'] = wp_hash_password( $password );
+                update_option( LOFT1325_SETTINGS_OPTION, $settings );
+            } else {
+                wp_safe_redirect( add_query_arg( 'loft1325_locked', '1', wp_get_referer() ) );
+                exit;
+            }
         }
 
         update_user_meta( get_current_user_id(), LOFT1325_PASSWORD_META_KEY, time() + HOUR_IN_SECONDS * 12 );
