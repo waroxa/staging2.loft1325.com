@@ -185,6 +185,162 @@
     text-align: center;
 }
 
+.loft1325-frontend {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    background: #f7f7f9;
+    color: #030213;
+}
+
+.loft1325-frontend-shell {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.loft1325-mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #ffffff;
+    border: 1px solid #eef0f4;
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(3, 2, 19, 0.08);
+    margin-bottom: 20px;
+}
+
+.loft1325-mobile-logo img {
+    max-height: 32px;
+    width: auto;
+    display: block;
+}
+
+.loft1325-mobile-logo-text {
+    font-family: 'Playfair Display', 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #030213;
+    letter-spacing: 0.04em;
+}
+
+.loft1325-mobile-menu {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #0b0b0b;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    background: #ffffff;
+    list-style: none;
+}
+
+.loft1325-mobile-menu::-webkit-details-marker {
+    display: none;
+}
+
+.loft1325-mobile-menu-bar {
+    width: 16px;
+    height: 2px;
+    border-radius: 999px;
+    background: #0b0b0b;
+    display: block;
+}
+
+.loft1325-mobile-nav {
+    position: relative;
+}
+
+.loft1325-mobile-nav[open] .loft1325-mobile-nav-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.loft1325-mobile-nav-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #eef0f4;
+    box-shadow: 0 18px 40px rgba(3, 2, 19, 0.18);
+    padding: 16px;
+    min-width: 220px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.loft1325-mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.loft1325-mobile-nav-list a {
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.loft1325-mobile-lang {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid #0b0b0b;
+    border-radius: 999px;
+    padding: 6px 10px;
+}
+
+.loft1325-frontend .loft1325-lock-screen {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 16px 40px rgba(3, 2, 19, 0.12);
+    padding: 28px 20px;
+}
+
+.loft1325-frontend .loft1325-lock-screen h2 {
+    font-family: 'Playfair Display', 'Times New Roman', serif;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.loft1325-frontend .loft1325-lock-screen form {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.loft1325-frontend .loft1325-lock-screen input[type="password"] {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    font-size: 15px;
+}
+
+.loft1325-frontend .loft1325-primary {
+    border-radius: 12px;
+    background: #0b0b0b;
+}
+
+.loft1325-frontend .loft1325-header,
+.loft1325-frontend .loft1325-grid {
+    margin-top: 16px;
+}
+
 .loft1325-timeline {
     display: grid;
     gap: 12px;

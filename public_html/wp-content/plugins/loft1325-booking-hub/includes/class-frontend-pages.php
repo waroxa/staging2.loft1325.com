@@ -18,6 +18,12 @@ class Loft1325_Frontend_Pages {
 
         wp_enqueue_style( 'loft1325-admin', LOFT1325_BOOKING_HUB_URL . 'assets/admin.css', array(), LOFT1325_BOOKING_HUB_VERSION );
         wp_enqueue_script( 'loft1325-admin', LOFT1325_BOOKING_HUB_URL . 'assets/admin.js', array( 'jquery' ), LOFT1325_BOOKING_HUB_VERSION, true );
+        wp_enqueue_style(
+            'loft1325-frontend-fonts',
+            'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap',
+            array(),
+            null
+        );
     }
 
     private static function is_shortcode_present() {
@@ -40,11 +46,17 @@ class Loft1325_Frontend_Pages {
 
         $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
         $settings = loft1325_get_settings();
+        $stored_hash = isset( $settings['password_hash'] ) ? (string) $settings['password_hash'] : '';
 
-        if ( ! wp_check_password( $password, $settings['password_hash'] ) ) {
-            set_transient( 'loft1325_frontend_error', true, MINUTE_IN_SECONDS );
-            wp_safe_redirect( wp_get_referer() );
-            exit;
+        if ( ! wp_check_password( $password, $stored_hash ) ) {
+            if ( $stored_hash && hash_equals( $stored_hash, $password ) ) {
+                $settings['password_hash'] = wp_hash_password( $password );
+                update_option( LOFT1325_SETTINGS_OPTION, $settings );
+            } else {
+                set_transient( 'loft1325_frontend_error', true, MINUTE_IN_SECONDS );
+                wp_safe_redirect( wp_get_referer() );
+                exit;
+            }
         }
 
         setcookie( 'loft1325_hub_unlocked', '1', time() + HOUR_IN_SECONDS * 12, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
@@ -59,7 +71,43 @@ class Loft1325_Frontend_Pages {
     public static function render_shortcode() {
         ob_start();
 
+        $custom_logo_id = get_theme_mod( 'custom_logo' );
+        $logo_url = $custom_logo_id ? wp_get_attachment_image_url( $custom_logo_id, 'full' ) : '';
+        $site_name = get_bloginfo( 'name' );
+        $menu = wp_nav_menu(
+            array(
+                'theme_location' => 'main-menu',
+                'container' => false,
+                'menu_class' => 'loft1325-mobile-nav-list',
+                'fallback_cb' => false,
+                'echo' => false,
+            )
+        );
+
         echo '<div class="loft1325-admin loft1325-frontend">';
+        echo '<div class="loft1325-frontend-shell">';
+        echo '<header class="loft1325-mobile-header">';
+        echo '<details class="loft1325-mobile-nav">';
+        echo '<summary class="loft1325-mobile-menu" aria-label="Menu">';
+        echo '<span class="loft1325-mobile-menu-bar"></span>';
+        echo '<span class="loft1325-mobile-menu-bar"></span>';
+        echo '<span class="loft1325-mobile-menu-bar"></span>';
+        echo '</summary>';
+        if ( $menu ) {
+            echo '<nav class="loft1325-mobile-nav-panel" aria-label="Navigation">';
+            echo $menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            echo '</nav>';
+        }
+        echo '</details>';
+        echo '<a class="loft1325-mobile-logo" href="' . esc_url( home_url( '/' ) ) . '">';
+        if ( $logo_url ) {
+            echo '<img src="' . esc_url( $logo_url ) . '" alt="' . esc_attr( $site_name ) . '" />';
+        } else {
+            echo '<span class="loft1325-mobile-logo-text">' . esc_html( $site_name ) . '</span>';
+        }
+        echo '</a>';
+        echo '<div class="loft1325-mobile-lang">FR · EN</div>';
+        echo '</header>';
 
         if ( ! self::is_unlocked() ) {
             $error = get_transient( 'loft1325_frontend_error' );
@@ -73,6 +121,7 @@ class Loft1325_Frontend_Pages {
             echo '<input type="password" name="loft1325_password" placeholder="Mot de passe" required />';
             echo '<button type="submit" name="loft1325_frontend_unlock" class="loft1325-primary">Déverrouiller</button>';
             echo '</form>';
+            echo '</div>';
             echo '</div>';
             echo '</div>';
             return ob_get_clean();
@@ -115,6 +164,8 @@ class Loft1325_Frontend_Pages {
             echo '</div>';
         }
         echo '</div>';
+        echo '</div>';
+
         echo '</div>';
 
         echo '</div>';
