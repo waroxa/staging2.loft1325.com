@@ -1,0 +1,211 @@
+.loft1325-admin {
+    font-family: "Georgia", "Times New Roman", serif;
+    color: #0b0b0b;
+}
+
+.loft1325-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.loft1325-header h1 {
+    font-size: 28px;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.loft1325-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+}
+
+.loft1325-primary,
+.loft1325-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    min-height: 44px;
+    letter-spacing: 2px;
+    font-size: 13px;
+    text-transform: uppercase;
+    border: 1px solid #0b0b0b;
+    cursor: pointer;
+}
+
+.loft1325-primary {
+    background: #0b0b0b;
+    color: #ffffff;
+}
+
+.loft1325-secondary {
+    background: #ffffff;
+    color: #0b0b0b;
+}
+
+.loft1325-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.loft1325-card {
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.loft1325-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loft1325-metric {
+    font-size: 28px;
+    margin: 8px 0 0;
+}
+
+.loft1325-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+}
+
+.loft1325-list li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.loft1325-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.loft1325-filter-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.loft1325-chip {
+    border: 1px solid #0b0b0b;
+    padding: 8px 10px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.loft1325-chip.is-active {
+    background: #0b0b0b;
+    color: #fff;
+}
+
+.loft1325-search {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    padding: 10px;
+    border: 1px solid #0b0b0b;
+}
+
+.loft1325-form {
+    display: grid;
+    gap: 12px;
+}
+
+.loft1325-form input,
+.loft1325-form select,
+.loft1325-form textarea {
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid #0b0b0b;
+}
+
+.loft1325-badge {
+    border: 1px solid #0b0b0b;
+    padding: 4px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.loft1325-guest {
+    font-size: 16px;
+    margin: 12px 0 4px;
+}
+
+.loft1325-dates {
+    font-size: 13px;
+    margin: 0 0 8px;
+}
+
+.loft1325-key {
+    margin: 8px 0 12px;
+}
+
+.loft1325-lock-screen {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.loft1325-timeline {
+    display: grid;
+    gap: 12px;
+}
+
+.loft1325-timeline-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loft1325-bar {
+    padding: 8px 12px;
+    background: #0b0b0b;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.loft1325-bar.is-muted {
+    background: #e2e2e2;
+    color: #333;
+}
+
+.loft1325-callout {
+    margin-top: 16px;
+    padding: 12px;
+    border-left: 3px solid #0b0b0b;
+    background: #f8f8f8;
+}
+
+@media (min-width: 900px) {
+    .loft1325-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .loft1325-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .loft1325-actions {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
