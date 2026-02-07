@@ -286,9 +286,9 @@ class Loft1325_Bookings {
         $unit_id = isset( $keychain['unit_id'] ) ? absint( $keychain['unit_id'] ) : 0;
 
         if ( $tenant_id ) {
-            $loft = $wpdb->get_row( $wpdb->prepare( \"SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d\", $tenant_id ), ARRAY_A );
+            $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d", $tenant_id ), ARRAY_A );
         } elseif ( $unit_id ) {
-            $loft = $wpdb->get_row( $wpdb->prepare( \"SELECT * FROM {$lofts_table} WHERE butterfly_unit_id = %d\", $unit_id ), ARRAY_A );
+            $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_unit_id = %d", $unit_id ), ARRAY_A );
         } else {
             $loft = null;
         }
@@ -298,7 +298,7 @@ class Loft1325_Bookings {
             return;
         }
 
-        $existing = $wpdb->get_var( $wpdb->prepare( \"SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d\", $keychain_id ) );
+        $existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d", $keychain_id ) );
 
         $check_in = isset( $keychain['starts_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['starts_at'] ) ) : null;
         $check_out = isset( $keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['ends_at'] ) ) : null;
