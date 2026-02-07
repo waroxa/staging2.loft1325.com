@@ -68,6 +68,28 @@
     align-items: center;
 }
 
+.loft1325-inline-form {
+    grid-column: 1 / -1;
+}
+
+.loft1325-error {
+    color: #8a0000;
+    font-size: 13px;
+}
+
+.loft1325-meta {
+    display: block;
+    font-size: 12px;
+    color: #666;
+}
+
+.loft1325-admin code {
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px solid #0b0b0b;
+    background: #f8f8f8;
+}
+
 .loft1325-metric {
     font-size: 28px;
     margin: 8px 0 0;

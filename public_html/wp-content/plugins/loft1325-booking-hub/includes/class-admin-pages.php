@@ -127,17 +127,26 @@ class Loft1325_Admin_Pages {
         $bookings = Loft1325_Bookings::get_bookings();
 
         self::render_page_header( 'Réservations' );
+        $sync_nonce = wp_create_nonce( 'loft1325_sync_keychains' );
         echo '<div class="loft1325-filter-bar">';
         echo '<span class="loft1325-chip is-active">Aujourd\'hui</span>';
         echo '<span class="loft1325-chip">7 jours</span>';
         echo '<span class="loft1325-chip">Mois</span>';
         echo '<span class="loft1325-chip">Tout</span>';
         echo '<input class="loft1325-search" type="search" placeholder="Nom, téléphone, email, ID" />';
+        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form">';
+        echo '<input type="hidden" name="action" value="loft1325_sync_keychains" />';
+        echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $sync_nonce ) . '" />';
+        echo '<button class="loft1325-primary">Sync ButterflyMX</button>';
+        echo '</form>';
         echo '</div>';
 
         echo '<div class="loft1325-grid">';
         foreach ( $bookings as $booking ) {
             $status = ucfirst( $booking['status'] );
+            if ( 'tentative' === $booking['status'] ) {
+                $status = 'Needs review';
+            }
             $key_status = $booking['butterfly_keychain_id'] ? 'Active' : 'Missing';
             echo '<div class="loft1325-card">';
             echo '<div class="loft1325-card-header">';
@@ -183,12 +192,25 @@ class Loft1325_Admin_Pages {
             return;
         }
 
+        $start = gmdate( 'Y-m-d 00:00:00' );
+        $end = gmdate( 'Y-m-d 23:59:59', strtotime( '+6 days' ) );
+        $bookings = Loft1325_Bookings::get_bookings_for_range( $start, $end );
+
         self::render_page_header( 'Calendrier' );
         echo '<div class="loft1325-card">';
         echo '<h3>Vue semaine</h3>';
         echo '<div class="loft1325-timeline">';
-        echo '<div class="loft1325-timeline-row"><strong>LOFT 201</strong><span class="loft1325-bar">Réservé</span></div>';
-        echo '<div class="loft1325-timeline-row"><strong>LOFT 202</strong><span class="loft1325-bar is-muted">Libre</span></div>';
+        foreach ( $bookings as $booking ) {
+            $label = $booking['loft_name'] ? $booking['loft_name'] : 'Loft';
+            $dates = loft1325_format_datetime_local( $booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $booking['check_out_utc'] );
+            echo '<div class="loft1325-timeline-row">';
+            echo '<div><strong>' . esc_html( $label ) . '</strong><span class="loft1325-meta">' . esc_html( $booking['guest_name'] ) . '</span></div>';
+            echo '<span class="loft1325-bar">' . esc_html( $dates ) . '</span>';
+            echo '</div>';
+        }
+        if ( empty( $bookings ) ) {
+            echo '<div class="loft1325-callout">Aucune réservation cette semaine.</div>';
+        }
         echo '</div>';
         echo '</div>';
         echo '</div>';
@@ -306,6 +328,12 @@ class Loft1325_Admin_Pages {
         echo '<label>Nouveau mot de passe</label><input type="password" name="loft1325_new_password" required />';
         echo '<button class="loft1325-secondary">Mettre à jour</button>';
         echo '</form>';
+        echo '</div>';
+
+        echo '<div class="loft1325-card">';
+        echo '<h3>Accès public (lien externe)</h3>';
+        echo '<p>Créez une page WordPress et ajoutez le shortcode suivant :</p>';
+        echo '<code>[loft1325_booking_hub]</code>';
         echo '</div>';
         echo '</div>';
     }

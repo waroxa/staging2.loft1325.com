@@ -8,6 +8,7 @@ class Loft1325_Bookings {
     public static function boot() {
         add_action( 'admin_post_loft1325_create_booking', array( __CLASS__, 'create_booking' ) );
         add_action( 'admin_post_loft1325_revoke_key', array( __CLASS__, 'revoke_key' ) );
+        add_action( 'admin_post_loft1325_sync_keychains', array( __CLASS__, 'sync_from_butterflymx' ) );
     }
 
     public static function get_dashboard_counts() {
@@ -55,6 +56,18 @@ class Loft1325_Bookings {
             LIMIT %d",
             $limit
         );
+
+        return $wpdb->get_results( $query, ARRAY_A );
+    }
+
+    public static function get_bookings_for_range( $start_utc, $end_utc ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+
+        $query = $wpdb->prepare(
+            \"SELECT b.*, l.loft_name, l.loft_type\n            FROM {$bookings_table} b\n            LEFT JOIN {$lofts_table} l ON b.loft_id = l.id\n            WHERE b.status IN ('confirmed','checked_in','tentative')\n            AND %s < b.check_out_utc\n            AND %s > b.check_in_utc\n            ORDER BY b.check_in_utc ASC\",\n            $start_utc,\n            $end_utc\n        );
 
         return $wpdb->get_results( $query, ARRAY_A );
     }
@@ -223,5 +236,90 @@ class Loft1325_Bookings {
 
         wp_safe_redirect( add_query_arg( 'loft1325_revoked', '1', wp_get_referer() ) );
         exit;
+    }
+
+    public static function sync_from_butterflymx() {
+        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
+        }
+
+        check_admin_referer( 'loft1325_sync_keychains' );
+
+        $response = Loft1325_API_ButterflyMX::list_keychains();
+        if ( is_wp_error( $response ) ) {
+            wp_safe_redirect( add_query_arg( 'loft1325_sync_error', '1', wp_get_referer() ) );
+            exit;
+        }
+
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+        $keychains = isset( $body['data'] ) && is_array( $body['data'] ) ? $body['data'] : array();
+
+        foreach ( $keychains as $keychain ) {
+            self::upsert_booking_from_keychain( $keychain );
+        }
+
+        wp_safe_redirect( add_query_arg( 'loft1325_synced', '1', wp_get_referer() ) );
+        exit;
+    }
+
+    private static function upsert_booking_from_keychain( $keychain ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+
+        $keychain_id = isset( $keychain['id'] ) ? absint( $keychain['id'] ) : 0;
+        if ( ! $keychain_id ) {
+            return;
+        }
+
+        $tenant_id = isset( $keychain['tenant_id'] ) ? absint( $keychain['tenant_id'] ) : 0;
+        $unit_id = isset( $keychain['unit_id'] ) ? absint( $keychain['unit_id'] ) : 0;
+
+        if ( $tenant_id ) {
+            $loft = $wpdb->get_row( $wpdb->prepare( \"SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d\", $tenant_id ), ARRAY_A );
+        } elseif ( $unit_id ) {
+            $loft = $wpdb->get_row( $wpdb->prepare( \"SELECT * FROM {$lofts_table} WHERE butterfly_unit_id = %d\", $unit_id ), ARRAY_A );
+        } else {
+            $loft = null;
+        }
+
+        if ( ! $loft ) {
+            loft1325_log_action( 'butterflymx_sync', 'No loft mapping for keychain', array( 'payload' => $keychain ) );
+            return;
+        }
+
+        $existing = $wpdb->get_var( $wpdb->prepare( \"SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d\", $keychain_id ) );
+
+        $check_in = isset( $keychain['starts_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['starts_at'] ) ) : null;
+        $check_out = isset( $keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['ends_at'] ) ) : null;
+
+        if ( ! $check_in || ! $check_out ) {
+            return;
+        }
+
+        $guest_name = isset( $keychain['name'] ) ? sanitize_text_field( $keychain['name'] ) : 'Invité';
+        $status = 'tentative';
+
+        $data = array(
+            'external_ref' => 'butterflymx:' . $keychain_id,
+            'loft_id' => absint( $loft['id'] ),
+            'guest_name' => $guest_name,
+            'guest_email' => isset( $keychain['email'] ) ? sanitize_email( $keychain['email'] ) : null,
+            'guest_phone' => isset( $keychain['phone'] ) ? sanitize_text_field( $keychain['phone'] ) : null,
+            'check_in_utc' => $check_in,
+            'check_out_utc' => $check_out,
+            'status' => $status,
+            'butterfly_keychain_id' => $keychain_id,
+            'updated_at' => current_time( 'mysql', 1 ),
+        );
+
+        if ( $existing ) {
+            $wpdb->update( $bookings_table, $data, array( 'id' => $existing ) );
+        } else {
+            $data['created_at'] = current_time( 'mysql', 1 );
+            $data['created_by'] = get_current_user_id();
+            $wpdb->insert( $bookings_table, $data );
+        }
     }
 }

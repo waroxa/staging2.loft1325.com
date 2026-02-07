@@ -62,4 +62,18 @@ class Loft1325_API_ButterflyMX {
 
         return $response;
     }
+
+    public static function list_keychains( $params = array() ) {
+        $query = '';
+        if ( ! empty( $params ) ) {
+            $query = '?' . http_build_query( $params );
+        }
+        $response = self::request( 'GET', '/v4/keychains' . $query );
+        loft1325_log_action( 'butterflymx_list_keychains', 'List keychains request', array(
+            'payload' => $params,
+            'response' => loft1325_redact_secrets( $response ),
+        ) );
+
+        return $response;
+    }
 }
