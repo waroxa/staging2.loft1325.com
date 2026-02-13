@@ -118,13 +118,6 @@ class Loft1325_API_ButterflyMX {
             return (string) $settings['api_token'];
         }
 
-        if ( function_exists( 'get_butterflymx_access_token' ) ) {
-            $token = (string) get_butterflymx_access_token( $version );
-            if ( ! empty( $token ) ) {
-                return $token;
-            }
-        }
-
         $token = (string) get_option( 'butterflymx_access_token_' . $version, '' );
         if ( ! empty( $token ) ) {
             return $token;
