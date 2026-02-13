@@ -186,9 +186,9 @@
 }
 
 .loft1325-frontend {
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    background: #f7f7f9;
-    color: #030213;
+    font-family: "Georgia", "Times New Roman", serif;
+    background: #ffffff;
+    color: #0b0b0b;
 }
 
 .loft1325-frontend-shell {
@@ -207,9 +207,9 @@
     gap: 12px;
     padding: 12px 16px;
     background: #ffffff;
-    border: 1px solid #eef0f4;
-    border-radius: 16px;
-    box-shadow: 0 10px 24px rgba(3, 2, 19, 0.08);
+    border: 1px solid #0b0b0b;
+    border-radius: 0;
+    box-shadow: none;
     margin-bottom: 20px;
 }
 
@@ -230,7 +230,7 @@
 .loft1325-mobile-menu {
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: 0;
     border: 1px solid #0b0b0b;
     display: inline-flex;
     flex-direction: column;
@@ -269,9 +269,9 @@
     top: calc(100% + 10px);
     left: 0;
     background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #eef0f4;
-    box-shadow: 0 18px 40px rgba(3, 2, 19, 0.18);
+    border-radius: 0;
+    border: 1px solid #0b0b0b;
+    box-shadow: none;
     padding: 16px;
     min-width: 220px;
     opacity: 0;
@@ -301,19 +301,20 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     border: 1px solid #0b0b0b;
-    border-radius: 999px;
+    border-radius: 0;
     padding: 6px 10px;
 }
 
 .loft1325-frontend .loft1325-lock-screen {
-    border-radius: 20px;
-    border: none;
-    box-shadow: 0 16px 40px rgba(3, 2, 19, 0.12);
+    border-radius: 0;
+    border: 1px solid #0b0b0b;
+    box-shadow: none;
     padding: 28px 20px;
+    background: #ffffff;
 }
 
 .loft1325-frontend .loft1325-lock-screen h2 {
-    font-family: 'Playfair Display', 'Times New Roman', serif;
+    font-family: "Georgia", "Times New Roman", serif;
     font-size: 26px;
     margin-bottom: 8px;
 }
@@ -326,13 +327,15 @@
 
 .loft1325-frontend .loft1325-lock-screen input[type="password"] {
     padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    border-radius: 0;
+    border: 1px solid #0b0b0b;
     font-size: 15px;
+    background: #ffffff;
+    color: #0b0b0b;
 }
 
 .loft1325-frontend .loft1325-primary {
-    border-radius: 12px;
+    border-radius: 0;
     background: #0b0b0b;
 }
 
