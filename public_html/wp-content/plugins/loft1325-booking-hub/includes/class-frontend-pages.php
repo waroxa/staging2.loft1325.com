@@ -60,7 +60,8 @@ class Loft1325_Frontend_Pages {
             $hash_key = 'admin_hub_password_hash';
         }
 
-        $redirect_url = wp_get_referer() ?: home_url( '/' );
+        $posted_redirect = isset( $_POST['loft1325_redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['loft1325_redirect_to'] ) ) : '';
+        $redirect_url = $posted_redirect ? wp_validate_redirect( $posted_redirect, home_url( '/' ) ) : ( wp_get_referer() ?: self::current_request_url() );
         $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
         $settings = loft1325_get_settings();
         $stored_hash = isset( $settings[ $hash_key ] ) ? (string) $settings[ $hash_key ] : '';
@@ -83,6 +84,39 @@ class Loft1325_Frontend_Pages {
     private static function is_unlocked( $scope = 'admin' ) {
         $cookie_name = 'loft1325_hub_unlocked_' . $scope;
         return isset( $_COOKIE[ $cookie_name ] ) && '1' === $_COOKIE[ $cookie_name ];
+    }
+
+    private static function current_request_url() {
+        $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
+        return home_url( $request_uri );
+    }
+
+    private static function render_stays_calendar( $period = 'month' ) {
+        $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
+
+        echo '<div class="loft1325-card loft1325-calendar">';
+        echo '<div class="loft1325-card-header">';
+        echo '<h3>Calendrier des séjours</h3>';
+        echo '<span class="loft1325-meta">Vue ' . esc_html( ucfirst( $period ) ) . '</span>';
+        echo '</div>';
+
+        if ( empty( $bookings ) ) {
+            echo '<p class="loft1325-meta">Aucun séjour trouvé pour cette période.</p>';
+            echo '</div>';
+            return;
+        }
+
+        echo '<div class="loft1325-timeline">';
+        foreach ( $bookings as $booking ) {
+            $check_in = loft1325_format_datetime_local( $booking['check_in_utc'] );
+            $check_out = loft1325_format_datetime_local( $booking['check_out_utc'] );
+            echo '<div class="loft1325-timeline-row">';
+            echo '<div><strong>' . esc_html( $booking['loft_name'] ?: 'Loft' ) . '</strong><br /><span class="loft1325-meta">' . esc_html( $booking['guest_name'] ) . '</span></div>';
+            echo '<div class="loft1325-bar">' . esc_html( $check_in . ' → ' . $check_out ) . '</div>';
+            echo '</div>';
+        }
+        echo '</div>';
+        echo '</div>';
     }
 
     public static function render_shortcode() {
@@ -138,15 +172,17 @@ class Loft1325_Frontend_Pages {
         if ( ! self::is_unlocked( 'admin' ) ) {
             $error = get_transient( 'loft1325_frontend_error_admin' );
             delete_transient( 'loft1325_frontend_error_admin' );
+            $unlock_action = self::current_request_url();
             echo '<div class="loft1325-lock-screen">';
             echo '<h2>' . esc_html__( 'Accès sécurisé', 'loft1325-booking-hub' ) . '</h2>';
             if ( $error ) {
                 echo '<p class="loft1325-error">Mot de passe incorrect. Réessayez.</p>';
             }
-            echo '<form method="post">';
+            echo '<form method="post" action="' . esc_url( $unlock_action ) . '">';
             echo '<input type="hidden" name="loft1325_frontend_unlock" value="1" />';
             echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" />';
             echo '<input type="hidden" name="loft1325_scope" value="admin" />';
+            echo '<input type="hidden" name="loft1325_redirect_to" value="' . esc_attr( $unlock_action ) . '" />';
             echo '<input type="password" name="loft1325_password" placeholder="Mot de passe" required />';
             echo '<button type="submit" class="loft1325-primary">Déverrouiller</button>';
             echo '</form>';
@@ -195,6 +231,8 @@ class Loft1325_Frontend_Pages {
         echo '</div>';
         echo '</div>';
 
+        self::render_stays_calendar( 'month' );
+
         echo '</div>';
 
         echo '</div>';
@@ -205,6 +243,7 @@ class Loft1325_Frontend_Pages {
 
     public static function render_cleaning_shortcode() {
         ob_start();
+        $unlock_action = self::current_request_url();
         if ( ! self::is_unlocked( 'cleaning' ) ) {
             $error = get_transient( 'loft1325_frontend_error_cleaning' );
             delete_transient( 'loft1325_frontend_error_cleaning' );
@@ -212,12 +251,12 @@ class Loft1325_Frontend_Pages {
             if ( $error ) {
                 echo '<p class="loft1325-error">Mot de passe incorrect.</p>';
             }
-            echo '<form method="post"><input type="hidden" name="loft1325_frontend_unlock" value="1" /><input type="hidden" name="loft1325_scope" value="cleaning" /><input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" /><input type="password" name="loft1325_password" required /><button class="loft1325-primary">Déverrouiller</button></form></div>';
+            echo '<form method="post" action="' . esc_url( $unlock_action ) . '"><input type="hidden" name="loft1325_frontend_unlock" value="1" /><input type="hidden" name="loft1325_scope" value="cleaning" /><input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" /><input type="hidden" name="loft1325_redirect_to" value="' . esc_attr( $unlock_action ) . '" /><input type="password" name="loft1325_password" required /><button class="loft1325-primary">Déverrouiller</button></form></div>';
             return ob_get_clean();
         }
 
         $bookings = Loft1325_Operations::get_bookings_with_cleaning( 'today' );
-        echo '<div class="loft1325-admin"><h2>Cleaning Hub</h2><div class="loft1325-grid">';
+        echo '<div class="loft1325-admin"><h2 class="loft1325-hub-title">Cleaning Hub</h2><div class="loft1325-grid">';
         foreach ( $bookings as $booking ) {
             echo '<div class="loft1325-card"><h3>' . esc_html( $booking['loft_name'] ) . '</h3><p>' . esc_html( $booking['guest_name'] ) . '</p><p>Status: ' . esc_html( $booking['cleaning_status'] ) . '</p>';
             echo '<form method="post" class="loft1325-actions"><input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" /><input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
@@ -229,6 +268,7 @@ class Loft1325_Frontend_Pages {
 
     public static function render_maintenance_shortcode() {
         ob_start();
+        $unlock_action = self::current_request_url();
         if ( ! self::is_unlocked( 'maintenance' ) ) {
             $error = get_transient( 'loft1325_frontend_error_maintenance' );
             delete_transient( 'loft1325_frontend_error_maintenance' );
@@ -236,16 +276,22 @@ class Loft1325_Frontend_Pages {
             if ( $error ) {
                 echo '<p class="loft1325-error">Mot de passe incorrect.</p>';
             }
-            echo '<form method="post"><input type="hidden" name="loft1325_frontend_unlock" value="1" /><input type="hidden" name="loft1325_scope" value="maintenance" /><input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" /><input type="password" name="loft1325_password" required /><button class="loft1325-primary">Déverrouiller</button></form></div>';
+            echo '<form method="post" action="' . esc_url( $unlock_action ) . '"><input type="hidden" name="loft1325_frontend_unlock" value="1" /><input type="hidden" name="loft1325_scope" value="maintenance" /><input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" /><input type="hidden" name="loft1325_redirect_to" value="' . esc_attr( $unlock_action ) . '" /><input type="password" name="loft1325_password" required /><button class="loft1325-primary">Déverrouiller</button></form></div>';
             return ob_get_clean();
         }
 
         $tickets = Loft1325_Operations::get_maintenance_tickets();
         echo '<div class="loft1325-admin"><h2>Maintenance Hub</h2><ul>';
-        foreach ( $tickets as $ticket ) {
-            echo '<li><strong>' . esc_html( $ticket['title'] ) . '</strong> — ' . esc_html( $ticket['status'] ) . ' (' . esc_html( $ticket['priority'] ) . ')</li>';
+        if ( empty( $tickets ) ) {
+            echo '<li>Aucun ticket de maintenance pour le moment.</li>';
+        } else {
+            foreach ( $tickets as $ticket ) {
+                echo '<li><strong>' . esc_html( $ticket['title'] ) . '</strong> — ' . esc_html( $ticket['status'] ) . ' (' . esc_html( $ticket['priority'] ) . ')</li>';
+            }
         }
-        echo '</ul></div>';
+        echo '</ul>';
+        self::render_stays_calendar( 'week' );
+        echo '</div>';
         return ob_get_clean();
     }
 

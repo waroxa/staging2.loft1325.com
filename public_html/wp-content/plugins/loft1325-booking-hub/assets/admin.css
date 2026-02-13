@@ -369,6 +369,10 @@
     margin-top: 16px;
 }
 
+.loft1325-hub-title {
+    margin-bottom: 16px;
+}
+
 .loft1325-frontend .loft1325-lock-screen input[type="password"] {
     padding: 14px 16px;
     border-radius: 0;
@@ -381,6 +385,9 @@
 .loft1325-frontend .loft1325-primary {
     border-radius: 0;
     background: #0b0b0b;
+    border-color: #0b0b0b;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
 }
 
 .loft1325-frontend .loft1325-header,
@@ -410,16 +417,24 @@
 .loft1325-frontend .loft1325-primary,
 .loft1325-frontend a.loft1325-primary,
 .loft1325-frontend button.loft1325-primary {
-    background: #003b95;
-    border-color: #003b95;
+    background: #0b0b0b;
+    border-color: #0b0b0b;
     color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
     font-weight: 600;
+}
+
+.loft1325-frontend .loft1325-primary *,
+.loft1325-frontend a.loft1325-primary *,
+.loft1325-frontend button.loft1325-primary * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
 }
 
 .loft1325-frontend .loft1325-primary:hover,
 .loft1325-frontend .loft1325-primary:focus-visible {
-    background: #002d73;
-    border-color: #002d73;
+    background: #161616;
+    border-color: #161616;
     color: #ffffff !important;
 }
 

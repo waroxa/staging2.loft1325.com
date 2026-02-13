@@ -1208,15 +1208,25 @@ function wp_loft_booking_handle_booking(
             error_log('⚠️ Unable to prepare booking window for ButterflyMX storage: ' . $e->getMessage());
         }
 
-        // 🔐 Generar llave virtual con ButterflyMX
-        $virtual_key_result = wp_loft_booking_generate_virtual_key(
-            $booking['room_id'],
-            $booking['name'],
-            $booking['email'],
-            $booking['phone'],
-            $booking['date_from'],
-            $booking['date_to']
+        $approval_status = $wpdb->get_var(
+            $wpdb->prepare("SELECT booking_status FROM {$bookings_table} WHERE id = %d", $id_post)
         );
+        $is_approved_booking = is_string($approval_status) && in_array(strtolower(trim($approval_status)), ['confirmed', 'approved'], true);
+
+        // 🔐 Generate ButterflyMX key only for approved bookings.
+        if ($is_approved_booking) {
+            $virtual_key_result = wp_loft_booking_generate_virtual_key(
+                $booking['room_id'],
+                $booking['name'],
+                $booking['email'],
+                $booking['phone'],
+                $booking['date_from'],
+                $booking['date_to']
+            );
+        } else {
+            $virtual_key_result = new WP_Error('booking_not_approved', 'Booking not approved yet. Virtual key creation deferred.');
+            error_log(sprintf('ℹ️ Booking %d not approved yet (status: %s). Virtual key creation skipped.', (int) $id_post, (string) $approval_status));
+        }
 
         // 🗓️ Crear evento en Google Calendar
         wp_loft_booking_create_google_event($booking);
