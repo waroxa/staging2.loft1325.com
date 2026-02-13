@@ -263,11 +263,23 @@ class Loft1325_Bookings {
         $body = json_decode( wp_remote_retrieve_body( $response ), true );
         $keychains = isset( $body['data'] ) && is_array( $body['data'] ) ? $body['data'] : array();
 
+        $synced_count = 0;
+
         foreach ( $keychains as $keychain ) {
-            self::upsert_booking_from_keychain( $keychain );
+            if ( self::upsert_booking_from_keychain( $keychain ) ) {
+                $synced_count++;
+            }
         }
 
-        wp_safe_redirect( add_query_arg( 'loft1325_synced', '1', wp_get_referer() ) );
+        wp_safe_redirect(
+            add_query_arg(
+                array(
+                    'loft1325_synced'       => '1',
+                    'loft1325_synced_count' => $synced_count,
+                ),
+                wp_get_referer()
+            )
+        );
         exit;
     }
 
@@ -279,7 +291,7 @@ class Loft1325_Bookings {
 
         $keychain_id = isset( $keychain['id'] ) ? absint( $keychain['id'] ) : 0;
         if ( ! $keychain_id ) {
-            return;
+            return false;
         }
 
         $tenant_id = isset( $keychain['tenant_id'] ) ? absint( $keychain['tenant_id'] ) : 0;
@@ -295,7 +307,7 @@ class Loft1325_Bookings {
 
         if ( ! $loft ) {
             loft1325_log_action( 'butterflymx_sync', 'No loft mapping for keychain', array( 'payload' => $keychain ) );
-            return;
+            return false;
         }
 
         $existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d", $keychain_id ) );
@@ -304,7 +316,7 @@ class Loft1325_Bookings {
         $check_out = isset( $keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['ends_at'] ) ) : null;
 
         if ( ! $check_in || ! $check_out ) {
-            return;
+            return false;
         }
 
         $guest_name = isset( $keychain['name'] ) ? sanitize_text_field( $keychain['name'] ) : 'Invité';
@@ -330,5 +342,7 @@ class Loft1325_Bookings {
             $data['created_by'] = get_current_user_id();
             $wpdb->insert( $bookings_table, $data );
         }
+
+        return true;
     }
 }
