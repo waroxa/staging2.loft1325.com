@@ -6,7 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Loft1325_DB {
     public static function boot() {
-        // Placeholder for future hooks.
+        if ( get_option( 'loft1325_booking_hub_db_version' ) !== LOFT1325_BOOKING_HUB_VERSION ) {
+            self::create_tables();
+            update_option( 'loft1325_booking_hub_db_version', LOFT1325_BOOKING_HUB_VERSION );
+        }
     }
 
     public static function activate() {
@@ -24,6 +27,8 @@ class Loft1325_DB {
         $lofts_table = $wpdb->prefix . 'loft1325_lofts';
         $bookings_table = $wpdb->prefix . 'loft1325_bookings';
         $log_table = $wpdb->prefix . 'loft1325_log';
+        $cleaning_table = $wpdb->prefix . 'loft1325_cleaning_status';
+        $maintenance_table = $wpdb->prefix . 'loft1325_maintenance_tasks';
 
         $sql = "CREATE TABLE {$lofts_table} (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -73,6 +78,31 @@ class Loft1325_DB {
             PRIMARY KEY  (id),
             KEY booking_id (booking_id),
             KEY loft_id (loft_id)
+        ) {$charset_collate};
+
+        CREATE TABLE {$cleaning_table} (
+            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            booking_id BIGINT UNSIGNED NOT NULL,
+            cleaning_status ENUM('pending','in_progress','ready','issue') NOT NULL DEFAULT 'pending',
+            updated_at DATETIME NOT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY booking_id (booking_id)
+        ) {$charset_collate};
+
+        CREATE TABLE {$maintenance_table} (
+            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            loft_label VARCHAR(255) NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            details TEXT NULL,
+            priority ENUM('critical','urgent','normal','low') NOT NULL DEFAULT 'normal',
+            status ENUM('todo','in_progress','done') NOT NULL DEFAULT 'todo',
+            assignee_email VARCHAR(255) NULL,
+            requested_by_email VARCHAR(255) NULL,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            PRIMARY KEY (id),
+            KEY status (status),
+            KEY priority (priority)
         ) {$charset_collate};";
 
         dbDelta( $sql );
