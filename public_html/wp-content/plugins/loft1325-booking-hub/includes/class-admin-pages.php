@@ -247,6 +247,37 @@ class Loft1325_Admin_Pages {
 
         self::render_page_header( 'Booking Hub' );
 
+        $calendar_start = gmdate( 'Y-m-d 00:00:00' );
+        $calendar_end = gmdate( 'Y-m-d 23:59:59', strtotime( '+6 days' ) );
+        $calendar_bookings = Loft1325_Bookings::get_bookings_for_range( $calendar_start, $calendar_end );
+
+        echo '<div class="loft1325-card">';
+        echo '<h3>Calendrier (vue semaine)</h3>';
+        echo '<div class="loft1325-timeline">';
+        $has_calendar_rows = false;
+        foreach ( $calendar_bookings as $calendar_booking ) {
+            if ( ! in_array( $calendar_booking['status'], array( 'confirmed', 'checked_in', 'checked_out' ), true ) ) {
+                continue;
+            }
+
+            $label = $calendar_booking['loft_name'] ? $calendar_booking['loft_name'] : 'Loft';
+            $dates = loft1325_format_datetime_local( $calendar_booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $calendar_booking['check_out_utc'] );
+            $status_label = ucfirst( str_replace( '_', ' ', $calendar_booking['status'] ) );
+            $keychain = ! empty( $calendar_booking['butterfly_keychain_id'] ) ? sprintf( 'Clé #%d', absint( $calendar_booking['butterfly_keychain_id'] ) ) : 'Aucune clé';
+
+            $has_calendar_rows = true;
+            echo '<div class="loft1325-timeline-row">';
+            echo '<div><strong>' . esc_html( $label ) . '</strong><span class="loft1325-meta">' . esc_html( $calendar_booking['guest_name'] ) . '</span></div>';
+            echo '<span class="loft1325-bar">' . esc_html( $dates ) . '</span>';
+            echo '<span class="loft1325-meta">' . esc_html( $keychain ) . ' · ' . esc_html( $status_label ) . '</span>';
+            echo '</div>';
+        }
+        if ( ! $has_calendar_rows ) {
+            echo '<div class="loft1325-callout">Aucune réservation confirmée cette semaine.</div>';
+        }
+
+        echo '</div>';
+
         echo '<div class="loft1325-card">';
         echo '<h3>Vue calendrier + opérations</h3>';
         echo '<p class="loft1325-meta">Approuver/refuser les réservations, suivre le ménage et gérer la maintenance au même endroit.</p>';
