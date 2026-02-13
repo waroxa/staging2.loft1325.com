@@ -136,6 +136,7 @@ class Loft1325_API_ButterflyMX {
 
     public static function list_keychains( $params = array() ) {
         $query = '';
+        $used_version = 'v4';
         if ( ! empty( $params ) ) {
             $query = '?' . http_build_query( $params );
         }
@@ -173,12 +174,16 @@ class Loft1325_API_ButterflyMX {
                     ) );
 
                     $response = $v3_response;
+                    $used_version = 'v3';
                 }
             }
         }
 
         loft1325_log_action( 'butterflymx_list_keychains', 'List keychains request', array(
-            'payload' => $params,
+            'payload' => array(
+                'params' => $params,
+                'api_version' => $used_version,
+            ),
             'response' => loft1325_redact_secrets( $response ),
         ) );
 

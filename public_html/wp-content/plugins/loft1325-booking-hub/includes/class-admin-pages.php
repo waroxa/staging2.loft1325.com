@@ -144,10 +144,14 @@ class Loft1325_Admin_Pages {
         echo '<span class="loft1325-chip">Mois</span>';
         echo '<span class="loft1325-chip">Tout</span>';
         echo '<input class="loft1325-search" type="search" placeholder="Nom, téléphone, email, ID" />';
-        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form">';
+        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form loft1325-sync-form">';
         echo '<input type="hidden" name="action" value="loft1325_sync_keychains" />';
         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $sync_nonce ) . '" />';
-        echo '<button class="loft1325-primary">Sync ButterflyMX</button>';
+        echo '<button class="loft1325-primary loft1325-sync-submit" type="submit">';
+        echo '<span class="loft1325-sync-submit-label">Sync ButterflyMX</span>';
+        echo '<span class="loft1325-sync-submit-spinner" aria-hidden="true"></span>';
+        echo '</button>';
+        echo '<p class="loft1325-sync-status" aria-live="polite"></p>';
         echo '</form>';
         echo '</div>';
 

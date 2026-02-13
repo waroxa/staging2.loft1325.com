@@ -254,6 +254,10 @@ class Loft1325_Bookings {
 
         check_admin_referer( 'loft1325_sync_keychains' );
 
+        if ( function_exists( 'set_time_limit' ) ) {
+            @set_time_limit( 120 );
+        }
+
         $response = Loft1325_API_ButterflyMX::list_keychains();
         if ( is_wp_error( $response ) ) {
             wp_safe_redirect( add_query_arg( 'loft1325_sync_error', '1', wp_get_referer() ) );
@@ -287,7 +291,7 @@ class Loft1325_Bookings {
         global $wpdb;
 
         $bookings_table = $wpdb->prefix . 'loft1325_bookings';
-        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $maps = self::get_sync_lookup_maps();
 
         $normalized_keychain = self::normalize_butterflymx_keychain( $keychain );
 
@@ -299,13 +303,7 @@ class Loft1325_Bookings {
         $tenant_id = isset( $normalized_keychain['tenant_id'] ) ? absint( $normalized_keychain['tenant_id'] ) : 0;
         $unit_id = isset( $normalized_keychain['unit_id'] ) ? absint( $normalized_keychain['unit_id'] ) : 0;
 
-        if ( $tenant_id ) {
-            $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d", $tenant_id ), ARRAY_A );
-        } elseif ( $unit_id ) {
-            $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_unit_id = %d", $unit_id ), ARRAY_A );
-        } else {
-            $loft = null;
-        }
+        $loft = self::resolve_loft_for_keychain( $normalized_keychain, $maps );
 
         if ( ! $loft && ! empty( $normalized_keychain['name'] ) ) {
             $normalized_name = strtoupper( preg_replace( '/[^A-Z0-9]/', '', (string) $normalized_keychain['name'] ) );
@@ -335,7 +333,7 @@ class Loft1325_Bookings {
             return false;
         }
 
-        $existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d", $keychain_id ) );
+        $existing = isset( $maps['booking_by_keychain'][ $keychain_id ] ) ? absint( $maps['booking_by_keychain'][ $keychain_id ] ) : 0;
 
         $check_in = isset( $normalized_keychain['starts_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $normalized_keychain['starts_at'] ) ) : null;
         $check_out = isset( $normalized_keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $normalized_keychain['ends_at'] ) ) : null;
@@ -366,6 +364,9 @@ class Loft1325_Bookings {
             $data['created_at'] = current_time( 'mysql', 1 );
             $data['created_by'] = get_current_user_id();
             $wpdb->insert( $bookings_table, $data );
+            if ( ! empty( $wpdb->insert_id ) ) {
+                $maps['booking_by_keychain'][ $keychain_id ] = (int) $wpdb->insert_id;
+            }
         }
 
         return true;
@@ -406,5 +407,133 @@ class Loft1325_Bookings {
         }
 
         return $normalized;
+    }
+
+    private static function resolve_loft_for_keychain( $normalized_keychain, $maps ) {
+        $tenant_id = isset( $normalized_keychain['tenant_id'] ) ? absint( $normalized_keychain['tenant_id'] ) : 0;
+        $unit_id = isset( $normalized_keychain['unit_id'] ) ? absint( $normalized_keychain['unit_id'] ) : 0;
+
+        if ( $tenant_id && isset( $maps['loft_by_tenant'][ $tenant_id ] ) ) {
+            return $maps['loft_by_tenant'][ $tenant_id ];
+        }
+
+        if ( $unit_id && isset( $maps['loft_by_unit'][ $unit_id ] ) ) {
+            return $maps['loft_by_unit'][ $unit_id ];
+        }
+
+        if ( $tenant_id && isset( $maps['legacy_unit_label_by_tenant'][ $tenant_id ] ) ) {
+            $legacy_label = $maps['legacy_unit_label_by_tenant'][ $tenant_id ];
+            if ( isset( $maps['loft_by_name_normalized'][ $legacy_label ] ) ) {
+                return $maps['loft_by_name_normalized'][ $legacy_label ];
+            }
+        }
+
+        if ( $unit_id && isset( $maps['legacy_unit_name_by_api_id'][ $unit_id ] ) ) {
+            $legacy_name = $maps['legacy_unit_name_by_api_id'][ $unit_id ];
+            if ( isset( $maps['loft_by_name_normalized'][ $legacy_name ] ) ) {
+                return $maps['loft_by_name_normalized'][ $legacy_name ];
+            }
+        }
+
+        $name = isset( $normalized_keychain['name'] ) ? (string) $normalized_keychain['name'] : '';
+        if ( '' !== $name ) {
+            $label = self::normalize_loft_label( $name );
+            if ( isset( $maps['loft_by_name_normalized'][ $label ] ) ) {
+                return $maps['loft_by_name_normalized'][ $label ];
+            }
+
+            if ( preg_match( '/LOFT\s*([0-9]{2,4})/i', $name, $matches ) ) {
+                $needle = 'LOFT' . $matches[1];
+                if ( isset( $maps['loft_by_name_normalized'][ $needle ] ) ) {
+                    return $maps['loft_by_name_normalized'][ $needle ];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static function get_sync_lookup_maps() {
+        static $maps = null;
+
+        if ( null !== $maps ) {
+            return $maps;
+        }
+
+        global $wpdb;
+
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $legacy_tenants_table = $wpdb->prefix . 'loft_tenants';
+        $legacy_units_table = $wpdb->prefix . 'loft_units';
+
+        $maps = array(
+            'loft_by_tenant' => array(),
+            'loft_by_unit' => array(),
+            'loft_by_name_normalized' => array(),
+            'legacy_unit_label_by_tenant' => array(),
+            'legacy_unit_name_by_api_id' => array(),
+            'booking_by_keychain' => array(),
+        );
+
+        $lofts = $wpdb->get_results( "SELECT * FROM {$lofts_table}", ARRAY_A );
+        foreach ( (array) $lofts as $loft ) {
+            $loft_id = isset( $loft['id'] ) ? absint( $loft['id'] ) : 0;
+            if ( ! $loft_id ) {
+                continue;
+            }
+
+            $tenant_id = isset( $loft['butterfly_tenant_id'] ) ? absint( $loft['butterfly_tenant_id'] ) : 0;
+            $unit_id = isset( $loft['butterfly_unit_id'] ) ? absint( $loft['butterfly_unit_id'] ) : 0;
+            $normalized_name = self::normalize_loft_label( (string) ( $loft['loft_name'] ?? '' ) );
+
+            if ( $tenant_id ) {
+                $maps['loft_by_tenant'][ $tenant_id ] = $loft;
+            }
+            if ( $unit_id ) {
+                $maps['loft_by_unit'][ $unit_id ] = $loft;
+            }
+            if ( '' !== $normalized_name ) {
+                $maps['loft_by_name_normalized'][ $normalized_name ] = $loft;
+            }
+        }
+
+        $bookings = $wpdb->get_results( "SELECT id, butterfly_keychain_id FROM {$bookings_table} WHERE butterfly_keychain_id IS NOT NULL", ARRAY_A );
+        foreach ( (array) $bookings as $booking ) {
+            $keychain_id = isset( $booking['butterfly_keychain_id'] ) ? absint( $booking['butterfly_keychain_id'] ) : 0;
+            $booking_id = isset( $booking['id'] ) ? absint( $booking['id'] ) : 0;
+            if ( $keychain_id && $booking_id ) {
+                $maps['booking_by_keychain'][ $keychain_id ] = $booking_id;
+            }
+        }
+
+        if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $legacy_tenants_table ) ) === $legacy_tenants_table ) {
+            $legacy_tenants = $wpdb->get_results( "SELECT tenant_id, unit_label FROM {$legacy_tenants_table}", ARRAY_A );
+            foreach ( (array) $legacy_tenants as $tenant ) {
+                $tenant_id = isset( $tenant['tenant_id'] ) ? absint( $tenant['tenant_id'] ) : 0;
+                $unit_label = self::normalize_loft_label( (string) ( $tenant['unit_label'] ?? '' ) );
+                if ( $tenant_id && '' !== $unit_label ) {
+                    $maps['legacy_unit_label_by_tenant'][ $tenant_id ] = $unit_label;
+                }
+            }
+        }
+
+        if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $legacy_units_table ) ) === $legacy_units_table ) {
+            $legacy_units = $wpdb->get_results( "SELECT unit_id_api, unit_name FROM {$legacy_units_table}", ARRAY_A );
+            foreach ( (array) $legacy_units as $unit ) {
+                $api_id = isset( $unit['unit_id_api'] ) ? absint( $unit['unit_id_api'] ) : 0;
+                $unit_name = self::normalize_loft_label( (string) ( $unit['unit_name'] ?? '' ) );
+                if ( $api_id && '' !== $unit_name ) {
+                    $maps['legacy_unit_name_by_api_id'][ $api_id ] = $unit_name;
+                }
+            }
+        }
+
+        return $maps;
+    }
+
+    private static function normalize_loft_label( $value ) {
+        $value = strtoupper( trim( (string) $value ) );
+        return preg_replace( '/[^A-Z0-9]/', '', $value );
     }
 }
