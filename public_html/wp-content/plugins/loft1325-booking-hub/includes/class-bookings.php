@@ -305,6 +305,29 @@ class Loft1325_Bookings {
 
         $loft = self::resolve_loft_for_keychain( $normalized_keychain, $maps );
 
+        if ( ! $loft && ! empty( $normalized_keychain['name'] ) ) {
+            $normalized_name = strtoupper( preg_replace( '/[^A-Z0-9]/', '', (string) $normalized_keychain['name'] ) );
+
+            if ( preg_match( '/LOFT\s*([0-9]{2,4})/i', (string) $normalized_keychain['name'], $matches ) ) {
+                $needle = 'LOFT' . $matches[1];
+                $loft = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$lofts_table} WHERE REPLACE(UPPER(loft_name), ' ', '') LIKE %s LIMIT 1",
+                        '%' . $wpdb->esc_like( $needle ) . '%'
+                    ),
+                    ARRAY_A
+                );
+            } elseif ( '' !== $normalized_name ) {
+                $loft = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$lofts_table} WHERE REPLACE(UPPER(loft_name), ' ', '') LIKE %s LIMIT 1",
+                        '%' . $wpdb->esc_like( $normalized_name ) . '%'
+                    ),
+                    ARRAY_A
+                );
+            }
+        }
+
         if ( ! $loft ) {
             loft1325_log_action( 'butterflymx_sync', 'No loft mapping for keychain', array( 'payload' => $normalized_keychain ) );
             return false;

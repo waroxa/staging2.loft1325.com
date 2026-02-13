@@ -96,6 +96,15 @@ class Loft1325_Frontend_Pages {
 
         $custom_logo_id = get_theme_mod( 'custom_logo' );
         $logo_url = $custom_logo_id ? wp_get_attachment_image_url( $custom_logo_id, 'full' ) : '';
+
+        if ( ! $logo_url ) {
+            $fallback_logo_path = '/wp-content/uploads/2024/06/Asset-1.png';
+            $fallback_logo_file = ABSPATH . ltrim( $fallback_logo_path, '/' );
+
+            if ( file_exists( $fallback_logo_file ) ) {
+                $logo_url = home_url( $fallback_logo_path );
+            }
+        }
         $site_name = get_bloginfo( 'name' );
         $menu = wp_nav_menu(
             array(
