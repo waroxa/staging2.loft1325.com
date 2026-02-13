@@ -24,6 +24,7 @@ require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-security.php';
 require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-api-butterflymx.php';
 require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-lofts.php';
 require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-bookings.php';
+require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-operations.php';
 require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-admin-pages.php';
 require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-frontend-pages.php';
 
@@ -34,6 +35,7 @@ add_action( 'plugins_loaded', function () {
     Loft1325_DB::boot();
     Loft1325_Lofts::boot();
     Loft1325_Bookings::boot();
+    Loft1325_Operations::boot();
     Loft1325_Admin_Pages::boot();
     Loft1325_Frontend_Pages::boot();
 } );
