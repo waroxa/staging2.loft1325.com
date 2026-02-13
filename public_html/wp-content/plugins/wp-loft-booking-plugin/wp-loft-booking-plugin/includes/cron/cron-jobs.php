@@ -114,3 +114,10 @@ add_action('wp_loft_booking_cron_sync', function () {
 
     error_log("✅ Cron sync completed");
 });
+
+
+add_action('init', function () {
+    if (!wp_next_scheduled('wp_loft_ops_two_hour_alert')) {
+        wp_schedule_event(time(), 'every_5_minutes', 'wp_loft_ops_two_hour_alert');
+    }
+});

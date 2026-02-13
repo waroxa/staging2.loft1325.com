@@ -275,7 +275,7 @@ class Loft1325_Admin_Pages {
         if ( ! $has_calendar_rows ) {
             echo '<div class="loft1325-callout">Aucune réservation confirmée cette semaine.</div>';
         }
-        echo '</div>';
+
         echo '</div>';
 
         echo '<div class="loft1325-card">';

@@ -35,6 +35,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/calendar/google-calendar.php'
 require_once plugin_dir_path(__FILE__) . 'includes/calendar/google-oauth-handler.php';
 require_once plugin_dir_path(__FILE__) . 'includes/calendar/cleaning-calendar.php';
 require_once plugin_dir_path(__FILE__) . 'includes/admin/keychains.php';
+require_once plugin_dir_path(__FILE__) . 'includes/admin/operations-hub.php';
 
 
 

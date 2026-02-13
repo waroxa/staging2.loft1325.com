@@ -8,18 +8,28 @@ function loft_booking_google_calendar_page() {
     $auth_url = loft_booking_get_google_auth_url();
 
     echo '<div class="wrap">';
+    echo '<h1>Booking Hub</h1>';
+    echo '<p>This hub now contains bookings, cleaning and maintenance workflows in one place.</p>';
+
     echo '<h2>Connect Google Calendar</h2>';
     echo '<a href="' . esc_url($auth_url) . '" class="button button-primary">Connect with Google</a>';
 
     echo '<hr>';
 
-    echo '<h3>📅 Your Google Calendar View</h3>';
+    echo '<h2>📅 Booking Calendar</h2>';
     echo '<iframe src="https://calendar.google.com/calendar/embed?src=a752f27cffee8c22988adb29fdc933c93184e3a5814c79dcee4f62115d69fbfd%40group.calendar.google.com&ctz=America%2FToronto" style="border:0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>';
+
+    echo '<hr>';
+
+    echo '<h2>Operations (Booking approvals, Cleaning, Maintenance)</h2>';
+    if (function_exists('wp_loft_operations_hub_render_inner')) {
+        wp_loft_operations_hub_render_inner('loft-booking-google-calendar');
+    } else {
+        echo '<p>Operations hub module is unavailable.</p>';
+    }
 
     echo '</div>';
 }
-
-
 
 function loft_booking_get_google_auth_url() {
     $client_id = '1057657895142-bkv4nmceeie0b79s3l6nuv9v8c8t5mbn.apps.googleusercontent.com';
@@ -43,8 +53,6 @@ function loft_booking_get_google_auth_url() {
 
     return $auth_url;
 }
-
-
 
 function add_booking_to_google_calendar($summary, $start, $end) {
     $calendar_id = get_option('loft_booking_calendar_id');
