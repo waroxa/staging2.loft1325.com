@@ -158,6 +158,17 @@ class Loft1325_Frontend_Pages {
 
         $counts = Loft1325_Bookings::get_dashboard_counts();
         $bookings = Loft1325_Bookings::get_bookings( 20 );
+        $period = isset( $_GET['hub_period'] ) ? sanitize_key( wp_unslash( $_GET['hub_period'] ) ) : 'week';
+        $bounds = Loft1325_Operations::get_period_bounds( $period );
+        $period = $bounds['period'];
+        $calendar_bookings = Loft1325_Bookings::get_bookings_for_range( $bounds['start'], $bounds['end'] );
+        $period_titles = array(
+            'today' => 'aujourd\'hui',
+            'week' => '7 jours',
+            'biweek' => '2 semaines',
+            'month' => '1 mois',
+            'year' => '1 an',
+        );
 
         echo '<header class="loft1325-header">';
         echo '<div>';
@@ -173,7 +184,36 @@ class Loft1325_Frontend_Pages {
         echo '<div class="loft1325-card"><h3>Occupés maintenant</h3><p class="loft1325-metric">' . esc_html( $counts['occupied'] ) . '</p></div>';
         echo '</div>';
 
-        echo '<div class="loft1325-card">';
+        echo '<div class="loft1325-card loft1325-section">';
+        echo '<h3>Calendrier des réservations</h3>';
+        echo '<p class="loft1325-meta">Vue ' . esc_html( $period_titles[ $period ] ?? $period ) . ' · ' . esc_html( loft1325_format_datetime_local( $bounds['start'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $bounds['end'] ) ) . '</p>';
+        echo '<p class="loft1325-actions">';
+        foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours', 'today' => 'Aujourd\'hui' ) as $k => $label ) {
+            $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
+            echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'hub_period' => $k ) ) ) . '">' . esc_html( $label ) . '</a> ';
+        }
+        echo '</p>';
+        echo '<div class="loft1325-timeline">';
+        $has_calendar_rows = false;
+        foreach ( $calendar_bookings as $calendar_booking ) {
+            if ( ! in_array( $calendar_booking['status'], array( 'confirmed', 'checked_in', 'checked_out' ), true ) ) {
+                continue;
+            }
+
+            $has_calendar_rows = true;
+            echo '<div class="loft1325-timeline-row">';
+            echo '<div class="loft1325-timeline-main"><strong>' . esc_html( $calendar_booking['loft_name'] ? $calendar_booking['loft_name'] : 'Loft' ) . '</strong><span class="loft1325-meta">' . esc_html( $calendar_booking['guest_name'] ) . '</span></div>';
+            echo '<span class="loft1325-bar">' . esc_html( loft1325_format_datetime_local( $calendar_booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $calendar_booking['check_out_utc'] ) ) . '</span>';
+            echo '<span class="loft1325-meta">' . esc_html( ucfirst( str_replace( '_', ' ', $calendar_booking['status'] ) ) ) . '</span>';
+            echo '</div>';
+        }
+        if ( ! $has_calendar_rows ) {
+            echo '<div class="loft1325-callout">Aucune réservation confirmée pour cette période.</div>';
+        }
+        echo '</div>';
+        echo '</div>';
+
+        echo '<div class="loft1325-card loft1325-section">';
         echo '<div class="loft1325-card-header">';
         echo '<h3>Réservations à venir</h3>';
         echo '<a class="loft1325-secondary" href="' . esc_url( admin_url( 'admin.php?page=loft1325-bookings' ) ) . '">Voir tout</a>';

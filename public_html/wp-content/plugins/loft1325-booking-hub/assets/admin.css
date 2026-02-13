@@ -149,7 +149,16 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 20px;
+}
+
+.loft1325-admin > .loft1325-grid + .loft1325-card,
+.loft1325-admin > .loft1325-card + .loft1325-card {
+    margin-top: 24px;
+}
+
+.loft1325-section {
+    margin-top: 24px;
 }
 
 .loft1325-filter-bar {
@@ -366,7 +375,7 @@
 .loft1325-frontend .loft1325-lock-screen form {
     display: grid;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .loft1325-frontend .loft1325-lock-screen input[type="password"] {
@@ -463,7 +472,7 @@
 .loft1325-timeline {
     display: grid;
     gap: 14px;
-    margin-top: 14px;
+    margin-top: 18px;
 }
 
 .loft1325-timeline-row {
