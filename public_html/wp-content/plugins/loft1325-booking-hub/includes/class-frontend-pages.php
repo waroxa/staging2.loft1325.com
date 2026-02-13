@@ -269,6 +269,37 @@ class Loft1325_Frontend_Pages {
         echo '</div>';
     }
 
+    private static function render_stays_calendar( $period = 'month' ) {
+        $bounds = Loft1325_Operations::get_period_bounds( $period );
+        $bookings = Loft1325_Operations::get_bookings_with_cleaning( $bounds['period'] );
+
+        echo '<div class="loft1325-card">';
+        echo '<h3>Séjours confirmés</h3>';
+        echo '<p class="loft1325-meta">' . esc_html( loft1325_format_datetime_local( $bounds['start'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $bounds['end'] ) ) . '</p>';
+
+        $has_rows = false;
+        echo '<div class="loft1325-timeline">';
+        foreach ( $bookings as $booking ) {
+            if ( ! in_array( $booking['status'], array( 'confirmed', 'checked_in', 'checked_out' ), true ) ) {
+                continue;
+            }
+
+            $has_rows = true;
+            echo '<div class="loft1325-timeline-row">';
+            echo '<div class="loft1325-timeline-main"><strong>' . esc_html( $booking['loft_name'] ? $booking['loft_name'] : 'Loft' ) . '</strong><span class="loft1325-meta">' . esc_html( $booking['guest_name'] ) . '</span></div>';
+            echo '<span class="loft1325-bar">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</span>';
+            echo '<span class="loft1325-meta">' . esc_html( ucfirst( str_replace( '_', ' ', $booking['status'] ) ) ) . '</span>';
+            echo '</div>';
+        }
+
+        if ( ! $has_rows ) {
+            echo '<p>Aucun séjour confirmé pour cette période.</p>';
+        }
+
+        echo '</div>';
+        echo '</div>';
+    }
+
     public static function render_shortcode() {
         ob_start();
         self::render_frontend_hub( 'admin' );
