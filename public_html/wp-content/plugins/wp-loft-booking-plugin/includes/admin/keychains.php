@@ -781,7 +781,7 @@ function wp_loft_booking_sync_keychains_for_system() {
 function wp_loft_booking_fetch_keychains_from_api() {
     $token_v4 = get_option('butterflymx_access_token_v4');
     $token_v3 = get_option('butterflymx_access_token_v3');
-    $environment = get_option('butterflymx_environment', 'sandbox');
+    $environment = get_option('butterflymx_environment', 'production');
 
     $base_url = ($environment === 'production')
         ? 'https://api.butterflymx.com'
@@ -903,7 +903,7 @@ function wp_loft_booking_sync_keychains_from_api() {
 
     $environment = function_exists('wp_loft_booking_get_butterflymx_environment')
         ? wp_loft_booking_get_butterflymx_environment()
-        : get_option('butterflymx_environment', 'sandbox');
+        : get_option('butterflymx_environment', 'production');
 
     $access_token = get_option('butterflymx_access_token_v3');
     $version      = 'v3';

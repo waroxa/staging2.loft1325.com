@@ -40,7 +40,7 @@ function butterflymx_building_id_input() {
 }
 
 function butterflymx_environment_input() {
-    $environment = get_option('butterflymx_environment', 'sandbox');
+    $environment = get_option('butterflymx_environment', 'production');
     echo '<select name="butterflymx_environment" id="butterflymx_environment">
             <option value="sandbox" ' . selected($environment, 'sandbox', false) . '>Sandbox</option>
             <option value="production" ' . selected($environment, 'production', false) . '>Production</option>
