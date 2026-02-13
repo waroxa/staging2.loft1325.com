@@ -248,6 +248,24 @@ function wp_loft_booking_create_tables() {
         dbDelta($sql);
     }
 
+
+    $maintenance_table = $wpdb->prefix . 'loft_maintenance_tasks';
+    $sql = "CREATE TABLE $maintenance_table (
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        loft_label varchar(255) NOT NULL,
+        title varchar(255) NOT NULL,
+        details text NULL,
+        priority ENUM('critical', 'urgent', 'normal', 'low') DEFAULT 'normal',
+        status ENUM('todo', 'in_progress', 'done') DEFAULT 'todo',
+        assignee_email varchar(255) NULL,
+        requested_by_email varchar(255) NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+    dbDelta($sql);
+
+
     $availability_table = $wpdb->prefix . 'loft_availability';
     if ($wpdb->get_var("SHOW TABLES LIKE '$availability_table'") != $availability_table) {
         $sql = "CREATE TABLE $availability_table (
