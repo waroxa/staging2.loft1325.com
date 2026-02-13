@@ -258,19 +258,27 @@ class Loft1325_Bookings {
             @set_time_limit( 120 );
         }
 
-        $response = Loft1325_API_ButterflyMX::list_keychains();
-        if ( is_wp_error( $response ) ) {
+        $keychain_response = Loft1325_API_ButterflyMX::list_keychains_paginated();
+        if ( is_wp_error( $keychain_response ) ) {
             wp_safe_redirect( add_query_arg( 'loft1325_sync_error', '1', wp_get_referer() ) );
             exit;
         }
 
-        $body = json_decode( wp_remote_retrieve_body( $response ), true );
-        $keychains = isset( $body['data'] ) && is_array( $body['data'] ) ? $body['data'] : array();
+        $keychains = isset( $keychain_response['data'] ) && is_array( $keychain_response['data'] ) ? $keychain_response['data'] : array();
+        $virtual_keys_response = Loft1325_API_ButterflyMX::list_virtual_keys_paginated();
+        $tenants_response = Loft1325_API_ButterflyMX::list_tenants_paginated();
+        $units_response = Loft1325_API_ButterflyMX::list_units_paginated();
+
+        $virtual_keys = ( ! is_wp_error( $virtual_keys_response ) && isset( $virtual_keys_response['data'] ) && is_array( $virtual_keys_response['data'] ) ) ? $virtual_keys_response['data'] : array();
+        $tenants = ( ! is_wp_error( $tenants_response ) && isset( $tenants_response['data'] ) && is_array( $tenants_response['data'] ) ) ? $tenants_response['data'] : array();
+        $units = ( ! is_wp_error( $units_response ) && isset( $units_response['data'] ) && is_array( $units_response['data'] ) ) ? $units_response['data'] : array();
+
+        $context = self::build_keychain_context( $virtual_keys, $tenants, $units );
 
         $synced_count = 0;
 
         foreach ( $keychains as $keychain ) {
-            if ( self::upsert_booking_from_keychain( $keychain ) ) {
+            if ( self::upsert_booking_from_keychain( $keychain, $context ) ) {
                 $synced_count++;
             }
         }
@@ -287,13 +295,13 @@ class Loft1325_Bookings {
         exit;
     }
 
-    private static function upsert_booking_from_keychain( $keychain ) {
+    private static function upsert_booking_from_keychain( $keychain, $context = array() ) {
         global $wpdb;
 
         $bookings_table = $wpdb->prefix . 'loft1325_bookings';
         $maps = self::get_sync_lookup_maps();
 
-        $normalized_keychain = self::normalize_butterflymx_keychain( $keychain );
+        $normalized_keychain = self::normalize_butterflymx_keychain( $keychain, $context );
 
         $keychain_id = isset( $normalized_keychain['id'] ) ? absint( $normalized_keychain['id'] ) : 0;
         if ( ! $keychain_id ) {
@@ -372,7 +380,7 @@ class Loft1325_Bookings {
         return true;
     }
 
-    private static function normalize_butterflymx_keychain( $keychain ) {
+    private static function normalize_butterflymx_keychain( $keychain, $context = array() ) {
         $normalized = is_array( $keychain ) ? $keychain : array();
         $attributes = isset( $normalized['attributes'] ) && is_array( $normalized['attributes'] ) ? $normalized['attributes'] : array();
         $relationships = isset( $normalized['relationships'] ) && is_array( $normalized['relationships'] ) ? $normalized['relationships'] : array();
@@ -406,7 +414,89 @@ class Loft1325_Bookings {
             $normalized['name'] = $attributes['name'];
         }
 
+        if ( ( empty( $normalized['tenant_id'] ) || empty( $normalized['unit_id'] ) ) && ! empty( $normalized['virtual_key_ids'] ) && is_array( $normalized['virtual_key_ids'] ) ) {
+            foreach ( $normalized['virtual_key_ids'] as $virtual_key_id ) {
+                $virtual_key_id = absint( $virtual_key_id );
+                if ( ! $virtual_key_id || empty( $context['virtual_keys'][ $virtual_key_id ] ) ) {
+                    continue;
+                }
+
+                $virtual_key = $context['virtual_keys'][ $virtual_key_id ];
+                if ( empty( $normalized['tenant_id'] ) && ! empty( $virtual_key['tenant_id'] ) ) {
+                    $normalized['tenant_id'] = absint( $virtual_key['tenant_id'] );
+                }
+                if ( empty( $normalized['unit_id'] ) && ! empty( $virtual_key['unit_id'] ) ) {
+                    $normalized['unit_id'] = absint( $virtual_key['unit_id'] );
+                }
+            }
+        }
+
+        if ( empty( $normalized['tenant_id'] ) && ! empty( $normalized['unit_id'] ) && isset( $context['tenant_by_unit'][ (int) $normalized['unit_id'] ] ) ) {
+            $normalized['tenant_id'] = (int) $context['tenant_by_unit'][ (int) $normalized['unit_id'] ];
+        }
+
+        if ( empty( $normalized['unit_id'] ) && ! empty( $normalized['tenant_id'] ) && isset( $context['unit_by_tenant'][ (int) $normalized['tenant_id'] ] ) ) {
+            $normalized['unit_id'] = (int) $context['unit_by_tenant'][ (int) $normalized['tenant_id'] ];
+        }
+
         return $normalized;
+    }
+
+    private static function build_keychain_context( $virtual_keys, $tenants, $units ) {
+        $context = array(
+            'virtual_keys' => array(),
+            'tenant_by_unit' => array(),
+            'unit_by_tenant' => array(),
+        );
+
+        foreach ( (array) $virtual_keys as $virtual_key ) {
+            $virtual_key_id = isset( $virtual_key['id'] ) ? absint( $virtual_key['id'] ) : 0;
+            if ( ! $virtual_key_id ) {
+                continue;
+            }
+
+            $attributes = isset( $virtual_key['attributes'] ) && is_array( $virtual_key['attributes'] ) ? $virtual_key['attributes'] : array();
+            $relationships = isset( $virtual_key['relationships'] ) && is_array( $virtual_key['relationships'] ) ? $virtual_key['relationships'] : array();
+
+            $context['virtual_keys'][ $virtual_key_id ] = array(
+                'tenant_id' => isset( $virtual_key['tenant_id'] ) ? absint( $virtual_key['tenant_id'] ) : absint( $attributes['tenant_id'] ?? ( $relationships['tenant']['data']['id'] ?? 0 ) ),
+                'unit_id' => isset( $virtual_key['unit_id'] ) ? absint( $virtual_key['unit_id'] ) : absint( $attributes['unit_id'] ?? ( $relationships['unit']['data']['id'] ?? 0 ) ),
+            );
+        }
+
+        foreach ( (array) $tenants as $tenant ) {
+            $tenant_id = isset( $tenant['id'] ) ? absint( $tenant['id'] ) : 0;
+            if ( ! $tenant_id ) {
+                continue;
+            }
+
+            $tenant_attributes = isset( $tenant['attributes'] ) && is_array( $tenant['attributes'] ) ? $tenant['attributes'] : array();
+            $tenant_relationships = isset( $tenant['relationships'] ) && is_array( $tenant['relationships'] ) ? $tenant['relationships'] : array();
+            $unit_id = absint( $tenant['unit_id'] ?? $tenant_attributes['unit_id'] ?? ( $tenant_relationships['unit']['data']['id'] ?? 0 ) );
+
+            if ( $unit_id ) {
+                $context['unit_by_tenant'][ $tenant_id ] = $unit_id;
+                $context['tenant_by_unit'][ $unit_id ] = $tenant_id;
+            }
+        }
+
+        foreach ( (array) $units as $unit ) {
+            $unit_id = isset( $unit['id'] ) ? absint( $unit['id'] ) : 0;
+            if ( ! $unit_id || isset( $context['tenant_by_unit'][ $unit_id ] ) ) {
+                continue;
+            }
+
+            $unit_attributes = isset( $unit['attributes'] ) && is_array( $unit['attributes'] ) ? $unit['attributes'] : array();
+            $unit_relationships = isset( $unit['relationships'] ) && is_array( $unit['relationships'] ) ? $unit['relationships'] : array();
+            $tenant_id = absint( $unit['tenant_id'] ?? $unit_attributes['tenant_id'] ?? ( $unit_relationships['tenant']['data']['id'] ?? 0 ) );
+
+            if ( $tenant_id ) {
+                $context['tenant_by_unit'][ $unit_id ] = $tenant_id;
+                $context['unit_by_tenant'][ $tenant_id ] = $unit_id;
+            }
+        }
+
+        return $context;
     }
 
     private static function resolve_loft_for_keychain( $normalized_keychain, $maps ) {
