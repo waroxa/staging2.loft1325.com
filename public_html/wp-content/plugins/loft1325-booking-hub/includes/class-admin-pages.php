@@ -150,6 +150,16 @@ class Loft1325_Admin_Pages {
         echo '<button class="loft1325-secondary">Prolonger séjour</button>';
         echo '</div>';
         echo '</div>';
+
+        echo '<div class="loft1325-card loft1325-cta">';
+        echo '<h3>Vue calendrier (Admin Hub)</h3>';
+        echo '<p class="loft1325-meta">Planifiez en avance avec des vues annuelle, mensuelle, bi-hebdomadaire et hebdomadaire.</p>';
+        echo '<p class="loft1325-actions">';
+        foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours' ) as $k => $label ) {
+            echo '<a class="loft1325-secondary" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => 'bookings', 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
+        }
+        echo '</p>';
+        echo '</div>';
         echo '</div>';
     }
 
@@ -247,12 +257,23 @@ class Loft1325_Admin_Pages {
 
         self::render_page_header( 'Booking Hub' );
 
-        $calendar_start = gmdate( 'Y-m-d 00:00:00' );
-        $calendar_end = gmdate( 'Y-m-d 23:59:59', strtotime( '+6 days' ) );
+        $bounds = Loft1325_Operations::get_period_bounds( $period );
+        $period = $bounds['period'];
+        $calendar_start = $bounds['start'];
+        $calendar_end = $bounds['end'];
         $calendar_bookings = Loft1325_Bookings::get_bookings_for_range( $calendar_start, $calendar_end );
+        $period_titles = array(
+            'today' => 'aujourd\'hui',
+            'week' => '7 jours',
+            'biweek' => '2 semaines',
+            'month' => '1 mois',
+            'year' => '1 an',
+        );
 
         echo '<div class="loft1325-card">';
-        echo '<h3>Calendrier (vue semaine)</h3>';
+        echo '<h3>Calendrier des réservations</h3>';
+        echo '<p class="loft1325-meta">Vue ' . esc_html( $period_titles[ $period ] ?? $period ) . ' · ' . esc_html( loft1325_format_datetime_local( $calendar_start ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $calendar_end ) ) . '</p>';
+        echo '<p class="loft1325-meta">On garde tout clair et bien espacé pour vous aider à anticiper les réservations sur toute l\'année 💙</p>';
         echo '<div class="loft1325-timeline">';
         $has_calendar_rows = false;
         foreach ( $calendar_bookings as $calendar_booking ) {
@@ -267,13 +288,13 @@ class Loft1325_Admin_Pages {
 
             $has_calendar_rows = true;
             echo '<div class="loft1325-timeline-row">';
-            echo '<div><strong>' . esc_html( $label ) . '</strong><span class="loft1325-meta">' . esc_html( $calendar_booking['guest_name'] ) . '</span></div>';
+            echo '<div class="loft1325-timeline-main"><strong>' . esc_html( $label ) . '</strong><span class="loft1325-meta">' . esc_html( $calendar_booking['guest_name'] ) . '</span></div>';
             echo '<span class="loft1325-bar">' . esc_html( $dates ) . '</span>';
             echo '<span class="loft1325-meta">' . esc_html( $keychain ) . ' · ' . esc_html( $status_label ) . '</span>';
             echo '</div>';
         }
         if ( ! $has_calendar_rows ) {
-            echo '<div class="loft1325-callout">Aucune réservation confirmée cette semaine.</div>';
+            echo '<div class="loft1325-callout">Aucune réservation confirmée pour cette période.</div>';
         }
 
         echo '</div>';
@@ -291,7 +312,7 @@ class Loft1325_Admin_Pages {
 
         if ( in_array( $view, array( 'bookings', 'cleaning' ), true ) ) {
             echo '<p class="loft1325-actions">';
-            foreach ( array( 'today' => 'Aujourd\'hui', 'week' => '7 jours', 'month' => 'Mois', 'year' => 'Année' ) as $k => $label ) {
+            foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours', 'today' => 'Aujourd\'hui' ) as $k => $label ) {
                 $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
                 echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $view, 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
             }
