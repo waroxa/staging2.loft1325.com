@@ -235,14 +235,14 @@
 
 .loft1325-frontend-shell {
     width: 100%;
-    max-width: 1280px;
+    max-width: 980px;
     margin: 0 auto;
-    padding: 14px clamp(12px, 4vw, 28px) 28px;
+    padding: 16px clamp(16px, 5vw, 30px) 32px;
 }
 
 .loft1325-mobile-header {
     position: sticky;
-    top: 0;
+    top: max(8px, env(safe-area-inset-top));
     z-index: 5;
     display: flex;
     align-items: center;
@@ -253,7 +253,7 @@
     border: 1px solid #d8dde2;
     border-radius: 14px;
     box-shadow: 0 8px 24px rgba(3, 18, 39, 0.08);
-    margin-bottom: 20px;
+    margin-bottom: 26px;
 }
 
 .loft1325-mobile-logo img {
@@ -385,7 +385,7 @@
 
 .loft1325-frontend .loft1325-header,
 .loft1325-frontend .loft1325-grid {
-    margin-top: 18px;
+    margin-top: 22px;
 }
 
 .loft1325-frontend .loft1325-card {
@@ -405,6 +405,55 @@
 .loft1325-frontend .loft1325-primary,
 .loft1325-frontend .loft1325-secondary {
     border-radius: 12px;
+}
+
+.loft1325-frontend .loft1325-primary,
+.loft1325-frontend a.loft1325-primary,
+.loft1325-frontend button.loft1325-primary {
+    background: #003b95;
+    border-color: #003b95;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.loft1325-frontend .loft1325-primary:hover,
+.loft1325-frontend .loft1325-primary:focus-visible {
+    background: #002d73;
+    border-color: #002d73;
+    color: #ffffff !important;
+}
+
+.loft1325-frontend .loft1325-secondary,
+.loft1325-frontend a.loft1325-secondary,
+.loft1325-frontend button.loft1325-secondary {
+    color: #0e3558 !important;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .loft1325-frontend-shell {
+        padding-bottom: 36px;
+    }
+
+    .loft1325-frontend .loft1325-header {
+        gap: 14px;
+    }
+
+    .loft1325-card-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .loft1325-frontend .loft1325-card {
+        padding: 20px;
+    }
+
+    .loft1325-frontend .loft1325-secondary {
+        min-height: 40px;
+        padding: 10px 14px;
+        letter-spacing: 1.2px;
+    }
 }
 
 .loft1325-timeline {
