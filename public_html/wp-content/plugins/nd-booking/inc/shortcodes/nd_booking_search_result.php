@@ -1,11 +1,5 @@
 <?php
 
-if (function_exists('wp_loft_booking_full_sync')) {
-    wp_loft_booking_full_sync();
-} elseif (function_exists('wp_loft_booking_sync_units')) {
-    wp_loft_booking_sync_units();
-}
-
 //START ajax function for woo go to the woo checkout with the product in the cart and price passed
 function nd_booking_woo_php() {
 

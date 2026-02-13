@@ -45,24 +45,24 @@ function wp_loft_booking_schedule_unit_sync() {
     $next_run = wp_next_scheduled('wp_loft_booking_sync_units');
     $current_schedule = $next_run ? wp_get_schedule('wp_loft_booking_sync_units') : false;
 
-    if ($next_run && 'every_5_minutes' !== $current_schedule) {
+    if ($next_run && 'every_30_minutes' !== $current_schedule) {
         wp_unschedule_event($next_run, 'wp_loft_booking_sync_units');
         $next_run = false;
     }
 
     if (!$next_run) {
-        wp_schedule_event(time(), 'every_5_minutes', 'wp_loft_booking_sync_units');
+        wp_schedule_event(time(), 'every_30_minutes', 'wp_loft_booking_sync_units');
     }
 }
 add_action('wp_loft_booking_sync_units', 'wp_loft_booking_sync_units');
 register_activation_hook(dirname(__FILE__, 3) . '/wp-loft-booking-plugin.php', 'wp_loft_booking_schedule_unit_sync');
 add_action('init', 'wp_loft_booking_schedule_unit_sync');
 
-// 1️⃣ Add custom cron schedule (e.g., every 5 minutes)
+// 1️⃣ Add custom cron schedule (every 30 minutes)
 add_filter('cron_schedules', function ($schedules) {
-    $schedules['every_5_minutes'] = [
-        'interval' => 5 * 60, // 5 minutes in seconds
-        'display'  => __('Every 5 Minutes')
+    $schedules['every_30_minutes'] = [
+        'interval' => 30 * 60, // 30 minutes in seconds
+        'display'  => __('Every 30 Minutes')
     ];
     return $schedules;
 });
@@ -70,7 +70,7 @@ add_filter('cron_schedules', function ($schedules) {
 // 2️⃣ Schedule cron event on plugin activation
 register_activation_hook(dirname(__FILE__, 3) . '/wp-loft-booking-plugin.php', function () {
     if (!wp_next_scheduled('wp_loft_booking_cron_sync')) {
-        wp_schedule_event(time(), 'every_5_minutes', 'wp_loft_booking_cron_sync');
+        wp_schedule_event(time(), 'every_30_minutes', 'wp_loft_booking_cron_sync');
     }
 });
 
@@ -79,7 +79,7 @@ register_deactivation_hook(dirname(__FILE__, 3) . '/wp-loft-booking-plugin.php',
     wp_clear_scheduled_hook('wp_loft_booking_cron_sync');
 });
 
-// 4️⃣ Ensure cron intervals stay at 5 minutes
+// 4️⃣ Ensure cron intervals stay at 30 minutes
 add_action('init', function () {
     $hooks = [
         'wp_loft_booking_cron_sync',
@@ -90,12 +90,12 @@ add_action('init', function () {
         $next_run = wp_next_scheduled($hook);
         $current_schedule = $next_run ? wp_get_schedule($hook) : false;
 
-        if ($next_run && 'every_5_minutes' !== $current_schedule) {
+        if ($next_run && 'every_30_minutes' !== $current_schedule) {
             wp_unschedule_event($next_run, $hook);
         }
 
         if (!wp_next_scheduled($hook)) {
-            wp_schedule_event(time(), 'every_5_minutes', $hook);
+            wp_schedule_event(time(), 'every_30_minutes', $hook);
         }
     }
 });
