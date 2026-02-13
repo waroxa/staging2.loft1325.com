@@ -127,6 +127,16 @@ class Loft1325_Admin_Pages {
         $bookings = Loft1325_Bookings::get_bookings();
 
         self::render_page_header( 'Réservations' );
+
+        if ( isset( $_GET['loft1325_sync_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-error"><p>La synchronisation ButterflyMX a échoué. Vérifiez la connexion API et réessayez.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_synced'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $synced_count = isset( $_GET['loft1325_synced_count'] ) ? absint( wp_unslash( $_GET['loft1325_synced_count'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-success"><p>' . sprintf( esc_html__( 'Synchronisation ButterflyMX terminée. %d clés importées ou mises à jour.', 'loft1325-booking-hub' ), $synced_count ) . '</p></div>';
+        }
+
         $sync_nonce = wp_create_nonce( 'loft1325_sync_keychains' );
         echo '<div class="loft1325-filter-bar">';
         echo '<span class="loft1325-chip is-active">Aujourd\'hui</span>';
@@ -203,9 +213,12 @@ class Loft1325_Admin_Pages {
         foreach ( $bookings as $booking ) {
             $label = $booking['loft_name'] ? $booking['loft_name'] : 'Loft';
             $dates = loft1325_format_datetime_local( $booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $booking['check_out_utc'] );
+            $keychain = ! empty( $booking['butterfly_keychain_id'] ) ? sprintf( 'Clé #%d', absint( $booking['butterfly_keychain_id'] ) ) : 'Aucune clé';
+            $status = ucfirst( $booking['status'] );
             echo '<div class="loft1325-timeline-row">';
             echo '<div><strong>' . esc_html( $label ) . '</strong><span class="loft1325-meta">' . esc_html( $booking['guest_name'] ) . '</span></div>';
             echo '<span class="loft1325-bar">' . esc_html( $dates ) . '</span>';
+            echo '<span class="loft1325-meta">' . esc_html( $keychain ) . ' · ' . esc_html( $status ) . '</span>';
             echo '</div>';
         }
         if ( empty( $bookings ) ) {

@@ -166,6 +166,14 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return false;
             }
 
+            if ( is_singular() ) {
+                global $post;
+
+                if ( $post && has_shortcode( $post->post_content, 'loft1325_booking_hub' ) ) {
+                    return false;
+                }
+            }
+
             if ( ! $this->ensure_dependencies_ready() ) {
                 return false;
             }
