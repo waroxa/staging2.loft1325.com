@@ -64,7 +64,8 @@ class Loft1325_Frontend_Pages {
             $hash_key = 'maintenance_hub_password_hash';
         }
 
-        $redirect_url = wp_get_referer() ?: home_url( '/' );
+        $posted_redirect = isset( $_POST['loft1325_redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['loft1325_redirect_to'] ) ) : '';
+        $redirect_url = $posted_redirect ? wp_validate_redirect( $posted_redirect, home_url( '/' ) ) : ( wp_get_referer() ?: self::current_request_url() );
         $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
         $settings = loft1325_get_settings();
         $stored_hash = isset( $settings[ $hash_key ] ) ? (string) $settings[ $hash_key ] : '';
@@ -261,6 +262,8 @@ class Loft1325_Frontend_Pages {
             }
             echo '</div>';
         }
+
+        self::render_stays_calendar( 'month' );
 
         echo '</div>';
         echo '</div>';

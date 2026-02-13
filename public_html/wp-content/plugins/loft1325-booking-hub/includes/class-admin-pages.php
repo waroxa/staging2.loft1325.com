@@ -125,6 +125,17 @@ class Loft1325_Admin_Pages {
         }
 
         $counts = Loft1325_Bookings::get_dashboard_counts();
+        $period = isset( $_GET['hub_period'] ) ? sanitize_key( wp_unslash( $_GET['hub_period'] ) ) : 'week';
+        $bounds = Loft1325_Operations::get_period_bounds( $period );
+        $period = $bounds['period'];
+        $calendar_bookings = Loft1325_Bookings::get_bookings_for_range( $bounds['start'], $bounds['end'] );
+        $period_titles = array(
+            'today' => 'aujourd\'hui',
+            'week' => '7 jours',
+            'biweek' => '2 semaines',
+            'month' => '1 mois',
+            'year' => '1 an',
+        );
 
         self::render_page_header( 'Aujourd\'hui' );
         echo '<div class="loft1325-grid">';
@@ -153,11 +164,33 @@ class Loft1325_Admin_Pages {
 
         echo '<div class="loft1325-card loft1325-cta">';
         echo '<h3>Vue calendrier (Admin Hub)</h3>';
-        echo '<p class="loft1325-meta">Planifiez en avance avec des vues annuelle, mensuelle, bi-hebdomadaire et hebdomadaire.</p>';
+        echo '<p class="loft1325-meta">Vue ' . esc_html( $period_titles[ $period ] ?? $period ) . ' · ' . esc_html( loft1325_format_datetime_local( $bounds['start'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $bounds['end'] ) ) . '</p>';
         echo '<p class="loft1325-actions">';
-        foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours' ) as $k => $label ) {
-            echo '<a class="loft1325-secondary" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => 'bookings', 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
+        foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours', 'today' => 'Aujourd\'hui' ) as $k => $label ) {
+            $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
+            echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-dashboard', 'hub_period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
         }
+        echo '</p>';
+        echo '<div class="loft1325-timeline">';
+        $has_calendar_rows = false;
+        foreach ( $calendar_bookings as $calendar_booking ) {
+            if ( ! in_array( $calendar_booking['status'], array( 'confirmed', 'checked_in', 'checked_out' ), true ) ) {
+                continue;
+            }
+
+            $has_calendar_rows = true;
+            echo '<div class="loft1325-timeline-row">';
+            echo '<div class="loft1325-timeline-main"><strong>' . esc_html( $calendar_booking['loft_name'] ? $calendar_booking['loft_name'] : 'Loft' ) . '</strong><span class="loft1325-meta">' . esc_html( $calendar_booking['guest_name'] ) . '</span></div>';
+            echo '<span class="loft1325-bar">' . esc_html( loft1325_format_datetime_local( $calendar_booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $calendar_booking['check_out_utc'] ) ) . '</span>';
+            echo '<span class="loft1325-meta">' . esc_html( ucfirst( str_replace( '_', ' ', $calendar_booking['status'] ) ) ) . '</span>';
+            echo '</div>';
+        }
+        if ( ! $has_calendar_rows ) {
+            echo '<div class="loft1325-callout">Aucune réservation confirmée pour cette période.</div>';
+        }
+        echo '</div>';
+        echo '<p class="loft1325-actions">';
+        echo '<a class="loft1325-secondary" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => 'bookings', 'period' => $period ), admin_url( 'admin.php' ) ) ) . '">Ouvrir le calendrier complet</a>';
         echo '</p>';
         echo '</div>';
         echo '</div>';
@@ -274,6 +307,12 @@ class Loft1325_Admin_Pages {
         echo '<h3>Calendrier des réservations</h3>';
         echo '<p class="loft1325-meta">Vue ' . esc_html( $period_titles[ $period ] ?? $period ) . ' · ' . esc_html( loft1325_format_datetime_local( $calendar_start ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $calendar_end ) ) . '</p>';
         echo '<p class="loft1325-meta">On garde tout clair et bien espacé pour vous aider à anticiper les réservations sur toute l\'année 💙</p>';
+        echo '<p class="loft1325-actions">';
+        foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours', 'today' => 'Aujourd\'hui' ) as $k => $label ) {
+            $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
+            echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $view, 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
+        }
+        echo '</p>';
         echo '<div class="loft1325-timeline">';
         $has_calendar_rows = false;
         foreach ( $calendar_bookings as $calendar_booking ) {
@@ -309,15 +348,6 @@ class Loft1325_Admin_Pages {
             echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
         }
         echo '</p>';
-
-        if ( in_array( $view, array( 'bookings', 'cleaning' ), true ) ) {
-            echo '<p class="loft1325-actions">';
-            foreach ( array( 'year' => 'Année', 'month' => 'Mois', 'biweek' => '2 semaines', 'week' => '7 jours', 'today' => 'Aujourd\'hui' ) as $k => $label ) {
-                $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
-                echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $view, 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
-            }
-            echo '</p>';
-        }
 
         if ( 'maintenance' === $view ) {
             echo '<h4>Nouveau ticket</h4>';

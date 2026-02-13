@@ -149,7 +149,16 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 20px;
+}
+
+.loft1325-admin > .loft1325-grid + .loft1325-card,
+.loft1325-admin > .loft1325-card + .loft1325-card {
+    margin-top: 24px;
+}
+
+.loft1325-section {
+    margin-top: 24px;
 }
 
 .loft1325-filter-bar {
@@ -366,7 +375,11 @@
 .loft1325-frontend .loft1325-lock-screen form {
     display: grid;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 20px;
+}
+
+.loft1325-hub-title {
+    margin-bottom: 16px;
 }
 
 .loft1325-frontend .loft1325-lock-screen input[type="password"] {
@@ -381,6 +394,9 @@
 .loft1325-frontend .loft1325-primary {
     border-radius: 0;
     background: #0b0b0b;
+    border-color: #0b0b0b;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
 }
 
 .loft1325-frontend .loft1325-header,
@@ -410,16 +426,24 @@
 .loft1325-frontend .loft1325-primary,
 .loft1325-frontend a.loft1325-primary,
 .loft1325-frontend button.loft1325-primary {
-    background: #003b95;
-    border-color: #003b95;
+    background: #0b0b0b;
+    border-color: #0b0b0b;
     color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
     font-weight: 600;
+}
+
+.loft1325-frontend .loft1325-primary *,
+.loft1325-frontend a.loft1325-primary *,
+.loft1325-frontend button.loft1325-primary * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
 }
 
 .loft1325-frontend .loft1325-primary:hover,
 .loft1325-frontend .loft1325-primary:focus-visible {
-    background: #002d73;
-    border-color: #002d73;
+    background: #161616;
+    border-color: #161616;
     color: #ffffff !important;
 }
 
@@ -463,7 +487,7 @@
 .loft1325-timeline {
     display: grid;
     gap: 14px;
-    margin-top: 14px;
+    margin-top: 18px;
 }
 
 .loft1325-timeline-row {
