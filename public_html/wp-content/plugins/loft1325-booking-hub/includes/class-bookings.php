@@ -9,6 +9,18 @@ class Loft1325_Bookings {
         add_action( 'admin_post_loft1325_create_booking', array( __CLASS__, 'create_booking' ) );
         add_action( 'admin_post_loft1325_revoke_key', array( __CLASS__, 'revoke_key' ) );
         add_action( 'admin_post_loft1325_sync_keychains', array( __CLASS__, 'sync_from_butterflymx' ) );
+        add_action( 'loft1325_booking_hub_sync_keychains', array( __CLASS__, 'run_scheduled_sync' ) );
+        add_action( 'init', array( __CLASS__, 'ensure_sync_schedule' ) );
+    }
+
+    public static function ensure_sync_schedule() {
+        if ( ! wp_next_scheduled( 'loft1325_booking_hub_sync_keychains' ) ) {
+            wp_schedule_event( time(), 'loft1325_every_30_minutes', 'loft1325_booking_hub_sync_keychains' );
+        }
+    }
+
+    public static function run_scheduled_sync() {
+        self::sync_from_butterflymx( true );
     }
 
     public static function get_dashboard_counts() {
@@ -247,21 +259,50 @@ class Loft1325_Bookings {
         exit;
     }
 
-    public static function sync_from_butterflymx() {
-        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
-            wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
-        }
+    public static function sync_from_butterflymx( $cron = false ) {
+        if ( ! $cron ) {
+            if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+                wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
+            }
 
-        check_admin_referer( 'loft1325_sync_keychains' );
+            check_admin_referer( 'loft1325_sync_keychains' );
+        }
 
         if ( function_exists( 'set_time_limit' ) ) {
             @set_time_limit( 120 );
         }
 
-        $keychain_response = Loft1325_API_ButterflyMX::list_keychains_paginated();
-        if ( is_wp_error( $keychain_response ) ) {
+        $synced_count = self::sync_keychains_from_api();
+
+        if ( is_wp_error( $synced_count ) ) {
+            if ( $cron ) {
+                return;
+            }
+
             wp_safe_redirect( add_query_arg( 'loft1325_sync_error', '1', wp_get_referer() ) );
             exit;
+        }
+
+        if ( $cron ) {
+            return;
+        }
+
+        wp_safe_redirect(
+            add_query_arg(
+                array(
+                    'loft1325_synced'       => '1',
+                    'loft1325_synced_count' => $synced_count,
+                ),
+                wp_get_referer()
+            )
+        );
+        exit;
+    }
+
+    private static function sync_keychains_from_api() {
+        $keychain_response = Loft1325_API_ButterflyMX::list_keychains_paginated();
+        if ( is_wp_error( $keychain_response ) ) {
+            return $keychain_response;
         }
 
         $keychains = isset( $keychain_response['data'] ) && is_array( $keychain_response['data'] ) ? $keychain_response['data'] : array();
@@ -283,16 +324,7 @@ class Loft1325_Bookings {
             }
         }
 
-        wp_safe_redirect(
-            add_query_arg(
-                array(
-                    'loft1325_synced'       => '1',
-                    'loft1325_synced_count' => $synced_count,
-                ),
-                wp_get_referer()
-            )
-        );
-        exit;
+        return $synced_count;
     }
 
     private static function upsert_booking_from_keychain( $keychain, $context = array() ) {

@@ -473,106 +473,74 @@ if (!function_exists('wp_loft_booking_unit_is_available_for_range')) {
     {
         global $wpdb;
 
-        $units_table     = $wpdb->prefix . 'loft_units';
-        $keychains_table = $wpdb->prefix . 'loft_keychains';
-        $tenants_table   = $wpdb->prefix . 'loft_tenants';
+        $units_table = $wpdb->prefix . 'loft_units';
+        $hub_lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $hub_bookings_table = $wpdb->prefix . 'loft1325_bookings';
 
-        $unit = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT status, availability_until, unit_name FROM {$units_table} WHERE id = %d",
-                $unit_id
-            )
-        );
+        $hub_lofts_exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $hub_lofts_table)) === $hub_lofts_table;
+        $hub_bookings_exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $hub_bookings_table)) === $hub_bookings_table;
 
-        if (!$unit) {
-            return false;
-        }
-
-        $unit_status = strtolower((string) $unit->status);
-
-        if ($unit_status === 'unavailable') {
-            return false;
-        }
-
-        if (!empty($unit->availability_until)) {
-            $available_until_ts = strtotime($unit->availability_until);
-
-            if ($available_until_ts && $available_until_ts > $checkin_local->getTimestamp()) {
-                return false;
-            }
-        }
-
-        $unit_label     = wp_loft_booking_format_unit_label((string) ($unit->unit_name ?? ''));
-        $normalized_key = wp_loft_booking_normalize_unit_label_for_lookup($unit_label);
-        $tenant_name_candidates = [];
-
-        if ($normalized_key !== '') {
-            $tenant_rows = $wpdb->get_results(
+        if ($hub_lofts_exists && $hub_bookings_exists) {
+            $unit = $wpdb->get_row(
                 $wpdb->prepare(
-                    "SELECT unit_label, first_name, last_name, lease_start, lease_end FROM {$tenants_table} WHERE unit_label = %s OR UPPER(unit_label) = UPPER(%s) OR CONCAT(first_name, ' ', last_name) LIKE %s",
-                    $unit_label,
-                    $unit_label,
-                    '%' . $wpdb->esc_like($unit_label) . '%'
+                    "SELECT id, unit_name, unit_id_api FROM {$units_table} WHERE id = %d",
+                    $unit_id
                 ),
                 ARRAY_A
             );
 
-            foreach ($tenant_rows as $tenant) {
-                $tenant_unit_label = wp_loft_booking_normalize_unit_label_for_lookup((string) ($tenant['unit_label'] ?? ''));
-                $tenant_name       = trim(sprintf('%s %s', $tenant['first_name'] ?? '', $tenant['last_name'] ?? ''));
-                $tenant_name_label = wp_loft_booking_normalize_unit_label_for_lookup($tenant_name);
+            if (!$unit) {
+                return false;
+            }
 
-                if ($tenant_name !== '') {
-                    $tenant_name_candidates[] = $tenant_name;
-                }
+            $loft_id = 0;
+            $unit_api_id = isset($unit['unit_id_api']) ? (int) $unit['unit_id_api'] : 0;
 
-                if ($tenant_unit_label !== $normalized_key && $tenant_name_label !== $normalized_key) {
-                    continue;
-                }
+            if ($unit_api_id > 0) {
+                $loft_id = (int) $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT id FROM {$hub_lofts_table} WHERE butterfly_unit_id = %d LIMIT 1",
+                        $unit_api_id
+                    )
+                );
+            }
 
-                $lease_start = !empty($tenant['lease_start']) ? strtotime($tenant['lease_start']) : null;
-                $lease_end   = !empty($tenant['lease_end']) ? strtotime($tenant['lease_end']) : null;
-
-                if (empty($lease_start)) {
-                    continue;
-                }
-
-                $lease_overlaps = $lease_end
-                    ? ($lease_start <= $checkout_local->getTimestamp() && $lease_end >= $checkin_local->getTimestamp())
-                    : ($lease_start <= $checkout_local->getTimestamp());
-
-                if ($lease_overlaps) {
-                    return false;
+            if (!$loft_id) {
+                $unit_label = trim((string) ($unit['unit_name'] ?? ''));
+                if ($unit_label !== '') {
+                    $loft_id = (int) $wpdb->get_var(
+                        $wpdb->prepare(
+                            "SELECT id FROM {$hub_lofts_table} WHERE UPPER(REPLACE(loft_name, ' ', '')) = UPPER(REPLACE(%s, ' ', '')) LIMIT 1",
+                            $unit_label
+                        )
+                    );
                 }
             }
+
+            if (!$loft_id) {
+                return false;
+            }
+
+            $approved_overlap = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(*) FROM {$hub_bookings_table}
+                    WHERE loft_id = %d
+                    AND status IN ('confirmed','checked_in','approved')
+                    AND %s < check_out_utc
+                    AND %s > check_in_utc",
+                    $loft_id,
+                    $checkin_utc->format('Y-m-d H:i:s'),
+                    $checkout_utc->format('Y-m-d H:i:s')
+                )
+            );
+
+            return $approved_overlap === 0;
         }
 
-        $keychain_conditions = ["(unit_id = %d)"];
-        $keychain_params     = [$unit_id];
-
-        if ($unit_label !== '') {
-            $keychain_conditions[] = "name LIKE %s";
-            $keychain_params[]     = '%' . $wpdb->esc_like($unit_label) . '%';
-        }
-
-        $tenant_name_candidates = array_unique(array_filter($tenant_name_candidates));
-
-        foreach ($tenant_name_candidates as $tenant_name) {
-            $keychain_conditions[] = "name LIKE %s";
-            $keychain_params[]     = '%' . $wpdb->esc_like($tenant_name) . '%';
-        }
-
-        $where_keys = implode(' OR ', $keychain_conditions);
-        $overlap_sql = "SELECT COUNT(*) FROM {$keychains_table} WHERE ({$where_keys}) AND valid_from < %s AND valid_until > %s";
-
-        $keychain_params[] = $checkout_utc->format('Y-m-d H:i:s');
-        $keychain_params[] = $checkin_utc->format('Y-m-d H:i:s');
-
-        $overlap = (int) $wpdb->get_var($wpdb->prepare($overlap_sql, ...$keychain_params));
-
-        return $overlap === 0;
+        return false;
     }
 }
+
 
 if (!function_exists('wp_loft_booking_find_available_unit_for_type')) {
     /**
@@ -590,8 +558,8 @@ if (!function_exists('wp_loft_booking_find_available_unit_for_type')) {
         global $wpdb;
 
         $units_table = $wpdb->prefix . 'loft_units';
-        $where       = ["(LOWER(status) = 'available' OR (LOWER(status) = 'occupied' AND (availability_until IS NULL OR availability_until = '' OR availability_until <= %s)))"];
-        $params      = [$checkin_local->format('Y-m-d H:i:s')];
+        $where       = ['1=1'];
+        $params      = [];
 
         if ($requested_type !== '') {
             $where[]  = 'UPPER(unit_name) LIKE %s';
@@ -599,7 +567,9 @@ if (!function_exists('wp_loft_booking_find_available_unit_for_type')) {
         }
 
         $sql = "SELECT id, unit_name, availability_until FROM {$units_table} WHERE " . implode(' AND ', $where) . ' ORDER BY unit_name ASC';
-        $units = $wpdb->get_results($wpdb->prepare($sql, ...$params));
+        $units = empty($params)
+            ? $wpdb->get_results($sql)
+            : $wpdb->get_results($wpdb->prepare($sql, ...$params));
 
         foreach ($units as $unit) {
             if (wp_loft_booking_unit_is_available_for_range((int) $unit->id, $checkin_local, $checkout_local, $checkin_utc, $checkout_utc)) {
@@ -632,28 +602,6 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
     {
         global $wpdb;
 
-        if (function_exists('wp_loft_booking_sync_units')) {
-            $sync_result = wp_loft_booking_sync_units(false);
-
-            if (is_wp_error($sync_result)) {
-                return $sync_result;
-            }
-        } elseif (function_exists('wp_loft_booking_fetch_and_save_tenants')) {
-            $tenant_sync = wp_loft_booking_fetch_and_save_tenants();
-
-            if (is_wp_error($tenant_sync)) {
-                return $tenant_sync;
-            }
-        }
-
-        if (function_exists('wp_loft_booking_sync_keychains_for_system')) {
-            $sync_result = wp_loft_booking_sync_keychains_for_system();
-
-            if (is_wp_error($sync_result)) {
-                return $sync_result;
-            }
-        }
-
         $requested_type = wp_loft_booking_detect_room_type($requested_label);
         $window = wp_loft_booking_calculate_booking_window($date_from, $date_to);
 
@@ -667,8 +615,8 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
         $checkout_utc   = $window['checkout_utc'];
 
         $units_table = $wpdb->prefix . 'loft_units';
-        $where       = ["(LOWER(status) = 'available' OR (LOWER(status) = 'occupied' AND (availability_until IS NULL OR availability_until = '' OR availability_until <= %s)))"];
-        $params      = [$checkin_local->format('Y-m-d H:i:s')];
+        $where       = ['1=1'];
+        $params      = [];
 
         if ($requested_type !== '') {
             $where[]  = 'UPPER(unit_name) LIKE %s';
@@ -676,7 +624,9 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
         }
 
         $sql = "SELECT id, unit_name, unit_id_api, status, availability_until FROM {$units_table} WHERE " . implode(' AND ', $where) . ' ORDER BY unit_name ASC';
-        $units = $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
+        $units = empty($params)
+            ? $wpdb->get_results($sql, ARRAY_A)
+            : $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
 
         if (empty($units)) {
             return new WP_Error('loft_checkout_unavailable', 'this room is no longer available for the selected dates.');
@@ -692,29 +642,6 @@ if (!function_exists('wp_loft_booking_find_checkout_available_unit')) {
             if (!wp_loft_booking_unit_is_available_for_range($unit_id, $checkin_local, $checkout_local, $checkin_utc, $checkout_utc)) {
                 continue;
             }
-
-            if (function_exists('wp_loft_booking_fetch_butterflymx_keychain_conflicts')) {
-                $api_unit_id = isset($unit['unit_id_api']) ? (int) $unit['unit_id_api'] : 0;
-
-                if ($api_unit_id > 0) {
-                    $conflicts = wp_loft_booking_fetch_butterflymx_keychain_conflicts(
-                        $api_unit_id,
-                        $window['starts_at'],
-                        $window['ends_at'],
-                        wp_loft_booking_get_butterflymx_environment(),
-                        (string) ($unit['unit_name'] ?? '')
-                    );
-
-                    if (is_wp_error($conflicts)) {
-                        return $conflicts;
-                    }
-
-                    if (!empty($conflicts)) {
-                        continue;
-                    }
-                }
-            }
-
             return [
                 'id'         => $unit_id,
                 'unit_name'  => (string) ($unit['unit_name'] ?? ''),
@@ -747,45 +674,6 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
             $debug[] = sprintf('Requested label: %s', $requested_label !== '' ? $requested_label : '(empty)');
         }
 
-        if (function_exists('wp_loft_booking_sync_units')) {
-            $sync_result = wp_loft_booking_sync_units(false, $debug);
-
-            if (is_wp_error($sync_result)) {
-                if (null !== $debug) {
-                    $debug[] = sprintf('Full unit sync failed: %s', $sync_result->get_error_message());
-                }
-                return $sync_result;
-            }
-        } elseif (function_exists('wp_loft_booking_fetch_and_save_tenants')) {
-            $tenant_sync = wp_loft_booking_fetch_and_save_tenants();
-
-            if (is_wp_error($tenant_sync)) {
-                if (null !== $debug) {
-                    $debug[] = sprintf('Tenant sync failed: %s', $tenant_sync->get_error_message());
-                }
-                return $tenant_sync;
-            }
-
-            if (null !== $debug) {
-                $debug[] = 'Tenant sync completed.';
-            }
-        }
-
-        if (function_exists('wp_loft_booking_sync_keychains_for_system')) {
-            $sync_result = wp_loft_booking_sync_keychains_for_system();
-
-            if (is_wp_error($sync_result)) {
-                if (null !== $debug) {
-                    $debug[] = sprintf('Keychain sync failed: %s', $sync_result->get_error_message());
-                }
-                return $sync_result;
-            }
-
-            if (null !== $debug) {
-                $debug[] = 'Keychain sync completed.';
-            }
-        }
-
         $requested_type = wp_loft_booking_detect_room_type($requested_label);
         $window         = wp_loft_booking_calculate_booking_window($date_from, $date_to);
 
@@ -811,8 +699,8 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
         }
 
         $units_table = $wpdb->prefix . 'loft_units';
-        $where       = ["(LOWER(status) = 'available' OR (LOWER(status) = 'occupied' AND (availability_until IS NULL OR availability_until = '' OR availability_until <= %s)))"];
-        $params      = [$checkin_local->format('Y-m-d H:i:s')];
+        $where       = ['1=1'];
+        $params      = [];
 
         if ($requested_type !== '') {
             $where[]  = 'UPPER(unit_name) LIKE %s';
@@ -821,14 +709,7 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
 
         if (null !== $debug) {
             $total_units = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$units_table}");
-            $total_available = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$units_table} WHERE LOWER(status) = 'available'");
-            $available_for_checkin = (int) $wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT COUNT(*) FROM {$units_table} WHERE LOWER(status) = 'available' OR (LOWER(status) = 'occupied' AND (availability_until IS NULL OR availability_until = '' OR availability_until <= %s))",
-                    $checkin_local->format('Y-m-d H:i:s')
-                )
-            );
-            $debug[] = sprintf('Units total: %d (available now: %d, available for check-in: %d).', $total_units, $total_available, $available_for_checkin);
+            $debug[] = sprintf('Units total: %d.', $total_units);
 
             if ($requested_type !== '') {
                 $matching_total = (int) $wpdb->get_var(
@@ -837,46 +718,14 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
                         '%' . $wpdb->esc_like($requested_type) . '%'
                     )
                 );
-                $matching_available = (int) $wpdb->get_var(
-                    $wpdb->prepare(
-                        "SELECT COUNT(*) FROM {$units_table} WHERE UPPER(unit_name) LIKE %s AND LOWER(status) = 'available'",
-                        '%' . $wpdb->esc_like($requested_type) . '%'
-                    )
-                );
-                $matching_available_for_checkin = (int) $wpdb->get_var(
-                    $wpdb->prepare(
-                        "SELECT COUNT(*) FROM {$units_table} WHERE UPPER(unit_name) LIKE %s AND (LOWER(status) = 'available' OR (LOWER(status) = 'occupied' AND (availability_until IS NULL OR availability_until = '' OR availability_until <= %s)))",
-                        '%' . $wpdb->esc_like($requested_type) . '%',
-                        $checkin_local->format('Y-m-d H:i:s')
-                    )
-                );
-                $debug[] = sprintf(
-                    'Units matching type "%s": %d (available now: %d, available for check-in: %d).',
-                    $requested_type,
-                    $matching_total,
-                    $matching_available,
-                    $matching_available_for_checkin
-                );
-
-                $status_rows = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT LOWER(status) AS status, COUNT(*) AS count FROM {$units_table} WHERE UPPER(unit_name) LIKE %s GROUP BY LOWER(status) ORDER BY count DESC",
-                        '%' . $wpdb->esc_like($requested_type) . '%'
-                    ),
-                    ARRAY_A
-                );
-                if (!empty($status_rows)) {
-                    $parts = [];
-                    foreach ($status_rows as $row) {
-                        $parts[] = sprintf('%s=%d', $row['status'] !== '' ? $row['status'] : '(empty)', (int) $row['count']);
-                    }
-                    $debug[] = sprintf('Status breakdown for type "%s": %s.', $requested_type, implode(', ', $parts));
-                }
+                $debug[] = sprintf('Units matching type "%s": %d.', $requested_type, $matching_total);
             }
         }
 
         $sql = "SELECT id, unit_name, unit_id_api, status, availability_until FROM {$units_table} WHERE " . implode(' AND ', $where) . ' ORDER BY unit_name ASC';
-        $units = $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
+        $units = empty($params)
+            ? $wpdb->get_results($sql, ARRAY_A)
+            : $wpdb->get_results($wpdb->prepare($sql, ...$params), ARRAY_A);
 
         if (null !== $debug) {
             $debug[] = sprintf('Candidate units found: %d', is_array($units) ? count($units) : 0);
@@ -931,35 +780,6 @@ if (!function_exists('wp_loft_booking_list_checkout_available_units')) {
                 }
                 continue;
             }
-
-            if (function_exists('wp_loft_booking_fetch_butterflymx_keychain_conflicts')) {
-                $api_unit_id = isset($unit['unit_id_api']) ? (int) $unit['unit_id_api'] : 0;
-
-                if ($api_unit_id > 0) {
-                    $conflicts = wp_loft_booking_fetch_butterflymx_keychain_conflicts(
-                        $api_unit_id,
-                        $window['starts_at'],
-                        $window['ends_at'],
-                        wp_loft_booking_get_butterflymx_environment(),
-                        (string) ($unit['unit_name'] ?? '')
-                    );
-
-                    if (is_wp_error($conflicts)) {
-                        if (null !== $debug) {
-                            $debug[] = sprintf('Unit %s (#%d) conflict lookup failed: %s', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id, $conflicts->get_error_message());
-                        }
-                        return $conflicts;
-                    }
-
-                    if (!empty($conflicts)) {
-                        if (null !== $debug) {
-                            $debug[] = sprintf('Unit %s (#%d) blocked by %d keychain conflicts.', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id, count($conflicts));
-                        }
-                        continue;
-                    }
-                }
-            }
-
             if (null !== $debug) {
                 $debug[] = sprintf('Unit %s (#%d) available.', (string) ($unit['unit_name'] ?? 'n/a'), $unit_id);
             }
