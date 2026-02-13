@@ -49,6 +49,14 @@ class Loft1325_Admin_Pages {
         check_admin_referer( 'loft1325_save_settings' );
 
         $settings = loft1325_get_settings();
+        $settings['environment'] = isset( $_POST['environment'] ) ? sanitize_text_field( wp_unslash( $_POST['environment'] ) ) : 'production';
+        if ( ! in_array( $settings['environment'], array( 'sandbox', 'production' ), true ) ) {
+            $settings['environment'] = 'production';
+        }
+
+        $settings['client_id'] = sanitize_text_field( wp_unslash( $_POST['client_id'] ) );
+        $settings['client_secret'] = sanitize_text_field( wp_unslash( $_POST['client_secret'] ) );
+        $settings['building_id'] = sanitize_text_field( wp_unslash( $_POST['building_id'] ) );
         $settings['api_base_url'] = esc_url_raw( wp_unslash( $_POST['api_base_url'] ) );
         $settings['api_token'] = sanitize_text_field( wp_unslash( $_POST['api_token'] ) );
         $settings['default_access_point_ids'] = loft1325_sanitize_csv_ids( wp_unslash( $_POST['default_access_point_ids'] ) );
@@ -58,6 +66,15 @@ class Loft1325_Admin_Pages {
         $settings['staff_prefix'] = sanitize_text_field( wp_unslash( $_POST['staff_prefix'] ) );
 
         update_option( LOFT1325_SETTINGS_OPTION, $settings );
+
+        // Keep shared ButterflyMX options in sync with wp-loft-booking-plugin.
+        update_option( 'butterflymx_environment', $settings['environment'] );
+        update_option( 'butterflymx_client_id', $settings['client_id'] );
+        update_option( 'butterflymx_client_secret', $settings['client_secret'] );
+        update_option( 'butterflymx_building_id', $settings['building_id'] );
+        if ( ! empty( $settings['api_token'] ) ) {
+            update_option( 'butterflymx_access_token_v4', $settings['api_token'] );
+        }
 
         wp_safe_redirect( add_query_arg( 'loft1325_saved', '1', wp_get_referer() ) );
         exit;
@@ -326,6 +343,10 @@ class Loft1325_Admin_Pages {
         echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form">';
         echo '<input type="hidden" name="action" value="loft1325_save_settings" />';
         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $nonce ) . '" />';
+        echo '<label>Environment</label><select name="environment"><option value="production" ' . selected( $settings['environment'], 'production', false ) . '>Production</option><option value="sandbox" ' . selected( $settings['environment'], 'sandbox', false ) . '>Sandbox</option></select>';
+        echo '<label>Client ID</label><input type="text" name="client_id" value="' . esc_attr( $settings['client_id'] ) . '" />';
+        echo '<label>Client Secret</label><input type="password" name="client_secret" value="' . esc_attr( $settings['client_secret'] ) . '" />';
+        echo '<label>Building ID</label><input type="text" name="building_id" value="' . esc_attr( $settings['building_id'] ) . '" />';
         echo '<label>ButterflyMX API base URL</label><input type="text" name="api_base_url" value="' . esc_attr( $settings['api_base_url'] ) . '" />';
         echo '<label>API token / key</label><input type="password" name="api_token" value="' . esc_attr( $settings['api_token'] ) . '" />';
         echo '<label>Default access_point_ids (comma separated)</label><input type="text" name="default_access_point_ids" value="' . esc_attr( $settings['default_access_point_ids'] ) . '" />';

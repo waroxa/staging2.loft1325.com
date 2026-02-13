@@ -5,6 +5,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Loft1325_API_ButterflyMX {
+    private static function get_environment() {
+        $settings = loft1325_get_settings();
+        $environment = isset( $settings['environment'] ) ? (string) $settings['environment'] : '';
+
+        if ( ! in_array( $environment, array( 'sandbox', 'production' ), true ) ) {
+            $environment = (string) get_option( 'butterflymx_environment', 'production' );
+        }
+
+        return ( 'sandbox' === $environment ) ? 'sandbox' : 'production';
+    }
+
     private static function get_api_base_url( $version = 'v4' ) {
         $settings = loft1325_get_settings();
         $base_url = trailingslashit( (string) ( $settings['api_base_url'] ?? '' ) );
@@ -19,7 +30,7 @@ class Loft1325_API_ButterflyMX {
             return $base_url;
         }
 
-        $environment = get_option( 'butterflymx_environment', 'production' );
+        $environment = self::get_environment();
 
         if ( 'v3' === $version ) {
             return ( 'sandbox' === $environment )
@@ -30,6 +41,73 @@ class Loft1325_API_ButterflyMX {
         return ( 'sandbox' === $environment )
             ? 'https://api.na.sandbox.butterflymx.com/v4'
             : 'https://api.butterflymx.com/v4';
+    }
+
+    private static function maybe_request_oauth_token( $version = 'v4' ) {
+        $settings = loft1325_get_settings();
+        $client_id = isset( $settings['client_id'] ) ? (string) $settings['client_id'] : '';
+        $client_secret = isset( $settings['client_secret'] ) ? (string) $settings['client_secret'] : '';
+
+        if ( '' === $client_id ) {
+            $client_id = (string) get_option( 'butterflymx_client_id', '' );
+        }
+
+        if ( '' === $client_secret ) {
+            $client_secret = (string) get_option( 'butterflymx_client_secret', '' );
+        }
+
+        if ( '' === $client_id || '' === $client_secret ) {
+            return '';
+        }
+
+        $expires_option = 'butterflymx_token_' . $version . '_expires';
+        $existing_token = (string) get_option( 'butterflymx_access_token_' . $version, '' );
+        if ( '' === $existing_token ) {
+            $existing_token = (string) get_option( 'butterflymx_token_' . $version, '' );
+        }
+
+        $expires_at = absint( get_option( $expires_option, 0 ) );
+        if ( '' !== $existing_token && $expires_at > time() + 60 ) {
+            return $existing_token;
+        }
+
+        $oauth_url = ( 'sandbox' === self::get_environment() )
+            ? 'https://accountssandbox.butterflymx.com/oauth/token'
+            : 'https://accounts.butterflymx.com/oauth/token';
+
+        $response = wp_remote_post(
+            $oauth_url,
+            array(
+                'method' => 'POST',
+                'headers' => array( 'Content-Type' => 'application/x-www-form-urlencoded' ),
+                'body' => array(
+                    'grant_type' => 'client_credentials',
+                    'client_id' => $client_id,
+                    'client_secret' => $client_secret,
+                ),
+                'timeout' => 20,
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            return $existing_token;
+        }
+
+        $status = wp_remote_retrieve_response_code( $response );
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        if ( 200 !== $status || ! is_array( $body ) || empty( $body['access_token'] ) ) {
+            return $existing_token;
+        }
+
+        $token = (string) $body['access_token'];
+        $expires_in = isset( $body['expires_in'] ) ? max( 60, absint( $body['expires_in'] ) ) : 3600;
+
+        update_option( 'butterflymx_access_token_' . $version, $token );
+        update_option( 'butterflymx_token_' . $version, $token );
+        update_option( $expires_option, time() + $expires_in );
+
+        return $token;
     }
 
     private static function get_token( $version = 'v4' ) {
@@ -51,7 +129,12 @@ class Loft1325_API_ButterflyMX {
             return $token;
         }
 
-        return (string) get_option( 'butterflymx_token_' . $version, '' );
+        $token = (string) get_option( 'butterflymx_token_' . $version, '' );
+        if ( ! empty( $token ) ) {
+            return $token;
+        }
+
+        return self::maybe_request_oauth_token( $version );
     }
 
     public static function request( $method, $endpoint, $body = array() ) {

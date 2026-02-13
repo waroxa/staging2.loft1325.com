@@ -39,6 +39,10 @@ function loft1325_get_settings() {
     $defaults = array(
         'api_base_url' => '',
         'api_token' => '',
+        'environment' => 'production',
+        'client_id' => '',
+        'client_secret' => '',
+        'building_id' => '',
         'default_access_point_ids' => '',
         'default_device_ids' => '',
         'building_timezone' => 'America/Montreal',
@@ -54,6 +58,22 @@ function loft1325_get_settings() {
         $settings['api_base_url'] = loft1325_get_butterflymx_base_url_from_environment();
     }
 
+    if ( empty( $settings['environment'] ) ) {
+        $settings['environment'] = (string) get_option( 'butterflymx_environment', 'production' );
+    }
+
+    if ( empty( $settings['client_id'] ) ) {
+        $settings['client_id'] = (string) get_option( 'butterflymx_client_id', '' );
+    }
+
+    if ( empty( $settings['client_secret'] ) ) {
+        $settings['client_secret'] = (string) get_option( 'butterflymx_client_secret', '' );
+    }
+
+    if ( empty( $settings['building_id'] ) ) {
+        $settings['building_id'] = (string) get_option( 'butterflymx_building_id', '' );
+    }
+
     if ( empty( $settings['api_token'] ) ) {
         $settings['api_token'] = loft1325_get_butterflymx_token_fallback();
     }
@@ -67,11 +87,20 @@ function loft1325_get_settings() {
 }
 
 function loft1325_format_datetime_local( $utc_datetime ) {
+    if ( empty( $utc_datetime ) ) {
+        return '';
+    }
+
     $settings = loft1325_get_settings();
     $timezone = new DateTimeZone( $settings['building_timezone'] );
     $utc = new DateTimeZone( 'UTC' );
 
-    $date = new DateTime( $utc_datetime, $utc );
+    try {
+        $date = new DateTime( $utc_datetime, $utc );
+    } catch ( Exception $exception ) {
+        return '';
+    }
+
     $date->setTimezone( $timezone );
 
     return $date->format( 'Y-m-d H:i' );
@@ -82,7 +111,12 @@ function loft1325_to_utc( $datetime_string ) {
     $timezone = new DateTimeZone( $settings['building_timezone'] );
     $utc = new DateTimeZone( 'UTC' );
 
-    $date = new DateTime( $datetime_string, $timezone );
+    try {
+        $date = new DateTime( $datetime_string, $timezone );
+    } catch ( Exception $exception ) {
+        return gmdate( 'Y-m-d H:i:s' );
+    }
+
     $date->setTimezone( $utc );
 
     return $date->format( 'Y-m-d H:i:s' );
