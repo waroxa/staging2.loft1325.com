@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Loft1325_API_ButterflyMX {
+    private const DEFAULT_PER_PAGE = 100;
     private static function get_environment() {
         $settings = loft1325_get_settings();
         $environment = isset( $settings['environment'] ) ? (string) $settings['environment'] : '';
@@ -218,12 +219,8 @@ class Loft1325_API_ButterflyMX {
     }
 
     public static function list_keychains( $params = array() ) {
-        $query = '';
         $used_version = 'v4';
-        if ( ! empty( $params ) ) {
-            $query = '?' . http_build_query( $params );
-        }
-        $response = self::request_with_version( 'v4', 'GET', '/v4/keychains' . $query );
+        $response = self::request_with_version( 'v4', 'GET', '/v4/keychains' . self::build_query( $params ) );
 
         $fallback_reason = '';
         if ( is_wp_error( $response ) ) {
@@ -241,7 +238,7 @@ class Loft1325_API_ButterflyMX {
         }
 
         if ( '' !== $fallback_reason ) {
-            $v3_response = self::request_with_version( 'v3', 'GET', '/v3/keychains' . $query );
+            $v3_response = self::request_with_version( 'v3', 'GET', '/v3/keychains' . self::build_query( $params ) );
 
             if ( ! is_wp_error( $v3_response ) ) {
                 $v3_status = wp_remote_retrieve_response_code( $v3_response );
@@ -271,5 +268,113 @@ class Loft1325_API_ButterflyMX {
         ) );
 
         return $response;
+    }
+
+    public static function get_keychain( $keychain_id, $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/keychains/' . absint( $keychain_id ) . self::build_query( $params ) );
+    }
+
+    public static function list_virtual_keys( $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/virtual-keys' . self::build_query( $params ) );
+    }
+
+    public static function list_tenants( $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/tenants' . self::build_query( $params ) );
+    }
+
+    public static function list_units( $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/units' . self::build_query( $params ) );
+    }
+
+    public static function get_building( $building_id, $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/buildings/' . absint( $building_id ) . self::build_query( $params ) );
+    }
+
+    public static function list_access_points( $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/access-points' . self::build_query( $params ) );
+    }
+
+    public static function list_devices( $params = array() ) {
+        return self::request_with_version( 'v4', 'GET', '/v4/devices' . self::build_query( $params ) );
+    }
+
+    public static function list_keychains_paginated( $params = array() ) {
+        return self::list_all_from_endpoint( 'keychains', $params );
+    }
+
+    public static function list_virtual_keys_paginated( $params = array() ) {
+        return self::list_all_from_endpoint( 'virtual-keys', $params );
+    }
+
+    public static function list_tenants_paginated( $params = array() ) {
+        return self::list_all_from_endpoint( 'tenants', $params );
+    }
+
+    public static function list_units_paginated( $params = array() ) {
+        return self::list_all_from_endpoint( 'units', $params );
+    }
+
+    public static function list_access_points_paginated( $params = array() ) {
+        return self::list_all_from_endpoint( 'access-points', $params );
+    }
+
+    public static function list_devices_paginated( $params = array() ) {
+        return self::list_all_from_endpoint( 'devices', $params );
+    }
+
+    private static function list_all_from_endpoint( $endpoint, $params = array() ) {
+        $page = 1;
+        $total_pages = 1;
+        $all_items = array();
+        $all_included = array();
+
+        while ( $page <= $total_pages ) {
+            $request_params = array_merge(
+                array(
+                    'page' => $page,
+                    'per_page' => self::DEFAULT_PER_PAGE,
+                ),
+                $params
+            );
+
+            $response = self::request_with_version( 'v4', 'GET', '/v4/' . ltrim( $endpoint, '/' ) . self::build_query( $request_params ) );
+            if ( is_wp_error( $response ) ) {
+                return $response;
+            }
+
+            $status = wp_remote_retrieve_response_code( $response );
+            $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+            if ( $status < 200 || $status >= 300 || ! is_array( $body ) ) {
+                return new WP_Error( 'butterflymx_invalid_response', 'Invalid response when requesting ButterflyMX ' . $endpoint . '.', array( 'status' => $status ) );
+            }
+
+            $items = isset( $body['data'] ) && is_array( $body['data'] ) ? $body['data'] : array();
+            $included = isset( $body['included'] ) && is_array( $body['included'] ) ? $body['included'] : array();
+
+            $all_items = array_merge( $all_items, $items );
+            $all_included = array_merge( $all_included, $included );
+
+            if ( isset( $body['meta']['pagination']['total_pages'] ) ) {
+                $total_pages = max( 1, absint( $body['meta']['pagination']['total_pages'] ) );
+            } else {
+                $total_pages = ( count( $items ) >= (int) $request_params['per_page'] ) ? ( $page + 1 ) : $page;
+            }
+
+            $page++;
+        }
+
+        return array(
+            'data' => $all_items,
+            'included' => $all_included,
+        );
+    }
+
+    private static function build_query( $params = array() ) {
+        if ( empty( $params ) ) {
+            return '';
+        }
+
+        return '?' . http_build_query( $params );
     }
 }
