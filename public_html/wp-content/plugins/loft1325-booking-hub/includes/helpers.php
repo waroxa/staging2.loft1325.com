@@ -4,6 +4,37 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+
+function loft1325_get_butterflymx_base_url_from_environment() {
+    if ( function_exists( 'wp_loft_booking_get_butterflymx_environment' ) && function_exists( 'wp_loft_booking_get_butterflymx_base_url' ) ) {
+        $environment = wp_loft_booking_get_butterflymx_environment();
+        return (string) wp_loft_booking_get_butterflymx_base_url( $environment );
+    }
+
+    $environment = get_option( 'butterflymx_environment', 'production' );
+    if ( 'sandbox' === $environment ) {
+        return 'https://api.na.sandbox.butterflymx.com/v4';
+    }
+
+    return 'https://api.butterflymx.com/v4';
+}
+
+function loft1325_get_butterflymx_token_fallback() {
+    if ( function_exists( 'get_butterflymx_access_token' ) ) {
+        $token = (string) get_butterflymx_access_token( 'v4' );
+        if ( ! empty( $token ) ) {
+            return $token;
+        }
+    }
+
+    $token = (string) get_option( 'butterflymx_access_token_v4', '' );
+    if ( ! empty( $token ) ) {
+        return $token;
+    }
+
+    return (string) get_option( 'butterflymx_token_v4', '' );
+}
+
 function loft1325_get_settings() {
     $defaults = array(
         'api_base_url' => '',
@@ -18,6 +49,14 @@ function loft1325_get_settings() {
 
     $settings = get_option( LOFT1325_SETTINGS_OPTION, array() );
     $settings = wp_parse_args( $settings, $defaults );
+
+    if ( empty( $settings['api_base_url'] ) ) {
+        $settings['api_base_url'] = loft1325_get_butterflymx_base_url_from_environment();
+    }
+
+    if ( empty( $settings['api_token'] ) ) {
+        $settings['api_token'] = loft1325_get_butterflymx_token_fallback();
+    }
 
     if ( empty( $settings['password_hash'] ) ) {
         $settings['password_hash'] = wp_hash_password( 'loft2026' );

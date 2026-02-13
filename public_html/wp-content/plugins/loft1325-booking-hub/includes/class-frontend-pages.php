@@ -50,7 +50,8 @@ class Loft1325_Frontend_Pages {
 
         $redirect_url = wp_get_referer();
         if ( ! $redirect_url ) {
-            $redirect_url = home_url( '/' );
+            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
+            $redirect_url = home_url( $request_uri );
         }
 
         $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
@@ -68,7 +69,20 @@ class Loft1325_Frontend_Pages {
             }
         }
 
-        setcookie( 'loft1325_hub_unlocked', '1', time() + HOUR_IN_SECONDS * 12, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
+        $expires = time() + HOUR_IN_SECONDS * 12;
+        $secure = is_ssl();
+        setcookie( 'loft1325_hub_unlocked', '1', $expires, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+
+        if ( defined( 'SITECOOKIEPATH' ) && SITECOOKIEPATH && SITECOOKIEPATH !== COOKIEPATH ) {
+            setcookie( 'loft1325_hub_unlocked', '1', $expires, SITECOOKIEPATH, COOKIE_DOMAIN, $secure, true );
+        }
+
+        if ( COOKIEPATH !== '/' ) {
+            setcookie( 'loft1325_hub_unlocked', '1', $expires, '/', COOKIE_DOMAIN, $secure, true );
+        }
+
+        $_COOKIE['loft1325_hub_unlocked'] = '1';
+
         wp_safe_redirect( $redirect_url );
         exit;
     }
