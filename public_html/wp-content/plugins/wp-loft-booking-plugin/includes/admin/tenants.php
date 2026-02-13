@@ -70,7 +70,7 @@ function wp_loft_booking_fetch_and_save_tenants() {
 
     // ButterflyMX setup
     $token       = get_option( 'butterflymx_access_token_v4' );
-    $environment = get_option( 'butterflymx_environment', 'sandbox' );
+    $environment = get_option( 'butterflymx_environment', 'production' );
     $base_url    = $environment === 'production'
         ? 'https://api.butterflymx.com/v4'
         : 'https://api.na.sandbox.butterflymx.com/v4';
@@ -188,7 +188,7 @@ function wp_loft_booking_fetch_and_save_tenants() {
 
 function create_butterflymx_tenant($unit_api_id, $email, $first_name = 'Guest', $last_name = 'Booking', $checkin = null) {
     $token = get_option('butterflymx_access_token_v3');
-    $environment = get_option('butterflymx_environment', 'sandbox');
+    $environment = get_option('butterflymx_environment', 'production');
 
     if (!$token) {
         error_log("❌ No v3 token available.");
@@ -258,7 +258,7 @@ function create_butterflymx_tenant($unit_api_id, $email, $first_name = 'Guest', 
 
 function create_tenant_and_virtual_key($unit_api_id, $email, $first_name = 'Guest', $last_name = 'Booking', $checkin = null) {
     // $token = get_option('butterflymx_access_token_v3');
-    // $environment = get_option('butterflymx_environment', 'sandbox');
+    // $environment = get_option('butterflymx_environment', 'production');
     // $base_url = ($environment === 'production') ? 'https://api.butterflymx.com/v3' : 'https://api.na.sandbox.butterflymx.com/v3';
 
     // $active_at = $checkin ? date('c', strtotime($checkin)) : date('c');
@@ -290,7 +290,7 @@ function create_tenant_and_virtual_key($unit_api_id, $email, $first_name = 'Gues
 
     $token = get_option('butterflymx_access_token_v3');
     $token4 = get_option('butterflymx_access_token_v4');
-    $environment = get_option('butterflymx_environment', 'sandbox');
+    $environment = get_option('butterflymx_environment', 'production');
 
     if (!$token) {
         error_log("❌ No v3 token available.");
@@ -468,7 +468,7 @@ function create_tenant_and_virtual_key($unit_api_id, $email, $first_name = 'Gues
 
 function is_unit_available_in_butterflymx($unit_id) {
     $token = get_option('butterflymx_access_token_v4');
-    $env = get_option('butterflymx_environment', 'sandbox');
+    $env = get_option('butterflymx_environment', 'production');
     $api_base = ($env === 'production') 
         ? "https://api.butterflymx.com/v4" 
         : "https://api.na.sandbox.butterflymx.com/v4";
@@ -496,7 +496,7 @@ function wp_loft_booking_fetch_and_save_visitor_passes() {
     $keychain_table = $wpdb->prefix . 'loft_keychains';
 
     $token       = get_option( 'butterflymx_access_token_v4' );
-    $environment = get_option( 'butterflymx_environment', 'sandbox' );
+    $environment = get_option( 'butterflymx_environment', 'production' );
     $base_url    = $environment === 'production'
         ? 'https://api.butterflymx.com/v4'
         : 'https://api.na.sandbox.butterflymx.com/v4';

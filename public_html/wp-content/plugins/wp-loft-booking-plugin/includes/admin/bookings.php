@@ -1593,8 +1593,12 @@ function wp_loft_booking_handle_bulk_receipts() {
 
 function create_butterflymx_visitor_pass($unit_id, $email, $from, $to) {
     $token = get_option('butterflymx_access_token_v4');
-    $environment = get_option('butterflymx_environment', 'sandbox');
-    $api_base_url = ($environment === 'production') ? "https://api.butterflymx.com/v4" : "https://api.na.sandbox.butterflymx.com/v4";
+    $environment = function_exists('wp_loft_booking_get_butterflymx_environment')
+        ? wp_loft_booking_get_butterflymx_environment()
+        : get_option('butterflymx_environment', 'production');
+    $api_base_url = function_exists('wp_loft_booking_get_butterflymx_base_url')
+        ? wp_loft_booking_get_butterflymx_base_url($environment)
+        : (($environment === 'production') ? "https://api.butterflymx.com/v4" : "https://api.na.sandbox.butterflymx.com/v4");
 
     $payload = [
         'visitor_pass' => [

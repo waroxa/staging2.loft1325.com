@@ -20,13 +20,6 @@ function loft1325_get_butterflymx_base_url_from_environment() {
 }
 
 function loft1325_get_butterflymx_token_fallback() {
-    if ( function_exists( 'get_butterflymx_access_token' ) ) {
-        $token = (string) get_butterflymx_access_token( 'v4' );
-        if ( ! empty( $token ) ) {
-            return $token;
-        }
-    }
-
     $token = (string) get_option( 'butterflymx_access_token_v4', '' );
     if ( ! empty( $token ) ) {
         return $token;

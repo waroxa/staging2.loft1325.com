@@ -218,7 +218,9 @@ function get_butterflymx_access_token($version = 'v3') {
     $clientId      = get_option('butterflymx_client_id');
     $clientSecret  = get_option('butterflymx_client_secret');
     $environment   = wp_loft_booking_get_butterflymx_environment();
-    $tokenEndpoint = 'https://' . ($environment === 'production' ? '' : 'sandbox.') . 'butterflymx.com/oauth/token';
+    $tokenEndpoint = ( 'production' === $environment )
+        ? 'https://accounts.butterflymx.com/oauth/token'
+        : 'https://accountssandbox.butterflymx.com/oauth/token';
 
     $access_option = "butterflymx_access_token_{$version}";
     $legacy_option = "butterflymx_token_{$version}";
@@ -1950,4 +1952,3 @@ function wp_loft_booking_create_keychain_with_vk($tenant, $unit_id_api, $access_
 }
 
 // add_action('nd_booking_after_booking_completed', 'handle_successful_booking', 10, 1);
-
