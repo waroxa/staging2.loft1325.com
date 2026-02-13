@@ -62,6 +62,9 @@ class Loft1325_Operations {
         $start_ts = strtotime( 'today', current_time( 'timestamp' ) );
 
         switch ( $period ) {
+            case 'biweek':
+                $end_ts = strtotime( '+14 days', $start_ts );
+                break;
             case 'week':
                 $end_ts = strtotime( '+7 days', $start_ts );
                 break;
