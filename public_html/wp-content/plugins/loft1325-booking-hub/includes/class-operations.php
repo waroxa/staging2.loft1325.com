@@ -22,6 +22,13 @@ class Loft1325_Operations {
             return;
         }
 
+        $is_admin_manager = current_user_can( 'loft1325_manage_bookings' );
+        $frontend_scope = class_exists( 'Loft1325_Frontend_Pages' ) ? Loft1325_Frontend_Pages::get_frontend_unlock_scope() : '';
+
+        if ( ! $is_admin_manager && '' === $frontend_scope ) {
+            return;
+        }
+
         if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'loft1325_ops_action' ) ) {
             return;
         }
