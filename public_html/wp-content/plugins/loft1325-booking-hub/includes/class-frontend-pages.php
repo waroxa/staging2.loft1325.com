@@ -5,14 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Loft1325_Frontend_Pages {
-    private const FRONTEND_SESSION_COOKIE = 'loft1325_hub_frontend_session';
-
     public static function boot() {
         add_shortcode( 'loft1325_booking_hub', array( __CLASS__, 'render_shortcode' ) );
         add_shortcode( 'loft1325_cleaning_hub', array( __CLASS__, 'render_cleaning_shortcode' ) );
         add_shortcode( 'loft1325_maintenance_hub', array( __CLASS__, 'render_maintenance_shortcode' ) );
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
-        add_action( 'init', array( __CLASS__, 'handle_unlock' ) );
     }
 
     public static function enqueue_assets() {
@@ -43,106 +40,6 @@ class Loft1325_Frontend_Pages {
         return has_shortcode( $post->post_content, 'loft1325_booking_hub' ) || has_shortcode( $post->post_content, 'loft1325_cleaning_hub' ) || has_shortcode( $post->post_content, 'loft1325_maintenance_hub' );
     }
 
-    public static function handle_unlock() {
-        if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) || empty( $_POST['loft1325_frontend_unlock'] ) ) {
-            return;
-        }
-
-        if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'loft1325_frontend_unlock' ) ) {
-            return;
-        }
-
-        $scope = isset( $_POST['loft1325_scope'] ) ? sanitize_key( wp_unslash( $_POST['loft1325_scope'] ) ) : 'admin';
-        if ( ! in_array( $scope, array( 'admin', 'cleaning', 'maintenance' ), true ) ) {
-            $scope = 'admin';
-        }
-
-        $hash_key = 'admin_hub_password_hash';
-        if ( 'cleaning' === $scope ) {
-            $hash_key = 'cleaning_hub_password_hash';
-        } elseif ( 'maintenance' === $scope ) {
-            $hash_key = 'maintenance_hub_password_hash';
-        }
-
-        $posted_redirect = isset( $_POST['loft1325_redirect_to'] ) ? esc_url_raw( wp_unslash( $_POST['loft1325_redirect_to'] ) ) : '';
-        $redirect_url = $posted_redirect ? wp_validate_redirect( $posted_redirect, home_url( '/' ) ) : ( wp_get_referer() ?: self::current_request_url() );
-        $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
-        $settings = loft1325_get_settings();
-        $stored_hash = isset( $settings[ $hash_key ] ) ? (string) $settings[ $hash_key ] : '';
-
-        if ( ! $stored_hash || ! wp_check_password( $password, $stored_hash ) ) {
-            set_transient( 'loft1325_frontend_error_' . $scope, true, MINUTE_IN_SECONDS );
-            wp_safe_redirect( $redirect_url );
-            exit;
-        }
-
-        $expires = time() + HOUR_IN_SECONDS * 12;
-        self::set_frontend_session_cookie( $scope, $expires );
-
-        wp_safe_redirect( $redirect_url );
-        exit;
-    }
-
-    private static function set_frontend_session_cookie( $scope, $expires ) {
-        $payload = implode( '|', array( $scope, (string) $expires, self::sign_unlock_token( $scope, $expires ) ) );
-
-        $cookie_args = array(
-            'expires'  => $expires,
-            'path'     => COOKIEPATH ? COOKIEPATH : '/',
-            'domain'   => COOKIE_DOMAIN,
-            'secure'   => is_ssl(),
-            'httponly' => true,
-            'samesite' => 'Lax',
-        );
-
-        setcookie( self::FRONTEND_SESSION_COOKIE, $payload, $cookie_args );
-        $_COOKIE[ self::FRONTEND_SESSION_COOKIE ] = $payload;
-    }
-
-    private static function sign_unlock_token( $scope, $expires ) {
-        $message = sanitize_key( $scope ) . '|' . absint( $expires ) . '|' . self::get_user_agent_hash();
-        return hash_hmac( 'sha256', $message, wp_salt( 'auth' ) );
-    }
-
-    private static function get_user_agent_hash() {
-        $user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
-        return hash( 'sha256', $user_agent );
-    }
-
-    public static function get_frontend_unlock_scope() {
-        if ( empty( $_COOKIE[ self::FRONTEND_SESSION_COOKIE ] ) ) {
-            return '';
-        }
-
-        $parts = explode( '|', (string) $_COOKIE[ self::FRONTEND_SESSION_COOKIE ] );
-        if ( 3 !== count( $parts ) ) {
-            return '';
-        }
-
-        list( $scope, $expires, $signature ) = $parts;
-        $scope = sanitize_key( $scope );
-        $expires = absint( $expires );
-
-        if ( ! in_array( $scope, array( 'admin', 'cleaning', 'maintenance' ), true ) ) {
-            return '';
-        }
-
-        if ( $expires < time() ) {
-            return '';
-        }
-
-        $expected_signature = self::sign_unlock_token( $scope, $expires );
-        if ( ! hash_equals( $expected_signature, (string) $signature ) ) {
-            return '';
-        }
-
-        return $scope;
-    }
-
-    private static function is_unlocked() {
-        return '' !== self::get_frontend_unlock_scope();
-    }
-
     private static function get_frontend_hub_url( $args = array() ) {
         $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
         $url = home_url( $request_uri );
@@ -154,31 +51,7 @@ class Loft1325_Frontend_Pages {
         return add_query_arg( $args, $url );
     }
 
-    private static function render_lock_screen( $scope ) {
-        $error = get_transient( 'loft1325_frontend_error_' . $scope );
-        delete_transient( 'loft1325_frontend_error_' . $scope );
-
-        echo '<div class="loft1325-lock-screen"><h2>Accès hub booking</h2>';
-        echo '<p>Entrez votre mot de passe pour accéder à toutes les opérations: réservations, ménage et maintenance.</p>';
-        if ( $error ) {
-            echo '<p class="loft1325-error">Mot de passe incorrect.</p>';
-        }
-
-        echo '<form method="post">';
-        echo '<input type="hidden" name="loft1325_frontend_unlock" value="1" />';
-        echo '<input type="hidden" name="loft1325_scope" value="' . esc_attr( $scope ) . '" />';
-        echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" />';
-        echo '<input type="password" name="loft1325_password" required />';
-        echo '<button class="loft1325-primary">Déverrouiller</button>';
-        echo '</form></div>';
-    }
-
-    private static function render_frontend_hub( $scope = 'admin' ) {
-        if ( ! self::is_unlocked() ) {
-            self::render_lock_screen( $scope );
-            return;
-        }
-
+    private static function render_frontend_hub() {
         $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
         $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
         $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
@@ -302,19 +175,19 @@ class Loft1325_Frontend_Pages {
 
     public static function render_shortcode() {
         ob_start();
-        self::render_frontend_hub( 'admin' );
+        self::render_frontend_hub();
         return ob_get_clean();
     }
 
     public static function render_cleaning_shortcode() {
         ob_start();
-        self::render_frontend_hub( 'cleaning' );
+        self::render_frontend_hub();
         return ob_get_clean();
     }
 
     public static function render_maintenance_shortcode() {
         ob_start();
-        self::render_frontend_hub( 'maintenance' );
+        self::render_frontend_hub();
         return ob_get_clean();
     }
 }
