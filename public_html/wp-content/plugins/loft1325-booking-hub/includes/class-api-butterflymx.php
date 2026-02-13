@@ -7,7 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Loft1325_API_ButterflyMX {
     public static function request( $method, $endpoint, $body = array() ) {
         $settings = loft1325_get_settings();
-        $url = trailingslashit( $settings['api_base_url'] ) . ltrim( $endpoint, '/' );
+        $base_url = trailingslashit( $settings['api_base_url'] );
+        $endpoint = ltrim( $endpoint, '/' );
+
+        if ( str_ends_with( untrailingslashit( $base_url ), '/v4' ) && str_starts_with( $endpoint, 'v4/' ) ) {
+            $endpoint = substr( $endpoint, 3 );
+        }
+
+        $url = $base_url . $endpoint;
 
         $headers = array(
             'Content-Type' => 'application/json',

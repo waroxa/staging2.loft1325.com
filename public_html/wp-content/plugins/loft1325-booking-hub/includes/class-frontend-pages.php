@@ -40,8 +40,18 @@ class Loft1325_Frontend_Pages {
     }
 
     public static function handle_unlock() {
-        if ( empty( $_POST['loft1325_frontend_unlock'] ) ) {
+        if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) || empty( $_POST['loft1325_frontend_unlock'] ) ) {
             return;
+        }
+
+        if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'loft1325_frontend_unlock' ) ) {
+            return;
+        }
+
+        $redirect_url = wp_get_referer();
+        if ( ! $redirect_url ) {
+            $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
+            $redirect_url = home_url( $request_uri );
         }
 
         $password = isset( $_POST['loft1325_password'] ) ? sanitize_text_field( wp_unslash( $_POST['loft1325_password'] ) ) : '';
@@ -54,13 +64,26 @@ class Loft1325_Frontend_Pages {
                 update_option( LOFT1325_SETTINGS_OPTION, $settings );
             } else {
                 set_transient( 'loft1325_frontend_error', true, MINUTE_IN_SECONDS );
-                wp_safe_redirect( wp_get_referer() );
+                wp_safe_redirect( $redirect_url );
                 exit;
             }
         }
 
-        setcookie( 'loft1325_hub_unlocked', '1', time() + HOUR_IN_SECONDS * 12, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
-        wp_safe_redirect( wp_get_referer() );
+        $expires = time() + HOUR_IN_SECONDS * 12;
+        $secure = is_ssl();
+        setcookie( 'loft1325_hub_unlocked', '1', $expires, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+
+        if ( defined( 'SITECOOKIEPATH' ) && SITECOOKIEPATH && SITECOOKIEPATH !== COOKIEPATH ) {
+            setcookie( 'loft1325_hub_unlocked', '1', $expires, SITECOOKIEPATH, COOKIE_DOMAIN, $secure, true );
+        }
+
+        if ( COOKIEPATH !== '/' ) {
+            setcookie( 'loft1325_hub_unlocked', '1', $expires, '/', COOKIE_DOMAIN, $secure, true );
+        }
+
+        $_COOKIE['loft1325_hub_unlocked'] = '1';
+
+        wp_safe_redirect( $redirect_url );
         exit;
     }
 
@@ -118,8 +141,10 @@ class Loft1325_Frontend_Pages {
                 echo '<p class="loft1325-error">Mot de passe incorrect. Réessayez.</p>';
             }
             echo '<form method="post">';
+            echo '<input type="hidden" name="loft1325_frontend_unlock" value="1" />';
+            echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_frontend_unlock' ) ) . '" />';
             echo '<input type="password" name="loft1325_password" placeholder="Mot de passe" required />';
-            echo '<button type="submit" name="loft1325_frontend_unlock" class="loft1325-primary">Déverrouiller</button>';
+            echo '<button type="submit" class="loft1325-primary">Déverrouiller</button>';
             echo '</form>';
             echo '</div>';
             echo '</div>';
