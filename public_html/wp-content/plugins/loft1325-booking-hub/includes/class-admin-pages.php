@@ -64,6 +64,23 @@ class Loft1325_Admin_Pages {
         $settings['building_timezone'] = sanitize_text_field( wp_unslash( $_POST['building_timezone'] ) );
         $settings['pass_naming_template'] = sanitize_text_field( wp_unslash( $_POST['pass_naming_template'] ) );
         $settings['staff_prefix'] = sanitize_text_field( wp_unslash( $_POST['staff_prefix'] ) );
+        $settings['admin_alert_emails'] = sanitize_textarea_field( wp_unslash( $_POST['admin_alert_emails'] ?? '' ) );
+        $settings['cleaning_team_emails'] = sanitize_textarea_field( wp_unslash( $_POST['cleaning_team_emails'] ?? '' ) );
+        $settings['maintenance_team_emails'] = sanitize_textarea_field( wp_unslash( $_POST['maintenance_team_emails'] ?? '' ) );
+
+        $admin_pass = sanitize_text_field( wp_unslash( $_POST['admin_hub_password'] ?? '' ) );
+        $cleaning_pass = sanitize_text_field( wp_unslash( $_POST['cleaning_hub_password'] ?? '' ) );
+        $maintenance_pass = sanitize_text_field( wp_unslash( $_POST['maintenance_hub_password'] ?? '' ) );
+
+        if ( '' !== $admin_pass ) {
+            $settings['admin_hub_password_hash'] = wp_hash_password( $admin_pass );
+        }
+        if ( '' !== $cleaning_pass ) {
+            $settings['cleaning_hub_password_hash'] = wp_hash_password( $cleaning_pass );
+        }
+        if ( '' !== $maintenance_pass ) {
+            $settings['maintenance_hub_password_hash'] = wp_hash_password( $maintenance_pass );
+        }
 
         update_option( LOFT1325_SETTINGS_OPTION, $settings );
 
@@ -223,29 +240,86 @@ class Loft1325_Admin_Pages {
             return;
         }
 
-        $start = gmdate( 'Y-m-d 00:00:00' );
-        $end = gmdate( 'Y-m-d 23:59:59', strtotime( '+6 days' ) );
-        $bookings = Loft1325_Bookings::get_bookings_for_range( $start, $end );
+        $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
+        $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
+        $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
+        $tickets = Loft1325_Operations::get_maintenance_tickets();
 
-        self::render_page_header( 'Calendrier' );
+        self::render_page_header( 'Booking Hub' );
+
         echo '<div class="loft1325-card">';
-        echo '<h3>Vue semaine</h3>';
-        echo '<div class="loft1325-timeline">';
-        foreach ( $bookings as $booking ) {
-            $label = $booking['loft_name'] ? $booking['loft_name'] : 'Loft';
-            $dates = loft1325_format_datetime_local( $booking['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $booking['check_out_utc'] );
-            $keychain = ! empty( $booking['butterfly_keychain_id'] ) ? sprintf( 'Clé #%d', absint( $booking['butterfly_keychain_id'] ) ) : 'Aucune clé';
-            $status = ucfirst( $booking['status'] );
-            echo '<div class="loft1325-timeline-row">';
-            echo '<div><strong>' . esc_html( $label ) . '</strong><span class="loft1325-meta">' . esc_html( $booking['guest_name'] ) . '</span></div>';
-            echo '<span class="loft1325-bar">' . esc_html( $dates ) . '</span>';
-            echo '<span class="loft1325-meta">' . esc_html( $keychain ) . ' · ' . esc_html( $status ) . '</span>';
+        echo '<h3>Vue calendrier + opérations</h3>';
+        echo '<p class="loft1325-meta">Approuver/refuser les réservations, suivre le ménage et gérer la maintenance au même endroit.</p>';
+
+        echo '<p class="loft1325-actions">';
+        foreach ( array( 'bookings' => 'Réservations', 'cleaning' => 'Ménage', 'maintenance' => 'Maintenance' ) as $k => $label ) {
+            $class = ( $view === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
+            echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
+        }
+        echo '</p>';
+
+        if ( in_array( $view, array( 'bookings', 'cleaning' ), true ) ) {
+            echo '<p class="loft1325-actions">';
+            foreach ( array( 'today' => 'Aujourd\'hui', 'week' => '7 jours', 'month' => 'Mois', 'year' => 'Année' ) as $k => $label ) {
+                $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
+                echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $view, 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
+            }
+            echo '</p>';
+        }
+
+        if ( 'maintenance' === $view ) {
+            echo '<h4>Nouveau ticket</h4>';
+            echo '<form method="post" class="loft1325-form">';
+            echo '<input type="hidden" name="loft1325_ops_action" value="maintenance_create" />';
+            echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+            echo '<label>Loft</label><input type="text" name="loft_label" required />';
+            echo '<label>Titre</label><input type="text" name="title" required />';
+            echo '<label>Détails</label><textarea name="details" rows="3" required></textarea>';
+            echo '<label>Priorité</label><select name="priority"><option value="critical">Critical</option><option value="urgent">Urgent</option><option value="normal">Normal</option><option value="low">Low</option></select>';
+            echo '<label>Email assigné</label><input type="email" name="assignee_email" />';
+            echo '<label>Email client</label><input type="email" name="requested_by_email" />';
+            echo '<button class="loft1325-primary">Créer ticket</button>';
+            echo '</form>';
+
+            echo '<div class="loft1325-grid">';
+            foreach ( $tickets as $ticket ) {
+                echo '<div class="loft1325-card">';
+                echo '<h4>' . esc_html( $ticket['title'] ) . '</h4>';
+                echo '<p>' . esc_html( $ticket['loft_label'] ) . ' · ' . esc_html( $ticket['priority'] ) . '</p>';
+                echo '<p>' . esc_html( $ticket['details'] ) . '</p>';
+                echo '<form method="post">';
+                echo '<input type="hidden" name="loft1325_ops_action" value="maintenance_update" />';
+                echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                echo '<input type="hidden" name="ticket_id" value="' . esc_attr( $ticket['id'] ) . '" />';
+                echo '<select name="status"><option value="todo">Todo</option><option value="in_progress">In progress</option><option value="done">Done</option></select>';
+                echo '<button class="loft1325-secondary">Mettre à jour</button>';
+                echo '</form></div>';
+            }
+            echo '</div>';
+        } else {
+            echo '<div class="loft1325-grid">';
+            foreach ( $bookings as $booking ) {
+                echo '<div class="loft1325-card">';
+                echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
+                echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
+                echo '<p>Cleaning: <strong>' . esc_html( $booking['cleaning_status'] ) . '</strong></p>';
+                echo '<form method="post" class="loft1325-actions">';
+                echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
+                if ( 'bookings' === $view ) {
+                    echo '<button class="loft1325-primary" name="loft1325_ops_action" value="approve">Approve</button>';
+                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="reject">Reject</button>';
+                } else {
+                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="dirty">Dirty</button>';
+                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="in_progress">In progress</button>';
+                    echo '<button class="loft1325-primary" name="loft1325_ops_action" value="cleaned">Cleaned</button>';
+                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="issue">Needs maintenance</button>';
+                }
+                echo '</form></div>';
+            }
             echo '</div>';
         }
-        if ( empty( $bookings ) ) {
-            echo '<div class="loft1325-callout">Aucune réservation cette semaine.</div>';
-        }
-        echo '</div>';
+
         echo '</div>';
         echo '</div>';
     }
@@ -354,6 +428,12 @@ class Loft1325_Admin_Pages {
         echo '<label>Building timezone</label><input type="text" name="building_timezone" value="' . esc_attr( $settings['building_timezone'] ) . '" />';
         echo '<label>Pass naming template</label><input type="text" name="pass_naming_template" value="' . esc_attr( $settings['pass_naming_template'] ) . '" />';
         echo '<label>Staff naming prefix</label><input type="text" name="staff_prefix" value="' . esc_attr( $settings['staff_prefix'] ) . '" />';
+        echo '<label>Emails admin alertes (séparés par virgule)</label><textarea name="admin_alert_emails" rows="2">' . esc_textarea( $settings['admin_alert_emails'] ) . '</textarea>';
+        echo '<label>Emails équipe ménage</label><textarea name="cleaning_team_emails" rows="2">' . esc_textarea( $settings['cleaning_team_emails'] ) . '</textarea>';
+        echo '<label>Emails équipe maintenance</label><textarea name="maintenance_team_emails" rows="2">' . esc_textarea( $settings['maintenance_team_emails'] ) . '</textarea>';
+        echo '<label>Mot de passe page admin hub</label><input type="password" name="admin_hub_password" placeholder="Laisser vide pour conserver" />';
+        echo '<label>Mot de passe page ménage</label><input type="password" name="cleaning_hub_password" placeholder="Laisser vide pour conserver" />';
+        echo '<label>Mot de passe page maintenance</label><input type="password" name="maintenance_hub_password" placeholder="Laisser vide pour conserver" />';
         echo '<button class="loft1325-primary">Enregistrer</button>';
         echo '</form>';
         echo '</div>';
@@ -371,7 +451,7 @@ class Loft1325_Admin_Pages {
         echo '<div class="loft1325-card">';
         echo '<h3>Accès public (lien externe)</h3>';
         echo '<p>Créez une page WordPress et ajoutez le shortcode suivant :</p>';
-        echo '<code>[loft1325_booking_hub]</code>';
+        echo '<code>[loft1325_booking_hub]</code><br/><code>[loft1325_cleaning_hub]</code><br/><code>[loft1325_maintenance_hub]</code>';
         echo '</div>';
         echo '</div>';
     }
