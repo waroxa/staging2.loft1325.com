@@ -13,7 +13,6 @@ function wp_loft_booking_admin_menu() {
     add_submenu_page('wp_loft_booking', 'Loft Types', 'All Loft Types', 'manage_options', 'loft-types', 'wp_loft_types_admin_page');
     add_submenu_page('wp_loft_booking', 'Add/Edit Loft Type', 'Add Loft Type', 'manage_options', 'add-edit-loft-type', 'wp_add_edit_loft_type_page');
     add_submenu_page('wp_loft_booking', 'Manual Token Refresh', 'Token Refresh', 'manage_options', 'wp_loft_booking_manual_token_refresh', 'wp_loft_booking_manual_token_refresh_page');
-    add_submenu_page('wp_loft_booking', 'Operations Hub', '🧭 Operations Hub', 'manage_options', 'wp_loft_operations_hub', 'wp_loft_operations_hub_page');
     add_submenu_page(
     'wp_loft_booking',
     '🗓️ Loft Bookings Calendar',

@@ -189,6 +189,7 @@ function wp_loft_ops_handle_admin_post() {
     }
 }
 add_action('admin_init', 'wp_loft_ops_handle_admin_post');
+add_action('init', 'wp_loft_ops_handle_admin_post');
 
 function wp_loft_ops_handle_settings_post() {
     if (empty($_POST['wp_loft_ops_save_settings']) || !check_admin_referer('wp_loft_ops_save_settings')) {
@@ -204,7 +205,7 @@ function wp_loft_ops_handle_settings_post() {
     $settings['maintenance_emails'] = sanitize_textarea_field(wp_unslash($_POST['maintenance_emails'] ?? ''));
     update_option('wp_loft_ops_settings', $settings);
 
-    wp_safe_redirect(add_query_arg('ops_saved', '1', wp_get_referer() ?: admin_url('admin.php?page=wp_loft_operations_hub')));
+    wp_safe_redirect(add_query_arg('ops_saved', '1', wp_get_referer() ?: admin_url('admin.php?page=loft-booking-google-calendar')));
     exit;
 }
 add_action('admin_init', 'wp_loft_ops_handle_settings_post');
@@ -257,15 +258,13 @@ function wp_loft_ops_maintenance_handle_post() {
 }
 add_action('admin_init', 'wp_loft_ops_maintenance_handle_post');
 
-function wp_loft_operations_hub_page() {
+function wp_loft_operations_hub_render_inner($base_slug = 'loft-booking-google-calendar') {
     global $wpdb;
 
     $view = sanitize_key($_GET['view'] ?? 'bookings');
     $period = sanitize_key($_GET['period'] ?? 'today');
     $bookings = wp_loft_ops_fetch_bookings($period);
     $settings = wp_loft_ops_get_settings();
-
-    echo '<div class="wrap"><h1>Operations Hub</h1>';
 
     if (!empty($_GET['ops_saved'])) {
         echo '<div class="notice notice-success"><p>Operations settings saved.</p></div>';
@@ -274,15 +273,15 @@ function wp_loft_operations_hub_page() {
     echo '<p style="display:flex;gap:8px;">';
     foreach (['bookings' => 'Booking approvals', 'cleaning' => 'Cleaning board', 'maintenance' => 'Maintenance tickets', 'settings' => 'Hub settings'] as $key => $label) {
         $class = $view === $key ? 'button button-primary' : 'button';
-        echo '<a class="' . esc_attr($class) . '" href="' . esc_url(add_query_arg('view', $key, admin_url('admin.php?page=wp_loft_operations_hub'))) . '">' . esc_html($label) . '</a>';
+        echo '<a class="' . esc_attr($class) . '" href="' . esc_url(add_query_arg('view', $key, admin_url('admin.php?page=' . $base_slug))) . '">' . esc_html($label) . '</a>';
     }
     echo '</p>';
 
     if ($view === 'bookings') {
-        wp_loft_ops_render_period_filters(admin_url('admin.php?page=wp_loft_operations_hub&view=bookings'), $period);
+        wp_loft_ops_render_period_filters(admin_url('admin.php?page=' . $base_slug . '&view=bookings'), $period);
         wp_loft_ops_render_table($bookings, true, 'bookings');
     } elseif ($view === 'cleaning') {
-        wp_loft_ops_render_period_filters(admin_url('admin.php?page=wp_loft_operations_hub&view=cleaning'), $period);
+        wp_loft_ops_render_period_filters(admin_url('admin.php?page=' . $base_slug . '&view=cleaning'), $period);
         wp_loft_ops_render_table($bookings, true, 'cleaning');
     } elseif ($view === 'maintenance') {
         $tickets = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}loft_maintenance_tasks ORDER BY updated_at DESC LIMIT 100");
@@ -329,6 +328,11 @@ function wp_loft_operations_hub_page() {
         echo '<h3>Shortcodes</h3><ul><li>[loft_admin_hub]</li><li>[loft_cleaning_hub]</li><li>[loft_maintenance_hub]</li></ul>';
     }
 
+}
+
+function wp_loft_operations_hub_page() {
+    echo '<div class="wrap"><h1>Operations Hub</h1>';
+    wp_loft_operations_hub_render_inner('wp_loft_operations_hub');
     echo '</div>';
 }
 
@@ -369,7 +373,7 @@ function wp_loft_ops_render_password_gate($scope, $content_cb) {
 function wp_loft_ops_shortcode_admin_hub() {
     return wp_loft_ops_render_password_gate('admin', function () {
         $bookings = wp_loft_ops_fetch_bookings('week');
-        wp_loft_ops_render_table($bookings, false, 'bookings');
+        wp_loft_ops_render_table($bookings, true, 'bookings');
     });
 }
 add_shortcode('loft_admin_hub', 'wp_loft_ops_shortcode_admin_hub');
@@ -377,7 +381,7 @@ add_shortcode('loft_admin_hub', 'wp_loft_ops_shortcode_admin_hub');
 function wp_loft_ops_shortcode_cleaning_hub() {
     return wp_loft_ops_render_password_gate('cleaning', function () {
         $bookings = wp_loft_ops_fetch_bookings('today');
-        wp_loft_ops_render_table($bookings, false, 'cleaning');
+        wp_loft_ops_render_table($bookings, true, 'cleaning');
     });
 }
 add_shortcode('loft_cleaning_hub', 'wp_loft_ops_shortcode_cleaning_hub');
