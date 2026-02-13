@@ -289,13 +289,15 @@ class Loft1325_Bookings {
         $bookings_table = $wpdb->prefix . 'loft1325_bookings';
         $lofts_table = $wpdb->prefix . 'loft1325_lofts';
 
-        $keychain_id = isset( $keychain['id'] ) ? absint( $keychain['id'] ) : 0;
+        $normalized_keychain = self::normalize_butterflymx_keychain( $keychain );
+
+        $keychain_id = isset( $normalized_keychain['id'] ) ? absint( $normalized_keychain['id'] ) : 0;
         if ( ! $keychain_id ) {
             return false;
         }
 
-        $tenant_id = isset( $keychain['tenant_id'] ) ? absint( $keychain['tenant_id'] ) : 0;
-        $unit_id = isset( $keychain['unit_id'] ) ? absint( $keychain['unit_id'] ) : 0;
+        $tenant_id = isset( $normalized_keychain['tenant_id'] ) ? absint( $normalized_keychain['tenant_id'] ) : 0;
+        $unit_id = isset( $normalized_keychain['unit_id'] ) ? absint( $normalized_keychain['unit_id'] ) : 0;
 
         if ( $tenant_id ) {
             $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE butterfly_tenant_id = %d", $tenant_id ), ARRAY_A );
@@ -305,29 +307,52 @@ class Loft1325_Bookings {
             $loft = null;
         }
 
+        if ( ! $loft && ! empty( $normalized_keychain['name'] ) ) {
+            $normalized_name = strtoupper( preg_replace( '/[^A-Z0-9]/', '', (string) $normalized_keychain['name'] ) );
+
+            if ( preg_match( '/LOFT\s*([0-9]{2,4})/i', (string) $normalized_keychain['name'], $matches ) ) {
+                $needle = 'LOFT' . $matches[1];
+                $loft = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$lofts_table} WHERE REPLACE(UPPER(loft_name), ' ', '') LIKE %s LIMIT 1",
+                        '%' . $wpdb->esc_like( $needle ) . '%'
+                    ),
+                    ARRAY_A
+                );
+            } elseif ( '' !== $normalized_name ) {
+                $loft = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT * FROM {$lofts_table} WHERE REPLACE(UPPER(loft_name), ' ', '') LIKE %s LIMIT 1",
+                        '%' . $wpdb->esc_like( $normalized_name ) . '%'
+                    ),
+                    ARRAY_A
+                );
+            }
+        }
+
         if ( ! $loft ) {
-            loft1325_log_action( 'butterflymx_sync', 'No loft mapping for keychain', array( 'payload' => $keychain ) );
+            loft1325_log_action( 'butterflymx_sync', 'No loft mapping for keychain', array( 'payload' => $normalized_keychain ) );
             return false;
         }
 
         $existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bookings_table} WHERE butterfly_keychain_id = %d", $keychain_id ) );
 
-        $check_in = isset( $keychain['starts_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['starts_at'] ) ) : null;
-        $check_out = isset( $keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $keychain['ends_at'] ) ) : null;
+        $check_in = isset( $normalized_keychain['starts_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $normalized_keychain['starts_at'] ) ) : null;
+        $check_out = isset( $normalized_keychain['ends_at'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $normalized_keychain['ends_at'] ) ) : null;
 
         if ( ! $check_in || ! $check_out ) {
             return false;
         }
 
-        $guest_name = isset( $keychain['name'] ) ? sanitize_text_field( $keychain['name'] ) : 'Invité';
+        $guest_name = isset( $normalized_keychain['name'] ) ? sanitize_text_field( $normalized_keychain['name'] ) : 'Invité';
         $status = 'tentative';
 
         $data = array(
             'external_ref' => 'butterflymx:' . $keychain_id,
             'loft_id' => absint( $loft['id'] ),
             'guest_name' => $guest_name,
-            'guest_email' => isset( $keychain['email'] ) ? sanitize_email( $keychain['email'] ) : null,
-            'guest_phone' => isset( $keychain['phone'] ) ? sanitize_text_field( $keychain['phone'] ) : null,
+            'guest_email' => isset( $normalized_keychain['email'] ) ? sanitize_email( $normalized_keychain['email'] ) : null,
+            'guest_phone' => isset( $normalized_keychain['phone'] ) ? sanitize_text_field( $normalized_keychain['phone'] ) : null,
             'check_in_utc' => $check_in,
             'check_out_utc' => $check_out,
             'status' => $status,
@@ -344,5 +369,42 @@ class Loft1325_Bookings {
         }
 
         return true;
+    }
+
+    private static function normalize_butterflymx_keychain( $keychain ) {
+        $normalized = is_array( $keychain ) ? $keychain : array();
+        $attributes = isset( $normalized['attributes'] ) && is_array( $normalized['attributes'] ) ? $normalized['attributes'] : array();
+        $relationships = isset( $normalized['relationships'] ) && is_array( $normalized['relationships'] ) ? $normalized['relationships'] : array();
+
+        if ( empty( $normalized['tenant_id'] ) && isset( $relationships['tenant']['data']['id'] ) ) {
+            $normalized['tenant_id'] = absint( $relationships['tenant']['data']['id'] );
+        }
+
+        if ( empty( $normalized['unit_id'] ) && isset( $relationships['unit']['data']['id'] ) ) {
+            $normalized['unit_id'] = absint( $relationships['unit']['data']['id'] );
+        }
+
+        if ( empty( $normalized['unit_id'] ) && isset( $relationships['devices']['data'] ) && is_array( $relationships['devices']['data'] ) ) {
+            foreach ( $relationships['devices']['data'] as $device ) {
+                if ( isset( $device['type'], $device['id'] ) && 'panels' === $device['type'] ) {
+                    $normalized['unit_id'] = absint( $device['id'] );
+                    break;
+                }
+            }
+        }
+
+        if ( empty( $normalized['starts_at'] ) && ! empty( $attributes['starts_at'] ) ) {
+            $normalized['starts_at'] = $attributes['starts_at'];
+        }
+
+        if ( empty( $normalized['ends_at'] ) && ! empty( $attributes['ends_at'] ) ) {
+            $normalized['ends_at'] = $attributes['ends_at'];
+        }
+
+        if ( empty( $normalized['name'] ) && ! empty( $attributes['name'] ) ) {
+            $normalized['name'] = $attributes['name'];
+        }
+
+        return $normalized;
     }
 }
