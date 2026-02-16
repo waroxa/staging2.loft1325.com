@@ -85,6 +85,16 @@ class Loft1325_Frontend_Pages {
             echo '<div class="notice notice-warning"><p>Impossible de confirmer: ce loft est déjà occupé sur cette période.</p></div>';
         }
 
+        if ( ! empty( $_GET['loft1325_ops_not_free'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-warning"><p>Le loft n&rsquo;est plus FREE sur cette période. Rafraîchissez la vue avant de continuer.</p></div>';
+        }
+
+        if ( ! empty( $_GET['loft1325_ops_free_confirmed'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $confirmed_loft_id = isset( $_GET['loft1325_loft_id'] ) ? absint( $_GET['loft1325_loft_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $confirmed_label = $confirmed_loft_id ? sprintf( ' (ID #%d)', $confirmed_loft_id ) : '';
+            echo '<div class="notice notice-success"><p>Disponibilité FREE confirmée' . esc_html( $confirmed_label ) . '.</p></div>';
+        }
+
         echo '<div class="loft1325-card">';
         echo '<h3>Vue calendrier + opérations</h3>';
         echo '<p class="loft1325-meta">Approuver/refuser les réservations, suivre le ménage et gérer la maintenance au même endroit.</p>';
@@ -173,6 +183,15 @@ class Loft1325_Frontend_Pages {
                     echo '<div class="loft1325-card">';
                     echo '<div class="loft1325-card-header"><strong>' . esc_html( $row['loft_name'] ) . '</strong><span class="loft1325-badge ' . esc_attr( $badge_class ) . '">' . esc_html( $badge_label ) . '</span></div>';
                     echo '<p class="loft1325-meta">Type: ' . esc_html( ucfirst( $row['loft_type'] ) ) . '</p>';
+                    if ( ! $is_busy ) {
+                        echo '<form method="post" class="loft1325-actions">';
+                        echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                        echo '<input type="hidden" name="loft1325_ops_action" value="confirm_free" />';
+                        echo '<input type="hidden" name="loft_id" value="' . esc_attr( $row['id'] ) . '" />';
+                        echo '<input type="hidden" name="period" value="' . esc_attr( $period ) . '" />';
+                        echo '<button class="loft1325-secondary" type="submit">Confirmer FREE</button>';
+                        echo '</form>';
+                    }
                     echo '</div>';
                 }
                 echo '</div>';

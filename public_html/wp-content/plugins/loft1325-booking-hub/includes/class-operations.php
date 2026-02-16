@@ -40,7 +40,7 @@ class Loft1325_Operations {
 
         $action = sanitize_key( wp_unslash( $_POST['loft1325_ops_action'] ) );
         $booking_id = isset( $_POST['booking_id'] ) ? absint( $_POST['booking_id'] ) : 0;
-        $allowed_actions = array( 'approve', 'reject', 'dirty', 'in_progress', 'cleaned', 'issue', 'maintenance_create', 'maintenance_update' );
+        $allowed_actions = array( 'approve', 'reject', 'dirty', 'in_progress', 'cleaned', 'issue', 'maintenance_create', 'maintenance_update', 'confirm_free' );
 
         if ( ! in_array( $action, $allowed_actions, true ) ) {
             wp_safe_redirect( add_query_arg( 'loft1325_ops_error', '1', $redirect ) );
@@ -70,6 +70,23 @@ class Loft1325_Operations {
                 $ticket_id = isset( $_POST['ticket_id'] ) ? absint( $_POST['ticket_id'] ) : 0;
                 $status    = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'todo';
                 self::update_maintenance_status( $ticket_id, $status );
+            } elseif ( 'confirm_free' === $action ) {
+                $loft_id = isset( $_POST['loft_id'] ) ? absint( $_POST['loft_id'] ) : 0;
+                $period  = isset( $_POST['period'] ) ? sanitize_key( wp_unslash( $_POST['period'] ) ) : 'today';
+
+                if ( ! $loft_id ) {
+                    $redirect = add_query_arg( 'loft1325_ops_error', '1', $redirect );
+                } elseif ( self::is_loft_free_for_period( $loft_id, $period ) ) {
+                    $redirect = add_query_arg(
+                        array(
+                            'loft1325_ops_free_confirmed' => '1',
+                            'loft1325_loft_id' => $loft_id,
+                        ),
+                        $redirect
+                    );
+                } else {
+                    $redirect = add_query_arg( 'loft1325_ops_not_free', '1', $redirect );
+                }
             }
         } catch ( Throwable $throwable ) {
             error_log(
@@ -218,6 +235,29 @@ class Loft1325_Operations {
         );
 
         return is_array( $rows ) ? $rows : array();
+    }
+
+    public static function is_loft_free_for_period( $loft_id, $period = 'today' ) {
+        global $wpdb;
+
+        $bounds = self::get_period_bounds( $period );
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+
+        $conflicts = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT COUNT(*)
+                FROM {$bookings_table}
+                WHERE loft_id = %d
+                AND status IN ('confirmed','checked_in')
+                AND check_in_utc < %s
+                AND check_out_utc >= %s",
+                absint( $loft_id ),
+                $bounds['end'],
+                $bounds['start']
+            )
+        );
+
+        return ( (int) $conflicts ) === 0;
     }
 
     public static function update_cleaning_status( $booking_id, $status ) {
