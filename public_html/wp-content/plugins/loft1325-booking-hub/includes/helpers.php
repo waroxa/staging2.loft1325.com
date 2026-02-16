@@ -41,10 +41,6 @@ function loft1325_get_settings() {
         'building_timezone' => 'America/Montreal',
         'pass_naming_template' => 'GUEST|BOOKING:{booking_id}|{loft_name}|{guest_name}',
         'staff_prefix' => 'STAFF',
-        'password_hash' => '',
-        'admin_hub_password_hash' => '',
-        'cleaning_hub_password_hash' => '',
-        'maintenance_hub_password_hash' => '',
         'admin_alert_emails' => get_option( 'admin_email', '' ),
         'cleaning_team_emails' => '',
         'maintenance_team_emails' => '',
@@ -75,21 +71,6 @@ function loft1325_get_settings() {
 
     if ( empty( $settings['api_token'] ) ) {
         $settings['api_token'] = loft1325_get_butterflymx_token_fallback();
-    }
-
-    if ( empty( $settings['password_hash'] ) ) {
-        $settings['password_hash'] = wp_hash_password( 'loft2026' );
-        update_option( LOFT1325_SETTINGS_OPTION, $settings );
-    }
-
-    if ( empty( $settings['admin_hub_password_hash'] ) ) {
-        $settings['admin_hub_password_hash'] = $settings['password_hash'];
-    }
-    if ( empty( $settings['cleaning_hub_password_hash'] ) ) {
-        $settings['cleaning_hub_password_hash'] = $settings['password_hash'];
-    }
-    if ( empty( $settings['maintenance_hub_password_hash'] ) ) {
-        $settings['maintenance_hub_password_hash'] = $settings['password_hash'];
     }
 
     return $settings;

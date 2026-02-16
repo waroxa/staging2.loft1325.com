@@ -68,20 +68,6 @@ class Loft1325_Admin_Pages {
         $settings['cleaning_team_emails'] = sanitize_textarea_field( wp_unslash( $_POST['cleaning_team_emails'] ?? '' ) );
         $settings['maintenance_team_emails'] = sanitize_textarea_field( wp_unslash( $_POST['maintenance_team_emails'] ?? '' ) );
 
-        $admin_pass = sanitize_text_field( wp_unslash( $_POST['admin_hub_password'] ?? '' ) );
-        $cleaning_pass = sanitize_text_field( wp_unslash( $_POST['cleaning_hub_password'] ?? '' ) );
-        $maintenance_pass = sanitize_text_field( wp_unslash( $_POST['maintenance_hub_password'] ?? '' ) );
-
-        if ( '' !== $admin_pass ) {
-            $settings['admin_hub_password_hash'] = wp_hash_password( $admin_pass );
-        }
-        if ( '' !== $cleaning_pass ) {
-            $settings['cleaning_hub_password_hash'] = wp_hash_password( $cleaning_pass );
-        }
-        if ( '' !== $maintenance_pass ) {
-            $settings['maintenance_hub_password_hash'] = wp_hash_password( $maintenance_pass );
-        }
-
         update_option( LOFT1325_SETTINGS_OPTION, $settings );
 
         // Keep shared ButterflyMX options in sync with wp-loft-booking-plugin.
@@ -109,14 +95,11 @@ class Loft1325_Admin_Pages {
     }
 
     private static function render_locked_if_needed() {
-        if ( Loft1325_Security::check_access() ) {
+        if ( current_user_can( 'loft1325_manage_bookings' ) ) {
             return false;
         }
 
-        self::render_page_header( 'Hub verrouillé' );
-        Loft1325_Security::render_lock_screen();
-        echo '</div>';
-        return true;
+        wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
     }
 
     public static function render_dashboard() {
@@ -511,7 +494,6 @@ class Loft1325_Admin_Pages {
 
         $settings = loft1325_get_settings();
         $nonce = wp_create_nonce( 'loft1325_save_settings' );
-        $password_nonce = wp_create_nonce( 'loft1325_update_password' );
 
         self::render_page_header( 'Paramètres' );
         echo '<div class="loft1325-card">';
@@ -532,22 +514,11 @@ class Loft1325_Admin_Pages {
         echo '<label>Emails admin alertes (séparés par virgule)</label><textarea name="admin_alert_emails" rows="2">' . esc_textarea( $settings['admin_alert_emails'] ) . '</textarea>';
         echo '<label>Emails équipe ménage</label><textarea name="cleaning_team_emails" rows="2">' . esc_textarea( $settings['cleaning_team_emails'] ) . '</textarea>';
         echo '<label>Emails équipe maintenance</label><textarea name="maintenance_team_emails" rows="2">' . esc_textarea( $settings['maintenance_team_emails'] ) . '</textarea>';
-        echo '<label>Mot de passe page admin hub</label><input type="password" name="admin_hub_password" placeholder="Laisser vide pour conserver" />';
-        echo '<label>Mot de passe page ménage</label><input type="password" name="cleaning_hub_password" placeholder="Laisser vide pour conserver" />';
-        echo '<label>Mot de passe page maintenance</label><input type="password" name="maintenance_hub_password" placeholder="Laisser vide pour conserver" />';
         echo '<button class="loft1325-primary">Enregistrer</button>';
         echo '</form>';
         echo '</div>';
 
-        echo '<div class="loft1325-card">';
-        echo '<h3>Mot de passe d\'accès au hub</h3>';
-        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form">';
-        echo '<input type="hidden" name="action" value="loft1325_update_password" />';
-        echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $password_nonce ) . '" />';
-        echo '<label>Nouveau mot de passe</label><input type="password" name="loft1325_new_password" required />';
-        echo '<button class="loft1325-secondary">Mettre à jour</button>';
-        echo '</form>';
-        echo '</div>';
+
 
         echo '<div class="loft1325-card">';
         echo '<h3>Accès public (lien externe)</h3>';
