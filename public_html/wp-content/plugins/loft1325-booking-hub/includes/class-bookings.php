@@ -72,6 +72,23 @@ class Loft1325_Bookings {
         return $wpdb->get_results( $query, ARRAY_A );
     }
 
+    public static function get_clients( $limit = 500 ) {
+        global $wpdb;
+
+        $clients_table = $wpdb->prefix . 'loft1325_clients';
+
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT id, full_name, email, phone, last_booking_at
+                FROM {$clients_table}
+                ORDER BY COALESCE(last_booking_at, created_at) DESC
+                LIMIT %d",
+                $limit
+            ),
+            ARRAY_A
+        );
+    }
+
     public static function get_bookings_for_range( $start_utc, $end_utc ) {
         global $wpdb;
 
@@ -155,6 +172,11 @@ class Loft1325_Bookings {
 
         $wpdb->insert( $bookings_table, $data );
         $booking_id = $wpdb->insert_id;
+
+        self::upsert_client_record( $data['guest_name'], $data['guest_email'], $data['guest_phone'], array(
+            'source' => 'manual_booking_form',
+            'booking_id' => $booking_id,
+        ) );
 
         $wpdb->query( $wpdb->prepare( "SELECT RELEASE_LOCK(%s)", $lock_key ) );
 
@@ -383,14 +405,16 @@ class Loft1325_Bookings {
         }
 
         $guest_name = isset( $normalized_keychain['name'] ) ? sanitize_text_field( $normalized_keychain['name'] ) : 'Invité';
+        $guest_email = isset( $normalized_keychain['email'] ) ? sanitize_email( $normalized_keychain['email'] ) : null;
+        $guest_phone = isset( $normalized_keychain['phone'] ) ? sanitize_text_field( $normalized_keychain['phone'] ) : null;
         $status = 'tentative';
 
         $data = array(
             'external_ref' => 'butterflymx:' . $keychain_id,
             'loft_id' => absint( $loft['id'] ),
             'guest_name' => $guest_name,
-            'guest_email' => isset( $normalized_keychain['email'] ) ? sanitize_email( $normalized_keychain['email'] ) : null,
-            'guest_phone' => isset( $normalized_keychain['phone'] ) ? sanitize_text_field( $normalized_keychain['phone'] ) : null,
+            'guest_email' => $guest_email,
+            'guest_phone' => $guest_phone,
             'check_in_utc' => $check_in,
             'check_out_utc' => $check_out,
             'status' => $status,
@@ -400,12 +424,20 @@ class Loft1325_Bookings {
 
         if ( $existing ) {
             $wpdb->update( $bookings_table, $data, array( 'id' => $existing ) );
+            self::upsert_client_record( $guest_name, $guest_email, $guest_phone, array(
+                'source' => 'butterflymx_sync',
+                'booking_id' => $existing,
+            ) );
         } else {
             $data['created_at'] = current_time( 'mysql', 1 );
             $data['created_by'] = get_current_user_id();
             $wpdb->insert( $bookings_table, $data );
             if ( ! empty( $wpdb->insert_id ) ) {
                 $maps['booking_by_keychain'][ $keychain_id ] = (int) $wpdb->insert_id;
+                self::upsert_client_record( $guest_name, $guest_email, $guest_phone, array(
+                    'source' => 'butterflymx_sync',
+                    'booking_id' => (int) $wpdb->insert_id,
+                ) );
             }
         }
 
@@ -657,5 +689,63 @@ class Loft1325_Bookings {
     private static function normalize_loft_label( $value ) {
         $value = strtoupper( trim( (string) $value ) );
         return preg_replace( '/[^A-Z0-9]/', '', $value );
+    }
+
+    private static function upsert_client_record( $full_name, $email, $phone = '', $meta = array() ) {
+        global $wpdb;
+
+        $email = sanitize_email( (string) $email );
+        if ( ! is_email( $email ) ) {
+            return;
+        }
+
+        $clients_table = $wpdb->prefix . 'loft1325_clients';
+        $now = current_time( 'mysql', 1 );
+
+        $existing = $wpdb->get_row(
+            $wpdb->prepare( "SELECT id, meta, first_booking_at FROM {$clients_table} WHERE email = %s LIMIT 1", $email ),
+            ARRAY_A
+        );
+
+        $merged_meta = array();
+        if ( ! empty( $existing['meta'] ) ) {
+            $decoded_meta = json_decode( $existing['meta'], true );
+            if ( is_array( $decoded_meta ) ) {
+                $merged_meta = $decoded_meta;
+            }
+        }
+
+        if ( is_array( $meta ) ) {
+            $merged_meta = array_merge( $merged_meta, $meta );
+        }
+
+        $payload = array(
+            'full_name' => sanitize_text_field( (string) $full_name ),
+            'email' => $email,
+            'phone' => sanitize_text_field( (string) $phone ),
+            'meta' => wp_json_encode( $merged_meta ),
+            'last_booking_at' => $now,
+            'updated_at' => $now,
+        );
+
+        if ( $existing ) {
+            $wpdb->update(
+                $clients_table,
+                $payload,
+                array( 'id' => absint( $existing['id'] ) ),
+                array( '%s', '%s', '%s', '%s', '%s', '%s' ),
+                array( '%d' )
+            );
+            return;
+        }
+
+        $payload['created_at'] = $now;
+        $payload['first_booking_at'] = $now;
+
+        $wpdb->insert(
+            $clients_table,
+            $payload,
+            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+        );
     }
 }
