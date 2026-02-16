@@ -114,6 +114,16 @@ function wp_loft_booking_keychain_calendar_page() {
 }
 
 /**
+ * Backward-compatible callback kept for legacy menu registrations.
+ *
+ * Older environments referenced `loft_booking_keychain_calendar_page`
+ * (without the `wp_` prefix) and would crash with a critical error.
+ */
+function loft_booking_keychain_calendar_page() {
+    wp_loft_booking_keychain_calendar_page();
+}
+
+/**
  * AJAX handler to return keychain events for the requested range.
  */
 function wp_loft_booking_keychain_calendar_data() {
