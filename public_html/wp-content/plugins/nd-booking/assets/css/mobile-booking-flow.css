@@ -268,3 +268,70 @@
     z-index: 40;
   }
 }
+
+/* Emergency readability + calendar fixes for mobile booking flow */
+@media (max-width: 767px) {
+  body.nd-booking-flow-page,
+  body.nd-booking-flow-page .nd_booking_section,
+  body.nd-booking-flow-page .nd_booking_section * {
+    color: #0f172a;
+  }
+
+  body.nd-booking-flow-page .nd_booking_bg_white,
+  body.nd-booking-flow-page .nd_booking_bg_white *,
+  body.nd-booking-flow-page .nd_booking_bg_white_alpha,
+  body.nd-booking-flow-page .nd_booking_bg_white_alpha * {
+    color: #0f172a !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_border_grey,
+  body.nd-booking-flow-page .nd_booking_border_grey_1,
+  body.nd-booking-flow-page .nd_booking_border_grey_2,
+  body.nd-booking-flow-page .nd_booking_border_grey_3 {
+    border-color: #e2e8f0 !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_bg_greydark,
+  body.nd-booking-flow-page .nd_booking_bg_greydark *,
+  body.nd-booking-flow-page .nd_booking_bg_greydark_2,
+  body.nd-booking-flow-page .nd_booking_bg_greydark_2 * {
+    color: #ffffff !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_bg_greydark .nd_options_color_white,
+  body.nd-booking-flow-page .nd_booking_bg_greydark_2 .nd_options_color_white,
+  body.nd-booking-flow-page .nd_booking_bg_greydark .nd_options_color_greydark,
+  body.nd-booking-flow-page .nd_booking_bg_greydark_2 .nd_options_color_greydark {
+    color: #ffffff !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_section input,
+  body.nd-booking-flow-page .nd_booking_section select,
+  body.nd-booking-flow-page .nd_booking_section textarea {
+    font-size: 16px !important;
+  }
+
+  body.nd-booking-flow-page .ui-datepicker,
+  body.nd-booking-flow-page #ui-datepicker-div,
+  body.nd-booking-flow-page .nd_booking_datepicker_content {
+    width: min(100vw - 20px, 420px) !important;
+    max-width: 100% !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  body.nd-booking-flow-page .ui-datepicker table {
+    font-size: 14px !important;
+  }
+
+  body.nd-booking-flow-page .ui-datepicker td span,
+  body.nd-booking-flow-page .ui-datepicker td a {
+    text-align: center;
+    padding: 0.45em 0 !important;
+  }
+
+  body.nd-booking-flow-page .ui-datepicker .ui-datepicker-title {
+    color: #0f172a !important;
+    font-weight: 700;
+  }
+}

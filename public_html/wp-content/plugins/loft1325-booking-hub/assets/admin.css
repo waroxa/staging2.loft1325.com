@@ -562,3 +562,47 @@
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+/* Mobile/readability hardening for Booking Hub */
+.loft1325-primary,
+.loft1325-primary:visited,
+.loft1325-primary:hover,
+.loft1325-primary:focus,
+.loft1325-primary:active,
+.loft1325-primary *,
+a.loft1325-primary,
+a.loft1325-primary:visited,
+button.loft1325-primary,
+input.loft1325-primary {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+.loft1325-bar {
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+}
+
+@media (max-width: 768px) {
+    .loft1325-timeline-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .loft1325-timeline-row .loft1325-meta {
+        text-align: left;
+    }
+
+    .loft1325-bar {
+        width: 100%;
+        text-align: left;
+        min-height: auto;
+        border-radius: 10px;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+    }
+}

@@ -191,6 +191,7 @@ class Loft1325_Frontend_Pages {
                         echo '<input type="hidden" name="period" value="' . esc_attr( $period ) . '" />';
                         echo '<button class="loft1325-secondary" type="submit">Confirmer FREE</button>';
                         echo '</form>';
+                        echo '<p class="loft1325-actions"><a class="loft1325-primary" href="' . esc_url( admin_url( 'admin.php?page=loft1325-new-booking&loft_id=' . absint( $row['id'] ) ) ) . '">Créer une réservation</a></p>';
                     }
                     echo '</div>';
                 }
