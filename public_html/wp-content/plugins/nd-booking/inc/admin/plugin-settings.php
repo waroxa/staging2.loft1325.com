@@ -26,6 +26,7 @@ function nd_booking_settings() {
   register_setting( 'nd_booking_settings_group', 'nd_booking_search_page' );
   register_setting( 'nd_booking_settings_group', 'nd_booking_booking_page' );
   register_setting( 'nd_booking_settings_group', 'nd_booking_checkout_page' );
+  register_setting( 'nd_booking_settings_group', 'nd_booking_mobile_header_menu' );
   register_setting( 'nd_booking_settings_group', 'nd_booking_terms_page' );
   register_setting( 'nd_booking_settings_group', 'nd_booking_account_page' );
   register_setting( 'nd_booking_settings_group', 'nd_booking_order_page' );
@@ -324,6 +325,36 @@ function nd_booking_settings_page() {
               <?php endforeach; ?>
             </select>
             <p class="nd_booking_color_666666 nd_booking_section nd_booking_margin_0 nd_booking_margin_top_20"><?php _e('Select the page where you have added the shortcode [nd_booking_booking]','nd-booking'); ?></p>
+
+          </div>
+        </div>
+        <!--END-->
+        <div class="nd_booking_section nd_booking_height_1 nd_booking_background_color_E7E7E7 nd_booking_margin_top_10 nd_booking_margin_bottom_10"></div>
+
+
+        <!--START-->
+        <div class="nd_booking_section">
+          <div class="nd_booking_width_40_percentage nd_booking_padding_20 nd_booking_box_sizing_border_box nd_booking_float_left">
+            <h2 class="nd_booking_section nd_booking_margin_0"><?php _e('Mobile Burger Menu','nd-booking'); ?></h2>
+            <p class="nd_booking_color_666666 nd_booking_section nd_booking_margin_0 nd_booking_margin_top_10"><?php _e('Choose which WordPress menu appears in the mobile booking header','nd-booking'); ?></p>
+          </div>
+          <div class="nd_booking_width_60_percentage nd_booking_padding_20 nd_booking_box_sizing_border_box nd_booking_float_left">
+            <?php $nd_booking_nav_menus = wp_get_nav_menus(); ?>
+            <select class="nd_booking_width_100_percentage" name="nd_booking_mobile_header_menu">
+              <option value="0"><?php _e('Use Main Menu location','nd-booking'); ?></option>
+              <?php foreach ( $nd_booking_nav_menus as $nd_booking_nav_menu ) : ?>
+                <option
+                  <?php
+                    if( (int) get_option('nd_booking_mobile_header_menu') === (int) $nd_booking_nav_menu->term_id ) {
+                      echo esc_attr('selected="selected"');
+                    }
+                  ?>
+                  value="<?php echo esc_attr( $nd_booking_nav_menu->term_id ); ?>">
+                    <?php echo esc_html( $nd_booking_nav_menu->name ); ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+            <p class="nd_booking_color_666666 nd_booking_section nd_booking_margin_0 nd_booking_margin_top_20"><?php _e('This selected menu will be used by the burger menu on mobile ND Booking pages across the site.','nd-booking'); ?></p>
 
           </div>
         </div>
@@ -884,4 +915,3 @@ function nd_booking_paypal_page() {
 foreach ( glob ( plugin_dir_path( __FILE__ ) . "*/index.php" ) as $file ){
   include_once realpath($file);
 }
-

@@ -236,9 +236,29 @@ function nd_booking_render_mobile_flow_header() {
   $menu_close = ( 'en' === $language ) ? 'Close menu' : 'Fermer le menu';
   $menu_title = ( 'en' === $language ) ? 'Menu' : 'Menu';
   $language_label = ( 'en' === $language ) ? 'Change language' : 'Changer la langue';
+  $selected_menu_id = (int) get_option( 'nd_booking_mobile_header_menu' );
+
+  $menu_args = array(
+    'container'   => false,
+    'menu_class'  => 'mobile-menu__list',
+    'fallback_cb' => false,
+    'echo'        => false,
+  );
+
+  if ( $selected_menu_id > 0 ) {
+    $menu_args['menu'] = $selected_menu_id;
+  } else {
+    $menu_args['theme_location'] = 'main-menu';
+  }
+
+  $menu_markup = wp_nav_menu( $menu_args );
+
+  if ( ! $menu_markup ) {
+    $menu_markup = '<ul class="mobile-menu__list"><li><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', 'nd-booking' ) . '</a></li></ul>';
+  }
   ?>
-  <header class="header loft1325-mobile-booking-header">
-    <div class="header-inner">
+  <header class="loft1325-mobile-booking-header">
+    <div class="loft1325-mobile-booking-header__inner">
       <button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $menu_label ); ?>">≡</button>
       <img
         class="logo"
@@ -261,17 +281,7 @@ function nd_booking_render_mobile_flow_header() {
         <p class="mobile-menu__title" id="mobileMenuTitle"><?php echo esc_html( $menu_title ); ?></p>
         <button class="mobile-menu__close" type="button" id="closeMenu" aria-label="<?php echo esc_attr( $menu_close ); ?>">×</button>
       </div>
-      <?php
-      echo wp_nav_menu(
-        array(
-          'theme_location' => 'main-menu',
-          'container'      => false,
-          'menu_class'     => 'mobile-menu__list',
-          'fallback_cb'    => 'wp_page_menu',
-          'echo'           => false,
-        )
-      );
-      ?>
+      <?php echo $menu_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     </div>
   </div>
   <?php
@@ -361,4 +371,3 @@ function nd_booking_get_plugin_version(){
     return $nd_booking_plugin_version;
 
 }
-
