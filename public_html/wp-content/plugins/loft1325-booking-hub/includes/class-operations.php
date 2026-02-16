@@ -22,23 +22,29 @@ class Loft1325_Operations {
             return;
         }
 
-        $is_admin_manager = current_user_can( 'loft1325_manage_bookings' );
-        $frontend_scope = class_exists( 'Loft1325_Frontend_Pages' ) ? Loft1325_Frontend_Pages::get_frontend_unlock_scope() : '';
+        $redirect = wp_get_referer();
+        if ( ! $redirect ) {
+            $redirect = admin_url( 'admin.php?page=loft1325-calendar' );
+        }
 
-        if ( ! $is_admin_manager && '' === $frontend_scope ) {
-            return;
+        if ( ! is_user_logged_in() || ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            $login_url = wp_login_url( $redirect );
+            wp_safe_redirect( add_query_arg( 'loft1325_ops_error', '1', $login_url ) );
+            exit;
         }
 
         if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'loft1325_ops_action' ) ) {
-            return;
+            wp_safe_redirect( add_query_arg( 'loft1325_ops_error', '1', $redirect ) );
+            exit;
         }
 
         $action = sanitize_key( wp_unslash( $_POST['loft1325_ops_action'] ) );
         $booking_id = isset( $_POST['booking_id'] ) ? absint( $_POST['booking_id'] ) : 0;
-        $redirect   = wp_get_referer();
+        $allowed_actions = array( 'approve', 'reject', 'dirty', 'in_progress', 'cleaned', 'issue', 'maintenance_create', 'maintenance_update' );
 
-        if ( ! $redirect ) {
-            $redirect = admin_url( 'admin.php?page=loft1325-calendar' );
+        if ( ! in_array( $action, $allowed_actions, true ) ) {
+            wp_safe_redirect( add_query_arg( 'loft1325_ops_error', '1', $redirect ) );
+            exit;
         }
 
         try {
