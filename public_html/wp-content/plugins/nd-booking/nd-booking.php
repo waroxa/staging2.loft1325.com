@@ -122,25 +122,18 @@ add_action( 'wp_enqueue_scripts', 'nd_booking_scripts' );
  */
 function nd_booking_add_flow_body_classes( $classes ) {
 
-  if ( is_admin() || ! isset( $_SERVER['REQUEST_URI'] ) ) {
+  if ( is_admin() ) {
     return $classes;
   }
 
-  $request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+  $current_flow_page = nd_booking_get_flow_page_context();
 
-  if ( '' === $request_path ) {
-    return $classes;
-  }
-
-  $normalized_path = trim( trailingslashit( $request_path ), '/' );
-  $normalized_path = preg_replace( '#^[a-z]{2}/#', '', $normalized_path );
-
-  if ( 'nd-booking-pages/nd-booking-page' === $normalized_path ) {
+  if ( 'booking' === $current_flow_page ) {
     $classes[] = 'nd-booking-flow-page';
     $classes[] = 'nd-booking-flow-room-selection';
   }
 
-  if ( 'nd-booking-pages/nd-booking-checkout' === $normalized_path ) {
+  if ( 'checkout' === $current_flow_page ) {
     $classes[] = 'nd-booking-flow-page';
     $classes[] = 'nd-booking-flow-checkout';
   }
@@ -163,26 +156,62 @@ function nd_booking_is_mobile_flow_room_selection() {
     return false;
   }
 
-  $booking_page_id = (int) get_option( 'nd_booking_booking_page' );
+  return 'booking' === nd_booking_get_flow_page_context();
+}
+
+/**
+ * Resolve the current ND Booking flow page context.
+ *
+ * @return string Empty string when not in flow, otherwise `booking` or `checkout`.
+ */
+function nd_booking_get_flow_page_context() {
+  $booking_page_id  = (int) get_option( 'nd_booking_booking_page' );
+  $checkout_page_id = (int) get_option( 'nd_booking_checkout_page' );
 
   if ( $booking_page_id && is_page( $booking_page_id ) ) {
-    return true;
+    return 'booking';
+  }
+
+  if ( $checkout_page_id && is_page( $checkout_page_id ) ) {
+    return 'checkout';
+  }
+
+  if ( is_page() ) {
+    $page = get_post();
+
+    if ( $page instanceof WP_Post ) {
+      if ( 'nd-booking-page' === $page->post_name ) {
+        return 'booking';
+      }
+
+      if ( 'nd-booking-checkout' === $page->post_name ) {
+        return 'checkout';
+      }
+    }
   }
 
   if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
-    return false;
+    return '';
   }
 
   $request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
 
   if ( '' === $request_path ) {
-    return false;
+    return '';
   }
 
   $normalized_path = trim( trailingslashit( $request_path ), '/' );
   $normalized_path = preg_replace( '#^[a-z]{2}/#', '', $normalized_path );
 
-  return 'nd-booking-pages/nd-booking-page' === $normalized_path;
+  if ( 'nd-booking-pages/nd-booking-page' === $normalized_path ) {
+    return 'booking';
+  }
+
+  if ( 'nd-booking-pages/nd-booking-checkout' === $normalized_path ) {
+    return 'checkout';
+  }
+
+  return '';
 }
 
 /**
@@ -332,5 +361,4 @@ function nd_booking_get_plugin_version(){
     return $nd_booking_plugin_version;
 
 }
-
 
