@@ -208,6 +208,26 @@
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    background: #f7f2e7;
+    color: #5d4a1f;
+}
+
+.loft1325-badge--confirmed,
+.loft1325-badge--checked_in,
+.loft1325-badge--checked_out,
+.loft1325-badge--free {
+    background: linear-gradient(135deg, #f9e7b0, #d4af37);
+    border-color: #8a6d1c;
+    color: #1c1403;
+    box-shadow: 0 2px 8px rgba(138, 109, 28, 0.25);
+}
+
+.loft1325-badge--busy,
+.loft1325-badge--cancelled,
+.loft1325-badge--tentative {
+    background: #2f2f38;
+    border-color: #16161a;
+    color: #f4f1ea;
 }
 
 .loft1325-guest {

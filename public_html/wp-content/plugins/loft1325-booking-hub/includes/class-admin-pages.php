@@ -268,14 +268,18 @@ class Loft1325_Admin_Pages {
 
         try {
             $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
-        $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
-        $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
-        $tickets = Loft1325_Operations::get_maintenance_tickets();
+            $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
+            $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
+            $tickets = Loft1325_Operations::get_maintenance_tickets();
 
         self::render_page_header( 'Booking Hub' );
 
         if ( ! empty( $_GET['loft1325_ops_error'] ) ) {
             echo '<div class="notice notice-error"><p>Une erreur est survenue pendant l&rsquo;action demandée (approbation/refus/ménage). Veuillez consulter le journal PHP pour le détail technique.</p></div>';
+        }
+
+        if ( ! empty( $_GET['loft1325_ops_conflict'] ) ) {
+            echo '<div class="notice notice-warning"><p>Impossible de confirmer: ce loft est déjà occupé sur cette période.</p></div>';
         }
 
         $bounds = Loft1325_Operations::get_period_bounds( $period );
@@ -369,10 +373,16 @@ class Loft1325_Admin_Pages {
         } else {
             echo '<div class="loft1325-grid">';
             foreach ( $bookings as $booking ) {
+                $status_class = 'loft1325-badge--' . sanitize_html_class( (string) $booking['status'] );
+                $key_missing = empty( $booking['butterfly_keychain_id'] );
+
                 echo '<div class="loft1325-card">';
-                echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
+                echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge ' . esc_attr( $status_class ) . '">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
                 echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
                 echo '<p>Cleaning: <strong>' . esc_html( $booking['cleaning_status'] ) . '</strong></p>';
+                if ( $key_missing ) {
+                    echo '<p><span class="loft1325-badge loft1325-badge--free">FREE · no key yet</span></p>';
+                }
                 echo '<form method="post" class="loft1325-actions">';
                 echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
                 echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
@@ -388,6 +398,25 @@ class Loft1325_Admin_Pages {
                 echo '</form></div>';
             }
             echo '</div>';
+
+            if ( 'bookings' === $view ) {
+                $availability_rows = Loft1325_Operations::get_loft_availability( $period );
+                echo '<div class="loft1325-card">';
+                echo '<h4>Disponibilité des lofts</h4>';
+                echo '<p class="loft1325-meta">FREE = aucun séjour confirmé/checked-in sur la période sélectionnée.</p>';
+                echo '<div class="loft1325-grid">';
+                foreach ( $availability_rows as $row ) {
+                    $is_busy = ! empty( $row['is_busy'] );
+                    $badge_class = $is_busy ? 'loft1325-badge--busy' : 'loft1325-badge--free';
+                    $badge_label = $is_busy ? 'BUSY' : 'FREE';
+                    echo '<div class="loft1325-card">';
+                    echo '<div class="loft1325-card-header"><strong>' . esc_html( $row['loft_name'] ) . '</strong><span class="loft1325-badge ' . esc_attr( $badge_class ) . '">' . esc_html( $badge_label ) . '</span></div>';
+                    echo '<p class="loft1325-meta">Type: ' . esc_html( ucfirst( $row['loft_type'] ) ) . '</p>';
+                    echo '</div>';
+                }
+                echo '</div>';
+                echo '</div>';
+            }
         }
 
             echo '</div>';
@@ -459,6 +488,7 @@ class Loft1325_Admin_Pages {
         }
 
         $nonce = wp_create_nonce( 'loft1325_create_booking' );
+        $clients = Loft1325_Bookings::get_clients();
 
         self::render_page_header( 'Nouvelle réservation' );
         echo '<div class="loft1325-card">';
@@ -473,6 +503,17 @@ class Loft1325_Admin_Pages {
         echo '<label>Loft spécifique (optionnel)</label><input type="number" name="loft_id" placeholder="ID loft" />';
 
         echo '<h3>2. Invité</h3>';
+        echo '<label>Client existant</label>';
+        echo '<select id="loft1325-client-select"><option value="">Sélectionner un client…</option>';
+        foreach ( $clients as $client ) {
+            $payload = array(
+                'name' => $client['full_name'],
+                'email' => $client['email'],
+                'phone' => $client['phone'],
+            );
+            echo '<option value="' . esc_attr( wp_json_encode( $payload ) ) . '">' . esc_html( $client['full_name'] . ' · ' . $client['email'] ) . '</option>';
+        }
+        echo '</select>';
         echo '<label>Nom</label><input type="text" name="guest_name" required />';
         echo '<label>Email</label><input type="email" name="guest_email" />';
         echo '<label>Téléphone</label><input type="text" name="guest_phone" />';
@@ -483,6 +524,7 @@ class Loft1325_Admin_Pages {
         echo '<label class="loft1325-toggle"><input type="checkbox" name="create_key" /> Créer clé ButterflyMX</label>';
         echo '<button class="loft1325-primary">FINALISER</button>';
         echo '</form>';
+        echo '<script>(function(){var s=document.getElementById("loft1325-client-select");if(!s){return;}s.addEventListener("change",function(){if(!s.value){return;}try{var c=JSON.parse(s.value);var n=document.querySelector("input[name=\'guest_name\']");var e=document.querySelector("input[name=\'guest_email\']");var p=document.querySelector("input[name=\'guest_phone\']");if(n&&c.name){n.value=c.name;}if(e&&c.email){e.value=c.email;}if(p&&c.phone){p.value=c.phone;}}catch(err){}});})();</script>';
         echo '</div>';
         echo '</div>';
     }

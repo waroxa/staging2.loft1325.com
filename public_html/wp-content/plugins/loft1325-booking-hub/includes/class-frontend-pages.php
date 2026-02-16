@@ -77,6 +77,14 @@ class Loft1325_Frontend_Pages {
         echo '<a class="loft1325-primary" href="' . esc_url( admin_url( 'admin.php?page=loft1325-new-booking' ) ) . '">+ Nouvelle réservation</a>';
         echo '</header>';
 
+        if ( ! empty( $_GET['loft1325_ops_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-error"><p>Une erreur est survenue pendant l&rsquo;action demandée.</p></div>';
+        }
+
+        if ( ! empty( $_GET['loft1325_ops_conflict'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-warning"><p>Impossible de confirmer: ce loft est déjà occupé sur cette période.</p></div>';
+        }
+
         echo '<div class="loft1325-card">';
         echo '<h3>Vue calendrier + opérations</h3>';
         echo '<p class="loft1325-meta">Approuver/refuser les réservations, suivre le ménage et gérer la maintenance au même endroit.</p>';
@@ -127,10 +135,15 @@ class Loft1325_Frontend_Pages {
         } else {
             echo '<div class="loft1325-grid">';
             foreach ( $bookings as $booking ) {
+                $status_class = 'loft1325-badge--' . sanitize_html_class( (string) $booking['status'] );
+                $key_missing = empty( $booking['butterfly_keychain_id'] );
                 echo '<div class="loft1325-card">';
-                echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
+                echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge ' . esc_attr( $status_class ) . '">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
                 echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
                 echo '<p>Cleaning: <strong>' . esc_html( $booking['cleaning_status'] ) . '</strong></p>';
+                if ( $key_missing ) {
+                    echo '<p><span class="loft1325-badge loft1325-badge--free">FREE · no key yet</span></p>';
+                }
                 echo '<form method="post" class="loft1325-actions">';
                 echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
                 echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
@@ -146,6 +159,25 @@ class Loft1325_Frontend_Pages {
                 echo '</form></div>';
             }
             echo '</div>';
+
+            if ( 'bookings' === $view ) {
+                $availability_rows = Loft1325_Operations::get_loft_availability( $period );
+                echo '<div class="loft1325-card">';
+                echo '<h4>Disponibilité des lofts</h4>';
+                echo '<p class="loft1325-meta">FREE = aucun séjour confirmé/checked-in sur la période sélectionnée.</p>';
+                echo '<div class="loft1325-grid">';
+                foreach ( $availability_rows as $row ) {
+                    $is_busy = ! empty( $row['is_busy'] );
+                    $badge_class = $is_busy ? 'loft1325-badge--busy' : 'loft1325-badge--free';
+                    $badge_label = $is_busy ? 'BUSY' : 'FREE';
+                    echo '<div class="loft1325-card">';
+                    echo '<div class="loft1325-card-header"><strong>' . esc_html( $row['loft_name'] ) . '</strong><span class="loft1325-badge ' . esc_attr( $badge_class ) . '">' . esc_html( $badge_label ) . '</span></div>';
+                    echo '<p class="loft1325-meta">Type: ' . esc_html( ucfirst( $row['loft_type'] ) ) . '</p>';
+                    echo '</div>';
+                }
+                echo '</div>';
+                echo '</div>';
+            }
         }
 
         self::render_stays_calendar( 'month' );

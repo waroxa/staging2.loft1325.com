@@ -29,6 +29,7 @@ class Loft1325_DB {
         $log_table = $wpdb->prefix . 'loft1325_log';
         $cleaning_table = $wpdb->prefix . 'loft1325_cleaning_status';
         $maintenance_table = $wpdb->prefix . 'loft1325_maintenance_tasks';
+        $clients_table = $wpdb->prefix . 'loft1325_clients';
 
         $sql = "CREATE TABLE {$lofts_table} (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -103,6 +104,21 @@ class Loft1325_DB {
             PRIMARY KEY (id),
             KEY status (status),
             KEY priority (priority)
+        ) {$charset_collate};
+
+        CREATE TABLE {$clients_table} (
+            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            full_name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            phone VARCHAR(64) NULL,
+            meta LONGTEXT NULL,
+            first_booking_at DATETIME NULL,
+            last_booking_at DATETIME NULL,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY email (email),
+            KEY full_name (full_name)
         ) {$charset_collate};";
 
         dbDelta( $sql );

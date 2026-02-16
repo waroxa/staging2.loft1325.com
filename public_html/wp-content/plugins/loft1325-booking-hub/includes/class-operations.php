@@ -49,7 +49,11 @@ class Loft1325_Operations {
 
         try {
             if ( 'approve' === $action && $booking_id ) {
-                self::update_booking_status( $booking_id, 'confirmed' );
+                if ( ! self::can_confirm_booking( $booking_id ) ) {
+                    $redirect = add_query_arg( 'loft1325_ops_conflict', '1', $redirect );
+                } else {
+                    self::update_booking_status( $booking_id, 'confirmed' );
+                }
             } elseif ( 'reject' === $action && $booking_id ) {
                 self::update_booking_status( $booking_id, 'cancelled' );
             } elseif ( in_array( $action, array( 'dirty', 'in_progress', 'cleaned', 'issue' ), true ) && $booking_id ) {
@@ -151,6 +155,69 @@ class Loft1325_Operations {
             array( '%s', '%s' ),
             array( '%d' )
         );
+    }
+
+    public static function can_confirm_booking( $booking_id ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $booking = $wpdb->get_row(
+            $wpdb->prepare( "SELECT id, loft_id, check_in_utc, check_out_utc FROM {$bookings_table} WHERE id = %d", absint( $booking_id ) ),
+            ARRAY_A
+        );
+
+        if ( empty( $booking['id'] ) || empty( $booking['loft_id'] ) || empty( $booking['check_in_utc'] ) || empty( $booking['check_out_utc'] ) ) {
+            return false;
+        }
+
+        $conflict_count = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT COUNT(*)
+                FROM {$bookings_table}
+                WHERE id <> %d
+                AND loft_id = %d
+                AND status IN ('confirmed','checked_in')
+                AND %s < check_out_utc
+                AND %s > check_in_utc",
+                absint( $booking['id'] ),
+                absint( $booking['loft_id'] ),
+                $booking['check_in_utc'],
+                $booking['check_out_utc']
+            )
+        );
+
+        return ( (int) $conflict_count ) === 0;
+    }
+
+    public static function get_loft_availability( $period = 'today' ) {
+        global $wpdb;
+
+        $bounds = self::get_period_bounds( $period );
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT l.id, l.loft_name, l.loft_type,
+                    COALESCE(MAX(CASE WHEN b.id IS NULL THEN 0 ELSE 1 END), 0) AS is_busy,
+                    COALESCE(MAX(CASE WHEN b.butterfly_keychain_id IS NULL THEN 0 ELSE 1 END), 0) AS has_key,
+                    MIN(b.check_in_utc) AS next_check_in
+                FROM {$lofts_table} l
+                LEFT JOIN {$bookings_table} b
+                    ON b.loft_id = l.id
+                    AND b.status IN ('confirmed','checked_in')
+                    AND b.check_in_utc < %s
+                    AND b.check_out_utc >= %s
+                WHERE l.is_active = 1
+                GROUP BY l.id, l.loft_name, l.loft_type
+                ORDER BY l.loft_name ASC",
+                $bounds['end'],
+                $bounds['start']
+            ),
+            ARRAY_A
+        );
+
+        return is_array( $rows ) ? $rows : array();
     }
 
     public static function update_cleaning_status( $booking_id, $status ) {
