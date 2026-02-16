@@ -35,31 +35,46 @@ class Loft1325_Operations {
 
         $action = sanitize_key( wp_unslash( $_POST['loft1325_ops_action'] ) );
         $booking_id = isset( $_POST['booking_id'] ) ? absint( $_POST['booking_id'] ) : 0;
+        $redirect   = wp_get_referer();
 
-        if ( 'approve' === $action && $booking_id ) {
-            self::update_booking_status( $booking_id, 'confirmed' );
-        } elseif ( 'reject' === $action && $booking_id ) {
-            self::update_booking_status( $booking_id, 'cancelled' );
-        } elseif ( in_array( $action, array( 'dirty', 'in_progress', 'cleaned', 'issue' ), true ) && $booking_id ) {
-            $map = array(
-                'dirty' => 'pending',
-                'in_progress' => 'in_progress',
-                'cleaned' => 'ready',
-                'issue' => 'issue',
-            );
-            self::update_cleaning_status( $booking_id, $map[ $action ] );
-        } elseif ( 'maintenance_create' === $action ) {
-            self::create_maintenance_ticket( $_POST );
-        } elseif ( 'maintenance_update' === $action ) {
-            $ticket_id = isset( $_POST['ticket_id'] ) ? absint( $_POST['ticket_id'] ) : 0;
-            $status = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'todo';
-            self::update_maintenance_status( $ticket_id, $status );
-        }
-
-        $redirect = wp_get_referer();
         if ( ! $redirect ) {
             $redirect = admin_url( 'admin.php?page=loft1325-calendar' );
         }
+
+        try {
+            if ( 'approve' === $action && $booking_id ) {
+                self::update_booking_status( $booking_id, 'confirmed' );
+            } elseif ( 'reject' === $action && $booking_id ) {
+                self::update_booking_status( $booking_id, 'cancelled' );
+            } elseif ( in_array( $action, array( 'dirty', 'in_progress', 'cleaned', 'issue' ), true ) && $booking_id ) {
+                $map = array(
+                    'dirty' => 'pending',
+                    'in_progress' => 'in_progress',
+                    'cleaned' => 'ready',
+                    'issue' => 'issue',
+                );
+                self::update_cleaning_status( $booking_id, $map[ $action ] );
+            } elseif ( 'maintenance_create' === $action ) {
+                self::create_maintenance_ticket( $_POST );
+            } elseif ( 'maintenance_update' === $action ) {
+                $ticket_id = isset( $_POST['ticket_id'] ) ? absint( $_POST['ticket_id'] ) : 0;
+                $status    = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : 'todo';
+                self::update_maintenance_status( $ticket_id, $status );
+            }
+        } catch ( Throwable $throwable ) {
+            error_log(
+                sprintf(
+                    '[Loft1325 Booking Hub] Action "%s" failed: %s in %s:%d',
+                    $action,
+                    $throwable->getMessage(),
+                    $throwable->getFile(),
+                    $throwable->getLine()
+                )
+            );
+
+            $redirect = add_query_arg( 'loft1325_ops_error', '1', $redirect );
+        }
+
         wp_safe_redirect( $redirect );
         exit;
     }

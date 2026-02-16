@@ -283,12 +283,17 @@ class Loft1325_Admin_Pages {
             return;
         }
 
-        $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
+        try {
+            $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
         $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
         $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
         $tickets = Loft1325_Operations::get_maintenance_tickets();
 
         self::render_page_header( 'Booking Hub' );
+
+        if ( ! empty( $_GET['loft1325_ops_error'] ) ) {
+            echo '<div class="notice notice-error"><p>Une erreur est survenue pendant l&rsquo;action demandée (approbation/refus/ménage). Veuillez consulter le journal PHP pour le détail technique.</p></div>';
+        }
 
         $bounds = Loft1325_Operations::get_period_bounds( $period );
         $period = $bounds['period'];
@@ -402,8 +407,22 @@ class Loft1325_Admin_Pages {
             echo '</div>';
         }
 
-        echo '</div>';
-        echo '</div>';
+            echo '</div>';
+            echo '</div>';
+        } catch ( Throwable $throwable ) {
+            error_log(
+                sprintf(
+                    '[Loft1325 Booking Hub] Failed rendering calendar: %s in %s:%d',
+                    $throwable->getMessage(),
+                    $throwable->getFile(),
+                    $throwable->getLine()
+                )
+            );
+
+            self::render_page_header( 'Booking Hub' );
+            echo '<div class="notice notice-error"><p>Une erreur est survenue lors du chargement du calendrier. Réessayez et vérifiez le journal d&rsquo;erreurs si le problème persiste.</p></div>';
+            echo '</div>';
+        }
     }
 
     public static function render_lofts() {
