@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Loft1325_Operations {
+    const APPROVED_FREE_OPTION = 'loft1325_approved_free_ranges';
+
     public static function boot() {
         add_action( 'init', array( __CLASS__, 'handle_post_actions' ) );
         add_action( 'init', array( __CLASS__, 'ensure_schedule' ) );
@@ -73,10 +75,12 @@ class Loft1325_Operations {
             } elseif ( 'confirm_free' === $action ) {
                 $loft_id = isset( $_POST['loft_id'] ) ? absint( $_POST['loft_id'] ) : 0;
                 $period  = isset( $_POST['period'] ) ? sanitize_key( wp_unslash( $_POST['period'] ) ) : 'today';
+                $bounds = self::get_period_bounds( $period );
 
                 if ( ! $loft_id ) {
                     $redirect = add_query_arg( 'loft1325_ops_error', '1', $redirect );
                 } elseif ( self::is_loft_free_for_period( $loft_id, $period ) ) {
+                    self::approve_free_loft_for_range( $loft_id, $bounds['start'], $bounds['end'] );
                     $redirect = add_query_arg(
                         array(
                             'loft1325_ops_free_confirmed' => '1',
@@ -235,6 +239,132 @@ class Loft1325_Operations {
         );
 
         return is_array( $rows ) ? $rows : array();
+    }
+
+    public static function get_loft_availability_for_range( $start_utc, $end_utc, $loft_type = '' ) {
+        global $wpdb;
+
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $where_sql = 'WHERE l.is_active = 1';
+        $query_args = array( $end_utc, $start_utc );
+
+        if ( in_array( $loft_type, array( 'simple', 'double', 'penthouse' ), true ) ) {
+            $where_sql .= ' AND l.loft_type = %s';
+            $query_args[] = $loft_type;
+        }
+
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT l.id, l.loft_name, l.loft_type,
+                    COALESCE(MAX(CASE WHEN b.id IS NULL THEN 0 ELSE 1 END), 0) AS is_busy,
+                    COALESCE(MAX(CASE WHEN b.butterfly_keychain_id IS NULL THEN 0 ELSE 1 END), 0) AS has_key,
+                    MIN(b.check_in_utc) AS next_check_in
+                FROM {$lofts_table} l
+                LEFT JOIN {$bookings_table} b
+                    ON b.loft_id = l.id
+                    AND b.status IN ('confirmed','checked_in')
+                    AND b.check_in_utc < %s
+                    AND b.check_out_utc >= %s
+                {$where_sql}
+                GROUP BY l.id, l.loft_name, l.loft_type
+                ORDER BY l.loft_name ASC",
+                $query_args
+            ),
+            ARRAY_A
+        );
+
+        return is_array( $rows ) ? $rows : array();
+    }
+
+    public static function approve_free_loft_for_range( $loft_id, $start_utc, $end_utc ) {
+        $loft_id = absint( $loft_id );
+        if ( ! $loft_id || empty( $start_utc ) || empty( $end_utc ) ) {
+            return;
+        }
+
+        $approvals = get_option( self::APPROVED_FREE_OPTION, array() );
+        if ( ! is_array( $approvals ) ) {
+            $approvals = array();
+        }
+
+        $approvals = array_values( array_filter( $approvals, function ( $approval ) {
+            return is_array( $approval ) && ! empty( $approval['loft_id'] ) && ! empty( $approval['start_utc'] ) && ! empty( $approval['end_utc'] );
+        } ) );
+
+        $updated = false;
+        foreach ( $approvals as &$approval ) {
+            if ( absint( $approval['loft_id'] ) === $loft_id && $approval['start_utc'] === $start_utc && $approval['end_utc'] === $end_utc ) {
+                $approval['approved_by'] = get_current_user_id();
+                $approval['approved_at'] = current_time( 'mysql', 1 );
+                $updated = true;
+                break;
+            }
+        }
+        unset( $approval );
+
+        if ( ! $updated ) {
+            $approvals[] = array(
+                'loft_id' => $loft_id,
+                'start_utc' => $start_utc,
+                'end_utc' => $end_utc,
+                'approved_by' => get_current_user_id(),
+                'approved_at' => current_time( 'mysql', 1 ),
+            );
+        }
+
+        update_option( self::APPROVED_FREE_OPTION, $approvals, false );
+    }
+
+    public static function get_approved_free_counts_by_type( $start_utc, $end_utc ) {
+        global $wpdb;
+
+        $counts = array(
+            'simple' => 0,
+            'double' => 0,
+            'penthouse' => 0,
+        );
+
+        $approvals = get_option( self::APPROVED_FREE_OPTION, array() );
+        if ( empty( $approvals ) || ! is_array( $approvals ) ) {
+            return $counts;
+        }
+
+        $approved_loft_ids = array();
+        foreach ( $approvals as $approval ) {
+            if ( ! is_array( $approval ) || empty( $approval['loft_id'] ) || empty( $approval['start_utc'] ) || empty( $approval['end_utc'] ) ) {
+                continue;
+            }
+
+            $approval_start = $approval['start_utc'];
+            $approval_end = $approval['end_utc'];
+            $is_covering_range = ( $approval_start <= $start_utc ) && ( $approval_end >= $end_utc );
+            if ( $is_covering_range ) {
+                $approved_loft_ids[] = absint( $approval['loft_id'] );
+            }
+        }
+
+        $approved_loft_ids = array_values( array_unique( array_filter( $approved_loft_ids ) ) );
+        if ( empty( $approved_loft_ids ) ) {
+            return $counts;
+        }
+
+        $rows = self::get_loft_availability_for_range( $start_utc, $end_utc );
+        foreach ( $rows as $row ) {
+            $row_loft_id = isset( $row['id'] ) ? absint( $row['id'] ) : 0;
+            $row_type = isset( $row['loft_type'] ) ? sanitize_key( $row['loft_type'] ) : '';
+            $is_busy = ! empty( $row['is_busy'] );
+
+            if ( ! $row_loft_id || $is_busy || ! isset( $counts[ $row_type ] ) ) {
+                continue;
+            }
+
+            if ( in_array( $row_loft_id, $approved_loft_ids, true ) ) {
+                $counts[ $row_type ]++;
+            }
+        }
+
+        return $counts;
     }
 
     public static function is_loft_free_for_period( $loft_id, $period = 'today' ) {

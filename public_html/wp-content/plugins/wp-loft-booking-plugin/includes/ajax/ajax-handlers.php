@@ -30,6 +30,65 @@ add_action('wp_ajax_wp_loft_booking_get_units', 'wp_loft_booking_get_units');
 add_action('wp_ajax_nopriv_wp_loft_booking_get_units', 'wp_loft_booking_get_units');
 
 
+
+function wp_loft_booking_get_nd_room_type_post_ids() {
+    $defaults = array(
+        'simple' => 10773,
+        'double' => 13803,
+        'penthouse' => 13804,
+    );
+
+    return apply_filters( 'wp_loft_booking_nd_room_type_post_ids', $defaults );
+}
+
+function wp_loft_booking_get_booking_hub_quantity_summary( $fallback_counts, $start_utc = null, $end_utc = null ) {
+    $normalized = array(
+        'simple' => isset( $fallback_counts['simple'] ) ? max( 0, absint( $fallback_counts['simple'] ) ) : 0,
+        'double' => isset( $fallback_counts['double'] ) ? max( 0, absint( $fallback_counts['double'] ) ) : 0,
+        'penthouse' => isset( $fallback_counts['penthouse'] ) ? max( 0, absint( $fallback_counts['penthouse'] ) ) : 0,
+    );
+
+    if ( ! class_exists( 'Loft1325_Operations' ) || ! method_exists( 'Loft1325_Operations', 'get_approved_free_counts_by_type' ) ) {
+        return $normalized;
+    }
+
+    if ( empty( $start_utc ) ) {
+        $start_utc = gmdate( 'Y-m-d H:i:s' );
+    }
+
+    if ( empty( $end_utc ) ) {
+        $end_utc = gmdate( 'Y-m-d H:i:s', strtotime( '+1 day', strtotime( $start_utc ) ) );
+    }
+
+    $approved_counts = Loft1325_Operations::get_approved_free_counts_by_type( $start_utc, $end_utc );
+    if ( ! is_array( $approved_counts ) ) {
+        return $normalized;
+    }
+
+    foreach ( array( 'simple', 'double', 'penthouse' ) as $loft_type ) {
+        if ( array_key_exists( $loft_type, $approved_counts ) ) {
+            $normalized[ $loft_type ] = max( 0, absint( $approved_counts[ $loft_type ] ) );
+        }
+    }
+
+    return $normalized;
+}
+
+function wp_loft_booking_update_nd_room_quantities( $counts ) {
+    $room_post_ids = wp_loft_booking_get_nd_room_type_post_ids();
+
+    foreach ( array( 'simple', 'double', 'penthouse' ) as $loft_type ) {
+        $room_post_id = isset( $room_post_ids[ $loft_type ] ) ? absint( $room_post_ids[ $loft_type ] ) : 0;
+        if ( ! $room_post_id ) {
+            continue;
+        }
+
+        $quantity = isset( $counts[ $loft_type ] ) ? max( 0, absint( $counts[ $loft_type ] ) ) : 0;
+        update_post_meta( $room_post_id, 'nd_booking_meta_box_qnt', $quantity );
+    }
+}
+
+
 function wp_loft_booking_sync_units_only() {
     global $wpdb;
 
@@ -330,12 +389,17 @@ function wp_loft_booking_sync_units_only() {
     $wpdb->query($wpdb->prepare("UPDATE $loft_types_table SET quantity = %d WHERE LOWER(name) = %s", $summary['DOUBLE'], 'double'));
     $wpdb->query($wpdb->prepare("UPDATE $loft_types_table SET quantity = %d WHERE LOWER(name) = %s", $summary['PENTHOUSE'], 'penthouse'));
 
-    // Update post_meta with only available counts
-    update_post_meta(10773, 'nd_booking_meta_box_qnt', $summary['SIMPLE']);    // SIMPLE
-    update_post_meta(13803, 'nd_booking_meta_box_qnt', $summary['DOUBLE']);    // DOUBLE
-    update_post_meta(13804, 'nd_booking_meta_box_qnt', $summary['PENTHOUSE']); // PENTHOUSE
+    $counts_for_nd_booking = wp_loft_booking_get_booking_hub_quantity_summary(
+        array(
+            'simple' => $summary['SIMPLE'],
+            'double' => $summary['DOUBLE'],
+            'penthouse' => $summary['PENTHOUSE'],
+        )
+    );
 
-    error_log("✅ FINAL SYNC (ONLY AVAILABLE): SIMPLE={$summary['SIMPLE']}, DOUBLE={$summary['DOUBLE']}, PENTHOUSE={$summary['PENTHOUSE']}");
+    wp_loft_booking_update_nd_room_quantities( $counts_for_nd_booking );
+
+    error_log("✅ FINAL SYNC (ONLY AVAILABLE): SIMPLE={$counts_for_nd_booking['simple']}, DOUBLE={$counts_for_nd_booking['double']}, PENTHOUSE={$counts_for_nd_booking['penthouse']}");
 
     return [
         'success'        => true,
@@ -595,11 +659,24 @@ function update_room_quantities_after_loft_sync() {
         }
     }
 
-    update_post_meta(10773, 'nd_booking_meta_box_qnt', $simple_count);    // SIMPLE
-    update_post_meta(13803, 'nd_booking_meta_box_qnt', $double_count);    // DOUBLE
-    update_post_meta(13804, 'nd_booking_meta_box_qnt', $penthouse_count); // PENTHOUSE
+    $counts_for_nd_booking = wp_loft_booking_get_booking_hub_quantity_summary(
+        array(
+            'simple' => $simple_count,
+            'double' => $double_count,
+            'penthouse' => $penthouse_count,
+        )
+    );
 
-    error_log("✅ FINAL SYNC: SIMPLE=$simple_count, DOUBLE=$double_count, PENTHOUSE=$penthouse_count");
+    wp_loft_booking_update_nd_room_quantities( $counts_for_nd_booking );
+
+    error_log(
+        sprintf(
+            '✅ FINAL SYNC: SIMPLE=%d, DOUBLE=%d, PENTHOUSE=%d',
+            $counts_for_nd_booking['simple'],
+            $counts_for_nd_booking['double'],
+            $counts_for_nd_booking['penthouse']
+        )
+    );
 }
 
 
