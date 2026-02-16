@@ -9,6 +9,33 @@ class Loft1325_Admin_Pages {
         add_action( 'admin_menu', array( __CLASS__, 'register_menus' ) );
         add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
         add_action( 'admin_post_loft1325_save_settings', array( __CLASS__, 'save_settings' ) );
+        add_action( 'admin_post_loft1325_view_availability', array( __CLASS__, 'handle_view_availability' ) );
+    }
+
+    public static function handle_view_availability() {
+        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
+        }
+
+        check_admin_referer( 'loft1325_view_availability' );
+
+        $check_in = isset( $_POST['check_in'] ) ? sanitize_text_field( wp_unslash( $_POST['check_in'] ) ) : '';
+        $check_out = isset( $_POST['check_out'] ) ? sanitize_text_field( wp_unslash( $_POST['check_out'] ) ) : '';
+        $loft_type = isset( $_POST['loft_type'] ) ? sanitize_key( wp_unslash( $_POST['loft_type'] ) ) : '';
+
+        if ( ! in_array( $loft_type, array( 'simple', 'double', 'penthouse' ), true ) ) {
+            $loft_type = 'simple';
+        }
+
+        $redirect_args = array(
+            'page' => 'loft1325-availability',
+            'check_in' => $check_in,
+            'check_out' => $check_out,
+            'loft_type' => $loft_type,
+        );
+
+        wp_safe_redirect( add_query_arg( $redirect_args, admin_url( 'admin.php' ) ) );
+        exit;
     }
 
     public static function register_menus() {
@@ -249,13 +276,37 @@ class Loft1325_Admin_Pages {
         self::render_page_header( 'Disponibilités' );
         echo '<div class="loft1325-card">';
         echo '<h3>Recherche rapide</h3>';
+        $check_in = isset( $_GET['check_in'] ) ? sanitize_text_field( wp_unslash( $_GET['check_in'] ) ) : current_time( 'Y-m-d' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $check_out = isset( $_GET['check_out'] ) ? sanitize_text_field( wp_unslash( $_GET['check_out'] ) ) : gmdate( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $loft_type = isset( $_GET['loft_type'] ) ? sanitize_key( wp_unslash( $_GET['loft_type'] ) ) : 'simple'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if ( ! in_array( $loft_type, array( 'simple', 'double', 'penthouse' ), true ) ) {
+            $loft_type = 'simple';
+        }
+
         echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form">';
-        echo '<label>Check-in</label><input type="date" name="check_in" required />';
-        echo '<label>Check-out</label><input type="date" name="check_out" required />';
+        echo '<input type="hidden" name="action" value="loft1325_view_availability" />';
+        echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_view_availability' ) ) . '" />';
+        echo '<label>Check-in</label><input type="date" name="check_in" value="' . esc_attr( $check_in ) . '" required />';
+        echo '<label>Check-out</label><input type="date" name="check_out" value="' . esc_attr( $check_out ) . '" required />';
         echo '<label>Type</label>';
-        echo '<select name="loft_type"><option value="simple">Simple</option><option value="double">Double</option><option value="penthouse">Penthouse</option></select>';
+        echo '<select name="loft_type"><option value="simple" ' . selected( $loft_type, 'simple', false ) . '>Simple</option><option value="double" ' . selected( $loft_type, 'double', false ) . '>Double</option><option value="penthouse" ' . selected( $loft_type, 'penthouse', false ) . '>Penthouse</option></select>';
         echo '<button type="submit" class="loft1325-primary">Voir disponibilités</button>';
         echo '</form>';
+        if ( ! empty( $_GET['check_in'] ) && ! empty( $_GET['check_out'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $check_in_utc = gmdate( 'Y-m-d H:i:s', strtotime( $check_in . ' 00:00:00' ) );
+            $check_out_utc = gmdate( 'Y-m-d H:i:s', strtotime( $check_out . ' 00:00:00' ) );
+            $rows = Loft1325_Operations::get_loft_availability_for_range( $check_in_utc, $check_out_utc, $loft_type );
+            $free_count = 0;
+            foreach ( $rows as $row ) {
+                if ( empty( $row['is_busy'] ) ) {
+                    $free_count++;
+                }
+            }
+
+            echo '<div class="loft1325-callout">';
+            echo esc_html( sprintf( 'Résultats %s → %s · %s disponible(s): %d', $check_in, $check_out, ucfirst( $loft_type ), $free_count ) );
+            echo '</div>';
+        }
         echo '<div class="loft1325-callout">Les disponibilités sont calculées en temps réel avec un contrôle d\'overlap sécurisé.</div>';
         echo '</div>';
         echo '</div>';
