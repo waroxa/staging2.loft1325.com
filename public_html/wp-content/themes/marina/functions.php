@@ -445,4 +445,176 @@ if (isset($_GET['listar_puntos_de_acceso']) && $_GET['listar_puntos_de_acceso'] 
 //     }
 // }
 
+// Custom login styling to match the homepage mobile look.
+function marina_custom_login_styles() {
+    $logo_id = absint( get_option( 'nicdark_customizer_logo_img' ) );
+    $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'full' ) : '';
+    ?>
+    <style id="marina-custom-login-style">
+        :root {
+            --marina-login-bg-start: #0f172a;
+            --marina-login-bg-end: #111827;
+            --marina-card-bg: rgba(255, 255, 255, 0.95);
+            --marina-card-border: rgba(255, 255, 255, 0.35);
+            --marina-accent: #2563eb;
+            --marina-accent-hover: #1d4ed8;
+            --marina-text: #0f172a;
+            --marina-muted: #475569;
+        }
+
+        body.login {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(circle at top, rgba(59, 130, 246, 0.3), transparent 40%), linear-gradient(160deg, var(--marina-login-bg-start), var(--marina-login-bg-end));
+            font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body.login::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 30%, rgba(37, 99, 235, 0.12));
+        }
+
+        .login h1 {
+            margin-bottom: 18px;
+        }
+
+        .login h1 a {
+            width: 220px;
+            height: 84px;
+            background-size: contain;
+            background-position: center;
+            <?php if ( $logo_url ) : ?>
+            background-image: url("<?php echo esc_url( $logo_url ); ?>");
+            <?php endif; ?>
+            filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.25));
+        }
+
+        .login form {
+            border: 1px solid var(--marina-card-border);
+            border-radius: 18px;
+            box-shadow: 0 25px 50px rgba(2, 6, 23, 0.35);
+            background: var(--marina-card-bg);
+            backdrop-filter: blur(8px);
+            padding: 26px 24px 24px;
+        }
+
+        .login label,
+        .login #nav a,
+        .login #backtoblog a,
+        .language-switcher label {
+            color: var(--marina-muted) !important;
+            font-weight: 600;
+        }
+
+        .login form .input,
+        .login input[type="text"],
+        .login input[type="password"] {
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            min-height: 48px;
+            box-shadow: none;
+            padding: 10px 14px;
+        }
+
+        .login form .input:focus,
+        .login input[type="text"]:focus,
+        .login input[type="password"]:focus {
+            border-color: var(--marina-accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+        }
+
+        .wp-core-ui .button-primary {
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--marina-accent), #3b82f6);
+            min-height: 46px;
+            padding: 0 20px;
+            font-weight: 700;
+            text-shadow: none;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .wp-core-ui .button-primary:hover,
+        .wp-core-ui .button-primary:focus {
+            background: linear-gradient(135deg, var(--marina-accent-hover), var(--marina-accent));
+        }
+
+        .login .button.wp-hide-pw,
+        .login .button.wp-hide-pw:hover,
+        .login .button.wp-hide-pw:focus {
+            color: var(--marina-accent);
+        }
+
+        .language-switcher,
+        .login #nav,
+        .login #backtoblog {
+            text-align: center;
+        }
+
+        .language-switcher .button,
+        .language-switcher select {
+            border-radius: 10px;
+            min-height: 42px;
+        }
+
+        .login .message,
+        .login #login_error,
+        .login .success {
+            border-radius: 12px;
+            border-left-width: 4px;
+        }
+
+        @media (max-width: 480px) {
+            body.login {
+                padding: 14px;
+            }
+
+            .login form {
+                padding: 22px 18px 18px;
+                border-radius: 16px;
+            }
+
+            .login h1 a {
+                width: 180px;
+                height: 72px;
+            }
+
+            .wp-core-ui .button-primary {
+                width: 100%;
+            }
+        }
+    </style>
+    <?php
+}
+add_action( 'login_enqueue_scripts', 'marina_custom_login_styles' );
+
+// Redirect accidental /admin-hub-2/wp-login.php requests to the custom login slug.
+function marina_redirect_legacy_admin_hub_login_path() {
+    if ( is_admin() ) {
+        return;
+    }
+
+    if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+        return;
+    }
+
+    $request_path = wp_parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH );
+
+    if ( '/admin-hub-2/wp-login.php' !== untrailingslashit( (string) $request_path ) ) {
+        return;
+    }
+
+    wp_safe_redirect( home_url( '/admin-hub-2/' ), 301 );
+    exit;
+}
+add_action( 'template_redirect', 'marina_redirect_legacy_admin_hub_login_path' );
+
+
 ?>
