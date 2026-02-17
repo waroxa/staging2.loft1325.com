@@ -713,8 +713,11 @@ class Loft1325_Admin_Pages {
 
         $status = wp_remote_retrieve_response_code( $response );
         if ( $status >= 200 && $status < 300 ) {
-            wp_send_json_success( array( 'message' => __( 'ButterflyMX connection successful.', 'loft1325-booking-hub' ) ) );
+            wp_send_json_success( array( 'message' => __( 'ButterflyMX token connection successful.', 'loft1325-booking-hub' ) ) );
         }
+
+        $body = wp_remote_retrieve_body( $response );
+        error_log( '[Loft1325 Discovery] Test connection HTTP ' . $status . ' body: ' . $body );
 
         wp_send_json_error( array( 'message' => sprintf( __( 'ButterflyMX responded with HTTP %d.', 'loft1325-booking-hub' ), $status ) ) );
     }
