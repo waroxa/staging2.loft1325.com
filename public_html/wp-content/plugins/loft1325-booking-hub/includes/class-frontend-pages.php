@@ -53,26 +53,56 @@ class Loft1325_Frontend_Pages {
 
     private static function render_frontend_hub() {
         if ( ! is_user_logged_in() || ! current_user_can( 'loft1325_manage_bookings' ) ) {
-            $login_url = wp_login_url( self::get_frontend_hub_url() );
+            $login_error = '';
+            $posted_login = '';
+
+            if ( 'POST' === strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) && isset( $_POST['loft1325_frontend_login_submit'] ) ) {
+                check_admin_referer( 'loft1325_frontend_login', 'loft1325_frontend_login_nonce' );
+
+                $posted_login = isset( $_POST['log'] ) ? sanitize_user( wp_unslash( $_POST['log'] ) ) : '';
+                $posted_password = isset( $_POST['pwd'] ) ? (string) wp_unslash( $_POST['pwd'] ) : '';
+                $remember = ! empty( $_POST['rememberme'] );
+
+                $user = wp_signon(
+                    array(
+                        'user_login'    => $posted_login,
+                        'user_password' => $posted_password,
+                        'remember'      => $remember,
+                    ),
+                    is_ssl()
+                );
+
+                if ( is_wp_error( $user ) ) {
+                    $login_error = $user->get_error_message();
+                } else {
+                    wp_safe_redirect( self::get_frontend_hub_url() );
+                    exit;
+                }
+            }
+
             echo '<div class="loft1325-admin">';
             echo '<div class="loft1325-card loft1325-login-card">';
             echo '<h3>' . esc_html__( 'Connexion requise', 'loft1325-booking-hub' ) . '</h3>';
             echo '<p>' . esc_html__( 'Vous devez utiliser un utilisateur WordPress autorisé pour accéder au Booking Hub.', 'loft1325-booking-hub' ) . '</p>';
             echo '<div class="loft1325-login-card-form">';
-            echo wp_login_form(
-                array(
-                    'echo'           => false,
-                    'redirect'       => self::get_frontend_hub_url(),
-                    'remember'       => true,
-                    'label_log_in'   => esc_html__( 'Se connecter', 'loft1325-booking-hub' ),
-                    'form_id'        => 'loft1325-booking-hub-loginform',
-                    'id_username'    => 'loft1325-booking-hub-user-login',
-                    'id_password'    => 'loft1325-booking-hub-user-pass',
-                    'id_submit'      => 'loft1325-booking-hub-wp-submit',
-                    'value_remember' => true,
-                )
-            );
-            echo '<p class="loft1325-login-card-action"><a class="loft1325-secondary" href="' . esc_url( $login_url ) . '">' . esc_html__( 'Ouvrir la page WordPress de connexion', 'loft1325-booking-hub' ) . '</a></p>';
+
+            if ( ! empty( $login_error ) ) {
+                echo '<div class="notice notice-error"><p>' . wp_kses_post( $login_error ) . '</p></div>';
+            }
+
+            echo '<form name="loginform" id="loft1325-booking-hub-loginform" action="' . esc_url( self::get_frontend_hub_url() ) . '" method="post">';
+            wp_nonce_field( 'loft1325_frontend_login', 'loft1325_frontend_login_nonce' );
+            echo '<p class="login-username">';
+            echo '<label for="loft1325-booking-hub-user-login">' . esc_html__( 'Nom d’utilisateur ou adresse courriel', 'loft1325-booking-hub' ) . '</label>';
+            echo '<input type="text" name="log" id="loft1325-booking-hub-user-login" class="input" value="' . esc_attr( $posted_login ) . '" size="20" autocomplete="username" required />';
+            echo '</p>';
+            echo '<p class="login-password">';
+            echo '<label for="loft1325-booking-hub-user-pass">' . esc_html__( 'Mot de passe', 'loft1325-booking-hub' ) . '</label>';
+            echo '<input type="password" name="pwd" id="loft1325-booking-hub-user-pass" class="input" value="" size="20" autocomplete="current-password" required />';
+            echo '</p>';
+            echo '<p class="login-remember"><label><input name="rememberme" type="checkbox" id="loft1325-booking-hub-rememberme" value="forever" checked="checked" /> ' . esc_html__( 'Se souvenir de moi', 'loft1325-booking-hub' ) . '</label></p>';
+            echo '<p class="login-submit"><input type="submit" name="loft1325_frontend_login_submit" id="loft1325-booking-hub-wp-submit" class="button button-primary" value="' . esc_attr__( 'Se connecter', 'loft1325-booking-hub' ) . '" /></p>';
+            echo '</form>';
             echo '</div>';
             echo '</div>';
             echo '</div>';
