@@ -312,42 +312,26 @@ add_action('wp_ajax_wp_loft_booking_sync_tenants', 'wp_loft_booking_sync_tenants
 add_action('wp_ajax_wp_loft_booking_sync_keychains', 'wp_loft_booking_sync_keychains_handler');
 
 function wp_loft_booking_sync_keychains_handler() {
-    $token = get_option('butterflymx_access_token_v3');
-    $env = get_option('butterflymx_environment', 'production');
-    $base_url = $env === 'production'
-        ? "https://api.butterflymx.com/v3"
-        : "https://api.na.sandbox.butterflymx.com/v3";
-
-    if (!$token) {
-        wp_send_json_error("Missing ButterflyMX token.");
-    }
-    error_log("🔑 Usando token V3 desde opciones: $token");
-
-    $response = wp_remote_get("$base_url/keychains", [
-        'headers' => [
-            'Authorization' => "Bearer $token",
-            'Content-Type'  => 'application/vnd.api+json'
-        ],
-        'timeout' => 30
-    ]);
-
-    if (is_wp_error($response)) {
-        wp_send_json_error("Request failed: " . $response->get_error_message());
+    if (!function_exists('wp_loft_booking_sync_keychains_from_api')) {
+        wp_send_json_error('Keychain sync helper is unavailable.');
     }
 
-    $body = json_decode(wp_remote_retrieve_body($response), true);
-    if (!isset($body['data']) || !is_array($body['data'])) {
-        wp_send_json_error("Invalid response format.");
+    $fetched = wp_loft_booking_sync_keychains_from_api();
+    if (is_wp_error($fetched)) {
+        wp_send_json_error($fetched->get_error_message());
     }
 
-    $result = wp_loft_booking_sync_keychains_only($body['data']);
+    if (empty($fetched)) {
+        wp_send_json_success('No active ButterflyMX keychains were returned.');
+    }
+
+    $result = wp_loft_booking_sync_keychains_only($fetched);
 
     if ($result === true) {
-        wp_send_json_success("✅ Keychains synced successfully.");
+        wp_send_json_success(sprintf('✅ Keychains synced successfully (%d records).', count($fetched)));
     } else {
-        wp_send_json_error("❌ Sync failed internally.");
+        wp_send_json_error('❌ Sync failed internally.');
     }
 }
 
 // add_action('wp_ajax_wp_loft_booking_sync_tenants', 'wp_loft_booking_fetch_and_save_tenants');
-
