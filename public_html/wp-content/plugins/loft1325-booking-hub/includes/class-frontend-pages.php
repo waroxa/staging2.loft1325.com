@@ -55,10 +55,25 @@ class Loft1325_Frontend_Pages {
         if ( ! is_user_logged_in() || ! current_user_can( 'loft1325_manage_bookings' ) ) {
             $login_url = wp_login_url( self::get_frontend_hub_url() );
             echo '<div class="loft1325-admin">';
-            echo '<div class="loft1325-card">';
+            echo '<div class="loft1325-card loft1325-login-card">';
             echo '<h3>' . esc_html__( 'Connexion requise', 'loft1325-booking-hub' ) . '</h3>';
             echo '<p>' . esc_html__( 'Vous devez utiliser un utilisateur WordPress autorisé pour accéder au Booking Hub.', 'loft1325-booking-hub' ) . '</p>';
-            echo '<p><a class="loft1325-primary" href="' . esc_url( $login_url ) . '">' . esc_html__( 'Se connecter', 'loft1325-booking-hub' ) . '</a></p>';
+            echo '<div class="loft1325-login-card-form">';
+            echo wp_login_form(
+                array(
+                    'echo'           => false,
+                    'redirect'       => self::get_frontend_hub_url(),
+                    'remember'       => true,
+                    'label_log_in'   => esc_html__( 'Se connecter', 'loft1325-booking-hub' ),
+                    'form_id'        => 'loft1325-booking-hub-loginform',
+                    'id_username'    => 'loft1325-booking-hub-user-login',
+                    'id_password'    => 'loft1325-booking-hub-user-pass',
+                    'id_submit'      => 'loft1325-booking-hub-wp-submit',
+                    'value_remember' => true,
+                )
+            );
+            echo '<p class="loft1325-login-card-action"><a class="loft1325-secondary" href="' . esc_url( $login_url ) . '">' . esc_html__( 'Ouvrir la page WordPress de connexion', 'loft1325-booking-hub' ) . '</a></p>';
+            echo '</div>';
             echo '</div>';
             echo '</div>';
             return;

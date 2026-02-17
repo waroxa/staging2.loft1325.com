@@ -474,7 +474,109 @@
     font-weight: 600;
 }
 
+.loft1325-login-card {
+    max-width: 520px;
+    margin: 24px auto;
+}
+
+.loft1325-login-card-action {
+    margin: 20px 0 0;
+}
+
+.loft1325-login-card-form {
+    margin-top: 18px;
+}
+
+.loft1325-login-card-form form {
+    display: grid;
+    gap: 12px;
+}
+
+.loft1325-login-card-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #0e3558;
+}
+
+.loft1325-login-card-form input[type="text"],
+.loft1325-login-card-form input[type="password"] {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #ccd4dd;
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.loft1325-login-card-form .forgetmenot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.loft1325-login-card-form .forgetmenot label {
+    margin: 0;
+    font-weight: 500;
+    color: #334155;
+}
+
+.loft1325-login-card-form .submit {
+    margin: 6px 0 0;
+}
+
+.loft1325-login-card .loft1325-primary,
+.loft1325-login-card a.loft1325-primary,
+.loft1325-login-card-form input[type="submit"] {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff;
+}
+
+.loft1325-login-card-form input[type="submit"] {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 12px;
+    border-width: 1px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.loft1325-login-card-action .loft1325-secondary {
+    width: 100%;
+}
+
 @media (max-width: 768px) {
+    .loft1325-admin {
+        width: min(100%, 560px);
+        margin: 0 auto;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
+
+    .loft1325-login-card {
+        margin: 18px auto 24px;
+        padding: 24px;
+        text-align: center;
+    }
+
+    .loft1325-login-card p {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 34ch;
+    }
+
+    .loft1325-login-card .loft1325-primary,
+    .loft1325-login-card a.loft1325-primary,
+    .loft1325-login-card-form input[type="submit"] {
+        width: 100%;
+    }
+
     .loft1325-frontend-shell {
         padding-bottom: 36px;
     }
