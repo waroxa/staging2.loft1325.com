@@ -224,6 +224,18 @@ class Loft1325_Admin_Pages {
             echo '<div class="notice notice-success"><p>' . sprintf( esc_html__( 'Synchronisation ButterflyMX terminée. %d clés importées ou mises à jour.', 'loft1325-booking-hub' ), $synced_count ) . '</p></div>';
         }
 
+        if ( isset( $_GET['loft1325_key_created'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-success"><p>Clé ButterflyMX créée ou renvoyée.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_revoked'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-success"><p>Clé ButterflyMX révoquée.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_key_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-error"><p>Impossible de traiter la clé ButterflyMX pour cette réservation.</p></div>';
+        }
+
         $sync_nonce = wp_create_nonce( 'loft1325_sync_keychains' );
         echo '<div class="loft1325-filter-bar">';
         echo '<span class="loft1325-chip is-active">Aujourd\'hui</span>';
@@ -258,9 +270,28 @@ class Loft1325_Admin_Pages {
             echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
             echo '<div class="loft1325-key">Clé: <span class="loft1325-badge">' . esc_html( $key_status ) . '</span></div>';
             echo '<div class="loft1325-actions">';
-            echo '<button class="loft1325-secondary">Edit</button>';
-            echo '<button class="loft1325-primary">Créer/Renvoyer clé</button>';
-            echo '<button class="loft1325-secondary">Révoquer</button>';
+            $legacy_edit_url = add_query_arg(
+                array(
+                    'page'       => 'wp_loft_booking_bookings',
+                    'booking_id' => absint( $booking['id'] ),
+                ),
+                admin_url( 'admin.php' )
+            );
+            echo '<a class="loft1325-secondary" href="' . esc_url( $legacy_edit_url ) . '">Edit</a>';
+
+            echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form">';
+            echo '<input type="hidden" name="action" value="loft1325_create_key" />';
+            echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
+            echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_create_key' ) ) . '" />';
+            echo '<button class="loft1325-primary" type="submit">Créer/Renvoyer clé</button>';
+            echo '</form>';
+
+            echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form">';
+            echo '<input type="hidden" name="action" value="loft1325_revoke_key" />';
+            echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
+            echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_revoke_key' ) ) . '" />';
+            echo '<button class="loft1325-secondary" type="submit">Révoquer</button>';
+            echo '</form>';
             echo '</div>';
             echo '</div>';
         }

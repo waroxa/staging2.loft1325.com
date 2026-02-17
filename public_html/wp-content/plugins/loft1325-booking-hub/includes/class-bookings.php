@@ -7,10 +7,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Loft1325_Bookings {
     public static function boot() {
         add_action( 'admin_post_loft1325_create_booking', array( __CLASS__, 'create_booking' ) );
+        add_action( 'admin_post_loft1325_create_key', array( __CLASS__, 'create_key' ) );
         add_action( 'admin_post_loft1325_revoke_key', array( __CLASS__, 'revoke_key' ) );
         add_action( 'admin_post_loft1325_sync_keychains', array( __CLASS__, 'sync_from_butterflymx' ) );
         add_action( 'loft1325_booking_hub_sync_keychains', array( __CLASS__, 'run_scheduled_sync' ) );
         add_action( 'init', array( __CLASS__, 'ensure_sync_schedule' ) );
+    }
+
+    public static function create_key() {
+        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
+        }
+
+        check_admin_referer( 'loft1325_create_key' );
+
+        $booking_id = isset( $_POST['booking_id'] ) ? absint( $_POST['booking_id'] ) : 0;
+        if ( ! $booking_id ) {
+            wp_safe_redirect( add_query_arg( 'loft1325_key_error', '1', wp_get_referer() ) );
+            exit;
+        }
+
+        self::create_key_for_booking( $booking_id );
+
+        wp_safe_redirect( add_query_arg( 'loft1325_key_created', '1', wp_get_referer() ) );
+        exit;
     }
 
     public static function ensure_sync_schedule() {
