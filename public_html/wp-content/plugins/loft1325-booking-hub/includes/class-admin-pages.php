@@ -704,17 +704,7 @@ class Loft1325_Admin_Pages {
 
         check_ajax_referer( 'loft1325_test_butterfly_connection', 'nonce' );
 
-        $settings = loft1325_get_settings();
-        $params = array(
-            'per_page' => 1,
-        );
-
-        if ( ! empty( $settings['building_id'] ) ) {
-            $params['building_id'] = sanitize_text_field( (string) $settings['building_id'] );
-        }
-
-        // Use the same token-based flow already used by the booking hub sync methods.
-        $response = Loft1325_API_ButterflyMX::list_keychains( $params );
+        $response = Loft1325_API_ButterflyMX::request( 'GET', '/v4/buildings' );
 
         if ( is_wp_error( $response ) ) {
             error_log( '[Loft1325 Discovery] Test connection failed: ' . $response->get_error_message() );
