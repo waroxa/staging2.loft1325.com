@@ -81,6 +81,12 @@ class Loft1325_Frontend_Pages {
 
         $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
         $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
+        $current_view_url = self::get_frontend_hub_url(
+            array(
+                'view' => $view,
+                'period' => $period,
+            )
+        );
         $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
         $tickets = Loft1325_Operations::get_maintenance_tickets();
         $bounds = Loft1325_Operations::get_period_bounds( $period );
@@ -170,6 +176,7 @@ class Loft1325_Frontend_Pages {
             echo '<h3>Nouveau ticket maintenance</h3>';
             echo '<form method="post" class="loft1325-form">';
             echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+            echo '<input type="hidden" name="loft1325_redirect" value="' . esc_url( $current_view_url ) . '" />';
             echo '<input type="hidden" name="loft1325_ops_action" value="maintenance_create" />';
             echo '<label>Loft</label><input type="text" name="loft_label" required />';
             echo '<label>Titre</label><input type="text" name="title" required />';
@@ -186,6 +193,7 @@ class Loft1325_Frontend_Pages {
                 echo '<p>' . esc_html( $ticket['details'] ) . '</p>';
                 echo '<form method="post" class="loft1325-actions">';
                 echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                echo '<input type="hidden" name="loft1325_redirect" value="' . esc_url( $current_view_url ) . '" />';
                 echo '<input type="hidden" name="ticket_id" value="' . esc_attr( $ticket['id'] ) . '" />';
                 echo '<input type="hidden" name="loft1325_ops_action" value="maintenance_update" />';
                 echo '<select name="status"><option value="todo">Todo</option><option value="in_progress">In progress</option><option value="done">Done</option></select>';
@@ -207,6 +215,7 @@ class Loft1325_Frontend_Pages {
                 }
                 echo '<form method="post" class="loft1325-actions">';
                 echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                echo '<input type="hidden" name="loft1325_redirect" value="' . esc_url( $current_view_url ) . '" />';
                 echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
                 if ( 'bookings' === $view ) {
                     echo '<button class="loft1325-primary" name="loft1325_ops_action" value="approve">Approve</button>';
@@ -237,6 +246,7 @@ class Loft1325_Frontend_Pages {
                     if ( ! $is_busy ) {
                         echo '<form method="post" class="loft1325-actions">';
                         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                        echo '<input type="hidden" name="loft1325_redirect" value="' . esc_url( $current_view_url ) . '" />';
                         echo '<input type="hidden" name="loft1325_ops_action" value="confirm_free" />';
                         echo '<input type="hidden" name="loft_id" value="' . esc_attr( $row['id'] ) . '" />';
                         echo '<input type="hidden" name="period" value="' . esc_attr( $period ) . '" />';
