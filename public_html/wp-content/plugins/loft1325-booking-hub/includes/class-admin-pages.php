@@ -949,9 +949,38 @@ class Loft1325_Admin_Pages {
 
         if ( ! empty( $discovery_report['ran_at'] ) ) {
             echo '<p class="loft1325-meta" style="margin-top:12px;">Last audit: ' . esc_html( $discovery_report['ran_at'] ) . ' (' . esc_html( $discovery_report['environment'] ?? 'n/a' ) . ')</p>';
+
+            $findings = isset( $discovery_report['findings'] ) && is_array( $discovery_report['findings'] ) ? $discovery_report['findings'] : array();
+            $active_plugins = isset( $discovery_report['active_plugins'] ) && is_array( $discovery_report['active_plugins'] ) ? $discovery_report['active_plugins'] : array();
+            $loft_tables = isset( $discovery_report['loft_tables'] ) && is_array( $discovery_report['loft_tables'] ) ? $discovery_report['loft_tables'] : array();
+            $booking_tables = isset( $discovery_report['booking_tables'] ) && is_array( $discovery_report['booking_tables'] ) ? $discovery_report['booking_tables'] : array();
+
+            echo '<div style="margin-top:12px;">';
+            echo '<strong>Discovery audit results</strong>';
+            echo '<ul style="margin:8px 0 0 18px; list-style:disc;">';
+            echo '<li>Active plugins scanned: ' . esc_html( count( $active_plugins ) ) . '</li>';
+            echo '<li>Potential ButterflyMX references found: ' . esc_html( count( $findings ) ) . '</li>';
+            echo '<li>Loft-related tables: ' . esc_html( count( $loft_tables ) ) . '</li>';
+            echo '<li>Booking-related tables: ' . esc_html( count( $booking_tables ) ) . '</li>';
+            echo '</ul>';
+            echo '</div>';
+
+            if ( ! empty( $findings ) ) {
+                echo '<table class="widefat striped" style="margin-top:12px;">';
+                echo '<thead><tr><th>Plugin</th><th>File</th><th>Pattern</th></tr></thead><tbody>';
+                foreach ( array_slice( $findings, 0, 25 ) as $finding ) {
+                    echo '<tr>';
+                    echo '<td>' . esc_html( $finding['plugin'] ?? '' ) . '</td>';
+                    echo '<td><code>' . esc_html( $finding['file'] ?? '' ) . '</code></td>';
+                    echo '<td><code>' . esc_html( $finding['pattern'] ?? '' ) . '</code></td>';
+                    echo '</tr>';
+                }
+                echo '</tbody></table>';
+            }
         }
 
         if ( ! empty( $categorization_results ) ) {
+            echo '<p class="loft1325-meta" style="margin-top:12px;">Categorized lofts cached: ' . esc_html( count( $categorization_results ) ) . '</p>';
             echo '<table class="widefat striped" style="margin-top:12px;">';
             echo '<thead><tr><th>Loft ID</th><th>Type</th><th>Status</th><th>Unit ID</th><th>Last sync</th></tr></thead><tbody>';
             foreach ( array_slice( $categorization_results, 0, 20 ) as $row ) {
