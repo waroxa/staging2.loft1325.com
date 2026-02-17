@@ -30,7 +30,7 @@ class Loft1325_Lofts {
             AND l.loft_type = %s
             AND l.id NOT IN (
                 SELECT b.loft_id FROM {$bookings_table} b
-                WHERE b.status IN ('confirmed','checked_in')
+                WHERE b.status IN ('tentative','confirmed','checked_in')
                 AND %s < b.check_out_utc
                 AND %s > b.check_in_utc
             )
