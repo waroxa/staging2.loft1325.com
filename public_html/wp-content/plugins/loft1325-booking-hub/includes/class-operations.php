@@ -25,6 +25,13 @@ class Loft1325_Operations {
         }
 
         $redirect = wp_get_referer();
+        if ( ! empty( $_POST['loft1325_redirect'] ) ) {
+            $posted_redirect = esc_url_raw( wp_unslash( $_POST['loft1325_redirect'] ) );
+            if ( ! empty( $posted_redirect ) ) {
+                $redirect = $posted_redirect;
+            }
+        }
+
         if ( ! $redirect ) {
             $redirect = admin_url( 'admin.php?page=loft1325-calendar' );
         }
@@ -66,6 +73,10 @@ class Loft1325_Operations {
                     'issue' => 'issue',
                 );
                 self::update_cleaning_status( $booking_id, $map[ $action ] );
+
+                if ( 'issue' === $action ) {
+                    self::send_cleaning_issue_alert( $booking_id );
+                }
             } elseif ( 'maintenance_create' === $action ) {
                 self::create_maintenance_ticket( $_POST );
             } elseif ( 'maintenance_update' === $action ) {
@@ -465,6 +476,44 @@ class Loft1325_Operations {
         $emails = preg_split( '/[\s,;]+/', (string) $value );
         $emails = array_filter( array_map( 'sanitize_email', $emails ), 'is_email' );
         return array_values( array_unique( $emails ) );
+    }
+
+    public static function send_cleaning_issue_alert( $booking_id ) {
+        global $wpdb;
+
+        $settings = loft1325_get_settings();
+        $cleaning_emails = self::parse_emails( $settings['cleaning_team_emails'] ?? '' );
+        if ( empty( $cleaning_emails ) ) {
+            return;
+        }
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $booking = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT b.id, b.guest_name, b.check_out_utc, l.loft_name
+                FROM {$bookings_table} b
+                LEFT JOIN {$lofts_table} l ON l.id = b.loft_id
+                WHERE b.id = %d",
+                absint( $booking_id )
+            ),
+            ARRAY_A
+        );
+
+        if ( empty( $booking['id'] ) ) {
+            return;
+        }
+
+        $subject = sprintf( 'Loft1325 cleaning issue: %s', $booking['loft_name'] ? $booking['loft_name'] : 'Loft' );
+        $message = sprintf(
+            "A cleaning issue was reported for %s.\n\nBooking #%d\nGuest: %s\nCheckout: %s\nStatus: needs maintenance",
+            $booking['loft_name'] ? $booking['loft_name'] : 'Loft',
+            absint( $booking['id'] ),
+            $booking['guest_name'] ? $booking['guest_name'] : '-',
+            $booking['check_out_utc'] ? loft1325_format_datetime_local( $booking['check_out_utc'] ) : '-'
+        );
+
+        wp_mail( $cleaning_emails, $subject, $message );
     }
 
     public static function send_two_hour_cleaning_alerts() {
