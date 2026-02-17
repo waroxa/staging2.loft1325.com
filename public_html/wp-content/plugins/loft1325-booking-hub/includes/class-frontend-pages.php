@@ -74,8 +74,44 @@ class Loft1325_Frontend_Pages {
         echo '<div class="loft1325-admin">';
         echo '<header class="loft1325-header">';
         echo '<div><span class="loft1325-eyebrow">Loft1325 Booking Hub</span><h1>Booking Hub</h1></div>';
-        echo '<a class="loft1325-primary" href="' . esc_url( admin_url( 'admin.php?page=loft1325-new-booking' ) ) . '">+ Nouvelle réservation</a>';
+        echo '<a class="loft1325-primary" href="' . esc_url( self::get_frontend_hub_url( array( 'show_new_booking' => '1', 'period' => $period, 'view' => $view ) ) ) . '">+ Nouvelle réservation</a>';
         echo '</header>';
+
+        if ( ! empty( $_GET['show_new_booking'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $nonce = wp_create_nonce( 'loft1325_create_booking' );
+            $clients = Loft1325_Bookings::get_clients();
+            echo '<div class="loft1325-card">';
+            echo '<h3>Nouvelle réservation</h3>';
+            echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form">';
+            echo '<input type="hidden" name="action" value="loft1325_create_booking" />';
+            echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $nonce ) . '" />';
+            echo '<label>Check-in</label><input type="datetime-local" name="check_in" required />';
+            echo '<label>Check-out</label><input type="datetime-local" name="check_out" required />';
+            echo '<label>Type de loft</label>';
+            echo '<select name="loft_type" required><option value="simple">Simple</option><option value="double">Double</option><option value="penthouse">Penthouse</option></select>';
+            $requested_loft_id = isset( $_GET['loft_id'] ) ? absint( $_GET['loft_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<label>Loft spécifique (optionnel)</label><input type="number" name="loft_id" placeholder="ID loft" value="' . esc_attr( $requested_loft_id ) . '" />';
+            echo '<label>Client existant</label>';
+            echo '<select id="loft1325-front-client-select"><option value="">Sélectionner un client…</option>';
+            foreach ( $clients as $client ) {
+                $payload = array(
+                    'name'  => $client['full_name'],
+                    'email' => $client['email'],
+                    'phone' => $client['phone'],
+                );
+                echo '<option value="' . esc_attr( wp_json_encode( $payload ) ) . '">' . esc_html( $client['full_name'] . ' · ' . $client['email'] ) . '</option>';
+            }
+            echo '</select>';
+            echo '<label>Nom</label><input type="text" name="guest_name" required />';
+            echo '<label>Email</label><input type="email" name="guest_email" />';
+            echo '<label>Téléphone</label><input type="text" name="guest_phone" />';
+            echo '<label>Notes</label><textarea name="notes" rows="3"></textarea>';
+            echo '<label class="loft1325-toggle"><input type="checkbox" name="create_key" /> Créer clé ButterflyMX</label>';
+            echo '<button class="loft1325-primary">Finaliser</button>';
+            echo '</form>';
+            echo '<script>(function(){var s=document.getElementById("loft1325-front-client-select");if(!s){return;}s.addEventListener("change",function(){if(!s.value){return;}try{var c=JSON.parse(s.value);var n=document.querySelector("input[name=\'guest_name\']");var e=document.querySelector("input[name=\'guest_email\']");var p=document.querySelector("input[name=\'guest_phone\']");if(n&&c.name){n.value=c.name;}if(e&&c.email){e.value=c.email;}if(p&&c.phone){p.value=c.phone;}}catch(err){}});})();</script>';
+            echo '</div>';
+        }
 
         if ( ! empty( $_GET['loft1325_ops_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             echo '<div class="notice notice-error"><p>Une erreur est survenue pendant l&rsquo;action demandée.</p></div>';
@@ -191,7 +227,7 @@ class Loft1325_Frontend_Pages {
                         echo '<input type="hidden" name="period" value="' . esc_attr( $period ) . '" />';
                         echo '<button class="loft1325-secondary" type="submit">Confirmer FREE</button>';
                         echo '</form>';
-                        echo '<p class="loft1325-actions"><a class="loft1325-primary" href="' . esc_url( admin_url( 'admin.php?page=loft1325-new-booking&loft_id=' . absint( $row['id'] ) ) ) . '">Créer une réservation</a></p>';
+                        echo '<p class="loft1325-actions"><a class="loft1325-primary" href="' . esc_url( self::get_frontend_hub_url( array( 'show_new_booking' => '1', 'view' => 'bookings', 'period' => $period, 'loft_id' => absint( $row['id'] ) ) ) ) . '">Créer une réservation</a></p>';
                     }
                     echo '</div>';
                 }
