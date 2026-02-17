@@ -10,6 +10,9 @@ class Loft1325_Admin_Pages {
         add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
         add_action( 'admin_post_loft1325_save_settings', array( __CLASS__, 'save_settings' ) );
         add_action( 'admin_post_loft1325_view_availability', array( __CLASS__, 'handle_view_availability' ) );
+        add_action( 'admin_post_loft1325_run_discovery_audit', array( __CLASS__, 'handle_run_discovery_audit' ) );
+        add_action( 'admin_post_loft1325_run_loft_categorization', array( __CLASS__, 'handle_run_loft_categorization' ) );
+        add_action( 'wp_ajax_loft1325_test_butterfly_connection', array( __CLASS__, 'ajax_test_butterfly_connection' ) );
     }
 
     public static function handle_view_availability() {
@@ -639,6 +642,19 @@ class Loft1325_Admin_Pages {
         $nonce = wp_create_nonce( 'loft1325_save_settings' );
 
         self::render_page_header( 'Paramètres' );
+
+        if ( isset( $_GET['loft1325_discovery_done'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-success"><p>Discovery audit completed.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_categorization_done'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-success"><p>Loft categorization completed and cached.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_categorization_blocked'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-warning"><p>Categorization writes are restricted to staging environments.</p></div>';
+        }
+
         echo '<div class="loft1325-card">';
         echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form">';
         echo '<input type="hidden" name="action" value="loft1325_save_settings" />';
@@ -663,6 +679,8 @@ class Loft1325_Admin_Pages {
 
 
 
+        self::render_sync_tools_section();
+
         echo '<div class="loft1325-card">';
         echo '<h3>Accès public (lien externe)</h3>';
         echo '<p>Créez une page WordPress et ajoutez le shortcode suivant :</p>';
@@ -670,6 +688,287 @@ class Loft1325_Admin_Pages {
         echo '</div>';
         echo '</div>';
     }
+
+    private static function is_staging_environment() {
+        return defined( 'WP_ENVIRONMENT_TYPE' ) && 'staging' === WP_ENVIRONMENT_TYPE;
+    }
+
+    private static function can_run_write_actions() {
+        return self::is_staging_environment();
+    }
+
+    public static function ajax_test_butterfly_connection() {
+        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Access denied.', 'loft1325-booking-hub' ) ), 403 );
+        }
+
+        check_ajax_referer( 'loft1325_test_butterfly_connection', 'nonce' );
+
+        $response = Loft1325_API_ButterflyMX::request( 'GET', '/v4/buildings' );
+
+        if ( is_wp_error( $response ) ) {
+            error_log( '[Loft1325 Discovery] Test connection failed: ' . $response->get_error_message() );
+            wp_send_json_error( array( 'message' => $response->get_error_message() ) );
+        }
+
+        $status = wp_remote_retrieve_response_code( $response );
+        if ( $status >= 200 && $status < 300 ) {
+            wp_send_json_success( array( 'message' => __( 'ButterflyMX connection successful.', 'loft1325-booking-hub' ) ) );
+        }
+
+        wp_send_json_error( array( 'message' => sprintf( __( 'ButterflyMX responded with HTTP %d.', 'loft1325-booking-hub' ), $status ) ) );
+    }
+
+    public static function handle_run_discovery_audit() {
+        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
+        }
+
+        check_admin_referer( 'loft1325_run_discovery_audit' );
+
+        self::run_discovery_audit();
+
+        wp_safe_redirect( add_query_arg( array( 'page' => 'loft1325-settings', 'loft1325_discovery_done' => 1 ), admin_url( 'admin.php' ) ) );
+        exit;
+    }
+
+    public static function handle_run_loft_categorization() {
+        if ( ! current_user_can( 'loft1325_manage_bookings' ) ) {
+            wp_die( esc_html__( 'Access denied.', 'loft1325-booking-hub' ) );
+        }
+
+        check_admin_referer( 'loft1325_run_loft_categorization' );
+
+        if ( ! self::can_run_write_actions() ) {
+            wp_safe_redirect( add_query_arg( array( 'page' => 'loft1325-settings', 'loft1325_categorization_blocked' => 1 ), admin_url( 'admin.php' ) ) );
+            exit;
+        }
+
+        self::run_loft_categorization( true );
+
+        wp_safe_redirect( add_query_arg( array( 'page' => 'loft1325-settings', 'loft1325_categorization_done' => 1 ), admin_url( 'admin.php' ) ) );
+        exit;
+    }
+
+    private static function maybe_create_wp_lofts_table() {
+        global $wpdb;
+
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+        $table_name = $wpdb->prefix . 'lofts';
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE {$table_name} (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            loft_id varchar(191) NOT NULL,
+            type enum('Resident','Rental') NOT NULL DEFAULT 'Rental',
+            status enum('Free','Busy','Tentative') NOT NULL DEFAULT 'Free',
+            butterfly_unit_id varchar(191) DEFAULT '',
+            last_sync datetime NOT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY loft_id (loft_id)
+        ) {$charset_collate};";
+
+        dbDelta( $sql );
+    }
+
+    private static function run_discovery_audit() {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        $active_plugins = (array) get_option( 'active_plugins', array() );
+        $patterns = array( 'butterflymx', 'wp_remote_get', 'api.butterflymx.com', 'keychains', 'tenants', 'visitor passes', '/v4/tenants', '/v4/keychains' );
+        $findings = array();
+
+        foreach ( $active_plugins as $plugin_file ) {
+            $base_path = trailingslashit( WP_PLUGIN_DIR ) . dirname( $plugin_file );
+            if ( ! is_dir( $base_path ) ) {
+                $base_path = trailingslashit( WP_PLUGIN_DIR ) . $plugin_file;
+            }
+
+            $files = array();
+            if ( is_dir( $base_path ) ) {
+                $iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $base_path ) );
+                foreach ( $iterator as $file ) {
+                    if ( $file instanceof SplFileInfo ) {
+                        $files[] = $file->getPathname();
+                    }
+                }
+            } elseif ( is_file( $base_path ) ) {
+                $files[] = $base_path;
+            }
+
+            foreach ( $files as $file_path ) {
+                if ( ! is_readable( $file_path ) || '.php' !== substr( $file_path, -4 ) ) {
+                    continue;
+                }
+
+                $content = file_get_contents( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+                if ( false === $content ) {
+                    continue;
+                }
+
+                foreach ( $patterns as $pattern ) {
+                    if ( false !== stripos( $content, $pattern ) ) {
+                        $findings[] = array(
+                            'plugin' => $plugin_file,
+                            'file' => str_replace( trailingslashit( ABSPATH ), '', $file_path ),
+                            'pattern' => $pattern,
+                        );
+                    }
+                }
+            }
+        }
+
+        global $wpdb;
+        $loft_tables = $wpdb->get_col( "SHOW TABLES LIKE '%loft%'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.NotPrepared
+        $booking_tables = $wpdb->get_col( "SHOW TABLES LIKE '%booking%'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.NotPrepared
+
+        $report = array(
+            'ran_at' => current_time( 'mysql' ),
+            'environment' => defined( 'WP_ENVIRONMENT_TYPE' ) ? WP_ENVIRONMENT_TYPE : 'not-set',
+            'active_plugins' => $active_plugins,
+            'findings' => $findings,
+            'loft_tables' => $loft_tables,
+            'booking_tables' => $booking_tables,
+            'recommendations' => in_array( $wpdb->prefix . 'lofts', $loft_tables, true ) ? array() : array( $wpdb->prefix . 'lofts' ),
+        );
+
+        update_option( 'loft1325_discovery_audit_report', $report, false );
+        error_log( '[Loft1325 Discovery] Audit completed.' );
+
+        return $report;
+    }
+
+    private static function run_loft_categorization( $force_refresh = false ) {
+        if ( ! $force_refresh ) {
+            $cached = get_transient( 'loft_categorization_cache' );
+            if ( is_array( $cached ) ) {
+                return $cached;
+            }
+        }
+
+        self::maybe_create_wp_lofts_table();
+
+        $tenants_response = Loft1325_API_ButterflyMX::list_tenants();
+        $keychains_response = Loft1325_API_ButterflyMX::list_keychains();
+
+        if ( is_wp_error( $tenants_response ) || is_wp_error( $keychains_response ) ) {
+            $error = is_wp_error( $tenants_response ) ? $tenants_response->get_error_message() : $keychains_response->get_error_message();
+            error_log( '[Loft1325 Discovery] Categorization failed: ' . $error );
+            return array();
+        }
+
+        $tenants_body = json_decode( wp_remote_retrieve_body( $tenants_response ), true );
+        $keychains_body = json_decode( wp_remote_retrieve_body( $keychains_response ), true );
+        $tenants = isset( $tenants_body['data'] ) && is_array( $tenants_body['data'] ) ? $tenants_body['data'] : array();
+        $keychains = isset( $keychains_body['data'] ) && is_array( $keychains_body['data'] ) ? $keychains_body['data'] : array();
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'lofts';
+        $now = current_time( 'mysql' );
+        $results = array();
+
+        foreach ( $tenants as $tenant ) {
+            $tenant_id = isset( $tenant['id'] ) ? (string) $tenant['id'] : '';
+            $attributes = isset( $tenant['attributes'] ) && is_array( $tenant['attributes'] ) ? $tenant['attributes'] : array();
+            $name = isset( $attributes['name'] ) ? (string) $attributes['name'] : '';
+            $expires_at = isset( $attributes['expiration_date'] ) ? (string) $attributes['expiration_date'] : '';
+            $unit_id = isset( $attributes['unit_id'] ) ? (string) $attributes['unit_id'] : '';
+
+            $is_permanent = '' === $expires_at || ! empty( $attributes['is_permanent'] );
+            $has_temp_name = (bool) preg_match( '/\d{4}-\d{2}-\d{2}|PLETHORA|GUEST|TEMP/i', $name );
+            $has_temp_keychain = false;
+
+            foreach ( $keychains as $keychain ) {
+                $keychain_attributes = isset( $keychain['attributes'] ) && is_array( $keychain['attributes'] ) ? $keychain['attributes'] : array();
+                $keychain_tenant_id = isset( $keychain_attributes['tenant_id'] ) ? (string) $keychain_attributes['tenant_id'] : '';
+                $keychain_type = isset( $keychain_attributes['type'] ) ? (string) $keychain_attributes['type'] : '';
+
+                if ( $keychain_tenant_id === $tenant_id && in_array( $keychain_type, array( 'custom', 'recurring', 'one_time' ), true ) ) {
+                    $has_temp_keychain = true;
+                    break;
+                }
+            }
+
+            $type = ( $is_permanent && ! $has_temp_name && ! $has_temp_keychain ) ? 'Resident' : 'Rental';
+            $status = ! empty( $attributes['active'] ) ? 'Busy' : 'Free';
+
+            if ( '' !== $tenant_id ) {
+                $wpdb->replace(
+                    $table_name,
+                    array(
+                        'loft_id' => $tenant_id,
+                        'type' => $type,
+                        'status' => $status,
+                        'butterfly_unit_id' => $unit_id,
+                        'last_sync' => $now,
+                    ),
+                    array( '%s', '%s', '%s', '%s', '%s' )
+                );
+            }
+
+            $results[] = array(
+                'loft_id' => $tenant_id,
+                'type' => $type,
+                'status' => $status,
+                'butterfly_unit_id' => $unit_id,
+                'last_sync' => $now,
+            );
+        }
+
+        set_transient( 'loft_categorization_cache', $results, HOUR_IN_SECONDS );
+        update_option( 'loft1325_loft_categorization_results', $results, false );
+        error_log( '[Loft1325 Discovery] Categorization completed. Rows: ' . count( $results ) );
+
+        return $results;
+    }
+
+    private static function render_sync_tools_section() {
+        $discovery_report = get_option( 'loft1325_discovery_audit_report', array() );
+        $categorization_results = get_option( 'loft1325_loft_categorization_results', array() );
+
+        echo '<div class="loft1325-card">';
+        echo '<h3>Connectivity & Discovery</h3>';
+        echo '<p class="loft1325-meta">Use existing ButterflyMX credentials already configured above.</p>';
+        echo '<p><button type="button" class="loft1325-secondary" id="loft1325-test-connection">Test Connection</button> <span id="loft1325-test-connection-result" class="loft1325-meta"></span></p>';
+
+        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form" style="margin-bottom:8px;">';
+        wp_nonce_field( 'loft1325_run_discovery_audit' );
+        echo '<input type="hidden" name="action" value="loft1325_run_discovery_audit" />';
+        echo '<button type="submit" class="loft1325-secondary">Run Discovery Audit</button>';
+        echo '</form>';
+
+        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-inline-form">';
+        wp_nonce_field( 'loft1325_run_loft_categorization' );
+        echo '<input type="hidden" name="action" value="loft1325_run_loft_categorization" />';
+        echo '<button type="submit" class="loft1325-secondary">Run Loft Categorization</button>';
+        echo '</form>';
+
+        if ( ! empty( $discovery_report['ran_at'] ) ) {
+            echo '<p class="loft1325-meta" style="margin-top:12px;">Last audit: ' . esc_html( $discovery_report['ran_at'] ) . ' (' . esc_html( $discovery_report['environment'] ?? 'n/a' ) . ')</p>';
+        }
+
+        if ( ! empty( $categorization_results ) ) {
+            echo '<table class="widefat striped" style="margin-top:12px;">';
+            echo '<thead><tr><th>Loft ID</th><th>Type</th><th>Status</th><th>Unit ID</th><th>Last sync</th></tr></thead><tbody>';
+            foreach ( array_slice( $categorization_results, 0, 20 ) as $row ) {
+                echo '<tr>';
+                echo '<td>' . esc_html( $row['loft_id'] ?? '' ) . '</td>';
+                echo '<td>' . esc_html( $row['type'] ?? '' ) . '</td>';
+                echo '<td>' . esc_html( $row['status'] ?? '' ) . '</td>';
+                echo '<td>' . esc_html( $row['butterfly_unit_id'] ?? '' ) . '</td>';
+                echo '<td>' . esc_html( $row['last_sync'] ?? '' ) . '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
+        }
+
+        $nonce = wp_create_nonce( 'loft1325_test_butterfly_connection' );
+        echo '<script>jQuery(function($){$("#loft1325-test-connection").on("click", function(){var $r=$("#loft1325-test-connection-result");$r.text("Testing...");$.post(ajaxurl,{action:"loft1325_test_butterfly_connection",nonce:"' . esc_js( $nonce ) . '"}).done(function(resp){$r.text(resp&&resp.data&&resp.data.message?resp.data.message:"Done");}).fail(function(){ $r.text("Request failed"); });});});</script>';
+
+        echo '</div>';
+    }
+
 
     public static function render_log() {
         if ( self::render_locked_if_needed() ) {
