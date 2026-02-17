@@ -57,6 +57,7 @@ class Loft1325_Admin_Pages {
         add_submenu_page( 'loft1325-dashboard', 'Réservations', 'Réservations', 'loft1325_manage_bookings', 'loft1325-bookings', array( __CLASS__, 'render_bookings' ) );
         add_submenu_page( 'loft1325-dashboard', 'Disponibilités', 'Disponibilités', 'loft1325_manage_bookings', 'loft1325-availability', array( __CLASS__, 'render_availability' ) );
         add_submenu_page( 'loft1325-dashboard', 'Calendrier', 'Calendrier', 'loft1325_manage_bookings', 'loft1325-calendar', array( __CLASS__, 'render_calendar' ) );
+        add_submenu_page( 'loft1325-dashboard', 'Réservations approuvées', 'Réservations approuvées', 'loft1325_manage_bookings', 'loft1325-approved', array( __CLASS__, 'render_approved_bookings' ) );
         add_submenu_page( 'loft1325-dashboard', 'Lofts', 'Lofts', 'loft1325_manage_bookings', 'loft1325-lofts', array( __CLASS__, 'render_lofts' ) );
         add_submenu_page( 'loft1325-dashboard', 'Paramètres', 'Paramètres', 'loft1325_manage_bookings', 'loft1325-settings', array( __CLASS__, 'render_settings' ) );
         add_submenu_page( 'loft1325-dashboard', 'Journal', 'Journal', 'loft1325_manage_bookings', 'loft1325-log', array( __CLASS__, 'render_log' ) );
@@ -214,7 +215,8 @@ class Loft1325_Admin_Pages {
             return;
         }
 
-        $bookings = Loft1325_Bookings::get_bookings();
+        $view = isset( $_GET['booking_view'] ) ? sanitize_key( wp_unslash( $_GET['booking_view'] ) ) : 'review'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $bookings = ( 'all' === $view ) ? Loft1325_Bookings::get_bookings() : Loft1325_Bookings::get_review_bookings();
 
         self::render_page_header( 'Réservations' );
 
@@ -241,6 +243,8 @@ class Loft1325_Admin_Pages {
 
         $sync_nonce = wp_create_nonce( 'loft1325_sync_keychains' );
         echo '<div class="loft1325-filter-bar">';
+        echo '<a class="' . esc_attr( ( 'review' === $view ) ? 'loft1325-primary' : 'loft1325-secondary' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'review' ), admin_url( 'admin.php' ) ) ) . '">Nouvelles clés à valider</a>';
+        echo '<a class="' . esc_attr( ( 'all' === $view ) ? 'loft1325-primary' : 'loft1325-secondary' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'all' ), admin_url( 'admin.php' ) ) ) . '">Toutes les réservations</a>';
         echo '<span class="loft1325-chip is-active">Aujourd\'hui</span>';
         echo '<span class="loft1325-chip">7 jours</span>';
         echo '<span class="loft1325-chip">Mois</span>';
@@ -263,7 +267,17 @@ class Loft1325_Admin_Pages {
             if ( 'tentative' === $booking['status'] ) {
                 $status = 'Needs review';
             }
-            $key_status = $booking['butterfly_keychain_id'] ? 'Active' : 'Missing';
+            $key_status = 'Missing';
+            if ( ! empty( $booking['butterfly_keychain_id'] ) ) {
+                $now = gmdate( 'Y-m-d H:i:s' );
+                if ( $booking['check_in_utc'] > $now ) {
+                    $key_status = 'Upcoming';
+                } elseif ( $booking['check_out_utc'] < $now ) {
+                    $key_status = 'Expired';
+                } else {
+                    $key_status = 'Active';
+                }
+            }
             echo '<div class="loft1325-card">';
             echo '<div class="loft1325-card-header">';
             echo '<div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( ucfirst( $booking['loft_type'] ) ) . '</span></div>';
@@ -354,8 +368,10 @@ class Loft1325_Admin_Pages {
         try {
             $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
             $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
+            $selected_loft = isset( $_GET['loft_id'] ) ? absint( $_GET['loft_id'] ) : 0;
             $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
             $tickets = Loft1325_Operations::get_maintenance_tickets();
+            $all_lofts = Loft1325_Lofts::get_all();
 
         self::render_page_header( 'Booking Hub' );
 
@@ -381,7 +397,7 @@ class Loft1325_Admin_Pages {
         $period = $bounds['period'];
         $calendar_start = $bounds['start'];
         $calendar_end = $bounds['end'];
-        $calendar_bookings = Loft1325_Bookings::get_bookings_for_range( $calendar_start, $calendar_end );
+        $calendar_bookings = Loft1325_Bookings::get_approved_bookings_for_range( $calendar_start, $calendar_end, $selected_loft );
         $period_titles = array(
             'today' => 'aujourd\'hui',
             'week' => '7 jours',
@@ -400,6 +416,17 @@ class Loft1325_Admin_Pages {
             echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-calendar', 'view' => $view, 'period' => $k ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
         }
         echo '</p>';
+        echo '<form method="get" class="loft1325-inline" style="margin-bottom:16px;">';
+        echo '<input type="hidden" name="page" value="loft1325-calendar" />';
+        echo '<input type="hidden" name="view" value="' . esc_attr( $view ) . '" />';
+        echo '<input type="hidden" name="period" value="' . esc_attr( $period ) . '" />';
+        echo '<select name="loft_id">';
+        echo '<option value="0">Tous les lofts</option>';
+        foreach ( $all_lofts as $loft ) {
+            echo '<option value="' . esc_attr( $loft['id'] ) . '" ' . selected( $selected_loft, absint( $loft['id'] ), false ) . '>' . esc_html( $loft['loft_name'] ) . '</option>';
+        }
+        echo '</select> <button type="submit" class="loft1325-secondary">Filtrer</button>';
+        echo '</form>';
         echo '<div class="loft1325-timeline">';
         $has_calendar_rows = false;
         foreach ( $calendar_bookings as $calendar_booking ) {
@@ -478,6 +505,10 @@ class Loft1325_Admin_Pages {
                 if ( $key_missing ) {
                     echo '<p><span class="loft1325-badge loft1325-badge--free">FREE · no key yet</span></p>';
                 }
+                if ( $selected_loft > 0 && absint( $booking['loft_id'] ) !== $selected_loft ) {
+                    continue;
+                }
+
                 echo '<form method="post" class="loft1325-actions">';
                 echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
                 echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
@@ -539,6 +570,63 @@ class Loft1325_Admin_Pages {
             echo '<div class="notice notice-error"><p>Une erreur est survenue lors du chargement du calendrier. Réessayez et vérifiez le journal d&rsquo;erreurs si le problème persiste.</p></div>';
             echo '</div>';
         }
+    }
+
+    public static function render_approved_bookings() {
+        if ( self::render_locked_if_needed() ) {
+            return;
+        }
+
+        $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'month'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $selected_loft = isset( $_GET['loft_id'] ) ? absint( $_GET['loft_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $bounds = Loft1325_Operations::get_period_bounds( $period );
+        $bookings = Loft1325_Bookings::get_approved_bookings_for_range( $bounds['start'], $bounds['end'], $selected_loft );
+        $all_lofts = Loft1325_Lofts::get_all();
+
+        self::render_page_header( 'Réservations approuvées' );
+        echo '<div class="loft1325-card">';
+        echo '<p class="loft1325-meta">Suivi des réservations approuvées (semaine / mois / année) avec filtre par loft.</p>';
+        echo '<p class="loft1325-actions">';
+        foreach ( array( 'week' => 'Semaine', 'month' => 'Mois', 'year' => 'Année' ) as $k => $label ) {
+            $class = ( $period === $k ) ? 'loft1325-primary' : 'loft1325-secondary';
+            echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-approved', 'period' => $k, 'loft_id' => $selected_loft ), admin_url( 'admin.php' ) ) ) . '">' . esc_html( $label ) . '</a> ';
+        }
+        echo '</p>';
+        echo '<form method="get" class="loft1325-inline" style="margin-bottom:16px;">';
+        echo '<input type="hidden" name="page" value="loft1325-approved" />';
+        echo '<input type="hidden" name="period" value="' . esc_attr( $period ) . '" />';
+        echo '<select name="loft_id"><option value="0">Tous les lofts</option>';
+        foreach ( $all_lofts as $loft ) {
+            echo '<option value="' . esc_attr( $loft['id'] ) . '" ' . selected( $selected_loft, absint( $loft['id'] ), false ) . '>' . esc_html( $loft['loft_name'] ) . '</option>';
+        }
+        echo '</select> <button class="loft1325-secondary" type="submit">Filtrer</button>';
+        echo '</form>';
+
+        if ( empty( $bookings ) ) {
+            echo '<div class="loft1325-callout">Aucune réservation approuvée trouvée pour cette période.</div>';
+            echo '</div></div>';
+            return;
+        }
+
+        $grouped = array();
+        foreach ( $bookings as $booking ) {
+            $grouped[ $booking['loft_name'] ][] = $booking;
+        }
+
+        echo '<div class="loft1325-grid">';
+        foreach ( $grouped as $loft_name => $rows ) {
+            echo '<div class="loft1325-card">';
+            echo '<h4>' . esc_html( $loft_name ) . '</h4>';
+            foreach ( $rows as $row ) {
+                echo '<div class="loft1325-timeline-row">';
+                echo '<div class="loft1325-timeline-main"><strong>' . esc_html( $row['guest_name'] ) . '</strong><span class="loft1325-meta">' . esc_html( ucfirst( str_replace( '_', ' ', $row['status'] ) ) ) . '</span></div>';
+                echo '<span class="loft1325-bar">' . esc_html( loft1325_format_datetime_local( $row['check_in_utc'] ) . ' → ' . loft1325_format_datetime_local( $row['check_out_utc'] ) ) . '</span>';
+                echo '</div>';
+            }
+            echo '</div>';
+        }
+        echo '</div>';
+        echo '</div></div>';
     }
 
     public static function render_lofts() {
