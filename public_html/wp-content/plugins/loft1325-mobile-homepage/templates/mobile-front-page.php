@@ -772,12 +772,14 @@ $strings  = array(
           <button class="mobile-menu__close" type="button" id="closeMenu" aria-label="<?php echo esc_attr( $strings['menu_close'] ); ?>">×</button>
         </div>
         <?php
+        $mobile_menu_location = has_nav_menu( 'loft1325-mobile-menu' ) ? 'loft1325-mobile-menu' : 'main-menu';
+
         echo wp_nav_menu(
             array(
-                'theme_location' => 'main-menu',
+                'theme_location' => $mobile_menu_location,
                 'container'      => false,
                 'menu_class'     => 'mobile-menu__list',
-                'fallback_cb'    => 'wp_page_menu',
+                'fallback_cb'    => false,
                 'echo'           => false,
             )
         );

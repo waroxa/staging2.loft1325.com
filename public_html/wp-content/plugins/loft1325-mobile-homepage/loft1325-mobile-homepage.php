@@ -68,6 +68,7 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
         private function __construct() {
             add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
             add_action( 'init', array( $this, 'evaluate_dependencies' ), 5 );
+            add_action( 'init', array( $this, 'register_mobile_menu_location' ) );
             add_action( 'init', array( $this, 'register_feature_post_type' ) );
             add_action( 'init', array( $this, 'register_image_sizes' ) );
             add_filter( 'query_vars', array( $this, 'register_preview_query_var' ) );
@@ -154,6 +155,13 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
         public function register_image_sizes() {
             add_image_size( 'loft1325_mobile_feature_icon', 96, 96, true );
             add_image_size( 'loft1325_mobile_room_card', 720, 480, true );
+        }
+
+        /**
+         * Register a dedicated navigation location for the mobile homepage burger menu.
+         */
+        public function register_mobile_menu_location() {
+            register_nav_menu( 'loft1325-mobile-menu', __( 'Loft1325 Mobile Menu', 'loft1325-mobile-home' ) );
         }
 
         /**
