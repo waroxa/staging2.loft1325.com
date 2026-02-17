@@ -92,6 +92,50 @@ class Loft1325_Bookings {
         return $wpdb->get_results( $query, ARRAY_A );
     }
 
+    public static function get_review_bookings( $limit = 100 ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+
+        $query = $wpdb->prepare(
+            "SELECT b.*, l.loft_name, l.loft_type
+            FROM {$bookings_table} b
+            LEFT JOIN {$lofts_table} l ON b.loft_id = l.id
+            WHERE b.status = 'tentative'
+            AND b.check_out_utc >= %s
+            ORDER BY b.check_in_utc ASC
+            LIMIT %d",
+            gmdate( 'Y-m-d H:i:s', strtotime( '-1 day' ) ),
+            $limit
+        );
+
+        return $wpdb->get_results( $query, ARRAY_A );
+    }
+
+    public static function get_approved_bookings_for_range( $start_utc, $end_utc, $loft_id = 0 ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+        $query = "SELECT b.*, l.loft_name, l.loft_type
+            FROM {$bookings_table} b
+            LEFT JOIN {$lofts_table} l ON b.loft_id = l.id
+            WHERE b.status IN ('confirmed','checked_in','checked_out')
+            AND %s < b.check_out_utc
+            AND %s > b.check_in_utc";
+
+        $args = array( $start_utc, $end_utc );
+        if ( $loft_id > 0 ) {
+            $query .= ' AND b.loft_id = %d';
+            $args[] = $loft_id;
+        }
+
+        $query .= ' ORDER BY b.loft_id ASC, b.check_in_utc ASC';
+
+        return $wpdb->get_results( $wpdb->prepare( $query, $args ), ARRAY_A );
+    }
+
     public static function get_clients( $limit = 500 ) {
         global $wpdb;
 
@@ -427,7 +471,19 @@ class Loft1325_Bookings {
         $guest_name = isset( $normalized_keychain['name'] ) ? sanitize_text_field( $normalized_keychain['name'] ) : 'Invité';
         $guest_email = isset( $normalized_keychain['email'] ) ? sanitize_email( $normalized_keychain['email'] ) : null;
         $guest_phone = isset( $normalized_keychain['phone'] ) ? sanitize_text_field( $normalized_keychain['phone'] ) : null;
+        $existing_booking = null;
+        if ( $existing ) {
+            $existing_booking = $wpdb->get_row( $wpdb->prepare( "SELECT id, status FROM {$bookings_table} WHERE id = %d", $existing ), ARRAY_A );
+        }
+
+        if ( ! $existing && strtotime( $check_out ) < time() ) {
+            return false;
+        }
+
         $status = 'tentative';
+        if ( ! empty( $existing_booking['status'] ) ) {
+            $status = sanitize_key( $existing_booking['status'] );
+        }
 
         $data = array(
             'external_ref' => 'butterflymx:' . $keychain_id,
