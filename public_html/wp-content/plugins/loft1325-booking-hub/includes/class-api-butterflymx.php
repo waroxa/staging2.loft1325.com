@@ -114,10 +114,6 @@ class Loft1325_API_ButterflyMX {
     private static function get_token( $version = 'v4' ) {
         $settings = loft1325_get_settings();
 
-        if ( 'v4' === $version && ! empty( $settings['api_token'] ) ) {
-            return (string) $settings['api_token'];
-        }
-
         $token = (string) get_option( 'butterflymx_access_token_' . $version, '' );
         if ( ! empty( $token ) ) {
             return $token;
@@ -126,6 +122,10 @@ class Loft1325_API_ButterflyMX {
         $token = (string) get_option( 'butterflymx_token_' . $version, '' );
         if ( ! empty( $token ) ) {
             return $token;
+        }
+
+        if ( 'v4' === $version && ! empty( $settings['api_token'] ) ) {
+            return (string) $settings['api_token'];
         }
 
         return self::maybe_request_oauth_token( $version );
