@@ -49,23 +49,21 @@ $nd_booking_order_tax_breakdown = nd_booking_calculate_tax_breakdown_from_total(
 $nd_booking_order_currency = $nd_booking_order_paypal_currency;
 $nd_booking_order_total_formatted = nd_booking_format_decimal( $nd_booking_order_tax_breakdown['total'] );
 $nd_booking_order_subtotal_formatted = nd_booking_format_decimal( $nd_booking_order_tax_breakdown['base'] );
-$nd_booking_order_tax_total_formatted = nd_booking_format_decimal( $nd_booking_order_tax_breakdown['total_tax'] );
-
 $nd_booking_order_known_tax_labels = array(
-    'lodging' => __( 'Lodging Tax', 'nd-booking' ),
-    'gst'     => __( 'GST', 'nd-booking' ),
-    'qst'     => __( 'QST', 'nd-booking' ),
+    'lodging' => "Taxe d’hébergement",
+    'gst'     => 'TPS',
+    'qst'     => 'TVQ',
 );
 
 $nd_booking_order_tax_lines = '<div class="nd_booking_section nd_booking_margin_top_20 nd_booking_tax_breakdown">';
-$nd_booking_order_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_13" data-tax-key="subtotal"><span class="nd_booking_tax_label">'.__( 'Subtotal', 'nd-booking' ).'</span> <span class="nd_booking_tax_amount">'.$nd_booking_order_subtotal_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_order_currency.'</span></p>';
+$nd_booking_order_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_13" data-tax-key="subtotal"><span class="nd_booking_tax_label">Sous-total</span> <span class="nd_booking_tax_amount">'.$nd_booking_order_subtotal_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_order_currency.'</span></p>';
 
 foreach ( $nd_booking_order_known_tax_labels as $nd_booking_tax_key => $nd_booking_tax_label ) {
     $nd_booking_line_style = '';
     if ( isset( $nd_booking_order_tax_breakdown['taxes'][ $nd_booking_tax_key ] ) ) {
         $nd_booking_tax_rate = nd_booking_format_percentage( $nd_booking_order_tax_breakdown['taxes'][ $nd_booking_tax_key ]['rate'] );
         $nd_booking_tax_amount_formatted = nd_booking_format_decimal( $nd_booking_order_tax_breakdown['taxes'][ $nd_booking_tax_key ]['amount'] );
-        $nd_booking_display_label = sprintf( __( '%1$s (%2$s%%)', 'nd-booking' ), $nd_booking_order_tax_breakdown['taxes'][ $nd_booking_tax_key ]['label'], $nd_booking_tax_rate );
+        $nd_booking_display_label = sprintf( __( '%1$s (%2$s%%)', 'nd-booking' ), $nd_booking_tax_label, $nd_booking_tax_rate );
     } else {
         $nd_booking_tax_amount_formatted = nd_booking_format_decimal( 0 );
         $nd_booking_tax_rate = nd_booking_format_percentage( 0 );
@@ -77,9 +75,18 @@ foreach ( $nd_booking_order_known_tax_labels as $nd_booking_tax_key => $nd_booki
 }
 
 $nd_booking_order_tax_lines .= '<div class="nd_booking_section nd_booking_height_10"></div>';
-$nd_booking_order_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_13 nd_booking_font_weight_bold" data-tax-key="total_tax"><span class="nd_booking_tax_label">'.__( 'Total Tax', 'nd-booking' ).'</span> <span class="nd_booking_tax_amount">'.$nd_booking_order_tax_total_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_order_currency.'</span></p>';
-$nd_booking_order_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_14 nd_booking_font_weight_bolder" data-tax-key="grand_total"><span class="nd_booking_tax_label">'.__( 'Grand Total', 'nd-booking' ).'</span> <span class="nd_booking_tax_amount">'.$nd_booking_order_total_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_order_currency.'</span></p>';
+$nd_booking_order_tax_lines .= '<p class="nd_options_color_white nd_booking_font_size_14 nd_booking_font_weight_bolder" data-tax-key="grand_total"><span class="nd_booking_tax_label">Total général</span> <span class="nd_booking_tax_amount">'.$nd_booking_order_total_formatted.'</span> <span class="nd_booking_tax_currency">'.$nd_booking_order_currency.'</span></p>';
 $nd_booking_order_tax_lines .= '</div>';
+
+
+$nd_booking_order_modify_url = nd_booking_get_room_link(
+    $nd_booking_order_id_post,
+    $nd_booking_order_date_from,
+    $nd_booking_order_date_to,
+    $nd_booking_order_guests
+);
+
+$nd_booking_order_modify_label = 'Modifier le séjour';
 
 $nd_booking_shortcode_left_content = '';
 $nd_booking_shortcode_left_content .= '
@@ -94,6 +101,9 @@ $nd_booking_shortcode_left_content .= '
 
       <h6 class="nd_options_second_font nd_booking_margin_top_20_all_iphone nd_options_color_white nd_booking_letter_spacing_2 nd_booking_text_align_center nd_booking_font_size_12 nd_booking_font_weight_lighter">'.__('YOUR RESERVATION','nd-booking').'</h6>
 
+      <div class="nd_booking_text_align_center nd_booking_margin_top_10">
+          <a href="'.esc_url( $nd_booking_order_modify_url ).'" class="nd_booking_display_inline_block nd_booking_padding_10_20 nd_booking_font_size_11 nd_booking_font_weight_bold nd_booking_letter_spacing_2 nd_booking_bg_yellow nd_options_color_white nd_booking_border_radius_40">'.esc_html( $nd_booking_order_modify_label ).'</a>
+      </div>
 
       <div class="nd_booking_section nd_booking_height_30"></div> 
 
