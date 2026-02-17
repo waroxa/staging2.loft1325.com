@@ -601,6 +601,13 @@ function marina_redirect_legacy_admin_hub_login_path() {
         return;
     }
 
+    $request_method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) : 'GET';
+
+    // Never interfere with login form submissions or tokenized login flows.
+    if ( 'GET' !== $request_method ) {
+        return;
+    }
+
     if ( empty( $_SERVER['REQUEST_URI'] ) ) {
         return;
     }
@@ -611,7 +618,11 @@ function marina_redirect_legacy_admin_hub_login_path() {
         return;
     }
 
-    wp_safe_redirect( home_url( '/admin-hub-2/' ), 301 );
+    if ( ! empty( $_SERVER['QUERY_STRING'] ) ) {
+        return;
+    }
+
+    wp_safe_redirect( home_url( '/admin-hub-2/' ), 302 );
     exit;
 }
 add_action( 'template_redirect', 'marina_redirect_legacy_admin_hub_login_path' );
