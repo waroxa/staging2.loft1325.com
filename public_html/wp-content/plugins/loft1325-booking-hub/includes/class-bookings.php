@@ -34,8 +34,17 @@ class Loft1325_Bookings {
     }
 
     public static function ensure_sync_schedule() {
-        if ( ! wp_next_scheduled( 'loft1325_booking_hub_sync_keychains' ) ) {
-            wp_schedule_event( time(), 'loft1325_every_30_minutes', 'loft1325_booking_hub_sync_keychains' );
+        $hook  = 'loft1325_booking_hub_sync_keychains';
+        $event = wp_get_scheduled_event( $hook );
+
+        if ( ! $event ) {
+            wp_schedule_event( time(), 'loft1325_every_15_minutes', $hook );
+            return;
+        }
+
+        if ( 'loft1325_every_15_minutes' !== $event->schedule ) {
+            wp_clear_scheduled_hook( $hook );
+            wp_schedule_event( time(), 'loft1325_every_15_minutes', $hook );
         }
     }
 
@@ -103,6 +112,7 @@ class Loft1325_Bookings {
             FROM {$bookings_table} b
             LEFT JOIN {$lofts_table} l ON b.loft_id = l.id
             WHERE b.status = 'tentative'
+            AND b.butterfly_keychain_id IS NOT NULL
             AND b.check_out_utc >= %s
             ORDER BY b.check_in_utc ASC
             LIMIT %d",
