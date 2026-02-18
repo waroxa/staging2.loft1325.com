@@ -51,16 +51,16 @@ class Loft1325_Bookings {
         $today = gmdate( 'Y-m-d' );
 
         $checkins = $wpdb->get_var( $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$bookings_table} WHERE DATE(check_in_utc) = %s AND status IN ('confirmed','checked_in')",
+            "SELECT COUNT(*) FROM {$bookings_table} WHERE DATE(check_in_utc) = %s AND status IN ('tentative','confirmed','checked_in')",
             $today
         ) );
 
         $checkouts = $wpdb->get_var( $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$bookings_table} WHERE DATE(check_out_utc) = %s AND status IN ('confirmed','checked_in')",
+            "SELECT COUNT(*) FROM {$bookings_table} WHERE DATE(check_out_utc) = %s AND status IN ('tentative','confirmed','checked_in')",
             $today
         ) );
 
-        $occupied = $wpdb->get_var( "SELECT COUNT(*) FROM {$bookings_table} WHERE status IN ('confirmed','checked_in')" );
+        $occupied = $wpdb->get_var( "SELECT COUNT(*) FROM {$bookings_table} WHERE status IN ('tentative','confirmed','checked_in')" );
         $available = $wpdb->get_results(
             "SELECT loft_type, COUNT(*) as count FROM {$lofts_table} WHERE is_active = 1 GROUP BY loft_type",
             ARRAY_A
@@ -206,7 +206,7 @@ class Loft1325_Bookings {
         $conflict = $wpdb->get_var( $wpdb->prepare(
             "SELECT COUNT(*) FROM {$bookings_table}
             WHERE loft_id = %d
-            AND status IN ('confirmed','checked_in')
+            AND status IN ('tentative','confirmed','checked_in')
             AND %s < check_out_utc
             AND %s > check_in_utc",
             $loft_id,

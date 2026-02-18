@@ -208,7 +208,7 @@ class Loft1325_Operations {
                 FROM {$bookings_table}
                 WHERE id <> %d
                 AND loft_id = %d
-                AND status IN ('confirmed','checked_in')
+                AND status IN ('tentative','confirmed','checked_in')
                 AND %s < check_out_utc
                 AND %s > check_in_utc",
                 absint( $booking['id'] ),
@@ -237,7 +237,7 @@ class Loft1325_Operations {
                 FROM {$lofts_table} l
                 LEFT JOIN {$bookings_table} b
                     ON b.loft_id = l.id
-                    AND b.status IN ('confirmed','checked_in')
+                    AND b.status IN ('tentative','confirmed','checked_in')
                     AND b.check_in_utc < %s
                     AND b.check_out_utc >= %s
                 WHERE l.is_active = 1
@@ -274,7 +274,7 @@ class Loft1325_Operations {
                 FROM {$lofts_table} l
                 LEFT JOIN {$bookings_table} b
                     ON b.loft_id = l.id
-                    AND b.status IN ('confirmed','checked_in')
+                    AND b.status IN ('tentative','confirmed','checked_in')
                     AND b.check_in_utc < %s
                     AND b.check_out_utc >= %s
                 {$where_sql}
@@ -389,7 +389,7 @@ class Loft1325_Operations {
                 "SELECT COUNT(*)
                 FROM {$bookings_table}
                 WHERE loft_id = %d
-                AND status IN ('confirmed','checked_in')
+                AND status IN ('tentative','confirmed','checked_in')
                 AND check_in_utc < %s
                 AND check_out_utc >= %s",
                 absint( $loft_id ),
