@@ -403,14 +403,137 @@ class Loft1325_Bookings {
         $context = self::build_keychain_context( $virtual_keys, $tenants, $units );
 
         $synced_count = 0;
+        $valid_keychain_ids = array();
 
         foreach ( $keychains as $keychain ) {
-            if ( self::upsert_booking_from_keychain( $keychain, $context ) ) {
+            $normalized_keychain = self::normalize_butterflymx_keychain( $keychain, $context );
+
+            if ( ! self::is_syncable_keychain( $normalized_keychain ) ) {
+                continue;
+            }
+
+            $keychain_id = isset( $normalized_keychain['id'] ) ? absint( $normalized_keychain['id'] ) : 0;
+            if ( $keychain_id ) {
+                $valid_keychain_ids[] = $keychain_id;
+            }
+
+            if ( self::upsert_booking_from_keychain( $normalized_keychain, $context ) ) {
                 $synced_count++;
             }
         }
 
+        self::clear_stale_keychain_links( $valid_keychain_ids );
+
         return $synced_count;
+    }
+
+    /**
+     * Determine whether a ButterflyMX keychain should be treated as active/valid in sync.
+     *
+     * @param array $keychain Normalized keychain payload.
+     *
+     * @return bool
+     */
+    private static function is_syncable_keychain( $keychain ) {
+        $attributes = isset( $keychain['attributes'] ) && is_array( $keychain['attributes'] ) ? $keychain['attributes'] : array();
+
+        $string_flags = array();
+
+        foreach ( array( 'status', 'state', 'validity', 'key_status' ) as $field ) {
+            if ( isset( $keychain[ $field ] ) ) {
+                $string_flags[] = (string) $keychain[ $field ];
+            }
+
+            if ( isset( $attributes[ $field ] ) ) {
+                $string_flags[] = (string) $attributes[ $field ];
+            }
+        }
+
+        foreach ( $string_flags as $value ) {
+            $normalized = strtolower( trim( str_replace( array( '-', ' ' ), '_', (string) $value ) ) );
+
+            if ( in_array( $normalized, array( 'not_valid', 'invalid', 'inactive', 'revoked', 'deactivated', 'deleted', 'expired' ), true ) ) {
+                return false;
+            }
+        }
+
+        foreach ( array( 'is_valid', 'active', 'enabled' ) as $field ) {
+            if ( array_key_exists( $field, $keychain ) && false === filter_var( $keychain[ $field ], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE ) ) {
+                return false;
+            }
+
+            if ( array_key_exists( $field, $attributes ) && false === filter_var( $attributes[ $field ], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE ) ) {
+                return false;
+            }
+        }
+
+        foreach ( array( 'deactivated_at', 'revoked_at', 'deleted_at', 'invalidated_at' ) as $timestamp_field ) {
+            if ( ! empty( $keychain[ $timestamp_field ] ) || ! empty( $attributes[ $timestamp_field ] ) ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Remove keychain links from bookings that no longer map to valid keychains in ButterflyMX.
+     *
+     * @param array $valid_keychain_ids Keychain IDs considered valid after filtering.
+     *
+     * @return void
+     */
+    private static function clear_stale_keychain_links( $valid_keychain_ids ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $active_ids = array_values( array_unique( array_filter( array_map( 'absint', (array) $valid_keychain_ids ) ) ) );
+
+        if ( empty( $active_ids ) ) {
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$bookings_table}
+                    SET butterfly_keychain_id = NULL, updated_at = %s
+                    WHERE butterfly_keychain_id IS NOT NULL
+                      AND external_ref LIKE %s",
+                    current_time( 'mysql', 1 ),
+                    'butterflymx:%'
+                )
+            );
+
+            return;
+        }
+
+        $placeholders = implode( ',', array_fill( 0, count( $active_ids ), '%d' ) );
+
+        $stale_bookings = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT id, butterfly_keychain_id FROM {$bookings_table}
+                WHERE butterfly_keychain_id IS NOT NULL
+                  AND external_ref LIKE %s
+                  AND butterfly_keychain_id NOT IN ({$placeholders})",
+                array_merge( array( 'butterflymx:%' ), $active_ids )
+            ),
+            ARRAY_A
+        );
+
+        foreach ( (array) $stale_bookings as $booking ) {
+            $booking_id = isset( $booking['id'] ) ? absint( $booking['id'] ) : 0;
+            if ( ! $booking_id ) {
+                continue;
+            }
+
+            $wpdb->update(
+                $bookings_table,
+                array(
+                    'butterfly_keychain_id' => null,
+                    'updated_at' => current_time( 'mysql', 1 ),
+                ),
+                array( 'id' => $booking_id ),
+                array( '%s', '%s' ),
+                array( '%d' )
+            );
+        }
     }
 
     private static function upsert_booking_from_keychain( $keychain, $context = array() ) {
