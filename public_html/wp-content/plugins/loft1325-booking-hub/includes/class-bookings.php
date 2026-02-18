@@ -410,7 +410,78 @@ class Loft1325_Bookings {
             }
         }
 
+        self::clear_stale_keychain_links( $keychains );
+
         return $synced_count;
+    }
+
+    /**
+     * Remove keychain links from bookings that no longer exist in ButterflyMX.
+     *
+     * @param array $keychains Keychains returned by ButterflyMX.
+     *
+     * @return void
+     */
+    private static function clear_stale_keychain_links( $keychains ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $active_ids = array();
+
+        foreach ( (array) $keychains as $keychain ) {
+            $keychain_id = isset( $keychain['id'] ) ? absint( $keychain['id'] ) : 0;
+
+            if ( $keychain_id ) {
+                $active_ids[] = $keychain_id;
+            }
+        }
+
+        if ( empty( $active_ids ) ) {
+            $wpdb->query(
+                $wpdb->prepare(
+                    "UPDATE {$bookings_table}
+                    SET butterfly_keychain_id = NULL, updated_at = %s
+                    WHERE butterfly_keychain_id IS NOT NULL
+                      AND external_ref LIKE %s",
+                    current_time( 'mysql', 1 ),
+                    'butterflymx:%'
+                )
+            );
+
+            return;
+        }
+
+        $active_ids = array_values( array_unique( $active_ids ) );
+        $placeholders = implode( ',', array_fill( 0, count( $active_ids ), '%d' ) );
+
+        $stale_bookings = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT id, butterfly_keychain_id FROM {$bookings_table}
+                WHERE butterfly_keychain_id IS NOT NULL
+                  AND external_ref LIKE %s
+                  AND butterfly_keychain_id NOT IN ({$placeholders})",
+                array_merge( array( 'butterflymx:%' ), $active_ids )
+            ),
+            ARRAY_A
+        );
+
+        foreach ( (array) $stale_bookings as $booking ) {
+            $booking_id = isset( $booking['id'] ) ? absint( $booking['id'] ) : 0;
+            if ( ! $booking_id ) {
+                continue;
+            }
+
+            $wpdb->update(
+                $bookings_table,
+                array(
+                    'butterfly_keychain_id' => null,
+                    'updated_at' => current_time( 'mysql', 1 ),
+                ),
+                array( 'id' => $booking_id ),
+                array( '%s', '%s' ),
+                array( '%d' )
+            );
+        }
     }
 
     private static function upsert_booking_from_keychain( $keychain, $context = array() ) {
