@@ -736,7 +736,11 @@ class Loft1325_Admin_Pages {
         }
 
         if ( isset( $_GET['loft1325_categorization_done'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            echo '<div class="notice notice-success"><p>Loft categorization completed and cached.</p></div>';
+            $summary = get_option( 'loft1325_loft_categorization_summary', array() );
+            $total = isset( $summary['total'] ) ? absint( $summary['total'] ) : 0;
+            $residents = isset( $summary['residents'] ) ? absint( $summary['residents'] ) : 0;
+            $rentals = isset( $summary['rentals'] ) ? absint( $summary['rentals'] ) : 0;
+            echo '<div class="notice notice-success"><p>' . esc_html( sprintf( 'Categorized %1$d lofts: %2$d Residents, %3$d Rentals.', $total, $residents, $rentals ) ) . '</p></div>';
         }
 
         if ( isset( $_GET['loft1325_categorization_blocked'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -852,8 +856,10 @@ class Loft1325_Admin_Pages {
         $sql = "CREATE TABLE {$table_name} (
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             loft_id varchar(191) NOT NULL,
+            unit_name varchar(191) DEFAULT '',
             type enum('Resident','Rental') NOT NULL DEFAULT 'Rental',
             status enum('Free','Busy','Tentative') NOT NULL DEFAULT 'Free',
+            butterfly_tenant_id varchar(191) DEFAULT '',
             butterfly_unit_id varchar(191) DEFAULT '',
             last_sync datetime NOT NULL,
             PRIMARY KEY (id),
@@ -931,8 +937,10 @@ class Loft1325_Admin_Pages {
     }
 
     private static function run_loft_categorization( $force_refresh = false ) {
+        $cache_key = 'loft_tenants_cache';
+
         if ( ! $force_refresh ) {
-            $cached = get_transient( 'loft_categorization_cache' );
+            $cached = get_transient( $cache_key );
             if ( is_array( $cached ) ) {
                 return $cached;
             }
@@ -940,75 +948,165 @@ class Loft1325_Admin_Pages {
 
         self::maybe_create_wp_lofts_table();
 
-        $tenants_response = Loft1325_API_ButterflyMX::list_tenants();
-        $keychains_response = Loft1325_API_ButterflyMX::list_keychains();
+        $tenants_response = Loft1325_API_ButterflyMX::list_tenants_paginated();
+        $units_response = Loft1325_API_ButterflyMX::list_units_paginated();
 
-        if ( is_wp_error( $tenants_response ) || is_wp_error( $keychains_response ) ) {
-            $error = is_wp_error( $tenants_response ) ? $tenants_response->get_error_message() : $keychains_response->get_error_message();
+        if ( is_wp_error( $tenants_response ) || is_wp_error( $units_response ) ) {
+            $error = is_wp_error( $tenants_response ) ? $tenants_response->get_error_message() : $units_response->get_error_message();
             error_log( '[Loft1325 Discovery] Categorization failed: ' . $error );
             return array();
         }
 
-        $tenants_body = json_decode( wp_remote_retrieve_body( $tenants_response ), true );
-        $keychains_body = json_decode( wp_remote_retrieve_body( $keychains_response ), true );
-        $tenants = isset( $tenants_body['data'] ) && is_array( $tenants_body['data'] ) ? $tenants_body['data'] : array();
-        $keychains = isset( $keychains_body['data'] ) && is_array( $keychains_body['data'] ) ? $keychains_body['data'] : array();
+        $tenants = isset( $tenants_response['data'] ) && is_array( $tenants_response['data'] ) ? $tenants_response['data'] : array();
+        $units = isset( $units_response['data'] ) && is_array( $units_response['data'] ) ? $units_response['data'] : array();
+
+        $unit_labels = array();
+        foreach ( $units as $unit ) {
+            $unit_id = isset( $unit['id'] ) ? trim( (string) $unit['id'] ) : '';
+            $unit_label = '';
+
+            if ( isset( $unit['label'] ) ) {
+                $unit_label = trim( (string) $unit['label'] );
+            } elseif ( isset( $unit['attributes']['label'] ) ) {
+                $unit_label = trim( (string) $unit['attributes']['label'] );
+            }
+
+            if ( '' !== $unit_id && '' !== $unit_label ) {
+                $unit_labels[ $unit_id ] = $unit_label;
+            }
+        }
 
         global $wpdb;
         $table_name = $wpdb->prefix . 'lofts';
         $now = current_time( 'mysql' );
         $results = array();
+        $type_totals = array(
+            'Resident' => 0,
+            'Rental' => 0,
+        );
+        $keychain_unit_cache = array();
 
         foreach ( $tenants as $tenant ) {
-            $tenant_id = isset( $tenant['id'] ) ? (string) $tenant['id'] : '';
-            $attributes = isset( $tenant['attributes'] ) && is_array( $tenant['attributes'] ) ? $tenant['attributes'] : array();
-            $name = isset( $attributes['name'] ) ? (string) $attributes['name'] : '';
-            $expires_at = isset( $attributes['expiration_date'] ) ? (string) $attributes['expiration_date'] : '';
-            $unit_id = isset( $attributes['unit_id'] ) ? (string) $attributes['unit_id'] : '';
+            $tenant_id = isset( $tenant['id'] ) ? trim( (string) $tenant['id'] ) : '';
+            $unit = isset( $tenant['unit'] ) && is_array( $tenant['unit'] ) ? $tenant['unit'] : array();
 
-            $is_permanent = '' === $expires_at || ! empty( $attributes['is_permanent'] );
-            $has_temp_name = (bool) preg_match( '/\d{4}-\d{2}-\d{2}|PLETHORA|GUEST|TEMP/i', $name );
-            $has_temp_keychain = false;
+            if ( empty( $unit ) && isset( $tenant['attributes']['unit'] ) && is_array( $tenant['attributes']['unit'] ) ) {
+                $unit = $tenant['attributes']['unit'];
+            }
 
-            foreach ( $keychains as $keychain ) {
-                $keychain_attributes = isset( $keychain['attributes'] ) && is_array( $keychain['attributes'] ) ? $keychain['attributes'] : array();
-                $keychain_tenant_id = isset( $keychain_attributes['tenant_id'] ) ? (string) $keychain_attributes['tenant_id'] : '';
-                $keychain_type = isset( $keychain_attributes['type'] ) ? (string) $keychain_attributes['type'] : '';
+            $unit_id = isset( $unit['id'] ) ? trim( (string) $unit['id'] ) : '';
+            $unit_name = isset( $unit['label'] ) ? trim( (string) $unit['label'] ) : '';
 
-                if ( $keychain_tenant_id === $tenant_id && in_array( $keychain_type, array( 'custom', 'recurring', 'one_time' ), true ) ) {
-                    $has_temp_keychain = true;
-                    break;
+            if ( '' === $unit_id && isset( $tenant['unit_id'] ) ) {
+                $unit_id = trim( (string) $tenant['unit_id'] );
+            }
+            if ( '' === $unit_id && isset( $tenant['attributes']['unit_id'] ) ) {
+                $unit_id = trim( (string) $tenant['attributes']['unit_id'] );
+            }
+            if ( '' === $unit_name && '' !== $unit_id && isset( $unit_labels[ $unit_id ] ) ) {
+                $unit_name = $unit_labels[ $unit_id ];
+            }
+
+            $inactive_after = null;
+            if ( array_key_exists( 'inactive_after', $tenant ) ) {
+                $inactive_after = $tenant['inactive_after'];
+            } elseif ( array_key_exists( 'inactive_after', (array) ( $tenant['attributes'] ?? array() ) ) ) {
+                $inactive_after = $tenant['attributes']['inactive_after'];
+            }
+
+            $type = 'Rental';
+            if ( '' !== $unit_name && preg_match( '/\(\s*(simple|double|penthouse|plex|loft)\s*\)/i', $unit_name ) ) {
+                $type = 'Rental';
+            } else {
+                $inactive_ts = is_string( $inactive_after ) && '' !== $inactive_after ? strtotime( $inactive_after ) : false;
+                if ( null === $inactive_after || false === $inactive_ts || $inactive_ts > strtotime( '+1 year' ) ) {
+                    $type = 'Resident';
                 }
             }
 
-            $type = ( $is_permanent && ! $has_temp_name && ! $has_temp_keychain ) ? 'Resident' : 'Rental';
-            $status = ! empty( $attributes['active'] ) ? 'Busy' : 'Free';
+            if ( '' !== $unit_id ) {
+                if ( ! array_key_exists( $unit_id, $keychain_unit_cache ) ) {
+                    $keychain_unit_cache[ $unit_id ] = false;
+                    $keychain_response = Loft1325_API_ButterflyMX::list_keychains(
+                        array(
+                            'unit_id_eq' => $unit_id,
+                            'per_page' => 100,
+                        )
+                    );
 
-            if ( '' !== $tenant_id ) {
+                    if ( ! is_wp_error( $keychain_response ) ) {
+                        $keychain_body = json_decode( wp_remote_retrieve_body( $keychain_response ), true );
+                        $unit_keychains = isset( $keychain_body['data'] ) && is_array( $keychain_body['data'] ) ? $keychain_body['data'] : array();
+
+                        foreach ( $unit_keychains as $keychain ) {
+                            $keychain_type = isset( $keychain['type'] ) ? (string) $keychain['type'] : '';
+                            if ( '' === $keychain_type && isset( $keychain['attributes']['type'] ) ) {
+                                $keychain_type = (string) $keychain['attributes']['type'];
+                            }
+
+                            $is_active = true;
+                            if ( isset( $keychain['active'] ) ) {
+                                $is_active = (bool) $keychain['active'];
+                            } elseif ( isset( $keychain['attributes']['active'] ) ) {
+                                $is_active = (bool) $keychain['attributes']['active'];
+                            }
+
+                            if ( $is_active && in_array( strtolower( $keychain_type ), array( 'custom', 'recurring' ), true ) ) {
+                                $keychain_unit_cache[ $unit_id ] = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if ( true === $keychain_unit_cache[ $unit_id ] ) {
+                    $type = 'Rental';
+                }
+            }
+
+            $status = 'Free';
+            $loft_id = '' !== $unit_id ? $unit_id : $tenant_id;
+
+            if ( '' !== $loft_id ) {
                 $wpdb->replace(
                     $table_name,
                     array(
-                        'loft_id' => $tenant_id,
+                        'loft_id' => $loft_id,
+                        'unit_name' => $unit_name,
                         'type' => $type,
                         'status' => $status,
+                        'butterfly_tenant_id' => $tenant_id,
                         'butterfly_unit_id' => $unit_id,
                         'last_sync' => $now,
                     ),
-                    array( '%s', '%s', '%s', '%s', '%s' )
+                    array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
                 );
             }
 
+            $type_totals[ $type ]++;
+
             $results[] = array(
-                'loft_id' => $tenant_id,
+                'loft_id' => $loft_id,
+                'unit_name' => $unit_name,
                 'type' => $type,
                 'status' => $status,
+                'butterfly_tenant_id' => $tenant_id,
                 'butterfly_unit_id' => $unit_id,
                 'last_sync' => $now,
             );
         }
 
+        $summary = array(
+            'total' => count( $results ),
+            'residents' => $type_totals['Resident'],
+            'rentals' => $type_totals['Rental'],
+            'updated_at' => $now,
+        );
+
+        set_transient( $cache_key, $results, HOUR_IN_SECONDS );
         set_transient( 'loft_categorization_cache', $results, HOUR_IN_SECONDS );
         update_option( 'loft1325_loft_categorization_results', $results, false );
+        update_option( 'loft1325_loft_categorization_summary', $summary, false );
         error_log( '[Loft1325 Discovery] Categorization completed. Rows: ' . count( $results ) );
 
         return $results;
@@ -1068,15 +1166,26 @@ class Loft1325_Admin_Pages {
         }
 
         if ( ! empty( $categorization_results ) ) {
-            echo '<p class="loft1325-meta" style="margin-top:12px;">Categorized lofts cached: ' . esc_html( count( $categorization_results ) ) . '</p>';
+            $resident_count = 0;
+            $rental_count = 0;
+
+            foreach ( $categorization_results as $categorization_row ) {
+                if ( isset( $categorization_row['type'] ) && 'Resident' === $categorization_row['type'] ) {
+                    $resident_count++;
+                } else {
+                    $rental_count++;
+                }
+            }
+
+            echo '<p class="loft1325-meta" style="margin-top:12px;">Categorized ' . esc_html( count( $categorization_results ) ) . ' lofts: ' . esc_html( $resident_count ) . ' Residents, ' . esc_html( $rental_count ) . ' Rentals.</p>';
             echo '<table class="widefat striped" style="margin-top:12px;">';
-            echo '<thead><tr><th>Loft ID</th><th>Type</th><th>Status</th><th>Unit ID</th><th>Last sync</th></tr></thead><tbody>';
-            foreach ( array_slice( $categorization_results, 0, 20 ) as $row ) {
+            echo '<thead><tr><th>Loft ID</th><th>Unit Name</th><th>Type</th><th>Status</th><th>Last Sync</th></tr></thead><tbody>';
+            foreach ( array_slice( $categorization_results, 0, 100 ) as $row ) {
                 echo '<tr>';
                 echo '<td>' . esc_html( $row['loft_id'] ?? '' ) . '</td>';
+                echo '<td>' . esc_html( $row['unit_name'] ?? '' ) . '</td>';
                 echo '<td>' . esc_html( $row['type'] ?? '' ) . '</td>';
                 echo '<td>' . esc_html( $row['status'] ?? '' ) . '</td>';
-                echo '<td>' . esc_html( $row['butterfly_unit_id'] ?? '' ) . '</td>';
                 echo '<td>' . esc_html( $row['last_sync'] ?? '' ) . '</td>';
                 echo '</tr>';
             }
