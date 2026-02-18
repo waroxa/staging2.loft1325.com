@@ -163,9 +163,16 @@
 
 .loft1325-filter-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(190px, max-content));
+    align-items: center;
     gap: 8px;
     margin-bottom: 16px;
+}
+
+.loft1325-filter-bar .loft1325-primary,
+.loft1325-filter-bar .loft1325-secondary,
+.loft1325-filter-bar .loft1325-chip {
+    white-space: nowrap;
 }
 
 .loft1325-chip {
@@ -185,6 +192,7 @@
 .loft1325-search {
     grid-column: 1 / -1;
     min-height: 44px;
+    min-width: 280px;
     padding: 10px;
     border: 1px solid #0b0b0b;
 }

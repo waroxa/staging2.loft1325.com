@@ -29,10 +29,10 @@ require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-admin-pages.php';
 require_once LOFT1325_BOOKING_HUB_PATH . 'includes/class-frontend-pages.php';
 
 add_filter( 'cron_schedules', function ( $schedules ) {
-    if ( ! isset( $schedules['loft1325_every_30_minutes'] ) ) {
-        $schedules['loft1325_every_30_minutes'] = array(
-            'interval' => 30 * MINUTE_IN_SECONDS,
-            'display'  => __( 'Every 30 Minutes', 'loft1325-booking-hub' ),
+    if ( ! isset( $schedules['loft1325_every_15_minutes'] ) ) {
+        $schedules['loft1325_every_15_minutes'] = array(
+            'interval' => 15 * MINUTE_IN_SECONDS,
+            'display'  => __( 'Every 15 Minutes', 'loft1325-booking-hub' ),
         );
     }
 
