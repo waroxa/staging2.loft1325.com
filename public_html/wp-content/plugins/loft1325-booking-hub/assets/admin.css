@@ -162,17 +162,20 @@
 }
 
 .loft1325-filter-bar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, max-content));
-    align-items: center;
-    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
     margin-bottom: 16px;
 }
 
 .loft1325-filter-bar .loft1325-primary,
 .loft1325-filter-bar .loft1325-secondary,
 .loft1325-filter-bar .loft1325-chip {
-    white-space: nowrap;
+    min-width: 132px;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.25;
 }
 
 .loft1325-chip {
@@ -190,11 +193,15 @@
 }
 
 .loft1325-search {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
     min-height: 44px;
-    min-width: 280px;
+    min-width: min(100%, 280px);
     padding: 10px;
     border: 1px solid #0b0b0b;
+}
+
+.loft1325-filter-bar .loft1325-sync-form {
+    flex: 0 0 auto;
 }
 
 .loft1325-form {
