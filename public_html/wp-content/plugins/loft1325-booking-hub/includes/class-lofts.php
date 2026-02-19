@@ -81,24 +81,58 @@ class Loft1325_Lofts {
 
         check_admin_referer( 'loft1325_seed_lofts' );
 
-        $lofts = array();
-        for ( $i = 1; $i <= 22; $i++ ) {
-            $type = 'simple';
-            if ( $i > 8 && $i <= 16 ) {
-                $type = 'double';
+        $lofts = self::build_seed_lofts_from_categorization();
+
+        if ( empty( $lofts ) ) {
+            for ( $i = 1; $i <= 22; $i++ ) {
+                $type = 'simple';
+                if ( $i > 8 && $i <= 16 ) {
+                    $type = 'double';
+                }
+                if ( $i > 16 ) {
+                    $type = 'penthouse';
+                }
+                $lofts[] = array(
+                    'loft_name' => 'LOFT ' . ( 200 + $i ),
+                    'loft_type' => $type,
+                );
             }
-            if ( $i > 16 ) {
-                $type = 'penthouse';
-            }
-            $lofts[] = array(
-                'loft_name' => 'LOFT ' . ( 200 + $i ),
-                'loft_type' => $type,
-            );
         }
 
         Loft1325_DB::seed_lofts( $lofts );
 
         wp_safe_redirect( add_query_arg( 'loft1325_seeded', '1', wp_get_referer() ) );
         exit;
+    }
+
+    private static function build_seed_lofts_from_categorization() {
+        $categorization_results = get_option( 'loft1325_loft_categorization_results', array() );
+        if ( ! is_array( $categorization_results ) ) {
+            return array();
+        }
+
+        $lofts = array();
+        foreach ( $categorization_results as $row ) {
+            $name = isset( $row['unit_name'] ) ? trim( (string) $row['unit_name'] ) : '';
+            if ( '' === $name || false === stripos( $name, 'LOFT' ) ) {
+                continue;
+            }
+
+            $type = 'simple';
+            if ( preg_match( '/\(\s*double\s*\)/i', $name ) ) {
+                $type = 'double';
+            } elseif ( preg_match( '/\(\s*penthouse\s*\)/i', $name ) ) {
+                $type = 'penthouse';
+            }
+
+            $lofts[ strtolower( $name ) ] = array(
+                'loft_name' => $name,
+                'loft_type' => $type,
+                'butterfly_tenant_id' => isset( $row['butterfly_tenant_id'] ) ? absint( $row['butterfly_tenant_id'] ) : null,
+                'butterfly_unit_id' => isset( $row['butterfly_unit_id'] ) ? absint( $row['butterfly_unit_id'] ) : null,
+            );
+        }
+
+        return array_values( $lofts );
     }
 }

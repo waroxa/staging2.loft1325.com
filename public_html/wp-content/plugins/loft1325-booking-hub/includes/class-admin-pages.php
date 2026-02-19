@@ -639,11 +639,11 @@ class Loft1325_Admin_Pages {
 
         self::render_page_header( 'Lofts' );
         echo '<div class="loft1325-card loft1325-inline">';
-        echo '<p>Chargez rapidement 22 lofts par défaut.</p>';
+        echo '<p>Seed uniquement les unités catégorisées contenant "LOFT" (sinon 22 lofts par défaut).</p>';
         echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
         echo '<input type="hidden" name="action" value="loft1325_seed_lofts" />';
         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $seed_nonce ) . '" />';
-        echo '<button class="loft1325-secondary">Seed 22 lofts</button>';
+        echo '<button class="loft1325-secondary">Seed lofts</button>';
         echo '</form>';
         echo '</div>';
 
