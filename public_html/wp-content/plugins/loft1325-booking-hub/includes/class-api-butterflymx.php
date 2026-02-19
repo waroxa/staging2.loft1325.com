@@ -6,6 +6,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Loft1325_API_ButterflyMX {
     private const DEFAULT_PER_PAGE = 100;
+    public static function boot() {
+        add_action( 'init', array( __CLASS__, 'ensure_refresh_schedule' ) );
+        add_action( 'loft1325_butterflymx_refresh_tokens', array( __CLASS__, 'refresh_due_tokens' ) );
+    }
+
+    public static function ensure_refresh_schedule() {
+        if ( ! wp_next_scheduled( 'loft1325_butterflymx_refresh_tokens' ) ) {
+            wp_schedule_event( time(), 'loft1325_every_15_minutes', 'loft1325_butterflymx_refresh_tokens' );
+        }
+    }
+
+    public static function refresh_due_tokens() {
+        self::maybe_request_oauth_token( 'v3' );
+        self::maybe_request_oauth_token( 'v4' );
+    }
+
     private static function get_environment() {
         $settings = loft1325_get_settings();
         $environment = isset( $settings['environment'] ) ? (string) $settings['environment'] : '';
@@ -44,7 +60,7 @@ class Loft1325_API_ButterflyMX {
             : 'https://api.butterflymx.com/v4';
     }
 
-    private static function maybe_request_oauth_token( $version = 'v4' ) {
+    private static function maybe_request_oauth_token( $version = 'v4', $force_refresh = false ) {
         $settings = loft1325_get_settings();
         $client_id = isset( $settings['client_id'] ) ? (string) $settings['client_id'] : '';
         $client_secret = isset( $settings['client_secret'] ) ? (string) $settings['client_secret'] : '';
@@ -68,7 +84,7 @@ class Loft1325_API_ButterflyMX {
         }
 
         $expires_at = absint( get_option( $expires_option, 0 ) );
-        if ( '' !== $existing_token && $expires_at > time() + 60 ) {
+        if ( ! $force_refresh && '' !== $existing_token && $expires_at > time() + 60 ) {
             return $existing_token;
         }
 
@@ -113,14 +129,16 @@ class Loft1325_API_ButterflyMX {
 
     private static function get_token( $version = 'v4' ) {
         $settings = loft1325_get_settings();
+        $expires_at = absint( get_option( 'butterflymx_token_' . $version . '_expires', 0 ) );
+        $token_is_fresh = $expires_at > time() + 60;
 
         $token = (string) get_option( 'butterflymx_access_token_' . $version, '' );
-        if ( ! empty( $token ) ) {
+        if ( ! empty( $token ) && $token_is_fresh ) {
             return $token;
         }
 
         $token = (string) get_option( 'butterflymx_token_' . $version, '' );
-        if ( ! empty( $token ) ) {
+        if ( ! empty( $token ) && $token_is_fresh ) {
             return $token;
         }
 
@@ -182,6 +200,15 @@ class Loft1325_API_ButterflyMX {
                 $code = wp_remote_retrieve_response_code( $response );
                 if ( $code >= 200 && $code < 300 ) {
                     return $response;
+                }
+
+                if ( 401 === $code ) {
+                    $refreshed_token = self::maybe_request_oauth_token( $version, true );
+                    if ( ! empty( $refreshed_token ) && $refreshed_token !== $token ) {
+                        $token = $refreshed_token;
+                        $args['headers']['Authorization'] = 'Bearer ' . $token;
+                        continue;
+                    }
                 }
             }
 
