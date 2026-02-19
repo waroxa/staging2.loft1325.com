@@ -130,6 +130,8 @@ class Loft1325_DB {
         $table = $wpdb->prefix . 'loft1325_lofts';
         $now = current_time( 'mysql', 1 );
 
+        $wpdb->query( "TRUNCATE TABLE {$table}" );
+
         foreach ( $lofts as $loft ) {
             $wpdb->insert(
                 $table,

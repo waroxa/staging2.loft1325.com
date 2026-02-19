@@ -178,6 +178,12 @@
     line-height: 1.25;
 }
 
+.loft1325-filter-bar .loft1325-filter-button {
+    min-width: 220px;
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
 .loft1325-chip {
     border: 1px solid #0b0b0b;
     padding: 8px 10px;
