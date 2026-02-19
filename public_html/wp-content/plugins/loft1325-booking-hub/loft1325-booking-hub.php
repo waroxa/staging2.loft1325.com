@@ -40,10 +40,15 @@ add_filter( 'cron_schedules', function ( $schedules ) {
 } );
 
 register_activation_hook( __FILE__, array( 'Loft1325_DB', 'activate' ) );
+register_activation_hook( __FILE__, array( 'Loft1325_API_ButterflyMX', 'ensure_refresh_schedule' ) );
+register_deactivation_hook( __FILE__, function () {
+    wp_clear_scheduled_hook( 'loft1325_butterflymx_refresh_tokens' );
+} );
 
 add_action( 'plugins_loaded', function () {
     Loft1325_Security::boot();
     Loft1325_DB::boot();
+    Loft1325_API_ButterflyMX::boot();
     Loft1325_Lofts::boot();
     Loft1325_Bookings::boot();
     Loft1325_Operations::boot();
