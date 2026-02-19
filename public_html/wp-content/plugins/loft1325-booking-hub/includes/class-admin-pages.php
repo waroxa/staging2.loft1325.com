@@ -256,8 +256,8 @@ class Loft1325_Admin_Pages {
 
         $sync_nonce = wp_create_nonce( 'loft1325_sync_keychains' );
         echo '<div class="loft1325-filter-bar">';
-        echo '<a class="' . esc_attr( ( 'review' === $view ) ? 'loft1325-primary' : 'loft1325-secondary' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'review' ), admin_url( 'admin.php' ) ) ) . '">Nouvelles clés à valider</a>';
-        echo '<a class="' . esc_attr( ( 'all' === $view ) ? 'loft1325-primary' : 'loft1325-secondary' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'all' ), admin_url( 'admin.php' ) ) ) . '">Toutes les réservations</a>';
+        echo '<a class="' . esc_attr( ( 'review' === $view ) ? 'loft1325-primary loft1325-filter-button' : 'loft1325-secondary loft1325-filter-button' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'review' ), admin_url( 'admin.php' ) ) ) . '">Nouvelles clés à valider</a>';
+        echo '<a class="' . esc_attr( ( 'all' === $view ) ? 'loft1325-primary loft1325-filter-button' : 'loft1325-secondary loft1325-filter-button' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'all' ), admin_url( 'admin.php' ) ) ) . '">Toutes les réservations</a>';
         echo '<span class="loft1325-chip is-active">Aujourd\'hui</span>';
         echo '<span class="loft1325-chip">7 jours</span>';
         echo '<span class="loft1325-chip">Mois</span>';
@@ -673,7 +673,7 @@ class Loft1325_Admin_Pages {
 
         self::render_page_header( 'Lofts' );
         echo '<div class="loft1325-card loft1325-inline">';
-        echo '<p>Seed uniquement les unités catégorisées contenant "LOFT" (sinon 22 lofts par défaut).</p>';
+        echo '<p>Seed remplace maintenant toute la liste des lofts avec les unités catégorisées contenant "LOFT" (sinon 22 lofts par défaut).</p>';
         echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
         echo '<input type="hidden" name="action" value="loft1325_seed_lofts" />';
         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $seed_nonce ) . '" />';
