@@ -216,6 +216,7 @@ class Loft1325_Admin_Pages {
         }
 
         $view = isset( $_GET['booking_view'] ) ? sanitize_key( wp_unslash( $_GET['booking_view'] ) ) : 'review'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $section = isset( $_GET['booking_section'] ) ? sanitize_key( wp_unslash( $_GET['booking_section'] ) ) : 'bookings'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $bookings = ( 'all' === $view ) ? Loft1325_Bookings::get_bookings() : Loft1325_Bookings::get_review_bookings();
         $active_bookings = array();
         $terminated_bookings = array();
@@ -255,6 +256,33 @@ class Loft1325_Admin_Pages {
         }
 
         $sync_nonce = wp_create_nonce( 'loft1325_sync_keychains' );
+        echo '<p class="loft1325-actions">';
+        echo '<a class="' . esc_attr( ( 'bookings' === $section ) ? 'loft1325-primary' : 'loft1325-secondary' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => $view, 'booking_section' => 'bookings' ), admin_url( 'admin.php' ) ) ) . '">Réservations</a> ';
+        echo '<a class="' . esc_attr( ( 'identity' === $section ) ? 'loft1325-primary' : 'loft1325-secondary' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => $view, 'booking_section' => 'identity' ), admin_url( 'admin.php' ) ) ) . '">Pièces d&rsquo;identité</a>';
+        echo '</p>';
+
+        if ( 'identity' === $section ) {
+            echo '<div class="loft1325-card"><h3>Pièces d&rsquo;identité reçues</h3><p class="loft1325-meta">Suivi centralisé pour rapports de police/fraude.</p>';
+            echo '<table class="widefat striped"><thead><tr><th>Réservation</th><th>Client</th><th>Type</th><th>Numéro</th><th>Recto</th><th>Verso</th></tr></thead><tbody>';
+            $identity_rows = Loft1325_Bookings::get_bookings( 500 );
+            foreach ( $identity_rows as $identity_booking ) {
+                if ( empty( $identity_booking['identity_type'] ) && empty( $identity_booking['identity_number'] ) && empty( $identity_booking['identity_front_media_id'] ) && empty( $identity_booking['identity_back_media_id'] ) ) {
+                    continue;
+                }
+                echo '<tr>';
+                echo '<td>#' . esc_html( $identity_booking['id'] ) . '</td>';
+                echo '<td>' . esc_html( $identity_booking['guest_name'] ) . '</td>';
+                echo '<td>' . esc_html( $identity_booking['identity_type'] ) . '</td>';
+                echo '<td>' . esc_html( $identity_booking['identity_number'] ) . '</td>';
+                echo '<td>' . ( ! empty( $identity_booking['identity_front_media_id'] ) ? '<a target="_blank" href="' . esc_url( wp_get_attachment_url( (int) $identity_booking['identity_front_media_id'] ) ) . '">Voir</a>' : '—' ) . '</td>';
+                echo '<td>' . ( ! empty( $identity_booking['identity_back_media_id'] ) ? '<a target="_blank" href="' . esc_url( wp_get_attachment_url( (int) $identity_booking['identity_back_media_id'] ) ) . '">Voir</a>' : '—' ) . '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table></div>';
+            echo '</div>';
+            return;
+        }
+
         echo '<div class="loft1325-filter-bar">';
         echo '<a class="' . esc_attr( ( 'review' === $view ) ? 'loft1325-primary loft1325-filter-button' : 'loft1325-secondary loft1325-filter-button' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'review' ), admin_url( 'admin.php' ) ) ) . '">Nouvelles clés à valider</a>';
         echo '<a class="' . esc_attr( ( 'all' === $view ) ? 'loft1325-primary loft1325-filter-button' : 'loft1325-secondary loft1325-filter-button' ) . '" href="' . esc_url( add_query_arg( array( 'page' => 'loft1325-bookings', 'booking_view' => 'all' ), admin_url( 'admin.php' ) ) ) . '">Toutes les réservations</a>';
@@ -298,11 +326,34 @@ class Loft1325_Admin_Pages {
             echo '<p class="loft1325-guest">' . esc_html( $booking['guest_name'] ) . '</p>';
             echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
             echo '<div class="loft1325-key">Clé: <span class="loft1325-badge">' . esc_html( $key_status ) . '</span></div>';
+            if ( ! empty( $booking['booking_source'] ) ) {
+                echo '<p class="loft1325-meta">Source: <strong>' . esc_html( ucfirst( $booking['booking_source'] ) ) . '</strong></p>';
+            }
+            if ( ! empty( $booking['coupon_code'] ) ) {
+                echo '<p class="loft1325-meta">Coupon: <strong>' . esc_html( $booking['coupon_code'] ) . '</strong></p>';
+            }
+            if ( ! empty( $booking['identity_type'] ) || ! empty( $booking['identity_number'] ) || ! empty( $booking['identity_front_media_id'] ) || ! empty( $booking['identity_back_media_id'] ) ) {
+                echo '<div class="loft1325-identity-block">';
+                echo '<p class="loft1325-meta"><strong>Vérification identité</strong></p>';
+                if ( ! empty( $booking['identity_type'] ) ) {
+                    echo '<p class="loft1325-meta">Type: ' . esc_html( $booking['identity_type'] ) . '</p>';
+                }
+                if ( ! empty( $booking['identity_number'] ) ) {
+                    echo '<p class="loft1325-meta">Numéro: ' . esc_html( $booking['identity_number'] ) . '</p>';
+                }
+                if ( ! empty( $booking['identity_front_media_id'] ) ) {
+                    echo '<p class="loft1325-meta"><a target="_blank" href="' . esc_url( wp_get_attachment_url( (int) $booking['identity_front_media_id'] ) ) . '">Recto pièce</a></p>';
+                }
+                if ( ! empty( $booking['identity_back_media_id'] ) ) {
+                    echo '<p class="loft1325-meta"><a target="_blank" href="' . esc_url( wp_get_attachment_url( (int) $booking['identity_back_media_id'] ) ) . '">Verso pièce</a></p>';
+                }
+                echo '</div>';
+            }
             echo '<div class="loft1325-actions">';
             $legacy_edit_url = add_query_arg(
                 array(
-                    'page'       => 'wp_loft_booking_bookings',
-                    'booking_id' => absint( $booking['id'] ),
+                    'page'       => 'loft1325-new-booking',
+                    'edit_booking' => absint( $booking['id'] ),
                 ),
                 admin_url( 'admin.php' )
             );
@@ -715,18 +766,20 @@ class Loft1325_Admin_Pages {
 
         $nonce = wp_create_nonce( 'loft1325_create_booking' );
         $clients = Loft1325_Bookings::get_clients();
+        $edit_booking_id = isset( $_GET['edit_booking'] ) ? absint( wp_unslash( $_GET['edit_booking'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $editing_booking = $edit_booking_id ? Loft1325_Bookings::get_booking( $edit_booking_id ) : array();
 
         self::render_page_header( 'Nouvelle réservation' );
         echo '<div class="loft1325-card">';
-        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form">';
+        echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form" enctype="multipart/form-data">';
         echo '<input type="hidden" name="action" value="loft1325_create_booking" />';
         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( $nonce ) . '" />';
         echo '<h3>1. Dates & type</h3>';
-        echo '<label>Check-in</label><input type="datetime-local" name="check_in" required />';
-        echo '<label>Check-out</label><input type="datetime-local" name="check_out" required />';
+        echo '<label>Check-in</label><input type="datetime-local" name="check_in" value="' . esc_attr( ! empty( $editing_booking['check_in_utc'] ) ? gmdate( 'Y-m-d\TH:i', strtotime( $editing_booking['check_in_utc'] ) ) : '' ) . '" required />';
+        echo '<label>Check-out</label><input type="datetime-local" name="check_out" value="' . esc_attr( ! empty( $editing_booking['check_out_utc'] ) ? gmdate( 'Y-m-d\TH:i', strtotime( $editing_booking['check_out_utc'] ) ) : '' ) . '" required />';
         echo '<label>Type de loft</label>';
-        echo '<select name="loft_type" required><option value="simple">Simple</option><option value="double">Double</option><option value="penthouse">Penthouse</option></select>';
-        echo '<label>Loft spécifique (optionnel)</label><input type="number" name="loft_id" placeholder="ID loft" />';
+        echo '<select name="loft_type" required><option value="simple" ' . selected( $editing_booking['loft_type'] ?? '', 'simple', false ) . '>Simple</option><option value="double" ' . selected( $editing_booking['loft_type'] ?? '', 'double', false ) . '>Double</option><option value="penthouse" ' . selected( $editing_booking['loft_type'] ?? '', 'penthouse', false ) . '>Penthouse</option></select>';
+        echo '<label>Loft spécifique (optionnel)</label><input type="number" name="loft_id" placeholder="ID loft" value="' . esc_attr( $editing_booking['loft_id'] ?? '' ) . '" />';
 
         echo '<h3>2. Invité</h3>';
         echo '<label>Client existant</label>';
@@ -740,12 +793,22 @@ class Loft1325_Admin_Pages {
             echo '<option value="' . esc_attr( wp_json_encode( $payload ) ) . '">' . esc_html( $client['full_name'] . ' · ' . $client['email'] ) . '</option>';
         }
         echo '</select>';
-        echo '<label>Nom</label><input type="text" name="guest_name" required />';
-        echo '<label>Email</label><input type="email" name="guest_email" />';
-        echo '<label>Téléphone</label><input type="text" name="guest_phone" />';
+        echo '<label>Nom</label><input type="text" name="guest_name" value="' . esc_attr( $editing_booking['guest_name'] ?? '' ) . '" required />';
+        echo '<label>Email</label><input type="email" name="guest_email" value="' . esc_attr( $editing_booking['guest_email'] ?? '' ) . '" />';
+        echo '<label>Téléphone</label><input type="text" name="guest_phone" value="' . esc_attr( $editing_booking['guest_phone'] ?? '' ) . '" />';
 
-        echo '<h3>3. Notes</h3>';
-        echo '<textarea name="notes" rows="3"></textarea>';
+        echo '<h3>3. Origine, coupon & identité</h3>';
+        echo '<label>Origine de la réservation</label>';
+        echo '<select name="booking_source"><option value="admin" ' . selected( $editing_booking['booking_source'] ?? 'admin', 'admin', false ) . '>Loft1325 (admin)</option><option value="website" ' . selected( $editing_booking['booking_source'] ?? '', 'website', false ) . '>Site Loft1325</option><option value="airbnb" ' . selected( $editing_booking['booking_source'] ?? '', 'airbnb', false ) . '>Airbnb</option></select>';
+        echo '<label>Coupon (optionnel)</label><input type="text" name="coupon_code" value="' . esc_attr( $editing_booking['coupon_code'] ?? '' ) . '" />';
+        echo '<label>Type de pièce d&rsquo;identité (optionnel pour admin)</label>';
+        echo '<select name="identity_type"><option value="">Sélectionner…</option><option value="Permis de conduire" ' . selected( $editing_booking['identity_type'] ?? '', 'Permis de conduire', false ) . '>Permis de conduire</option><option value="Passeport" ' . selected( $editing_booking['identity_type'] ?? '', 'Passeport', false ) . '>Passeport</option><option value="Carte d&rsquo;identité" ' . selected( $editing_booking['identity_type'] ?? '', 'Carte d&rsquo;identité', false ) . '>Carte d&rsquo;identité</option></select>';
+        echo '<label>Numéro d&rsquo;identification (optionnel pour admin)</label><input type="text" name="identity_number" value="' . esc_attr( $editing_booking['identity_number'] ?? '' ) . '" />';
+        echo '<label>Recto pièce (optionnel)</label><input type="file" name="identity_front" accept="image/*,.pdf" />';
+        echo '<label>Verso pièce (optionnel)</label><input type="file" name="identity_back" accept="image/*,.pdf" />';
+
+        echo '<h3>4. Notes</h3>';
+        echo '<textarea name="notes" rows="3">' . esc_textarea( $editing_booking['notes'] ?? '' ) . '</textarea>';
 
         echo '<label class="loft1325-toggle"><input type="checkbox" name="create_key" /> Créer clé ButterflyMX</label>';
         echo '<button class="loft1325-primary">FINALISER</button>';

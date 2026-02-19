@@ -172,14 +172,14 @@
 .loft1325-filter-bar .loft1325-primary,
 .loft1325-filter-bar .loft1325-secondary,
 .loft1325-filter-bar .loft1325-chip {
-    min-width: 132px;
+    min-width: 170px;
     text-align: center;
     white-space: normal;
     line-height: 1.25;
 }
 
 .loft1325-filter-bar .loft1325-filter-button {
-    min-width: 220px;
+    min-width: 280px;
     padding-left: 28px;
     padding-right: 28px;
 }
@@ -367,7 +367,7 @@
     border: 1px solid #d8dde2;
     box-shadow: 0 12px 30px rgba(3, 18, 39, 0.1);
     padding: 16px;
-    min-width: 220px;
+    min-width: 280px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-6px);
@@ -728,4 +728,11 @@ input.loft1325-primary {
         font-size: 13px;
         letter-spacing: 0.02em;
     }
+}
+
+
+.loft1325-identity-block {
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+    padding-top: 10px;
 }
