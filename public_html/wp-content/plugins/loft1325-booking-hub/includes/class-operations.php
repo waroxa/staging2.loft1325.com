@@ -231,7 +231,8 @@ class Loft1325_Operations {
         $rows = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT l.id, l.loft_name, l.loft_type,
-                    COALESCE(MAX(CASE WHEN b.id IS NULL THEN 0 ELSE 1 END), 0) AS is_busy,
+                    COALESCE(MAX(CASE WHEN b.status IN ('confirmed','checked_in') THEN 1 ELSE 0 END), 0) AS is_busy,
+                    COALESCE(MAX(CASE WHEN b.status = 'tentative' THEN 1 ELSE 0 END), 0) AS has_tentative,
                     COALESCE(MAX(CASE WHEN b.butterfly_keychain_id IS NULL THEN 0 ELSE 1 END), 0) AS has_key,
                     MIN(b.check_in_utc) AS next_check_in
                 FROM {$lofts_table} l
@@ -268,7 +269,8 @@ class Loft1325_Operations {
         $rows = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT l.id, l.loft_name, l.loft_type,
-                    COALESCE(MAX(CASE WHEN b.id IS NULL THEN 0 ELSE 1 END), 0) AS is_busy,
+                    COALESCE(MAX(CASE WHEN b.status IN ('confirmed','checked_in') THEN 1 ELSE 0 END), 0) AS is_busy,
+                    COALESCE(MAX(CASE WHEN b.status = 'tentative' THEN 1 ELSE 0 END), 0) AS has_tentative,
                     COALESCE(MAX(CASE WHEN b.butterfly_keychain_id IS NULL THEN 0 ELSE 1 END), 0) AS has_key,
                     MIN(b.check_in_utc) AS next_check_in
                 FROM {$lofts_table} l
