@@ -217,6 +217,19 @@ class Loft1325_Admin_Pages {
 
         $view = isset( $_GET['booking_view'] ) ? sanitize_key( wp_unslash( $_GET['booking_view'] ) ) : 'review'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $bookings = ( 'all' === $view ) ? Loft1325_Bookings::get_bookings() : Loft1325_Bookings::get_review_bookings();
+        $active_bookings = array();
+        $terminated_bookings = array();
+        $now = gmdate( 'Y-m-d H:i:s' );
+
+        foreach ( $bookings as $booking ) {
+            $is_terminated = ( 'cancelled' === $booking['status'] ) || ( 'tentative' === $booking['status'] && empty( $booking['butterfly_keychain_id'] ) );
+
+            if ( $is_terminated ) {
+                $terminated_bookings[] = $booking;
+            } else {
+                $active_bookings[] = $booking;
+            }
+        }
 
         self::render_page_header( 'Réservations' );
 
@@ -262,14 +275,13 @@ class Loft1325_Admin_Pages {
         echo '</div>';
 
         echo '<div class="loft1325-grid">';
-        foreach ( $bookings as $booking ) {
+        foreach ( $active_bookings as $booking ) {
             $status = ucfirst( $booking['status'] );
             if ( 'tentative' === $booking['status'] ) {
                 $status = 'Needs review';
             }
             $key_status = 'Missing';
             if ( ! empty( $booking['butterfly_keychain_id'] ) ) {
-                $now = gmdate( 'Y-m-d H:i:s' );
                 if ( $booking['check_in_utc'] > $now ) {
                     $key_status = 'Upcoming';
                 } elseif ( $booking['check_out_utc'] < $now ) {
@@ -313,6 +325,28 @@ class Loft1325_Admin_Pages {
             echo '</div>';
         }
         echo '</div>';
+
+        if ( ! empty( $terminated_bookings ) ) {
+            echo '<div class="loft1325-section">';
+            echo '<h2>Terminated bookings</h2>';
+            echo '<p class="loft1325-meta">Réservations annulées ou clés désactivées après remplacement/extension.</p>';
+            echo '<div class="loft1325-grid">';
+
+            foreach ( $terminated_bookings as $booking ) {
+                echo '<div class="loft1325-card">';
+                echo '<div class="loft1325-card-header">';
+                echo '<div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( ucfirst( $booking['loft_type'] ) ) . '</span></div>';
+                echo '<span class="loft1325-badge loft1325-badge--cancelled">Terminated</span>';
+                echo '</div>';
+                echo '<p class="loft1325-guest">' . esc_html( $booking['guest_name'] ) . '</p>';
+                echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
+                echo '<div class="loft1325-key">Clé: <span class="loft1325-badge">Missing</span></div>';
+                echo '</div>';
+            }
+
+            echo '</div>';
+            echo '</div>';
+        }
         echo '</div>';
     }
 
