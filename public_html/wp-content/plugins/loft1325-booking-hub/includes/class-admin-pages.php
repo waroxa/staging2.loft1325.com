@@ -614,16 +614,17 @@ class Loft1325_Admin_Pages {
                 $availability_rows = Loft1325_Operations::get_loft_availability( $period );
                 echo '<div class="loft1325-card">';
                 echo '<h4>Disponibilité des lofts</h4>';
-                echo '<p class="loft1325-meta">FREE = aucun séjour confirmé/checked-in sur la période sélectionnée.</p>';
+                echo '<p class="loft1325-meta">FREE = aucun séjour confirmé/checked-in sur la période sélectionnée. Tentative = en attente d&rsquo;approbation.</p>';
                 echo '<div class="loft1325-grid">';
                 foreach ( $availability_rows as $row ) {
                     $is_busy = ! empty( $row['is_busy'] );
-                    $badge_class = $is_busy ? 'loft1325-badge--busy' : 'loft1325-badge--free';
-                    $badge_label = $is_busy ? 'BUSY' : 'FREE';
+                    $has_tentative = ! empty( $row['has_tentative'] );
+                    $badge_class = $is_busy ? 'loft1325-badge--busy' : ( $has_tentative ? 'loft1325-badge--tentative' : 'loft1325-badge--free' );
+                    $badge_label = $is_busy ? 'BUSY' : ( $has_tentative ? 'TENTATIVE' : 'FREE' );
                     echo '<div class="loft1325-card">';
                     echo '<div class="loft1325-card-header"><strong>' . esc_html( $row['loft_name'] ) . '</strong><span class="loft1325-badge ' . esc_attr( $badge_class ) . '">' . esc_html( $badge_label ) . '</span></div>';
                     echo '<p class="loft1325-meta">Type: ' . esc_html( ucfirst( $row['loft_type'] ) ) . '</p>';
-                    if ( ! $is_busy ) {
+                    if ( ! $is_busy && ! $has_tentative ) {
                         echo '<form method="post" class="loft1325-actions">';
                         echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
                         echo '<input type="hidden" name="loft1325_ops_action" value="confirm_free" />';
