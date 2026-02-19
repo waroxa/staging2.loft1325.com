@@ -101,6 +101,24 @@ class Loft1325_Bookings {
         return $wpdb->get_results( $query, ARRAY_A );
     }
 
+    public static function get_booking( $booking_id ) {
+        global $wpdb;
+
+        $bookings_table = $wpdb->prefix . 'loft1325_bookings';
+        $lofts_table = $wpdb->prefix . 'loft1325_lofts';
+
+        $query = $wpdb->prepare(
+            "SELECT b.*, l.loft_name, l.loft_type
+            FROM {$bookings_table} b
+            LEFT JOIN {$lofts_table} l ON b.loft_id = l.id
+            WHERE b.id = %d
+            LIMIT 1",
+            $booking_id
+        );
+
+        return $wpdb->get_row( $query, ARRAY_A );
+    }
+
     public static function get_review_bookings( $limit = 100 ) {
         global $wpdb;
 
@@ -199,6 +217,14 @@ class Loft1325_Bookings {
         $check_out = loft1325_to_utc( sanitize_text_field( wp_unslash( $_POST['check_out'] ) ) );
         $loft_type = sanitize_text_field( wp_unslash( $_POST['loft_type'] ) );
         $loft_id = isset( $_POST['loft_id'] ) ? absint( $_POST['loft_id'] ) : 0;
+        $booking_source = isset( $_POST['booking_source'] ) ? sanitize_key( wp_unslash( $_POST['booking_source'] ) ) : 'admin';
+        if ( ! in_array( $booking_source, array( 'website', 'airbnb', 'admin' ), true ) ) {
+            $booking_source = 'admin';
+        }
+
+        $identity_type = isset( $_POST['identity_type'] ) ? sanitize_text_field( wp_unslash( $_POST['identity_type'] ) ) : '';
+        $identity_number = isset( $_POST['identity_number'] ) ? sanitize_text_field( wp_unslash( $_POST['identity_number'] ) ) : '';
+        $coupon_code = isset( $_POST['coupon_code'] ) ? sanitize_text_field( wp_unslash( $_POST['coupon_code'] ) ) : '';
 
         $lock_key = 'loft1325_lock_' . $loft_type;
         $wpdb->query( $wpdb->prepare( "SELECT GET_LOCK(%s, 10)", $lock_key ) );
@@ -235,6 +261,10 @@ class Loft1325_Bookings {
             'guest_name' => sanitize_text_field( wp_unslash( $_POST['guest_name'] ) ),
             'guest_email' => sanitize_email( wp_unslash( $_POST['guest_email'] ) ),
             'guest_phone' => sanitize_text_field( wp_unslash( $_POST['guest_phone'] ) ),
+            'booking_source' => $booking_source,
+            'coupon_code' => $coupon_code,
+            'identity_type' => $identity_type,
+            'identity_number' => $identity_number,
             'check_in_utc' => $check_in,
             'check_out_utc' => $check_out,
             'status' => 'confirmed',
@@ -246,6 +276,25 @@ class Loft1325_Bookings {
 
         $wpdb->insert( $bookings_table, $data );
         $booking_id = $wpdb->insert_id;
+
+        if ( $booking_id > 0 ) {
+            $identity_front_media_id = self::upload_identity_media( 'identity_front', $booking_id );
+            $identity_back_media_id = self::upload_identity_media( 'identity_back', $booking_id );
+
+            if ( $identity_front_media_id || $identity_back_media_id ) {
+                $wpdb->update(
+                    $bookings_table,
+                    array(
+                        'identity_front_media_id' => $identity_front_media_id ? $identity_front_media_id : null,
+                        'identity_back_media_id' => $identity_back_media_id ? $identity_back_media_id : null,
+                        'updated_at' => current_time( 'mysql', 1 ),
+                    ),
+                    array( 'id' => $booking_id ),
+                    array( '%d', '%d', '%s' ),
+                    array( '%d' )
+                );
+            }
+        }
 
         self::upsert_client_record( $data['guest_name'], $data['guest_email'], $data['guest_phone'], array(
             'source' => 'manual_booking_form',
@@ -262,6 +311,29 @@ class Loft1325_Bookings {
 
         wp_safe_redirect( add_query_arg( 'loft1325_created', '1', wp_get_referer() ) );
         exit;
+    }
+
+    private static function upload_identity_media( $file_key, $booking_id ) {
+        if ( empty( $_FILES[ $file_key ]['name'] ) ) {
+            return 0;
+        }
+
+        if ( ! function_exists( 'media_handle_upload' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            require_once ABSPATH . 'wp-admin/includes/media.php';
+            require_once ABSPATH . 'wp-admin/includes/image.php';
+        }
+
+        $attachment_id = media_handle_upload( $file_key, 0 );
+        if ( is_wp_error( $attachment_id ) ) {
+            loft1325_log_action( 'identity_upload_error', 'Identity document upload failed', array( 'booking_id' => $booking_id, 'field' => $file_key, 'error' => $attachment_id->get_error_message() ) );
+            return 0;
+        }
+
+        update_post_meta( $attachment_id, '_loft1325_booking_id', $booking_id );
+        update_post_meta( $attachment_id, '_loft1325_identity_document_slot', $file_key );
+
+        return (int) $attachment_id;
     }
 
     public static function create_key_for_booking( $booking_id ) {

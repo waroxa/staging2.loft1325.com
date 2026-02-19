@@ -10,6 +10,7 @@ function wp_loft_booking_bookings_page() {
     global $wpdb;
 
     $selected_loft = isset($_GET['loft_id']) ? absint($_GET['loft_id']) : 0;
+    $active_tab = isset($_GET['wplb_tab']) ? sanitize_key((string) $_GET['wplb_tab']) : 'bookings';
     $lofts         = $wpdb->get_results("SELECT id, name AS unit_name FROM {$wpdb->prefix}loft_lofts ORDER BY name ASC");
     $nd_rooms      = get_posts([
         'post_type'      => 'nd_booking_cpt_1',
@@ -52,7 +53,36 @@ function wp_loft_booking_bookings_page() {
     ?>
     <div class="wrap">
         <h1>Manage Bookings</h1>
+        <h2 class="nav-tab-wrapper" style="margin-bottom:16px;">
+            <a class="nav-tab <?php echo $active_tab === 'bookings' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url(add_query_arg('wplb_tab', 'bookings')); ?>">Bookings</a>
+            <a class="nav-tab <?php echo $active_tab === 'identity' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url(add_query_arg('wplb_tab', 'identity')); ?>">Identity verification</a>
+        </h2>
         <?php settings_errors('wp_loft_booking_bookings'); ?>
+        <?php if ('identity' === $active_tab) :
+            $identity_rows = $wpdb->get_results("SELECT id, guest_name, guest_email, booking_source, identity_type, identity_number, identity_front_media_id, identity_back_media_id FROM {$wpdb->prefix}loft1325_bookings WHERE identity_type <> '' OR identity_number <> '' OR identity_front_media_id IS NOT NULL OR identity_back_media_id IS NOT NULL ORDER BY id DESC LIMIT 500", ARRAY_A);
+        ?>
+            <div class="notice notice-info inline"><p>Identity documents dashboard for fraud/police reporting follow-up.</p></div>
+            <table class="widefat striped">
+                <thead><tr><th>Booking</th><th>Guest</th><th>Email</th><th>Source</th><th>Type</th><th>Number</th><th>Front</th><th>Back</th></tr></thead>
+                <tbody>
+                <?php if (empty($identity_rows)) : ?>
+                    <tr><td colspan="8">No identity documents found yet.</td></tr>
+                <?php else : foreach ($identity_rows as $row) : ?>
+                    <tr>
+                        <td>#<?php echo esc_html($row['id']); ?></td>
+                        <td><?php echo esc_html($row['guest_name']); ?></td>
+                        <td><?php echo esc_html($row['guest_email']); ?></td>
+                        <td><?php echo esc_html(ucfirst((string) $row['booking_source'])); ?></td>
+                        <td><?php echo esc_html($row['identity_type']); ?></td>
+                        <td><?php echo esc_html($row['identity_number']); ?></td>
+                        <td><?php if (!empty($row['identity_front_media_id'])) : ?><a target="_blank" href="<?php echo esc_url(wp_get_attachment_url((int) $row['identity_front_media_id'])); ?>">View</a><?php else : ?>—<?php endif; ?></td>
+                        <td><?php if (!empty($row['identity_back_media_id'])) : ?><a target="_blank" href="<?php echo esc_url(wp_get_attachment_url((int) $row['identity_back_media_id'])); ?>">View</a><?php else : ?>—<?php endif; ?></td>
+                    </tr>
+                <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php return; endif; ?>
         <script>
             console.log('Bookings admin screen loaded.');
         </script>
@@ -125,6 +155,35 @@ function wp_loft_booking_bookings_page() {
                     <td>
                         <label>Check-in <input type="date" name="checkin_date" required></label>
                         <label style="margin-left:12px;">Check-out <input type="date" name="checkout_date" required></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="booking_source">Reservation source</label></th>
+                    <td>
+                        <select name="booking_source" id="booking_source">
+                            <option value="website">Loft1325 website</option>
+                            <option value="airbnb">Airbnb</option>
+                        </select>
+                        <p class="description">Used for tracking in reports and dashboards.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="coupon_code">Coupon</label></th>
+                    <td>
+                        <input type="text" name="coupon_code" id="coupon_code" class="regular-text" placeholder="Optional coupon code" />
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="identity_doc_type">Identity verification (optional for admin)</label></th>
+                    <td>
+                        <select name="identity_doc_type" id="identity_doc_type">
+                            <option value="">No document</option>
+                            <option value="Permis de conduire">Permis de conduire</option>
+                            <option value="Passeport">Passeport</option>
+                            <option value="Carte d'identité">Carte d'identité</option>
+                        </select>
+                        <input type="text" name="identity_doc_number" id="identity_doc_number" class="regular-text" placeholder="Document number" style="margin-top:8px;" />
+                        <p class="description">Website bookings require identity, but admin sandbox creation keeps this optional.</p>
                     </td>
                 </tr>
                 <tr>
@@ -875,6 +934,11 @@ function wp_loft_booking_handle_booking_actions() {
         $status     = sanitize_text_field(wp_unslash($_POST['payment_status'] ?? 'paid'));
         $txn_id     = sanitize_text_field(wp_unslash($_POST['transaction_id'] ?? ''));
         $guest_count = isset($_POST['guest_count']) ? max(1, absint(wp_unslash($_POST['guest_count']))) : 1;
+        $coupon_code = sanitize_text_field(wp_unslash($_POST['coupon_code'] ?? ''));
+        $booking_source = sanitize_key(wp_unslash($_POST['booking_source'] ?? 'website'));
+        if (!in_array($booking_source, ['website', 'airbnb'], true)) { $booking_source = 'website'; }
+        $identity_doc_type = sanitize_text_field(wp_unslash($_POST['identity_doc_type'] ?? ''));
+        $identity_doc_number = sanitize_text_field(wp_unslash($_POST['identity_doc_number'] ?? ''));
 
         if (!$email || !$room_id || !$checkin || !$checkout) {
             add_settings_error(
@@ -920,7 +984,11 @@ function wp_loft_booking_handle_booking_actions() {
             $status ?: 'paid',
             $txn_id,
             $unit_id ?: null,
-            $guest_count
+            $guest_count,
+            $coupon_code,
+            $booking_source,
+            $identity_doc_type,
+            $identity_doc_number
         );
 
         if (is_wp_error($result)) {
@@ -1712,7 +1780,11 @@ function wp_loft_booking_process_booking(
     $payment_status = 'paid',
     $transaction_id = '',
     $preferred_unit_id = null,
-    $guest_count = 1
+    $guest_count = 1,
+    $coupon_code = '',
+    $booking_source = 'website',
+    $identity_doc_type = '',
+    $identity_doc_number = ''
 ) {
     global $wpdb;
 
@@ -1852,6 +1924,10 @@ function wp_loft_booking_process_booking(
             'total'          => $payment_total,
             'created_at'     => current_time('mysql'),
             'guests'         => max(1, (int) $guest_count),
+            'coupon'         => $coupon_code,
+            'source'         => $booking_source,
+            'identity_type'  => $identity_doc_type,
+            'identity_number'=> $identity_doc_number,
         ]
     );
 
