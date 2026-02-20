@@ -384,8 +384,8 @@ class Loft1325_Bookings {
         $tenant_id = $loft['butterfly_tenant_id'] ? absint( $loft['butterfly_tenant_id'] ) : null;
         $unit_id = $loft['butterfly_unit_id'] ? absint( $loft['butterfly_unit_id'] ) : null;
 
-        if ( ( $tenant_id && $unit_id ) || ( ! $tenant_id && ! $unit_id ) ) {
-            loft1325_log_action( 'butterflymx_error', 'Invalid tenant/unit mapping', array( 'booking_id' => $booking_id, 'loft_id' => $loft['id'] ) );
+        if ( ! $unit_id ) {
+            loft1325_log_action( 'butterflymx_error', 'Missing ButterflyMX unit ID', array( 'booking_id' => $booking_id, 'loft_id' => $loft['id'] ) );
             return false;
         }
 
@@ -398,23 +398,23 @@ class Loft1325_Bookings {
         }
 
         $payload = array(
-            'starts_at' => gmdate( 'c', strtotime( $booking['check_in_utc'] ) ),
-            'ends_at' => gmdate( 'c', strtotime( $booking['check_out_utc'] ) ),
-            'name' => str_replace(
-                array( '{booking_id}', '{loft_name}', '{guest_name}' ),
-                array( $booking_id, $loft['loft_name'], $booking['guest_name'] ),
-                $settings['pass_naming_template']
+            'keychain' => array(
+                'starts_at' => gmdate( 'c', strtotime( $booking['check_in_utc'] ) ),
+                'ends_at' => gmdate( 'c', strtotime( $booking['check_out_utc'] ) ),
+                'name' => str_replace(
+                    array( '{booking_id}', '{loft_name}', '{guest_name}' ),
+                    array( $booking_id, $loft['loft_name'], $booking['guest_name'] ),
+                    $settings['pass_naming_template']
+                ),
+                'access_point_ids' => array_filter( array_map( 'absint', explode( ',', $settings['default_access_point_ids'] ) ) ),
+                'device_ids' => array_filter( array_map( 'absint', explode( ',', $settings['default_device_ids'] ) ) ),
+                'recipients' => $recipients,
+                'unit_id' => $unit_id,
             ),
-            'access_point_ids' => array_filter( array_map( 'absint', explode( ',', $settings['default_access_point_ids'] ) ) ),
-            'device_ids' => array_filter( array_map( 'absint', explode( ',', $settings['default_device_ids'] ) ) ),
-            'recipients' => $recipients,
         );
 
         if ( $tenant_id ) {
-            $payload['tenant_id'] = $tenant_id;
-        }
-        if ( $unit_id ) {
-            $payload['unit_id'] = $unit_id;
+            $payload['keychain']['tenant_id'] = $tenant_id;
         }
 
         $response = Loft1325_API_ButterflyMX::create_keychain( $payload );
@@ -424,8 +424,15 @@ class Loft1325_Bookings {
         }
 
         $body = json_decode( wp_remote_retrieve_body( $response ), true );
-        if ( isset( $body['id'] ) ) {
-            $wpdb->update( $bookings_table, array( 'butterfly_keychain_id' => absint( $body['id'] ) ), array( 'id' => $booking_id ) );
+        $keychain_id = 0;
+        if ( isset( $body['data']['id'] ) ) {
+            $keychain_id = absint( $body['data']['id'] );
+        } elseif ( isset( $body['id'] ) ) {
+            $keychain_id = absint( $body['id'] );
+        }
+
+        if ( $keychain_id ) {
+            $wpdb->update( $bookings_table, array( 'butterfly_keychain_id' => $keychain_id ), array( 'id' => $booking_id ) );
             return true;
         }
 
