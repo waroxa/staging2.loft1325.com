@@ -507,18 +507,27 @@
 .loft1325-tab-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    margin: 0 0 14px;
+    gap: 14px;
+    margin: 0 0 18px;
 }
 
 .loft1325-tab-list .loft1325-primary,
 .loft1325-tab-list .loft1325-secondary {
     width: 100%;
-    min-height: 48px;
+    min-height: 52px;
 }
 
 .loft1325-tab-list--sub {
-    margin-top: 8px;
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.loft1325-frontend .loft1325-filter-bar {
+    margin-bottom: 24px;
+}
+
+.loft1325-frontend .loft1325-grid {
+    gap: 20px;
 }
 
 .loft1325-login-card {

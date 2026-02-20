@@ -771,6 +771,30 @@ class Loft1325_Admin_Pages {
         $editing_booking = $edit_booking_id ? Loft1325_Bookings::get_booking( $edit_booking_id ) : array();
 
         self::render_page_header( 'Nouvelle réservation' );
+
+        if ( isset( $_GET['loft1325_created'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-success"><p>Réservation créée avec succès.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_key_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            echo '<div class="notice notice-warning"><p>Réservation créée, mais la clé ButterflyMX n&rsquo;a pas pu être générée. Vérifiez les IDs d&rsquo;unité/tenant et le token API.</p></div>';
+        }
+
+        if ( isset( $_GET['loft1325_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $error_code = sanitize_key( wp_unslash( $_GET['loft1325_error'] ) );
+            $error_message = 'Impossible de créer la réservation.';
+
+            if ( 'no_availability' === $error_code ) {
+                $error_message = 'Aucun loft disponible pour cette période.';
+            } elseif ( 'overlap' === $error_code ) {
+                $error_message = 'Conflit détecté: ce loft est déjà occupé sur cette période.';
+            } elseif ( 'create_failed' === $error_code ) {
+                $error_message = 'Échec lors de l\'enregistrement en base de données. Vérifiez le journal Loft1325.';
+            }
+
+            echo '<div class="notice notice-error"><p>' . esc_html( $error_message ) . '</p></div>';
+        }
+
         echo '<div class="loft1325-card">';
         echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" class="loft1325-form" enctype="multipart/form-data">';
         echo '<input type="hidden" name="action" value="loft1325_create_booking" />';
