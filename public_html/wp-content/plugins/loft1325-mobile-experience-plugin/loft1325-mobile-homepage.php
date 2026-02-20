@@ -99,8 +99,6 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             }
             return $template;
         }
-        }
-
         /**
          * Validate plugin dependencies before running any front-end logic.
          */
