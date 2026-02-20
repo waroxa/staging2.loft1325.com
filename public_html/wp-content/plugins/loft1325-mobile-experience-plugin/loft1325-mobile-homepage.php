@@ -80,6 +80,25 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
             add_action( 'admin_notices', array( $this, 'maybe_show_dependency_notice' ) );
             add_action( 'admin_menu', array( $this, 'register_coupon_tools_page' ) );
             add_action( 'admin_post_loft1325_create_coupon', array( $this, 'handle_coupon_creation' ) );
+            add_filter( 'template_include', array( $this, 'include_mobile_header_footer' ), 100 );
+        }
+
+        public function include_mobile_header_footer( $template ) {
+            if ( $this->is_mobile_template ) {
+                add_filter( 'locate_template', array( $this, 'locate_mobile_header_footer' ), 10, 3 );
+            }
+            return $template;
+        }
+
+        public function locate_mobile_header_footer( $template, $template_names, $load ) {
+            if ( in_array( 'header-mobile.php', $template_names, true ) ) {
+                return plugin_dir_path( __FILE__ ) . 'templates/mobile-header.php';
+            }
+            if ( in_array( 'footer-mobile.php', $template_names, true ) ) {
+                return plugin_dir_path( __FILE__ ) . 'templates/mobile-footer.php';
+            }
+            return $template;
+        }
         }
 
         /**
@@ -174,53 +193,25 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return false;
             }
 
-            if ( is_singular() ) {
-                global $post;
-
-                if ( $post && has_shortcode( $post->post_content, 'loft1325_booking_hub' ) ) {
-                    return false;
-                }
-            }
+            // Removed specific singular page exclusions to allow global mobile template application.
+            // If specific singular pages need to be excluded, this logic can be re-introduced with more granular control.
 
             if ( ! $this->ensure_dependencies_ready() ) {
                 return false;
             }
 
-            $search_page_id = (int) get_option( 'nd_booking_search_page' );
-
-            if ( $search_page_id && is_page( $search_page_id ) ) {
-                return false;
-            }
-
-            $booking_page_id = (int) get_option( 'nd_booking_booking_page' );
-            if ( $booking_page_id && is_page( $booking_page_id ) ) {
-                return false;
-            }
-
-            $checkout_page_id = (int) get_option( 'nd_booking_checkout_page' );
-            if ( $checkout_page_id && is_page( $checkout_page_id ) ) {
-                return false;
-            }
-
-            if ( is_post_type_archive( 'nd_booking_cpt_1' ) ) {
-                return false;
-            }
-
-            if ( is_singular( 'nd_booking_cpt_1' ) ) {
-                return false;
-            }
+            // Removed booking page exclusions to allow global mobile template application.
+            // Booking related pages should now also use the mobile template.
 
             if ( isset( $_GET['loft1325_mobile_preview'] ) && '1' === $_GET['loft1325_mobile_preview'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 return true;
             }
 
-            // Apply globally to all pages for the new mobile experience
             $apply_globally = (bool) apply_filters( 'loft1325_mobile_home_force_all_templates', true );
 
-            // Removed the front-page-only restriction to apply mobile templates globally
-            // if ( ! $apply_globally && ! is_front_page() ) {
-            //     return false;
-            // }
+            // Apply globally to all pages for the new mobile experience
+            // The `loft1325_mobile_home_force_all_templates` filter can be used to control this behavior.
+            // Removed the front-page-only restriction to apply mobile templates globally.
 
             $is_mobile_request = $this->is_mobile_request();
 
@@ -328,7 +319,13 @@ if ( ! class_exists( 'Loft1325_Mobile_Homepage' ) ) {
                 return $template;
             }
 
-            $mobile_template = plugin_dir_path( __FILE__ ) . 'templates/mobile-front-page.php';
+            $mobile_template = null;
+
+            if ( is_front_page() ) {
+                $mobile_template = plugin_dir_path( __FILE__ ) . 'templates/mobile-front-page.php';
+            } else {
+                $mobile_template = plugin_dir_path( __FILE__ ) . 'templates/mobile-page.php';
+            }
 
             if ( ! file_exists( $mobile_template ) ) {
                 return $template;

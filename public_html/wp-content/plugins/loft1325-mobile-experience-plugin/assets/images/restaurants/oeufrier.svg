@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" role="img" aria-label="L'oeufrier">
+  <rect width="320" height="160" rx="20" fill="#ffffff"/>
+  <text x="160" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#111111">L'oeufrier</text>
+  <text x="160" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#555555">déjeuner &amp; dîner</text>
+</svg>
