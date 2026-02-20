@@ -5,8 +5,13 @@
   }
 
   body.nd-booking-flow-page .loft1325-mobile-booking-shell {
-    max-width: 430px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
+  }
+
+  body.nd-booking-flow-page [id^="nd_options_header_"] {
+    display: none !important;
   }
 
   body.nd-booking-flow-page .loft1325-mobile-booking-header {
@@ -261,6 +266,19 @@
   body.nd-booking-flow-page .loft1325-booking-page .loft1325-booking-total,
   body.nd-booking-flow-page .loft1325-booking-page .loft1325-booking-final-price {
     color: #0f172a !important;
+  }
+
+  body.nd-booking-flow-page .loft1325-booking-page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  body.nd-booking-flow-page .loft1325-booking-page .nd_booking_width_33_percentage,
+  body.nd-booking-flow-page .loft1325-booking-page .nd_booking_width_66_percentage {
+    width: 100% !important;
+    float: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
 
