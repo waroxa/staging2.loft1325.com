@@ -274,8 +274,30 @@ class Loft1325_Bookings {
             'updated_at' => current_time( 'mysql', 1 ),
         );
 
-        $wpdb->insert( $bookings_table, $data );
+        $inserted = $wpdb->insert( $bookings_table, $data );
         $booking_id = $wpdb->insert_id;
+
+        if ( false === $inserted || $booking_id <= 0 ) {
+            $wpdb->query( $wpdb->prepare( "SELECT RELEASE_LOCK(%s)", $lock_key ) );
+
+            loft1325_log_action(
+                'booking_create_error',
+                'Booking insert failed',
+                array(
+                    'loft_id' => $loft_id,
+                    'payload' => array(
+                        'wpdb_error' => $wpdb->last_error,
+                        'guest_email' => $data['guest_email'],
+                        'check_in_utc' => $data['check_in_utc'],
+                        'check_out_utc' => $data['check_out_utc'],
+                        'booking_source' => $data['booking_source'],
+                    ),
+                )
+            );
+
+            wp_safe_redirect( add_query_arg( 'loft1325_error', 'create_failed', wp_get_referer() ) );
+            exit;
+        }
 
         if ( $booking_id > 0 ) {
             $identity_front_media_id = self::upload_identity_media( 'identity_front', $booking_id );
@@ -305,11 +327,17 @@ class Loft1325_Bookings {
 
         loft1325_log_action( 'booking_created', 'Booking created', array( 'booking_id' => $booking_id, 'loft_id' => $loft_id ) );
 
+        $key_creation_failed = false;
         if ( isset( $_POST['create_key'] ) ) {
-            self::create_key_for_booking( $booking_id );
+            $key_creation_failed = ! self::create_key_for_booking( $booking_id );
         }
 
-        wp_safe_redirect( add_query_arg( 'loft1325_created', '1', wp_get_referer() ) );
+        $redirect_args = array( 'loft1325_created' => '1' );
+        if ( $key_creation_failed ) {
+            $redirect_args['loft1325_key_error'] = '1';
+        }
+
+        wp_safe_redirect( add_query_arg( $redirect_args, wp_get_referer() ) );
         exit;
     }
 
@@ -344,12 +372,12 @@ class Loft1325_Bookings {
 
         $booking = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$bookings_table} WHERE id = %d", $booking_id ), ARRAY_A );
         if ( ! $booking ) {
-            return;
+            return false;
         }
 
         $loft = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$lofts_table} WHERE id = %d", $booking['loft_id'] ), ARRAY_A );
         if ( ! $loft ) {
-            return;
+            return false;
         }
 
         $settings = loft1325_get_settings();
@@ -358,7 +386,7 @@ class Loft1325_Bookings {
 
         if ( ( $tenant_id && $unit_id ) || ( ! $tenant_id && ! $unit_id ) ) {
             loft1325_log_action( 'butterflymx_error', 'Invalid tenant/unit mapping', array( 'booking_id' => $booking_id, 'loft_id' => $loft['id'] ) );
-            return;
+            return false;
         }
 
         $recipients = array();
@@ -392,13 +420,16 @@ class Loft1325_Bookings {
         $response = Loft1325_API_ButterflyMX::create_keychain( $payload );
         if ( is_wp_error( $response ) ) {
             loft1325_log_action( 'butterflymx_error', 'Failed to create key', array( 'booking_id' => $booking_id, 'loft_id' => $loft['id'] ) );
-            return;
+            return false;
         }
 
         $body = json_decode( wp_remote_retrieve_body( $response ), true );
         if ( isset( $body['id'] ) ) {
             $wpdb->update( $bookings_table, array( 'butterfly_keychain_id' => absint( $body['id'] ) ), array( 'id' => $booking_id ) );
+            return true;
         }
+
+        return false;
     }
 
     public static function revoke_key() {
