@@ -11,7 +11,7 @@
     
     <div class="logo">
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-            <img src="<?php echo esc_url( plugins_url( 'assets/images/logo.svg', dirname( __FILE__ ) ) ); ?>" alt="Lofts 1325" style="height: 40px;">
+            <img src="<?php echo esc_url( plugins_url( '../assets/images/logo.svg', __FILE__ ) ); ?>" alt="Lofts 1325" style="height: 40px;">
         </a>
     </div>
     
