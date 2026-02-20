@@ -452,12 +452,11 @@ function marina_custom_login_styles() {
     ?>
     <style id="marina-custom-login-style">
         :root {
-            --marina-login-bg-start: #0f172a;
-            --marina-login-bg-end: #111827;
-            --marina-card-bg: rgba(255, 255, 255, 0.95);
-            --marina-card-border: rgba(255, 255, 255, 0.35);
-            --marina-accent: #2563eb;
-            --marina-accent-hover: #1d4ed8;
+            --marina-login-bg: #ffffff;
+            --marina-card-bg: #ffffff;
+            --marina-card-border: #e2e8f0;
+            --marina-accent: #000000;
+            --marina-accent-hover: #111111;
             --marina-text: #0f172a;
             --marina-muted: #475569;
         }
@@ -469,16 +468,8 @@ function marina_custom_login_styles() {
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: radial-gradient(circle at top, rgba(59, 130, 246, 0.3), transparent 40%), linear-gradient(160deg, var(--marina-login-bg-start), var(--marina-login-bg-end));
+            background: var(--marina-login-bg);
             font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body.login::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 30%, rgba(37, 99, 235, 0.12));
         }
 
         .login h1 {
@@ -499,9 +490,8 @@ function marina_custom_login_styles() {
         .login form {
             border: 1px solid var(--marina-card-border);
             border-radius: 18px;
-            box-shadow: 0 25px 50px rgba(2, 6, 23, 0.35);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
             background: var(--marina-card-bg);
-            backdrop-filter: blur(8px);
             padding: 26px 24px 24px;
         }
 
@@ -533,17 +523,23 @@ function marina_custom_login_styles() {
         .wp-core-ui .button-primary {
             border: 0;
             border-radius: 12px;
-            background: linear-gradient(135deg, var(--marina-accent), #3b82f6);
+            background: var(--marina-accent);
+            color: #ffffff;
             min-height: 46px;
             padding: 0 20px;
             font-weight: 700;
             text-shadow: none;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
         }
 
         .wp-core-ui .button-primary:hover,
         .wp-core-ui .button-primary:focus {
-            background: linear-gradient(135deg, var(--marina-accent-hover), var(--marina-accent));
+            background: var(--marina-accent-hover);
+            color: #ffffff;
+        }
+
+        .login .forgetmenot {
+            margin-bottom: 16px;
         }
 
         .login .button.wp-hide-pw,
@@ -626,6 +622,20 @@ function marina_redirect_legacy_admin_hub_login_path() {
     exit;
 }
 add_action( 'template_redirect', 'marina_redirect_legacy_admin_hub_login_path' );
+
+// Send users to the custom admin hub after login when no explicit redirect is requested.
+function marina_login_redirect_to_admin_hub( $redirect_to, $requested_redirect_to, $user ) {
+    if ( ! empty( $requested_redirect_to ) ) {
+        return $redirect_to;
+    }
+
+    if ( $user instanceof WP_User && $user->exists() ) {
+        return home_url( '/admin-hub-2/' );
+    }
+
+    return $redirect_to;
+}
+add_filter( 'login_redirect', 'marina_login_redirect_to_admin_hub', 20, 3 );
 
 
 ?>
