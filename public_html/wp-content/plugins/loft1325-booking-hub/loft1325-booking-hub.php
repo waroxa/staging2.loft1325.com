@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Loft1325 Booking Hub
  * Description: Mobile-first admin booking hub for Loft1325 with ButterflyMX integration.
- * Version: 0.2.1
+ * Version: 0.2.2
  * Author: Loft1325
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'LOFT1325_BOOKING_HUB_VERSION', '0.2.1' );
+define( 'LOFT1325_BOOKING_HUB_VERSION', '0.2.2' );
 define( 'LOFT1325_BOOKING_HUB_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LOFT1325_BOOKING_HUB_URL', plugin_dir_url( __FILE__ ) );
 
