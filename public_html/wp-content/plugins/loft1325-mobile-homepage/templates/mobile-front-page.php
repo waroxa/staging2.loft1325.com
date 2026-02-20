@@ -14,8 +14,7 @@ $strings  = array(
     'menu_close'             => $language === 'en' ? 'Close menu' : 'Fermer le menu',
     'menu_title'             => $language === 'en' ? 'Menu' : 'Menu',
     'hero_title'             => $language === 'en' ? 'Select a room' : 'Sélectionner une chambre',
-    'hero_tagline'           => $language === 'en' ? 'VIRTUAL HOTEL<br />EXPERIENCE' : 'EXPÉRIENCE HÔTELIÈRE<br />100 % VIRTUELLE',
-    'hero_copy'              => $language === 'en' ? 'Enjoy the comfort of home with a hotel experience, and manage everything from your phone.' : "Le confort d'une maison avec l'expérience hôtelière, gérez tout depuis votre mobile.",
+    'hero_tagline'           => $language === 'en' ? 'VIRTUAL HOTEL EXPERIENCE' : 'EXPÉRIENCE HÔTELIÈRE 100 % VIRTUELLE',
     'search_title'           => $language === 'en' ? 'SEARCH' : 'RECHERCHER',
     'dates_tile_label'       => $language === 'en' ? 'Dates' : 'Dates',
     'guests_tile_label'      => $language === 'en' ? 'Guests' : 'Voyageurs',
@@ -118,10 +117,18 @@ $strings  = array(
       color: var(--black);
     }
 
+    .header .icon-button {
+      border: none;
+      border-radius: 0;
+      width: auto;
+      height: auto;
+      min-width: 28px;
+    }
+
     .language-toggle {
       width: auto;
-      min-width: 78px;
-      padding: 0 10px;
+      min-width: 74px;
+      padding: 0;
       gap: 8px;
       font-size: 12px;
       font-weight: 600;
@@ -200,10 +207,11 @@ $strings  = array(
 
     .hero h1 {
       font-family: "Playfair Display", serif;
-      font-size: 26px;
-      letter-spacing: 0.04em;
+      font-size: 20px;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
+      white-space: nowrap;
     }
 
     .hero p {
@@ -213,22 +221,17 @@ $strings  = array(
 
     .hero-tagline {
       font-family: "Playfair Display", serif;
-      font-size: 27px;
-      letter-spacing: 0.04em;
+      font-size: 18px;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       line-height: 1.1;
       color: var(--black);
       margin-bottom: 12px;
-    }
-
-    .hero-copy {
-      font-size: 14px;
-      color: var(--gray-500);
-      max-width: 330px;
+      white-space: nowrap;
     }
 
     .search-panel {
-      margin-top: 18px;
+      margin-top: 12px;
       display: grid;
       gap: 12px;
     }
@@ -252,6 +255,7 @@ $strings  = array(
     .search-tile strong {
       font-size: 15px;
       letter-spacing: 0.03em;
+      white-space: nowrap;
     }
 
     .room-list {
@@ -790,7 +794,6 @@ $strings  = array(
     <section class="hero">
       <h1><?php echo esc_html( $strings['hero_title'] ); ?></h1>
       <p class="hero-tagline"><?php echo wp_kses_post( $strings['hero_tagline'] ); ?></p>
-      <p class="hero-copy"><?php echo esc_html( $strings['hero_copy'] ); ?></p>
       <div class="search-panel">
         <button class="search-tile" id="openSearch" type="button">
           <span><?php echo esc_html( $strings['dates_tile_label'] ); ?></span>
@@ -809,7 +812,7 @@ $strings  = array(
     $price_prefix    = 'en' === $language ? 'From' : 'À partir de';
     $per_night       = 'en' === $language ? 'per night' : 'par nuit';
     $room_button     = 'en' === $language ? 'Book now' : 'Réserver maintenant';
-    $member_label    = 'en' === $language ? 'Member rate' : 'Tarif membre Loft Circle';
+    $member_label    = 'en' === $language ? 'Rate of the day' : 'Tarif du jour';
     ?>
 
     <?php if ( ! empty( $room_cards ) ) : ?>
