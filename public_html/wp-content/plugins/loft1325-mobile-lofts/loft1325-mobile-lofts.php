@@ -149,10 +149,12 @@ if ( ! class_exists( 'Loft1325_Mobile_Lofts' ) ) {
 		public function filter_body_class( $classes ) {
 			if ( $this->is_mobile_template ) {
 				$classes[] = 'loft1325-mobile-lofts-active';
+				$classes[] = 'loft1325-mobile-active';
 			}
 
 			if ( $this->is_mobile_archive_template ) {
 				$classes[] = 'loft1325-mobile-lofts-archive-active';
+				$classes[] = 'loft1325-mobile-active';
 			}
 
 			return $classes;

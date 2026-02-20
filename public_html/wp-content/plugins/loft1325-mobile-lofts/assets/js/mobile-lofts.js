@@ -2,8 +2,8 @@
 	"use strict";
 
 	function setupMobileHeader() {
-		var headerLanguageToggle = document.getElementById("headerLanguageToggle");
 		var openMenu = document.getElementById("openMenu");
+		var openMenuRight = document.getElementById("openMenuRight");
 		var mobileMenu = document.getElementById("mobileMenu");
 		var closeMenu = document.getElementById("closeMenu");
 
@@ -48,13 +48,6 @@
 			return fallbackUrl.toString();
 		}
 
-		if (headerLanguageToggle) {
-			headerLanguageToggle.addEventListener("click", function () {
-				var language = document.documentElement.lang === "en" ? "en" : "fr";
-				var targetLanguage = language === "en" ? "fr" : "en";
-				window.location.href = getLanguageUrl(targetLanguage);
-			});
-		}
 
 		function openMenuPanel() {
 			if (!mobileMenu) {
@@ -74,6 +67,10 @@
 
 		if (openMenu) {
 			openMenu.addEventListener("click", openMenuPanel);
+		}
+
+		if (openMenuRight) {
+			openMenuRight.addEventListener("click", openMenuPanel);
 		}
 
 		if (closeMenu) {
