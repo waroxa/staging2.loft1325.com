@@ -2,127 +2,188 @@
 /**
  * Plugin Name: Loft1325 Mobile Experience
  * Plugin URI: https://loft1325.com
- * Description: Provides a mobile-first experience for the entire Loft1325 website, extending the template-11 design.
- * Version: 1.0.0
- * Author: Manus AI
- * Author URI: https://manus.im
+ * Description: Provides a mobile-only homepage experience without altering the desktop layout.
+ * Version: 1.0.1
+ * Author: Loft1325
  * License: GPL2
+ * Text Domain: loft1325-mobile
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly
+    exit;
 }
 
-class Loft1325_Mobile_Experience {
+if ( ! class_exists( 'Loft1325_Mobile_Experience' ) ) {
+    final class Loft1325_Mobile_Experience {
 
-    public function __construct() {
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_mobile_assets' ) );
-        add_filter( 'template_include', array( $this, 'mobile_template_include' ), 99 ); // Synchronized priority
-        add_filter( 'wp_is_mobile', array( $this, 'custom_wp_is_mobile' ) );
-        add_action( 'after_setup_theme', array( $this, 'setup_mobile_theme_support' ) );
-    }
+        /**
+         * Singleton instance.
+         *
+         * @var Loft1325_Mobile_Experience|null
+         */
+        private static $instance = null;
 
-    public function enqueue_mobile_assets() {
-        if ( $this->should_apply_mobile_experience() ) {
-            // Enqueue mobile-specific CSS
-            wp_enqueue_style( 'loft1325-mobile-style', plugins_url( 'assets/css/mobile-style.css', __FILE__ ), array(), '1.0.0' );
-            // Enqueue mobile-specific JavaScript
-            wp_enqueue_script( 'loft1325-mobile-script', plugins_url( 'assets/js/mobile-script.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+        /**
+         * Tracks whether the mobile template is active for the current request.
+         *
+         * @var bool
+         */
+        private $is_mobile_template = false;
+
+        /**
+         * Get singleton instance.
+         *
+         * @return Loft1325_Mobile_Experience
+         */
+        public static function instance() {
+            if ( null === self::$instance ) {
+                self::$instance = new self();
+            }
+
+            return self::$instance;
         }
-    }
 
-    public function mobile_template_include( $template ) {
-        if ( $this->should_apply_mobile_experience() ) {
-            // Define custom mobile template paths
-            $mobile_templates = array(
-                'front-page.php' => 'templates/mobile-front-page.php',
-                'single.php'     => 'templates/mobile-single.php',
-                'page.php'       => 'templates/mobile-page.php',
-                // Add more mappings for custom post types or specific pages
+        /**
+         * Constructor.
+         */
+        private function __construct() {
+            add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+            add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_mobile_assets' ) );
+            add_filter( 'template_include', array( $this, 'mobile_template_include' ), 99 );
+            add_filter( 'body_class', array( $this, 'filter_body_class' ) );
+        }
+
+        /**
+         * Load translations.
+         */
+        public function load_textdomain() {
+            load_plugin_textdomain( 'loft1325-mobile', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+        }
+
+        /**
+         * Enqueue mobile-only assets.
+         */
+        public function enqueue_mobile_assets() {
+            if ( ! $this->should_apply_mobile_experience() ) {
+                return;
+            }
+
+            $style_path = plugin_dir_path( __FILE__ ) . 'assets/css/mobile-style.css';
+            $style_ver  = file_exists( $style_path ) ? (string) filemtime( $style_path ) : '1.0.1';
+            wp_enqueue_style( 'loft1325-mobile-style', plugin_dir_url( __FILE__ ) . 'assets/css/mobile-style.css', array(), $style_ver );
+
+            $script_path = plugin_dir_path( __FILE__ ) . 'assets/js/mobile-script.js';
+            $script_ver  = file_exists( $script_path ) ? (string) filemtime( $script_path ) : '1.0.1';
+            wp_enqueue_script( 'loft1325-mobile-script', plugin_dir_url( __FILE__ ) . 'assets/js/mobile-script.js', array( 'jquery' ), $script_ver, true );
+        }
+
+        /**
+         * Swap in the custom mobile template when applicable.
+         *
+         * @param string $template Current template path.
+         *
+         * @return string
+         */
+        public function mobile_template_include( $template ) {
+            if ( ! $this->should_apply_mobile_experience() ) {
+                return $template;
+            }
+
+            $mobile_template = plugin_dir_path( __FILE__ ) . 'templates/mobile-front-page.php';
+
+            if ( ! file_exists( $mobile_template ) ) {
+                return $template;
+            }
+
+            $this->is_mobile_template = true;
+
+            return $mobile_template;
+        }
+
+        /**
+         * Add a body class for easier CSS targeting.
+         *
+         * @param array<int,string> $classes Body classes.
+         *
+         * @return array<int,string>
+         */
+        public function filter_body_class( $classes ) {
+            if ( $this->is_mobile_template ) {
+                $classes[] = 'loft1325-mobile-experience-active';
+            }
+
+            return $classes;
+        }
+
+        /**
+         * Determine if this request should render the mobile experience.
+         *
+         * @return bool
+         */
+        private function should_apply_mobile_experience() {
+            if ( is_admin() || is_feed() || is_embed() ) {
+                return false;
+            }
+
+            if ( isset( $_GET['loft1325_mobile_preview'] ) && '1' === $_GET['loft1325_mobile_preview'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                return true;
+            }
+
+            if ( isset( $_GET['force_mobile'] ) && 'true' === $_GET['force_mobile'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                return true;
+            }
+
+            $apply_globally = (bool) apply_filters( 'loft1325_mobile_experience_force_all_templates', false );
+            if ( ! $apply_globally && ! is_front_page() ) {
+                return false;
+            }
+
+            return $this->is_mobile_request();
+        }
+
+        /**
+         * Detect mobile requests.
+         *
+         * @return bool
+         */
+        private function is_mobile_request() {
+            if ( wp_is_mobile() ) {
+                return true;
+            }
+
+            $user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? strtolower( (string) $_SERVER['HTTP_USER_AGENT'] ) : '';
+            if ( '' === $user_agent ) {
+                return false;
+            }
+
+            $mobile_agents = array(
+                'android',
+                'blackberry',
+                'iphone',
+                'ipad',
+                'ipod',
+                'opera mini',
+                'windows ce',
+                'windows phone',
+                'palm',
+                'webos',
+                'symbian',
+                'series60',
+                'kindle',
+                'mobile',
+                'phone',
+                'tablet',
             );
 
-            foreach ( $mobile_templates as $wp_template => $mobile_template ) {
-                if ( is_string( $template ) && basename( $template ) === $wp_template ) {
-                    $plugin_template = plugin_dir_path( __FILE__ ) . $mobile_template;
-                    if ( file_exists( $plugin_template ) ) {
-                        return $plugin_template;
-                    }
+            foreach ( $mobile_agents as $agent ) {
+                if ( false !== strpos( $user_agent, $agent ) ) {
+                    return true;
                 }
             }
 
-            // Fallback for other pages, try to load a generic mobile template
-            $generic_mobile_template = plugin_dir_path( __FILE__ ) . 'templates/mobile-generic.php';
-            if ( file_exists( $generic_mobile_template ) ) {
-                return $generic_mobile_template;
-            }
-        }
-        return $template;
-    }
-
-    public function setup_mobile_theme_support() {
-        if ( $this->should_apply_mobile_experience() ) {
-            // Add any mobile-specific theme support or remove desktop features
-            // For example, disable certain desktop widgets or image sizes
+            return false;
         }
     }
 }
 
-    private function is_mobile_request() {
-        // Check for a 'force_mobile' query parameter for testing
-        if ( isset( $_GET['force_mobile'] ) && $_GET['force_mobile'] === 'true' ) {
-            return true;
-        }
-
-        // Use WordPress's built-in mobile detection as a primary check
-        if ( wp_is_mobile() ) {
-            return true;
-        }
-
-        // Fallback to a more robust user-agent check if wp_is_mobile is not sufficient
-        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-        $mobile_agents = array(
-            'android', 'blackberry', 'iphone', 'ipad', 'ipod', 'opera mini', 
-            'windows ce', 'windows phone', 'palm', 'webos', 'symbian', 'series60', 
-            'kindle', 'mobile', 'phone', 'tablet'
-        );
-
-        foreach ( $mobile_agents as $agent ) {
-            if ( stripos( $user_agent, $agent ) !== false ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // Custom wp_is_mobile filter to ensure consistency
-    public function custom_wp_is_mobile( $is_mobile ) {
-        return $this->is_mobile_request();
-    }
-
-    /**
-     * Determine whether the mobile experience should be applied.
-     *
-     * @return bool
-     */
-    private function should_apply_mobile_experience() {
-        if ( is_admin() || is_feed() || is_embed() ) {
-            return false;
-        }
-
-        // Check for a 'force_mobile' query parameter for testing
-        if ( isset( $_GET['force_mobile'] ) && $_GET['force_mobile'] === 'true' ) {
-            return true;
-        }
-
-        // If not front page, and not forced globally, return false for now.
-        // This logic can be expanded later to include specific pages or post types.
-        if ( ! is_front_page() ) {
-            return false;
-        }
-
-        return $this->is_mobile_request();
-    }
-}
-
-new Loft1325_Mobile_Experience();
+Loft1325_Mobile_Experience::instance();

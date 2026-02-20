@@ -5,7 +5,7 @@
  * This template renders the mobile-first homepage experience.
  */
 
-get_template_part( 'templates/mobile-header' );
+require plugin_dir_path( __FILE__ ) . 'mobile-header.php';
 ?>
 
 <div class="mobile-content">
@@ -86,5 +86,5 @@ get_template_part( 'templates/mobile-header' );
 </div>
 
 <?php
-get_template_part( 'templates/mobile-menu' );
+require plugin_dir_path( __FILE__ ) . 'mobile-menu.php';
 ?>
