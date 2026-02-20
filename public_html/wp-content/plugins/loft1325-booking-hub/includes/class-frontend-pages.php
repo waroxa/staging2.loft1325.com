@@ -111,10 +111,20 @@ class Loft1325_Frontend_Pages {
 
         $period = isset( $_GET['period'] ) ? sanitize_key( wp_unslash( $_GET['period'] ) ) : 'today';
         $view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : 'bookings';
+        $results_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'requests';
+        if ( ! in_array( $results_tab, array( 'requests', 'availability' ), true ) ) {
+            $results_tab = 'requests';
+        }
+
+        if ( 'calendar' === $view ) {
+            $results_tab = 'requests';
+        }
+
         $current_view_url = self::get_frontend_hub_url(
             array(
                 'view' => $view,
                 'period' => $period,
+                'tab' => $results_tab,
             )
         );
         $bookings = Loft1325_Operations::get_bookings_with_cleaning( $period );
@@ -194,10 +204,19 @@ class Loft1325_Frontend_Pages {
         }
         echo '</p>';
 
-        echo '<p class="loft1325-actions">';
-        foreach ( array( 'bookings' => 'Réservations', 'cleaning' => 'Ménage', 'maintenance' => 'Maintenance' ) as $view_key => $label ) {
+        echo '<p class="loft1325-tab-list" role="tablist" aria-label="Sections du hub">';
+        foreach ( array( 'bookings' => 'Réservations', 'cleaning' => 'Ménage', 'maintenance' => 'Maintenance', 'calendar' => 'Séjours' ) as $view_key => $label ) {
             $view_class = ( $view === $view_key ) ? 'loft1325-primary' : 'loft1325-secondary';
-            echo '<a class="' . esc_attr( $view_class ) . '" href="' . esc_url( self::get_frontend_hub_url( array( 'view' => $view_key, 'period' => $period ) ) ) . '">' . esc_html( $label ) . '</a> ';
+            $view_url_args = array(
+                'view' => $view_key,
+                'period' => $period,
+            );
+
+            if ( 'bookings' === $view_key ) {
+                $view_url_args['tab'] = $results_tab;
+            }
+
+            echo '<a role="tab" aria-selected="' . esc_attr( $view === $view_key ? 'true' : 'false' ) . '" class="' . esc_attr( $view_class ) . '" href="' . esc_url( self::get_frontend_hub_url( $view_url_args ) ) . '">' . esc_html( $label ) . '</a> ';
         }
         echo '</p>';
 
@@ -232,35 +251,46 @@ class Loft1325_Frontend_Pages {
             }
             echo '</div>';
         } else {
-            echo '<div class="loft1325-grid">';
-            foreach ( $bookings as $booking ) {
-                $status_class = 'loft1325-badge--' . sanitize_html_class( (string) $booking['status'] );
-                $key_missing = empty( $booking['butterfly_keychain_id'] );
-                echo '<div class="loft1325-card">';
-                echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge ' . esc_attr( $status_class ) . '">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
-                echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
-                echo '<p>Cleaning: <strong>' . esc_html( $booking['cleaning_status'] ) . '</strong></p>';
-                if ( $key_missing ) {
-                    echo '<p><span class="loft1325-badge loft1325-badge--free">FREE · no key yet</span></p>';
-                }
-                echo '<form method="post" class="loft1325-actions">';
-                echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
-                echo '<input type="hidden" name="loft1325_redirect" value="' . esc_url( $current_view_url ) . '" />';
-                echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
-                if ( 'bookings' === $view ) {
-                    echo '<button class="loft1325-primary" name="loft1325_ops_action" value="approve">Approve</button>';
-                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="reject">Reject</button>';
-                } else {
-                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="dirty">Dirty</button>';
-                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="in_progress">In progress</button>';
-                    echo '<button class="loft1325-primary" name="loft1325_ops_action" value="cleaned">Cleaned</button>';
-                    echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="issue">Needs maintenance</button>';
-                }
-                echo '</form></div>';
-            }
-            echo '</div>';
-
             if ( 'bookings' === $view ) {
+                echo '<p class="loft1325-tab-list loft1325-tab-list--sub" role="tablist" aria-label="Résultats réservations">';
+                foreach ( array( 'requests' => 'Demandes', 'availability' => 'Disponibilité' ) as $tab_key => $tab_label ) {
+                    $tab_class = ( $results_tab === $tab_key ) ? 'loft1325-primary' : 'loft1325-secondary';
+                    echo '<a role="tab" aria-selected="' . esc_attr( $results_tab === $tab_key ? 'true' : 'false' ) . '" class="' . esc_attr( $tab_class ) . '" href="' . esc_url( self::get_frontend_hub_url( array( 'view' => 'bookings', 'period' => $period, 'tab' => $tab_key ) ) ) . '">' . esc_html( $tab_label ) . '</a>';
+                }
+                echo '</p>';
+            }
+
+            if ( 'bookings' !== $view || 'requests' === $results_tab ) {
+                echo '<div class="loft1325-grid">';
+                foreach ( $bookings as $booking ) {
+                    $status_class = 'loft1325-badge--' . sanitize_html_class( (string) $booking['status'] );
+                    $key_missing = empty( $booking['butterfly_keychain_id'] );
+                    echo '<div class="loft1325-card">';
+                    echo '<div class="loft1325-card-header"><div><h3>' . esc_html( $booking['loft_name'] ) . '</h3><span>' . esc_html( $booking['guest_name'] ) . '</span></div><span class="loft1325-badge ' . esc_attr( $status_class ) . '">' . esc_html( ucfirst( $booking['status'] ) ) . '</span></div>';
+                    echo '<p class="loft1325-dates">' . esc_html( loft1325_format_datetime_local( $booking['check_in_utc'] ) ) . ' → ' . esc_html( loft1325_format_datetime_local( $booking['check_out_utc'] ) ) . '</p>';
+                    echo '<p>Cleaning: <strong>' . esc_html( $booking['cleaning_status'] ) . '</strong></p>';
+                    if ( $key_missing ) {
+                        echo '<p><span class="loft1325-badge loft1325-badge--free">FREE · no key yet</span></p>';
+                    }
+                    echo '<form method="post" class="loft1325-actions">';
+                    echo '<input type="hidden" name="_wpnonce" value="' . esc_attr( wp_create_nonce( 'loft1325_ops_action' ) ) . '" />';
+                    echo '<input type="hidden" name="loft1325_redirect" value="' . esc_url( $current_view_url ) . '" />';
+                    echo '<input type="hidden" name="booking_id" value="' . esc_attr( $booking['id'] ) . '" />';
+                    if ( 'bookings' === $view ) {
+                        echo '<button class="loft1325-primary" name="loft1325_ops_action" value="approve">Approve</button>';
+                        echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="reject">Reject</button>';
+                    } else {
+                        echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="dirty">Dirty</button>';
+                        echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="in_progress">In progress</button>';
+                        echo '<button class="loft1325-primary" name="loft1325_ops_action" value="cleaned">Cleaned</button>';
+                        echo '<button class="loft1325-secondary" name="loft1325_ops_action" value="issue">Needs maintenance</button>';
+                    }
+                    echo '</form></div>';
+                }
+                echo '</div>';
+            }
+
+            if ( 'bookings' === $view && 'availability' === $results_tab ) {
                 $availability_rows = Loft1325_Operations::get_loft_availability( $period );
                 echo '<div class="loft1325-card">';
                 echo '<h4>Disponibilité des lofts</h4>';
@@ -292,7 +322,9 @@ class Loft1325_Frontend_Pages {
             }
         }
 
-        self::render_stays_calendar( 'month' );
+        if ( 'calendar' === $view ) {
+            self::render_stays_calendar( $period );
+        }
 
         echo '</div>';
         echo '</div>';

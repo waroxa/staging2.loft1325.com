@@ -455,7 +455,7 @@
 .loft1325-frontend .loft1325-header h1,
 .loft1325-frontend h3,
 .loft1325-frontend .loft1325-guest {
-    color: #0e3558;
+    color: #0b0b0b;
     line-height: 1.15;
 }
 
@@ -491,8 +491,34 @@
 .loft1325-frontend .loft1325-secondary,
 .loft1325-frontend a.loft1325-secondary,
 .loft1325-frontend button.loft1325-secondary {
-    color: #0e3558 !important;
+    background: #ffffff;
+    border-color: #0b0b0b;
+    color: #0b0b0b !important;
     font-weight: 600;
+}
+
+.loft1325-frontend .loft1325-secondary:hover,
+.loft1325-frontend .loft1325-secondary:focus-visible {
+    background: #0b0b0b;
+    border-color: #0b0b0b;
+    color: #ffffff !important;
+}
+
+.loft1325-tab-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.loft1325-tab-list .loft1325-primary,
+.loft1325-tab-list .loft1325-secondary {
+    width: 100%;
+    min-height: 48px;
+}
+
+.loft1325-tab-list--sub {
+    margin-top: 8px;
 }
 
 .loft1325-login-card {
@@ -517,7 +543,7 @@
     display: block;
     font-weight: 600;
     margin-bottom: 6px;
-    color: #0e3558;
+    color: #0b0b0b;
 }
 
 .loft1325-login-card-form input[type="text"],
@@ -541,7 +567,7 @@
 .loft1325-login-card-form .forgetmenot label {
     margin: 0;
     font-weight: 500;
-    color: #334155;
+    color: #0b0b0b;
 }
 
 .loft1325-login-card-form .submit {
@@ -555,6 +581,15 @@
     border-color: #000000;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff;
+}
+
+.loft1325-login-card-form #loft1325-booking-hub-wp-submit.button,
+.loft1325-login-card-form #loft1325-booking-hub-wp-submit.button-primary {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff;
+    text-shadow: none;
+    box-shadow: none;
 }
 
 .loft1325-login-card-form input[type="submit"] {
@@ -624,6 +659,21 @@
 
     .loft1325-timeline-row {
         grid-template-columns: 1fr;
+    }
+
+    .loft1325-tab-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 769px) {
+    .loft1325-tab-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .loft1325-tab-list--sub {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 520px;
     }
 }
 
