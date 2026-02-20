@@ -85,6 +85,10 @@ $vibe_label     = $plugin->localize_label( 'Ambiance signature', 'Signature vibe
 $perks_label    = $plugin->localize_label( 'Avantages directs', 'Direct perks' );
 $cta_hint       = $plugin->localize_label( 'Confirmation immédiate', 'Instant confirmation' );
 $reviews_label  = $plugin->localize_label( 'Avis des voyageurs', 'Traveler reviews' );
+$menu_label   = $plugin->localize_label( 'Ouvrir le menu', 'Open menu' );
+$menu_close   = $plugin->localize_label( 'Fermer le menu', 'Close menu' );
+$menu_title   = $plugin->localize_label( 'Menu', 'Menu' );
+$language_label = $plugin->localize_label( 'Changer la langue', 'Change language' );
 
 $normal_services = $room_data['normal_services'] ?? array();
 $extra_services  = $room_data['extra_services'] ?? array();
@@ -137,6 +141,36 @@ $extra_services  = $normalize_services( $extra_services );
 	<?php wp_body_open(); ?>
 	<main id="loft1325-mobile-loftpage" class="loft1325-mobile-loft__backdrop">
 		<div class="loft1325-mobile-loft">
+			<header class="header loft1325-mobile-header">
+				<div class="header-inner">
+					<button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $menu_label ); ?>">≡</button>
+					<img class="logo" src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png" alt="Lofts 1325" />
+					<button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( $language_label ); ?>">
+						<span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span><span>·</span><span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
+					</button>
+				</div>
+			</header>
+
+			<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+				<div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
+					<div class="mobile-menu__header">
+						<p class="mobile-menu__title" id="mobileMenuTitle"><?php echo esc_html( $menu_title ); ?></p>
+						<button class="mobile-menu__close" type="button" id="closeMenu" aria-label="<?php echo esc_attr( $menu_close ); ?>">×</button>
+					</div>
+					<?php
+					echo wp_nav_menu(
+						array(
+							'theme_location' => 'main-menu',
+							'container'      => false,
+							'menu_class'     => 'mobile-menu__list',
+							'fallback_cb'    => 'wp_page_menu',
+							'echo'           => false,
+						)
+					);
+					?>
+				</div>
+			</div>
+
 			<header class="loft1325-mobile-loft__topbar">
 				<a class="loft1325-mobile-loft__crumb" href="<?php echo esc_url( $archive_url ); ?>">
 					<span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>
@@ -397,12 +431,12 @@ $extra_services  = $normalize_services( $extra_services );
 							<input type="hidden" name="<?php echo esc_attr( $field ); ?>" value="<?php echo esc_attr( (string) $value ); ?>" />
 						<?php endforeach; ?>
 						<button class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" type="submit">
-							<?php echo esc_html( $plugin->localize_label( 'Réserver', 'Reserve' ) ); ?>
+							<?php echo esc_html( $plugin->localize_label( 'Finaliser', 'Finalize' ) ); ?>
 						</button>
 					</form>
 				<?php else : ?>
 					<a class="loft1325-mobile-loft__btn loft1325-mobile-loft__btn--primary" href="<?php echo esc_url( $booking_url ); ?>">
-						<?php echo esc_html( $plugin->localize_label( 'Réserver', 'Reserve' ) ); ?>
+						<?php echo esc_html( $plugin->localize_label( 'Finaliser', 'Finalize' ) ); ?>
 					</a>
 				<?php endif; ?>
 			</div>

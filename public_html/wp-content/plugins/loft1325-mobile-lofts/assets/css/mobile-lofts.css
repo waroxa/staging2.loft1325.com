@@ -1004,3 +1004,58 @@ body.loft1325-mobile-lofts-active .mobile-menu__list a {
                 padding: 0.85rem 0.85rem;
         }
 }
+
+/* Template-11 parity overrides */
+body.loft1325-mobile-active.loft1325-mobile-lofts-active,
+body.loft1325-mobile-active.loft1325-mobile-lofts-archive-active {
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
+        color: #0b0b0b !important;
+        background: #ffffff !important;
+}
+
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft,
+body.loft1325-mobile-active.loft1325-mobile-lofts-archive-active #loft1325-mobile-lofts-archive {
+        max-width: 430px !important;
+        margin: 0 auto !important;
+}
+
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .header,
+body.loft1325-mobile-active.loft1325-mobile-lofts-archive-active .header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 40 !important;
+        background: #fff !important;
+}
+
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft__title,
+body.loft1325-mobile-active.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__hero h1 {
+        font-family: 'Playfair Display', Georgia, serif !important;
+        color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft__slider,
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft__hero-card,
+body.loft1325-mobile-active.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__card {
+        border: 1px solid #e5e5e5 !important;
+        border-radius: 18px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06) !important;
+        background: #fff !important;
+}
+
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft__btn--primary,
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft__floating-bar .loft1325-mobile-loft__btn,
+body.loft1325-mobile-active.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__cta {
+        background: #003B95 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 999px !important;
+        padding: 12px 20px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+}
+
+body.loft1325-mobile-active.loft1325-mobile-lofts-active .loft1325-mobile-loft__floating-bar {
+        border-top: 1px solid #e5e5e5 !important;
+        background: #ffffff !important;
+}
