@@ -1,0 +1,261 @@
+/* Global mobile styles to unify design across all pages */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+body.loft1325-mobile-active, body.loft1325-mobile-lofts-active, body.loft1325-mobile-booking-active {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
+    background-color: #ffffff !important;
+    color: #030213 !important;
+    --loft1325-brand: #003B95 !important;
+    --loft1325-brand-dark: #002d73 !important;
+    --loft1325-brand-darker: #001f52 !important;
+    --loft1325-brand-light: #6FA9B8 !important;
+    --loft1325-accent: #FDB913 !important;
+    --loft1325-accent-soft: rgba(253, 185, 19, 0.18) !important;
+    --loft1325-surface: #ffffff !important;
+    --loft1325-surface-muted: #f3f3f5 !important;
+    --loft1325-text: #030213 !important;
+    --loft1325-text-soft: #717182 !important;
+    --loft1325-text-on-dark: #FFFFFF !important;
+    --loft1325-shadow-soft: 0 22px 64px rgba(3, 2, 19, 0.12) !important;
+    overflow-x: hidden !important;
+}
+
+/* Hide default theme elements */
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_bg_greydark,
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_bg_orange,
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_custom_menu_bg,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_bg_greydark,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_bg_orange,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_custom_menu_bg,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_bg_greydark,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_bg_orange,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_custom_menu_bg {
+    display: none !important;
+}
+
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_height_3,
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_section,
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_container,
+body.loft1325-mobile-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_navigation_1_sidebar_content,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_height_3,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_section,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_container,
+body.loft1325-mobile-lofts-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_navigation_1_sidebar_content,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_height_3,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_section,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_container,
+body.loft1325-mobile-booking-active .nicdark_site > .nicdark_section.nicdark_bg_white > .nicdark_navigation_1_sidebar_content {
+    display: none !important;
+}
+
+body.loft1325-mobile-active .nicdark_site,
+body.loft1325-mobile-lofts-active .nicdark_site,
+body.loft1325-mobile-booking-active .nicdark_site {
+    background-color: #f7f7f9 !important;
+    box-shadow: none !important;
+}
+
+/* Global button styles */
+.loft1325-mobile-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.9rem 1.35rem !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    transition: box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease !important;
+    border: 1px solid transparent !important;
+    cursor: pointer !important;
+    letter-spacing: 0.06em !important;
+    background-color: var(--loft1325-brand) !important;
+    box-shadow: 0 8px 18px rgba(0, 59, 149, 0.24) !important;
+}
+
+.loft1325-mobile-btn:hover, .loft1325-mobile-btn:focus {
+    background-color: var(--loft1325-brand-dark) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 10px 20px rgba(0, 59, 149, 0.3) !important;
+    outline: 2px solid #FFFFFF !important;
+    outline-offset: 2px !important;
+}
+
+/* Specific overrides for ND Booking elements */
+body.loft1325-mobile-booking-active #nd_booking_search_main_bg,
+body.loft1325-mobile-booking-active .nd_booking_section_content_booking_form {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 1.5rem !important;
+    border-radius: 18px !important;
+}
+
+body.loft1325-mobile-booking-active .nd_booking_section_content_booking_form h2,
+body.loft1325-mobile-booking-active .nd_booking_section_content_booking_form h3 {
+    font-family: 'Playfair Display', serif !important;
+    color: #030213 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+}
+
+body.loft1325-mobile-booking-active .nd_booking_form_input_container input[type="text"],
+body.loft1325-mobile-booking-active .nd_booking_form_input_container input[type="email"],
+body.loft1325-mobile-booking-active .nd_booking_form_input_container input[type="number"],
+body.loft1325-mobile-booking-active .nd_booking_form_input_container select {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    color: #030213 !important;
+    background-color: #f9fafb !important;
+}
+
+body.loft1325-mobile-booking-active .nd_booking_form_input_container label {
+    color: #717182 !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 0.4rem !important;
+    display: block !important;
+}
+
+body.loft1325-mobile-booking-active .nd_booking_button {
+    @extend .loft1325-mobile-btn !important; /* Extend the global button style */
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 1.5rem !important;
+}
+
+/* Datepicker styling */
+.flatpickr-calendar {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+}
+
+.flatpickr-day.selected, .flatpickr-day.start, .flatpickr-day.end, .flatpickr-day.inRange {
+    background: var(--loft1325-brand) !important;
+    border-color: var(--loft1325-brand) !important;
+    color: #ffffff !important;
+}
+
+.flatpickr-day.selected.start + .end:not(.inRange) {
+    box-shadow: -10px 0 0 var(--loft1325-brand) !important;
+}
+
+.flatpickr-day.inRange {
+    background: var(--loft1325-brand-light) !important;
+    border-color: var(--loft1325-brand-light) !important;
+    color: #030213 !important;
+}
+
+.flatpickr-day.today:not(.selected):not(.inRange) {
+    border-color: var(--loft1325-brand) !important;
+    color: var(--loft1325-brand) !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    background: var(--loft1325-brand) !important;
+    color: #ffffff !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month,
+.flatpickr-current-month .numInputWrapper span.arrowUp::after,
+.flatpickr-current-month .numInputWrapper span.arrowDown::after {
+    color: #ffffff !important;
+}
+
+/* General layout adjustments for mobile */
+@media (max-width: 767px) {
+    body.loft1325-mobile-active .loft1325-mobile-home__topbar,
+    body.loft1325-mobile-lofts-active .loft1325-mobile-loft__topbar,
+    body.loft1325-mobile-booking-active .loft1325-mobile-booking__topbar {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 10 !important;
+        background-color: #ffffff !important;
+        border-bottom: 1px solid #eef0f4 !important;
+        box-shadow: 0 8px 20px rgba(3, 2, 19, 0.05) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0.9rem 1.25rem !important;
+    }
+
+    body.loft1325-mobile-active .loft1325-mobile-home__site-title,
+    body.loft1325-mobile-lofts-active .loft1325-mobile-loft__site-title,
+    body.loft1325-mobile-booking-active .loft1325-mobile-booking__site-title {
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        color: #030213 !important;
+        letter-spacing: 0.05em !important;
+        font-family: 'Playfair Display', serif !important;
+    }
+
+    body.loft1325-mobile-active .loft1325-mobile-home__nav-toggle,
+    body.loft1325-mobile-lofts-active .loft1325-mobile-loft__nav-toggle,
+    body.loft1325-mobile-booking-active .loft1325-mobile-booking__nav-toggle {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 12px !important;
+        background-color: #f3f3f5 !important;
+        border: 1px solid #e5e7eb !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        flex-direction: column !important;
+        cursor: pointer !important;
+        box-shadow: 0 8px 16px rgba(3, 2, 19, 0.08) !important;
+        color: #030213 !important;
+    }
+
+    body.loft1325-mobile-active .loft1325-mobile-home__nav-toggle-bar,
+    body.loft1325-mobile-lofts-active .loft1325-mobile-loft__nav-toggle-bar,
+    body.loft1325-mobile-booking-active .loft1325-mobile-booking__nav-toggle-bar {
+        display: block !important;
+        width: 18px !important;
+        height: 2px !important;
+        border-radius: 999px !important;
+        background: #030213 !important;
+    }
+
+    /* Footer/Finalize bar */
+    .loft1325-mobile-footer-bar {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        background-color: #ffffff !important;
+        padding: 1rem 1.25rem !important;
+        box-shadow: 0 -8px 20px rgba(3, 2, 19, 0.05) !important;
+        z-index: 9 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .loft1325-mobile-footer-bar__price {
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+        color: #030213 !important;
+    }
+
+    .loft1325-mobile-footer-bar__label {
+        font-size: 0.8rem !important;
+        color: #717182 !important;
+    }
+
+    .loft1325-mobile-footer-bar__btn {
+        @extend .loft1325-mobile-btn !important;
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Ensure ND Booking pages have proper padding */
+    body.loft1325-mobile-booking-active #nd_booking_container_booking_form,
+    body.loft1325-mobile-booking-active #nd_booking_container_checkout_form {
+        padding: 1.5rem !important;
+    }
+}

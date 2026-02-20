@@ -1,0 +1,87 @@
+/* Align ND mobile room pages with the black/white homepage mobile aesthetic. */
+body.loft1325-mobile-lofts-active {
+  background: #ffffff;
+  color: #0b0b0b;
+}
+
+body.loft1325-mobile-lofts-active #loft1325-mobile-loftpage,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
+  background: #ffffff;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__topbar,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__booking,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__card {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-color: #e5e5e5 !important;
+  background: #ffffff !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__cta,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__book,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft button[type="submit"],
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft .nd_booking_bg_orange {
+  background: #0b0b0b !important;
+  color: #ffffff !important;
+  border-color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active h1,
+body.loft1325-mobile-lofts-active h2,
+body.loft1325-mobile-lofts-active h3 {
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__meta,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__muted {
+  color: #666666 !important;
+}
+
+/* Keep perk/highlight blocks readable after neutral homepage overrides. */
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks {
+  background: linear-gradient(180deg, #f7fbff 0%, #f1f7fc 100%) !important;
+  border: 1px solid #dbeaf3 !important;
+  box-shadow: none !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-header h2,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk small,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk .dashicons {
+  color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill {
+  background: #eaf4fb !important;
+  border: 1px solid #d0e6f5 !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk {
+  background: #ffffff !important;
+  border: 1px solid #dfe8f0 !important;
+  box-shadow: 0 8px 18px rgba(10, 20, 32, 0.06) !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__reviews {
+  background: #ffffff !important;
+  border-color: #dfe8f0 !important;
+}
+
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks * {
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+  body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
