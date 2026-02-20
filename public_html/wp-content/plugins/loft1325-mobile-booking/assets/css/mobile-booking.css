@@ -1,8 +1,15 @@
 body.loft1325-mobile-active.loft1325-mobile-booking-active {
+	--black: #0b0b0b;
+	--white: #ffffff;
+	--gray-100: #f5f5f5;
+	--gray-200: #e5e5e5;
+	--gray-300: #d7d7d7;
+	--gray-500: #7a7a7a;
+	--shadow: 0 18px 32px rgba(0, 0, 0, 0.08);
 	margin: 0 !important;
-	font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
-	background: #ffffff !important;
-	color: #0b0b0b !important;
+	font-family: 'Inter', 'Helvetica Neue', sans-serif !important;
+	background: var(--white) !important;
+	color: var(--black) !important;
 }
 
 body.loft1325-mobile-active.loft1325-mobile-booking-active #header,
@@ -10,103 +17,39 @@ body.loft1325-mobile-active.loft1325-mobile-booking-active #footer,
 body.loft1325-mobile-active.loft1325-mobile-booking-active header.site-header,
 body.loft1325-mobile-active.loft1325-mobile-booking-active footer.site-footer,
 body.loft1325-mobile-active.loft1325-mobile-booking-active .nd_options_navigation_type_4,
-body.loft1325-mobile-active.loft1325-mobile-booking-active .nd_options_footer_4 {
-	display: none !important;
-}
+body.loft1325-mobile-active.loft1325-mobile-booking-active .nd_options_footer_4 { display: none !important; }
 
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking {
-	max-width: 430px;
-	margin: 0 auto;
-	min-height: 100vh;
-	padding-bottom: 98px;
-	background: #fff;
-}
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking { max-width: 430px; margin: 0 auto; min-height: 100vh; background: var(--white); padding-bottom: 90px; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .header { position: sticky; top: 0; z-index: 20; background: var(--white); border-bottom: 1px solid var(--gray-200); }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .logo { height: 26px; width: auto; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .icon-button { border: 1px solid var(--black); background: transparent; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; color: var(--black); }
 
-body.loft1325-mobile-active.loft1325-mobile-booking-active .header {
-	position: sticky;
-	top: 0;
-	z-index: 40;
-	background: #ffffff;
-	border-bottom: 1px solid #e5e5e5;
-}
+body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; z-index: 60; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu.is-open { display: block; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu__panel { background: var(--white); height: 100%; width: min(320px,84%); padding: 22px 20px; box-shadow: var(--shadow); }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu__list { list-style: none; display: grid; gap: 12px; padding: 0; margin: 0; }
 
-body.loft1325-mobile-active.loft1325-mobile-booking-active .header-inner { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .logo { height:26px; width:auto; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .icon-button { border:1px solid #0b0b0b; background:transparent; width:36px; height:36px; border-radius:999px; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .language-toggle { min-width:78px; font-size:12px; font-weight:600; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .language-toggle__label { opacity:.45; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .language-toggle__label.is-active { opacity:1; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__hero { padding: 20px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__crumb { font-size: 12px; text-transform: uppercase; letter-spacing: .16em; color: var(--black); text-decoration: none; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__hero h1 { margin-top: 10px; font-family: 'Playfair Display', serif; font-size: 26px; letter-spacing: .04em; text-transform: uppercase; }
 
-body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu { position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; z-index:60; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu.is-open { display:block; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu__panel { background:#fff; width:min(320px,84%); height:100%; padding:22px 20px; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .mobile-menu__list { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
-
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__hero { padding:16px 20px; border-bottom:1px solid #e5e5e5; background:#f5f5f5; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__crumb { font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:#0b0b0b; text-decoration:none; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__hero h1 { margin:8px 0 0; font-family:'Playfair Display',serif; font-size:30px; }
-
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content { padding:18px 20px; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content { padding: 20px; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .nd_booking_section,
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .nd_booking_width_100_percentage,
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .nd_booking_box_sizing_border_box {
-	width: 100% !important;
-	max-width: 100% !important;
-	float: none !important;
-}
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .nd_booking_box_sizing_border_box { width: 100% !important; max-width: 100% !important; float: none !important; }
 
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content form {
-	background:#ffffff !important;
-	border:1px solid #e5e5e5 !important;
-	border-radius:16px !important;
-	padding:16px !important;
-	box-shadow:0 12px 30px rgba(0,0,0,.08) !important;
-}
-
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content form { border: 1px solid var(--gray-200) !important; background: var(--white) !important; box-shadow: var(--shadow) !important; padding: 16px !important; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content input,
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content select,
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content textarea,
-body.loft1325-mobile-active.loft1325-mobile-booking-active .ui-datepicker {
-	width:100% !important;
-	border:1px solid #d7d7d7 !important;
-	border-radius:12px !important;
-	padding:12px !important;
-	font-size:15px !important;
-	color:#0b0b0b !important;
-	background:#fff !important;
-}
+body.loft1325-mobile-active.loft1325-mobile-booking-active .ui-datepicker { width: 100% !important; border: 1px solid var(--gray-300) !important; padding: 12px !important; border-radius: 0 !important; color: var(--black) !important; }
 
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content button,
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content input[type='submit'],
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content a.nd_booking_bg_greydark {
-	background:#003B95 !important;
-	color:#fff !important;
-	border:none !important;
-	border-radius:999px !important;
-	padding:14px 20px !important;
-	font-weight:700 !important;
-	text-transform:uppercase !important;
-	letter-spacing:.08em !important;
-	text-decoration:none !important;
-	display:inline-flex !important;
-	justify-content:center !important;
-}
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content a.nd_booking_bg_greydark,
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__cta { width: 100%; padding: 12px 14px; background: var(--black) !important; color: var(--white) !important; border: 1px solid var(--black) !important; border-radius: 0 !important; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; font-weight: 600; justify-content: center; text-decoration: none; display: inline-flex; }
 
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__finalize {
-	position: fixed;
-	left: 50%;
-	transform: translateX(-50%);
-	bottom: 0;
-	width: min(430px, 100%);
-	background: #ffffff;
-	border-top: 1px solid #e5e5e5;
-	padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 10px;
-	z-index: 70;
-}
-
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__finalize p { margin:0; font-size:12px; color:#4a4a4a; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__cta { background:#003B95; color:#fff; border:none; border-radius:999px; padding:12px 20px; font-weight:700; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__finalize { position: fixed; left: 50%; transform: translateX(-50%); bottom: 0; width: min(430px,100%); z-index: 30; border-top: 1px solid var(--gray-200); background: var(--white); padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__finalize p { margin: 0; font-size: 12px; color: var(--gray-500); }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__finalize .loft1325-mobile-booking__cta { width: auto; min-width: 140px; }

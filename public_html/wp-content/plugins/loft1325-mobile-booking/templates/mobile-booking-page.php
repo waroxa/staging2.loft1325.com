@@ -23,15 +23,13 @@ $content     = apply_filters( 'the_content', (string) get_post_field( 'post_cont
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <main id="loft1325-mobile-booking" class="loft1325-mobile-booking">
-	<header class="header loft1325-mobile-header">
-		<div class="header-inner">
-			<button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $plugin->label( 'Ouvrir le menu', 'Open menu' ) ); ?>">≡</button>
-			<img class="logo" src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png" alt="Lofts 1325" />
-			<button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( $plugin->label( 'Changer la langue', 'Change language' ) ); ?>">
-				<span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span><span>·</span><span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
-			</button>
-		</div>
-	</header>
+		<header class="header loft1325-mobile-header">
+			<div class="header-inner">
+				<button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $plugin->label( 'Ouvrir le menu', 'Open menu' ) ); ?>">≡</button>
+				<img class="logo" src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png" alt="Lofts 1325" />
+				<button class="icon-button" type="button" id="openMenuRight" aria-label="<?php echo esc_attr( $plugin->label( 'Options', 'Options' ) ); ?>">⋯</button>
+			</div>
+		</header>
 
 	<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
 		<div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
