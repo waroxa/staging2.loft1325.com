@@ -995,3 +995,84 @@ function marina_child_disable_booking_alert_message() {
     }
 }
 add_action( 'wp', 'marina_child_disable_booking_alert_message', 1 );
+
+/**
+ * Determine whether current request is a mobile room detail page.
+ *
+ * @return bool
+ */
+function marina_child_is_mobile_room_detail() : bool {
+    return wp_is_mobile() && is_singular( 'nd_booking_cpt_1' );
+}
+
+/**
+ * Route mobile room pages to the shared template-11 inspired layout.
+ *
+ * @param string $template Current template.
+ *
+ * @return string
+ */
+function marina_child_template_include_mobile_rooms( $template ) {
+    if ( ! marina_child_is_mobile_room_detail() ) {
+        return $template;
+    }
+
+    $candidate = trailingslashit( get_stylesheet_directory() ) . 'templates/mobile-room-template-11.php';
+
+    if ( file_exists( $candidate ) ) {
+        return $candidate;
+    }
+
+    return $template;
+}
+add_filter( 'template_include', 'marina_child_template_include_mobile_rooms', 99 );
+
+/**
+ * Enqueue mobile room template assets.
+ */
+function marina_child_enqueue_mobile_room_template_assets() {
+    if ( ! marina_child_is_mobile_room_detail() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/mobile-room-template-11.css';
+    $js_path  = get_stylesheet_directory() . '/js/mobile-room-gallery.js';
+
+    wp_enqueue_style( 'marina-child-header-fixes' );
+
+    if ( file_exists( $css_path ) ) {
+        wp_enqueue_style(
+            'marina-child-mobile-room-template-11',
+            get_stylesheet_directory_uri() . '/css/mobile-room-template-11.css',
+            array( 'marina-child-header-fixes' ),
+            (string) filemtime( $css_path )
+        );
+    }
+
+    if ( file_exists( $js_path ) ) {
+        wp_enqueue_script(
+            'marina-child-mobile-room-gallery',
+            get_stylesheet_directory_uri() . '/js/mobile-room-gallery.js',
+            array(),
+            (string) filemtime( $js_path ),
+            true
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_mobile_room_template_assets', 50 );
+
+/**
+ * Add body class for mobile room template pages.
+ *
+ * @param array $classes Existing classes.
+ *
+ * @return array
+ */
+function marina_child_add_mobile_room_template_body_class( array $classes ) : array {
+    if ( marina_child_is_mobile_room_detail() ) {
+        $classes[] = 'mobile-template-rooms';
+    }
+
+    return $classes;
+}
+add_filter( 'body_class', 'marina_child_add_mobile_room_template_body_class', 25 );
