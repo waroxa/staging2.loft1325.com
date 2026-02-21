@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lofts 1325 · Template mobile chambre simple</title>
+  <title>Lofts 1325 · Template 12 Single Room</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/mobile-templates/assets/template-11.css" />
   <link rel="stylesheet" href="/mobile-templates/assets/template-12.css" />
 </head>
 <body>
@@ -21,33 +22,38 @@
           sizes="(max-width: 430px) 180px, 220px"
           alt="Lofts 1325"
         />
-        <button class="icon-button language-chip" type="button" aria-label="Changer la langue">FR · EN</button>
+        <button class="icon-button" type="button" aria-label="Langue">FR · EN</button>
       </div>
     </header>
 
-    <section class="single-room" data-nd-room>
-      <h1 class="single-room__title" data-nd-title>PENTHOUSE</h1>
-      <p class="single-room__rate" data-nd-price-line>À partir de 400 CAD · par nuit</p>
+    <section class="hero template-12-hero" data-nd-room>
+      <h1 data-nd-title>PENTHOUSE</h1>
+      <p data-nd-price-line>À partir de 400 CAD · par nuit</p>
+    </section>
 
-      <figure class="single-room__media">
+    <section class="room-list template-12-list">
+      <article class="room-card">
         <img src="/wp-content/uploads/2022/04/room05.jpg" alt="Penthouse" data-nd-image />
-      </figure>
+        <div class="room-body">
+          <p class="room-features" data-nd-description>
+            Profitez d'un séjour luxueux dans notre penthouse exclusif. Cet espace spacieux et lumineux offre une cuisine gastronomique entièrement équipée avec un îlot en marbre, des appareils haut de gamme, une salle de bain somptueuse et une vue imprenable sur la ville. Parfait pour les escapades romantiques ou les séjours prolongés.
+          </p>
 
-      <p class="single-room__description" data-nd-description>
-        Profitez d'un séjour luxueux dans notre penthouse exclusif. Cet espace spacieux et lumineux offre une
-        cuisine gastronomique entièrement équipée avec un îlot en marbre, des appareils haut de gamme, une salle de bain somptueuse
-        et une vue imprenable sur la ville. Parfait pour les escapades romantiques ou les séjours prolongés.
-      </p>
+          <ul class="template-12-facts" data-nd-facts>
+            <li><strong>Capacité:</strong> 2 personnes</li>
+            <li><strong>Surface:</strong> 82 m²</li>
+            <li><strong>Nuits minimales:</strong> 1</li>
+          </ul>
 
-      <ul class="single-room__facts" data-nd-facts>
-        <li><strong>Capacité:</strong> 2 personnes</li>
-        <li><strong>Surface:</strong> 82 m²</li>
-        <li><strong>Nuits minimales:</strong> 1</li>
-      </ul>
-
-      <p class="single-room__day-rate"><strong>Tarif du jour:</strong> 400 CAD</p>
-
-      <a class="single-room__cta" href="#" data-nd-booking-url>RÉSERVER MAINTENANT</a>
+          <div class="rate-block">
+            <div class="rate-row">
+              <span>Tarif du jour</span>
+              <strong>400 CAD</strong>
+            </div>
+            <a class="primary-button template-12-button" href="#" data-nd-booking-url>RÉSERVER MAINTENANT</a>
+          </div>
+        </div>
+      </article>
     </section>
   </main>
 </body>
