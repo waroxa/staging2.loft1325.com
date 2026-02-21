@@ -817,9 +817,37 @@ function marina_child_fix_booking_switcher_urls( $new_url, $url, $language, $abs
     }
 
     $target_paths = array(
+        'booking',
+        'checkout',
         'nd-booking-pages/nd-booking-page',
         'nd-booking-pages/nd-booking-checkout',
     );
+
+    $option_pages = array(
+        intval( get_option( 'nd_booking_booking_page' ) ),
+        intval( get_option( 'nd_booking_checkout_page' ) ),
+    );
+
+    foreach ( $option_pages as $option_page_id ) {
+        if ( ! $option_page_id ) {
+            continue;
+        }
+
+        $option_page_permalink = get_permalink( $option_page_id );
+
+        if ( ! $option_page_permalink ) {
+            continue;
+        }
+
+        $option_page_path = (string) wp_parse_url( $option_page_permalink, PHP_URL_PATH );
+        $option_page_path = trim( $option_page_path, '/' );
+
+        if ( '' !== $option_page_path ) {
+            $target_paths[] = $option_page_path;
+        }
+    }
+
+    $target_paths = array_values( array_unique( $target_paths ) );
 
     foreach ( $target_paths as $target_path ) {
         if ( 0 !== strpos( $path, $target_path ) ) {
@@ -1044,6 +1072,15 @@ function marina_child_get_language_switch_url( string $language ) : string {
 
     $current_url = home_url( '/' . ltrim( $request_path, '/' ) );
 
+    if ( isset( $_SERVER['QUERY_STRING'] ) && '' !== (string) $_SERVER['QUERY_STRING'] ) {
+        $query_args = array();
+        wp_parse_str( (string) wp_unslash( $_SERVER['QUERY_STRING'] ), $query_args );
+
+        if ( ! empty( $query_args ) ) {
+            $current_url = add_query_arg( $query_args, $current_url );
+        }
+    }
+
     if ( function_exists( 'trp_get_url_for_language' ) ) {
         $translated = trp_get_url_for_language( $current_url, $language );
 
@@ -1126,3 +1163,186 @@ function marina_child_add_mobile_room_template_body_class( array $classes ) : ar
     return $classes;
 }
 add_filter( 'body_class', 'marina_child_add_mobile_room_template_body_class', 25 );
+
+/**
+ * Normalize current request path and strip locale prefix when present.
+ *
+ * @return string
+ */
+function marina_child_get_normalized_request_path() : string {
+    $path = '';
+
+    if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+        $path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+    }
+
+    $path = '/' . trim( $path, '/' );
+
+    if ( '/' === $path || '/.' === $path ) {
+        return '/';
+    }
+
+    if ( preg_match( '#^/([a-z]{2})(/|$)#i', $path, $matches ) ) {
+        $path = '/' . ltrim( substr( $path, strlen( $matches[0] ) ), '/' );
+    }
+
+    return '/' . trim( $path, '/' );
+}
+
+/**
+ * Resolve booking/checkout request paths for route-based template selection.
+ *
+ * @return array{booking: string[], checkout: string[]}
+ */
+function marina_child_get_booking_flow_paths() : array {
+    $paths = array(
+        'booking'  => array( '/booking', '/nd-booking-pages/nd-booking-page' ),
+        'checkout' => array( '/checkout', '/nd-booking-pages/nd-booking-checkout' ),
+    );
+
+    $map = array(
+        'booking'  => intval( get_option( 'nd_booking_booking_page' ) ),
+        'checkout' => intval( get_option( 'nd_booking_checkout_page' ) ),
+    );
+
+    foreach ( $map as $context => $page_id ) {
+        if ( ! $page_id ) {
+            continue;
+        }
+
+        $permalink = get_permalink( $page_id );
+
+        if ( ! $permalink ) {
+            continue;
+        }
+
+        $path = (string) wp_parse_url( $permalink, PHP_URL_PATH );
+        $path = '/' . trim( $path, '/' );
+
+        if ( '/' !== $path ) {
+            $paths[ $context ][] = $path;
+        }
+    }
+
+    $paths['booking']  = array_values( array_unique( $paths['booking'] ) );
+    $paths['checkout'] = array_values( array_unique( $paths['checkout'] ) );
+
+    return $paths;
+}
+
+/**
+ * Determine the mobile booking flow context for the current request.
+ *
+ * @return string Empty when not a mobile booking flow page.
+ */
+function marina_child_get_mobile_booking_flow_context() : string {
+    if ( ! wp_is_mobile() || is_admin() ) {
+        return '';
+    }
+
+    $request_path = marina_child_get_normalized_request_path();
+
+    if ( '/' === $request_path ) {
+        return '';
+    }
+
+    $paths = marina_child_get_booking_flow_paths();
+
+    foreach ( $paths as $context => $context_paths ) {
+        foreach ( $context_paths as $context_path ) {
+            $normalized_context_path = '/' . trim( (string) $context_path, '/' );
+
+            if ( $request_path === $normalized_context_path || 0 === strpos( $request_path, trailingslashit( $normalized_context_path ) ) ) {
+                return (string) $context;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Check whether current request is part of the mobile booking flow.
+ *
+ * @return bool
+ */
+function marina_child_is_mobile_booking_flow_page() : bool {
+    return '' !== marina_child_get_mobile_booking_flow_context();
+}
+
+/**
+ * Route mobile booking/checkout flow pages to the shared template-11 inspired layout.
+ *
+ * @param string $template Current template.
+ *
+ * @return string
+ */
+function marina_child_template_include_mobile_booking_flow( $template ) {
+    if ( ! marina_child_is_mobile_booking_flow_page() ) {
+        return $template;
+    }
+
+    $candidate = trailingslashit( get_stylesheet_directory() ) . 'templates/mobile-booking-flow-template-11.php';
+
+    if ( file_exists( $candidate ) ) {
+        return $candidate;
+    }
+
+    return $template;
+}
+add_filter( 'template_include', 'marina_child_template_include_mobile_booking_flow', 100 );
+
+/**
+ * Enqueue mobile booking flow assets.
+ */
+function marina_child_enqueue_mobile_booking_flow_assets() {
+    if ( ! marina_child_is_mobile_booking_flow_page() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/mobile-booking-flow-template-11.css';
+    $js_path  = get_stylesheet_directory() . '/js/mobile-booking-flow-template-11.js';
+
+    wp_enqueue_style( 'marina-child-header-fixes' );
+
+    if ( file_exists( $css_path ) ) {
+        wp_enqueue_style(
+            'marina-child-mobile-booking-flow-template-11',
+            get_stylesheet_directory_uri() . '/css/mobile-booking-flow-template-11.css',
+            array( 'marina-child-header-fixes' ),
+            (string) filemtime( $css_path )
+        );
+    }
+
+    if ( file_exists( $js_path ) ) {
+        wp_enqueue_script(
+            'marina-child-mobile-booking-flow-template-11',
+            get_stylesheet_directory_uri() . '/js/mobile-booking-flow-template-11.js',
+            array(),
+            (string) filemtime( $js_path ),
+            true
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_mobile_booking_flow_assets', 55 );
+
+/**
+ * Add body classes for mobile booking flow pages.
+ *
+ * @param array $classes Existing body classes.
+ *
+ * @return array
+ */
+function marina_child_add_mobile_booking_flow_body_class( array $classes ) : array {
+    $context = marina_child_get_mobile_booking_flow_context();
+
+    if ( '' === $context ) {
+        return $classes;
+    }
+
+    $classes[] = 'mobile-template-booking-flow';
+    $classes[] = 'mobile-template-booking-flow-' . $context;
+
+    return $classes;
+}
+add_filter( 'body_class', 'marina_child_add_mobile_booking_flow_body_class', 26 );
