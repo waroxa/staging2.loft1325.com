@@ -37,17 +37,51 @@
 
     <section class="room-list template-12-list">
       <article class="room-card">
-        <img src="/wp-content/uploads/2022/04/room05.jpg" alt="Penthouse" data-nd-image />
+        <div class="template-12-slider" data-template12-slider>
+          <div class="template-12-slider__track" data-template12-slider-track>
+            <figure class="template-12-slider__slide"><img src="/wp-content/uploads/2022/04/room05.jpg" alt="Penthouse · Salon" data-nd-image /></figure>
+            <figure class="template-12-slider__slide"><img src="/wp-content/uploads/2022/04/room06.jpg" alt="Penthouse · Chambre" /></figure>
+            <figure class="template-12-slider__slide"><img src="/wp-content/uploads/2022/04/room01.jpg" alt="Penthouse · Cuisine" /></figure>
+          </div>
+          <span class="template-12-slider__badge">Expérience 5 étoiles</span>
+          <div class="template-12-slider__nav">
+            <button type="button" class="template-12-slider__btn" data-template12-prev aria-label="Image précédente">‹</button>
+            <button type="button" class="template-12-slider__btn" data-template12-next aria-label="Image suivante">›</button>
+          </div>
+          <div class="template-12-slider__dots" data-template12-dots></div>
+        </div>
+
         <div class="room-body">
           <p class="room-features" data-nd-description>
             Profitez d'un séjour luxueux dans notre penthouse exclusif. Cet espace spacieux et lumineux offre une cuisine gastronomique entièrement équipée avec un îlot en marbre, des appareils haut de gamme, une salle de bain somptueuse et une vue imprenable sur la ville. Parfait pour les escapades romantiques ou les séjours prolongés.
           </p>
 
           <ul class="template-12-facts" data-nd-facts>
-            <li><strong>Capacité</strong><span>2 personnes</span></li>
-            <li><strong>Surface</strong><span>82 m²</span></li>
-            <li><strong>Nuits minimales</strong><span>1</span></li>
+            <li>
+              <p class="template-12-fact__label">Capacité</p>
+              <strong>2 personnes</strong>
+              <small>Lit queen premium & ambiance calme</small>
+            </li>
+            <li>
+              <p class="template-12-fact__label">Surface</p>
+              <strong>82 m²</strong>
+              <small>Espace loft ouvert et lumineux</small>
+            </li>
+            <li>
+              <p class="template-12-fact__label">Nuits minimales</p>
+              <strong>1</strong>
+              <small>Check-in autonome 24/7</small>
+            </li>
           </ul>
+
+          <div class="template-12-amenities" aria-label="Détails du séjour">
+            <span>Wi‑Fi rapide</span>
+            <span>Cuisine équipée</span>
+            <span>Salle de bain marbre</span>
+            <span>Vue ville</span>
+            <span>Arrivée autonome</span>
+            <span>Literie hôtelière</span>
+          </div>
 
           <div class="rate-block">
             <div class="rate-row">
@@ -60,5 +94,39 @@
       </article>
     </section>
   </main>
+
+  <script>
+    (function () {
+      const slider = document.querySelector('[data-template12-slider]');
+      if (!slider) return;
+
+      const track = slider.querySelector('[data-template12-slider-track]');
+      const slides = Array.from(slider.querySelectorAll('.template-12-slider__slide'));
+      const prev = slider.querySelector('[data-template12-prev]');
+      const next = slider.querySelector('[data-template12-next]');
+      const dotsWrap = slider.querySelector('[data-template12-dots]');
+      let current = 0;
+
+      function goTo(index) {
+        current = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dotsWrap.querySelectorAll('button').forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === current);
+        });
+      }
+
+      slides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Aller à l\'image ${index + 1}`);
+        dot.addEventListener('click', () => goTo(index));
+        dotsWrap.appendChild(dot);
+      });
+
+      prev.addEventListener('click', () => goTo(current - 1));
+      next.addEventListener('click', () => goTo(current + 1));
+      goTo(0);
+    })();
+  </script>
 </body>
 </html>

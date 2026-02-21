@@ -1,10 +1,6 @@
 /* Template 12 overrides: keep Template 11 visual system and proportions. */
 @import url('/mobile-templates/assets/template-11.css');
 
-.template-12-hero {
-  padding-bottom: 12px;
-}
-
 .template-12-home-header {
   background: #fff;
   border-bottom: 1px solid #e8e8e8;
@@ -49,6 +45,10 @@
   font-weight: 600;
 }
 
+.template-12-hero {
+  padding-bottom: 12px;
+}
+
 .template-12-hero h1 {
   margin-bottom: 6px;
 }
@@ -57,51 +57,155 @@
   padding-top: 14px;
 }
 
-.template-12-list .room-card img {
-  height: auto;
-  max-height: 280px;
+.template-12-slider {
+  position: relative;
+  overflow: hidden;
+  background: #f7f7f7;
+}
+
+.template-12-slider__track {
+  display: flex;
+  transition: transform 0.35s ease;
+}
+
+.template-12-slider__slide {
+  width: 100%;
+  flex: 0 0 100%;
+  margin: 0;
+}
+
+.template-12-slider__slide img {
+  width: 100%;
+  height: 284px;
   object-fit: cover;
+  display: block;
+}
+
+.template-12-slider__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 10px;
+  background: rgba(17, 17, 17, 0.88);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.template-12-slider__nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.template-12-slider__btn {
+  pointer-events: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6;
+  background: rgba(255, 255, 255, 0.94);
+  font-size: 24px;
+  line-height: 1;
+  color: #111;
+}
+
+.template-12-slider__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.template-12-slider__dots button {
+  width: 7px;
+  height: 7px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.template-12-slider__dots button.is-active {
+  background: #111;
 }
 
 .template-12-facts {
   list-style: none;
   display: grid;
   gap: 10px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .template-12-facts li {
+  position: relative;
   border: 1px solid var(--gray-200);
-  background: #fafafa;
-  padding: 11px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  font-size: 14px;
-  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff, #fafafa);
+  border-radius: 12px;
+  padding: 12px 12px 10px 38px;
 }
 
 .template-12-facts li::before {
   content: '★';
+  position: absolute;
+  left: 14px;
+  top: 13px;
+  font-size: 12px;
   color: #111;
-  font-size: 10px;
-  margin-right: 2px;
+}
+
+.template-12-fact__label {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #767676;
 }
 
 .template-12-facts li strong {
-  font-weight: 600;
+  display: block;
+  margin-top: 2px;
+  font-size: 19px;
+  line-height: 1.2;
   color: #111;
-  margin-right: auto;
 }
 
-.template-12-facts li span {
-  color: #444;
+.template-12-facts li small {
+  display: block;
+  margin-top: 3px;
+  color: #686868;
+  font-size: 12px;
 }
 
-.template-12-button {
+.template-12-amenities {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.template-12-amenities span {
+  padding: 7px 11px;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #2f2f2f;
+}
+
+.template-12-button,
+.template-12-button:hover,
+.template-12-button:focus,
+.template-12-button:visited {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
+  text-decoration: none !important;
 }
