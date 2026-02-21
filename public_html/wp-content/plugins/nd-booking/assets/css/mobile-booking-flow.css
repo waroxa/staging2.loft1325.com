@@ -353,3 +353,19 @@
     font-weight: 700;
   }
 }
+
+/* Lofts1325 direct plugin override: mobile reservation title + empty spacer cleanup */
+@media (max-width: 767px) {
+  body.nd-booking-flow-page h1 {
+    font-size: clamp(34px, 11vw, 46px) !important;
+    line-height: 1.08 !important;
+  }
+
+  body.nd-booking-flow-page .nd_booking_section[class*="nd_booking_height_"]:empty,
+  body.nd-booking-flow-page .rev_slider_wrapper:empty,
+  body.nd-booking-flow-page .rev_slider:empty,
+  body.nd-booking-flow-page .nd_booking_single_cpt_1_divider {
+    display: none !important;
+  }
+}
+
