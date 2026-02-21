@@ -1,3 +1,211 @@
-/* Template 12 intentionally reuses Template 11 assets.
-   Keep this file as compatibility shim. */
+/* Template 12 overrides: keep Template 11 visual system and proportions. */
 @import url('/mobile-templates/assets/template-11.css');
+
+.template-12-home-header {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.template-12-home-header__inner {
+  padding: 12px 18px;
+}
+
+.template-12-home-header .logo {
+  height: 42px;
+}
+
+.template-12-home-header__menu {
+  border: 1px solid #111;
+  background: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  color: #111;
+  line-height: 1;
+}
+
+.template-12-home-header__lang {
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 36px;
+  font-weight: 500;
+  color: #7d7d7d;
+  letter-spacing: 0.02em;
+}
+
+.template-12-home-header__lang .is-active {
+  color: #0b0b0b;
+  font-weight: 600;
+}
+
+.template-12-hero {
+  padding-bottom: 12px;
+}
+
+.template-12-hero h1 {
+  margin-bottom: 6px;
+}
+
+.template-12-list {
+  padding-top: 14px;
+}
+
+.template-12-slider {
+  position: relative;
+  overflow: hidden;
+  background: #f7f7f7;
+}
+
+.template-12-slider__track {
+  display: flex;
+  transition: transform 0.35s ease;
+}
+
+.template-12-slider__slide {
+  width: 100%;
+  flex: 0 0 100%;
+  margin: 0;
+}
+
+.template-12-slider__slide img {
+  width: 100%;
+  height: 284px;
+  object-fit: cover;
+  display: block;
+}
+
+.template-12-slider__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 10px;
+  background: rgba(17, 17, 17, 0.88);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.template-12-slider__nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.template-12-slider__btn {
+  pointer-events: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #e6e6e6;
+  background: rgba(255, 255, 255, 0.94);
+  font-size: 24px;
+  line-height: 1;
+  color: #111;
+}
+
+.template-12-slider__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.template-12-slider__dots button {
+  width: 7px;
+  height: 7px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.template-12-slider__dots button.is-active {
+  background: #111;
+}
+
+.template-12-facts {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.template-12-facts li {
+  position: relative;
+  border: 1px solid var(--gray-200);
+  background: linear-gradient(180deg, #ffffff, #fafafa);
+  border-radius: 12px;
+  padding: 12px 12px 10px 38px;
+}
+
+.template-12-facts li::before {
+  content: '★';
+  position: absolute;
+  left: 14px;
+  top: 13px;
+  font-size: 12px;
+  color: #111;
+}
+
+.template-12-fact__label {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #767676;
+}
+
+.template-12-facts li strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 19px;
+  line-height: 1.2;
+  color: #111;
+}
+
+.template-12-facts li small {
+  display: block;
+  margin-top: 3px;
+  color: #686868;
+  font-size: 12px;
+}
+
+.template-12-amenities {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.template-12-amenities span {
+  padding: 7px 11px;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #2f2f2f;
+}
+
+.template-12-button,
+.template-12-button:hover,
+.template-12-button:focus,
+.template-12-button:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none !important;
+}
