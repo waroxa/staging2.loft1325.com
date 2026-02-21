@@ -1,0 +1,188 @@
+body.mobile-template-booking-flow {
+    --black: #0b0b0b;
+    --white: #ffffff;
+    --gray-100: #f6f6f6;
+    --gray-200: #dddddd;
+    --gray-500: #666666;
+    background: var(--white);
+    color: var(--black);
+}
+
+body.mobile-template-booking-flow * {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+body.mobile-template-booking-flow a,
+body.mobile-template-booking-flow a:visited {
+    color: var(--black) !important;
+    text-decoration: none;
+}
+
+body.mobile-template-booking-flow :focus-visible {
+    outline: 2px solid #444 !important;
+    outline-offset: 1px;
+}
+
+body.mobile-template-booking-flow .mobile-booking-flow-shell {
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--white);
+    font-family: "Inter", "Helvetica Neue", sans-serif;
+}
+
+body.mobile-template-booking-flow .booking-flow-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+body.mobile-template-booking-flow .booking-flow-header__inner {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+}
+
+body.mobile-template-booking-flow .booking-flow-icon-button,
+body.mobile-template-booking-flow .booking-flow-lang-switch {
+    border: 1px solid var(--black);
+    background: var(--white);
+}
+
+body.mobile-template-booking-flow .booking-flow-icon-button {
+    width: 36px;
+    height: 36px;
+    color: var(--black);
+}
+
+body.mobile-template-booking-flow .booking-flow-logo-wrap { justify-self: center; }
+body.mobile-template-booking-flow .logo { height: 24px; }
+
+body.mobile-template-booking-flow .booking-flow-lang-switch {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    display: inline-flex;
+    gap: 6px;
+    padding: 10px 8px;
+}
+
+body.mobile-template-booking-flow .booking-flow-lang-switch a { color: var(--gray-500) !important; }
+body.mobile-template-booking-flow .booking-flow-lang-switch a.is-active { color: var(--black) !important; font-weight: 600; }
+
+body.mobile-template-booking-flow .booking-flow-content {
+    padding: 22px 18px 36px;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel {
+    border: 1px solid var(--black);
+    padding: 18px;
+    margin-bottom: 18px;
+    background: var(--white) !important;
+}
+
+body.mobile-template-booking-flow .booking-flow-title,
+body.mobile-template-booking-flow h1,
+body.mobile-template-booking-flow h2,
+body.mobile-template-booking-flow h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--black) !important;
+}
+
+body.mobile-template-booking-flow .booking-flow-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+body.mobile-template-booking-flow .booking-flow-lead,
+body.mobile-template-booking-flow p,
+body.mobile-template-booking-flow li,
+body.mobile-template-booking-flow label,
+body.mobile-template-booking-flow .woocommerce-error,
+body.mobile-template-booking-flow .woocommerce-message {
+    color: var(--gray-500) !important;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main .nd_booking_section,
+body.mobile-template-booking-flow .booking-flow-panel--main .nd_booking_width_100_percentage,
+body.mobile-template-booking-flow .booking-flow-panel--main .woocommerce,
+body.mobile-template-booking-flow .booking-flow-panel--main .checkout-form,
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="card"],
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="box"] {
+    background: var(--white) !important;
+    border-color: var(--black) !important;
+    border-radius: 0 !important;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="badge"],
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="chip"],
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="tag"] {
+    border: 1px solid var(--black) !important;
+    background: var(--gray-100) !important;
+    color: var(--black) !important;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main input,
+body.mobile-template-booking-flow .booking-flow-panel--main select,
+body.mobile-template-booking-flow .booking-flow-panel--main textarea,
+body.mobile-template-booking-flow .booking-flow-panel--main .StripeElement {
+    border: 1px solid var(--black) !important;
+    background: var(--white) !important;
+    color: var(--black) !important;
+    min-height: 44px;
+    padding: 10px 12px;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main input:focus,
+body.mobile-template-booking-flow .booking-flow-panel--main select:focus,
+body.mobile-template-booking-flow .booking-flow-panel--main textarea:focus,
+body.mobile-template-booking-flow .booking-flow-panel--main .StripeElement--focus {
+    border-color: #333 !important;
+    outline: 2px solid #555 !important;
+    outline-offset: 0;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main button,
+body.mobile-template-booking-flow .booking-flow-panel--main .button,
+body.mobile-template-booking-flow .booking-flow-panel--main input[type="submit"],
+body.mobile-template-booking-flow .booking-flow-panel--main .primary-button,
+body.mobile-template-booking-flow .booking-flow-panel--main #place_order {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--black) !important;
+    background: var(--black) !important;
+    color: var(--white) !important;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    font-size: 12px;
+    min-height: 46px;
+    padding: 12px;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="error"],
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="notice"],
+body.mobile-template-booking-flow .booking-flow-panel--main [class*="alert"] {
+    background: var(--gray-100) !important;
+    border: 1px solid #7b7b7b !important;
+    color: var(--black) !important;
+}
+
+body.mobile-template-booking-flow .booking-flow-panel--main [style*="#76b1c4"],
+body.mobile-template-booking-flow .booking-flow-panel--main [style*="#5a93a7"],
+body.mobile-template-booking-flow .booking-flow-panel--main [style*="#0f172a"],
+body.mobile-template-booking-flow .booking-flow-panel--main [style*="#0b1b2b"] {
+    color: var(--black) !important;
+    border-color: var(--black) !important;
+    background: var(--white) !important;
+}
