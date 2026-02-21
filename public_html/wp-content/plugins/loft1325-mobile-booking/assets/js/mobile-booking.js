@@ -42,6 +42,56 @@
 		mobileMenu.setAttribute("aria-hidden", "true");
 	}
 
+	function containsAny(text, words) {
+		for (var i = 0; i < words.length; i++) {
+			if (text.indexOf(words[i]) !== -1) return true;
+		}
+		return false;
+	}
+
+	function refineBookingLayout() {
+		var content = document.querySelector('.loft1325-mobile-booking__content');
+		if (!content) {
+			return;
+		}
+
+		var sections = content.querySelectorAll('.elementor-top-section');
+		sections.forEach(function (section) {
+			var text = (section.innerText || '').toLowerCase();
+			var isHeroTitle = containsAny(text, ['réservation', 'reservation', 'checkout', 'paiement']);
+			var hasHeroHeight = section.offsetHeight > 220;
+			var hasBgImage = window.getComputedStyle(section).backgroundImage !== 'none';
+			if (isHeroTitle && hasHeroHeight && hasBgImage) {
+				section.classList.add('loft1325-mobile-booking__hidden-mobile-hero');
+			}
+		});
+
+		var candidates = content.querySelectorAll('section, article, div');
+		var reservationSummary = null;
+		for (var i = 0; i < candidates.length; i++) {
+			var block = candidates[i];
+			if (block.closest('.loft1325-mobile-booking__finalize')) continue;
+			var summaryText = (block.innerText || '').toLowerCase().replace(/\s+/g, ' ');
+			var isSummary = summaryText.indexOf('votre réservation') !== -1 ||
+				((summaryText.indexOf('arrivée') !== -1 || summaryText.indexOf('arrival') !== -1) &&
+				(summaryText.indexOf('départ') !== -1 || summaryText.indexOf('departure') !== -1));
+			if (isSummary && block.offsetHeight > 80) {
+				reservationSummary = block;
+				break;
+			}
+		}
+
+		if (reservationSummary) {
+			reservationSummary.classList.add('loft1325-mobile-booking__reservation-summary');
+			var firstForm = content.querySelector('form, #nd_booking_container_booking_form, #nd_booking_container_checkout_form, .nd_booking_section_content_booking_form');
+			if (firstForm) {
+				content.insertBefore(reservationSummary, firstForm.closest('section, article, div') || firstForm);
+			} else {
+				content.insertBefore(reservationSummary, content.firstChild);
+			}
+		}
+	}
+
 	if (openMenu) {
 		openMenu.addEventListener("click", openMenuPanel);
 	}
@@ -64,4 +114,6 @@
 			}
 		});
 	}
+
+	document.addEventListener('DOMContentLoaded', refineBookingLayout);
 })();
