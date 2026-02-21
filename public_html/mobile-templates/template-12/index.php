@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="/mobile-templates/assets/template-12.css" />
 </head>
 <body>
-  <main class="mobile-shell">
+  <main class="mobile-shell single-room-shell">
     <header class="header">
       <div class="header-inner">
-        <button class="icon-button" type="button" aria-label="Ouvrir le menu">≡</button>
+        <button class="icon-button" type="button" aria-label="Ouvrir le menu">☰</button>
         <img
           class="logo"
           src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png"
