@@ -1296,4 +1296,20 @@ body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-sear
         border-color: #d7d7d7 !important;
         color: #0b0b0b !important;
     }
+
+    /* Tighten oversized mobile headings on reservation/booking screens */
+    body.single-nd_booking_cpt_1 #nd_booking_single_cpt_1_title h1,
+    body.nd-booking-flow-page h1 {
+        font-size: clamp(34px, 11vw, 46px) !important;
+        line-height: 1.08 !important;
+    }
+
+    /* Remove empty spacer/placeholder blocks that render as outlined blank areas */
+    body.single-nd_booking_cpt_1 .nd_booking_section[class*="nd_booking_height_"]:empty,
+    body.nd-booking-flow-page .nd_booking_section[class*="nd_booking_height_"]:empty,
+    body.single-nd_booking_cpt_1 .rev_slider_wrapper:empty,
+    body.single-nd_booking_cpt_1 .rev_slider:empty,
+    body.single-nd_booking_cpt_1 .nd_booking_single_cpt_1_divider {
+        display: none !important;
+    }
 }
