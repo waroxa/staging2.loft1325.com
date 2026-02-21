@@ -1,10 +1,14 @@
-# 🔒 Force HTTPS and redirect www to non-www
+# 🔒 Force HTTPS and keep staging hostname
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteCond %{HTTP_HOST} ^www\.loft1325\.com [NC]
-RewriteRule ^(.*)$ https://loft1325.com/$1 [L,R=301]
+
+# Canonicalize www.staging2.loft1325.com -> staging2.loft1325.com
+RewriteCond %{HTTP_HOST} ^www\.staging2\.loft1325\.com$ [NC]
+RewriteRule ^ https://staging2.loft1325.com%{REQUEST_URI} [L,R=301]
+
+# Force HTTPS without changing host for all other requests
 RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://loft1325.com/$1 [L,R=301]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
 
