@@ -763,7 +763,7 @@ $strings  = array(
         />
         <button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( 'en' === $language ? 'Change language' : 'Changer la langue' ); ?>">
           <span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span>
-          <span>·</span>
+          <span>|</span>
           <span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
         </button>
       </div>

@@ -995,3 +995,134 @@ function marina_child_disable_booking_alert_message() {
     }
 }
 add_action( 'wp', 'marina_child_disable_booking_alert_message', 1 );
+
+/**
+ * Determine whether current request is a mobile room detail page.
+ *
+ * @return bool
+ */
+function marina_child_is_mobile_room_detail() : bool {
+    if ( ! wp_is_mobile() || is_admin() ) {
+        return false;
+    }
+
+    $path = '';
+
+    if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+        $path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+    }
+
+    if ( '' === $path || 0 !== strpos( trailingslashit( $path ), '/rooms/' ) ) {
+        return false;
+    }
+
+    if ( '/rooms/' === trailingslashit( $path ) ) {
+        return false;
+    }
+
+    return is_singular() || is_page();
+}
+
+/**
+ * Build a language URL for the current request.
+ *
+ * @param string $language Language code (fr/en).
+ *
+ * @return string
+ */
+function marina_child_get_language_switch_url( string $language ) : string {
+    $language     = strtolower( substr( $language, 0, 2 ) );
+    $request_path = '';
+
+    global $wp;
+
+    if ( isset( $wp ) && isset( $wp->request ) ) {
+        $request_path = (string) $wp->request;
+    } elseif ( isset( $_SERVER['REQUEST_URI'] ) ) {
+        $request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+    }
+
+    $current_url = home_url( '/' . ltrim( $request_path, '/' ) );
+
+    if ( function_exists( 'trp_get_url_for_language' ) ) {
+        $translated = trp_get_url_for_language( $current_url, $language );
+
+        if ( is_string( $translated ) && '' !== $translated ) {
+            return $translated;
+        }
+    }
+
+    return add_query_arg( 'lang', $language, $current_url );
+}
+
+/**
+ * Route mobile room pages to the shared template-11 inspired layout.
+ *
+ * @param string $template Current template.
+ *
+ * @return string
+ */
+function marina_child_template_include_mobile_rooms( $template ) {
+    if ( ! marina_child_is_mobile_room_detail() ) {
+        return $template;
+    }
+
+    $candidate = trailingslashit( get_stylesheet_directory() ) . 'templates/mobile-room-template-11.php';
+
+    if ( file_exists( $candidate ) ) {
+        return $candidate;
+    }
+
+    return $template;
+}
+add_filter( 'template_include', 'marina_child_template_include_mobile_rooms', 99 );
+
+/**
+ * Enqueue mobile room template assets.
+ */
+function marina_child_enqueue_mobile_room_template_assets() {
+    if ( ! marina_child_is_mobile_room_detail() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/mobile-room-template-11.css';
+    $js_path  = get_stylesheet_directory() . '/js/mobile-room-gallery.js';
+
+    wp_enqueue_style( 'marina-child-header-fixes' );
+
+    if ( file_exists( $css_path ) ) {
+        wp_enqueue_style(
+            'marina-child-mobile-room-template-11',
+            get_stylesheet_directory_uri() . '/css/mobile-room-template-11.css',
+            array( 'marina-child-header-fixes' ),
+            (string) filemtime( $css_path )
+        );
+    }
+
+    if ( file_exists( $js_path ) ) {
+        wp_enqueue_script(
+            'marina-child-mobile-room-gallery',
+            get_stylesheet_directory_uri() . '/js/mobile-room-gallery.js',
+            array(),
+            (string) filemtime( $js_path ),
+            true
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_mobile_room_template_assets', 50 );
+
+/**
+ * Add body class for mobile room template pages.
+ *
+ * @param array $classes Existing classes.
+ *
+ * @return array
+ */
+function marina_child_add_mobile_room_template_body_class( array $classes ) : array {
+    if ( marina_child_is_mobile_room_detail() ) {
+        $classes[] = 'mobile-template-rooms';
+    }
+
+    return $classes;
+}
+add_filter( 'body_class', 'marina_child_add_mobile_room_template_body_class', 25 );
