@@ -1276,3 +1276,24 @@ body.loft-rooms-mobile [id^="nd_booking_search_cpt_"][id$="_content"] .loft-sear
         padding: 38px;
     }
 }
+
+/* Mobile room monochrome safety overrides */
+@media (max-width: 767px) {
+    body.single-nd_booking_cpt_1 .nd_options_color_blue,
+    body.single-nd_booking_cpt_1 .nd_options_color_blue_important,
+    body.single-nd_booking_cpt_1 .nd_booking_color_blue,
+    body.single-nd_booking_cpt_1 .nd_booking_color_blue_important,
+    body.single-nd_booking_cpt_1 a,
+    body.single-nd_booking_cpt_1 a:visited {
+        color: #0b0b0b !important;
+    }
+
+    body.single-nd_booking_cpt_1 [class*="blue"],
+    body.single-nd_booking_cpt_1 [style*="#2196f3"],
+    body.single-nd_booking_cpt_1 [style*="#1e73be"],
+    body.single-nd_booking_cpt_1 [style*="rgb(33, 150, 243)"] {
+        background-color: #f5f5f5 !important;
+        border-color: #d7d7d7 !important;
+        color: #0b0b0b !important;
+    }
+}

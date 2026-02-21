@@ -182,3 +182,46 @@ body.mobile-template-rooms .room-cta {
     font-size: 12px;
     text-transform: uppercase;
 }
+
+
+body.mobile-template-rooms .room-lang-switch a {
+    color: var(--gray-500);
+}
+
+body.mobile-template-rooms .room-lang-switch a.is-active {
+    color: var(--black);
+    font-weight: 600;
+}
+
+body.mobile-template-rooms .room-text-panel p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+}
+
+body.mobile-template-rooms .room-text-panel p:last-child {
+    margin-bottom: 0;
+}
+
+body.mobile-template-rooms .room-reviews-panel {
+    margin-bottom: 24px;
+}
+
+body.mobile-template-rooms .room-reviews-panel a,
+body.mobile-template-rooms .room-reviews-panel p,
+body.mobile-template-rooms .room-reviews-panel span,
+body.mobile-template-rooms .room-reviews-panel div,
+body.mobile-template-rooms .room-content .has-text-color,
+body.mobile-template-rooms .room-content [style*="color:#1"],
+body.mobile-template-rooms .room-content [style*="color: #1"] {
+    color: var(--black) !important;
+}
+
+body.mobile-template-rooms .room-content [class*="badge"],
+body.mobile-template-rooms .room-content [class*="chip"],
+body.mobile-template-rooms .room-content [class*="tag"] {
+    background: var(--gray-100) !important;
+    border-color: var(--gray-200) !important;
+    color: var(--black) !important;
+}

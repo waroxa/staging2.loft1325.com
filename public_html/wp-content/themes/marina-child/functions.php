@@ -1002,7 +1002,57 @@ add_action( 'wp', 'marina_child_disable_booking_alert_message', 1 );
  * @return bool
  */
 function marina_child_is_mobile_room_detail() : bool {
-    return wp_is_mobile() && is_singular( 'nd_booking_cpt_1' );
+    if ( ! wp_is_mobile() || is_admin() ) {
+        return false;
+    }
+
+    $path = '';
+
+    if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+        $path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+    }
+
+    if ( '' === $path || 0 !== strpos( trailingslashit( $path ), '/rooms/' ) ) {
+        return false;
+    }
+
+    if ( '/rooms/' === trailingslashit( $path ) ) {
+        return false;
+    }
+
+    return is_singular() || is_page();
+}
+
+/**
+ * Build a language URL for the current request.
+ *
+ * @param string $language Language code (fr/en).
+ *
+ * @return string
+ */
+function marina_child_get_language_switch_url( string $language ) : string {
+    $language     = strtolower( substr( $language, 0, 2 ) );
+    $request_path = '';
+
+    global $wp;
+
+    if ( isset( $wp ) && isset( $wp->request ) ) {
+        $request_path = (string) $wp->request;
+    } elseif ( isset( $_SERVER['REQUEST_URI'] ) ) {
+        $request_path = (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+    }
+
+    $current_url = home_url( '/' . ltrim( $request_path, '/' ) );
+
+    if ( function_exists( 'trp_get_url_for_language' ) ) {
+        $translated = trp_get_url_for_language( $current_url, $language );
+
+        if ( is_string( $translated ) && '' !== $translated ) {
+            return $translated;
+        }
+    }
+
+    return add_query_arg( 'lang', $language, $current_url );
 }
 
 /**

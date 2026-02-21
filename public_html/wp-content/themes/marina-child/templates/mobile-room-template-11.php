@@ -16,10 +16,36 @@ if ( ! have_posts() ) {
 
 the_post();
 
-$room_id    = get_the_ID();
-$room_title = get_the_title();
-$room_text  = wp_strip_all_tags( strip_shortcodes( get_the_content() ) );
-$room_text  = trim( preg_replace( '/\s+/', ' ', $room_text ) );
+$room_id      = get_the_ID();
+$room_title   = get_the_title();
+$room_content = (string) get_post_field( 'post_content', $room_id );
+
+$trustindex_shortcodes = array();
+if ( preg_match_all( '/\[(trustindex[^\]]*)\]/i', $room_content, $matches ) ) {
+    $trustindex_shortcodes = array_map(
+        static function ( $shortcode ) {
+            return '[' . trim( (string) $shortcode ) . ']';
+        },
+        $matches[1]
+    );
+}
+
+$room_content_without_trustindex = preg_replace( '/\[trustindex[^\]]*\]/i', '', $room_content );
+$room_text                       = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( strip_shortcodes( $room_content_without_trustindex ) ) ) );
+$description                     = '' !== $room_text ? wp_trim_words( $room_text, 32, '…' ) : 'Une expérience éditoriale, intime et ultra premium au coeur de Montréal.';
+
+$raw_text_blocks = preg_split( '/\n{2,}/', wp_strip_all_tags( strip_shortcodes( $room_content_without_trustindex ) ) );
+$text_blocks     = array_values(
+    array_filter(
+        array_map(
+            static function ( $line ) {
+                $line = trim( preg_replace( '/^[\x{2022}\*\-\s]+/u', '', (string) $line ) );
+                return '' !== $line ? $line : null;
+            },
+            is_array( $raw_text_blocks ) ? $raw_text_blocks : array()
+        )
+    )
+);
 
 $price = get_post_meta( $room_id, 'nd_booking_meta_box_min_price', true );
 if ( '' === $price ) {
@@ -76,7 +102,7 @@ if ( ! empty( $attachments ) ) {
 $images = array_values( array_unique( array_filter( $images ) ) );
 
 if ( empty( $images ) ) {
-    $images[] = home_url('/wp-content/uploads/2022/04/room01.jpg');
+    $images[] = home_url( '/wp-content/uploads/2022/04/room01.jpg' );
 }
 
 $capacity = '2 PERSONNES';
@@ -87,8 +113,13 @@ if ( stripos( $room_title, 'double' ) !== false ) {
 }
 
 $price_label = '' !== $price ? trim( $price ) . ' CAD' : '—';
-$description = '' !== $room_text ? wp_trim_words( $room_text, 32, '…' ) : 'Une expérience éditoriale, intime et ultra premium au coeur de Montréal.';
 $booking_url = home_url( '/rooms/' );
+
+$current_lang = function_exists( 'trp_get_current_language' ) ? trp_get_current_language() : determine_locale();
+$current_lang = strtolower( substr( (string) $current_lang, 0, 2 ) );
+
+$fr_url = function_exists( 'marina_child_get_language_switch_url' ) ? marina_child_get_language_switch_url( 'fr' ) : add_query_arg( 'lang', 'fr' );
+$en_url = function_exists( 'marina_child_get_language_switch_url' ) ? marina_child_get_language_switch_url( 'en' ) : add_query_arg( 'lang', 'en' );
 
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -109,9 +140,9 @@ $booking_url = home_url( '/rooms/' );
                 alt="Lofts 1325"
             />
             <div class="room-lang-switch" aria-label="Langue">
-                <a href="#">FR</a>
-                <span>·</span>
-                <a href="#">EN</a>
+                <a href="<?php echo esc_url( $fr_url ); ?>" class="<?php echo 'fr' === $current_lang ? 'is-active' : ''; ?>">FR</a>
+                <span>|</span>
+                <a href="<?php echo esc_url( $en_url ); ?>" class="<?php echo 'en' === $current_lang ? 'is-active' : ''; ?>">EN</a>
             </div>
         </div>
     </header>
@@ -160,12 +191,33 @@ $booking_url = home_url( '/rooms/' );
             </div>
         </section>
 
+        <?php if ( ! empty( $text_blocks ) ) : ?>
+            <section class="room-panel room-text-panel">
+                <h2>DÉTAILS</h2>
+                <?php foreach ( $text_blocks as $text_block ) : ?>
+                    <p><?php echo esc_html( $text_block ); ?></p>
+                <?php endforeach; ?>
+            </section>
+        <?php endif; ?>
+
         <section class="room-panel room-pricing">
             <div class="room-pricing__row">
                 <span>Tarif du jour</span>
                 <strong><?php echo esc_html( $price_label ); ?></strong>
             </div>
             <a class="primary-button room-cta" href="<?php echo esc_url( $booking_url ); ?>">RÉSERVER MAINTENANT</a>
+        </section>
+
+        <section class="room-panel room-reviews-panel">
+            <?php
+            if ( ! empty( $trustindex_shortcodes ) ) {
+                foreach ( $trustindex_shortcodes as $trustindex_shortcode ) {
+                    echo do_shortcode( $trustindex_shortcode ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                }
+            } else {
+                echo do_shortcode( '[trustindex no-registration=google]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            }
+            ?>
         </section>
     </section>
 </main>
