@@ -27,6 +27,9 @@ body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-book
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__hidden-mobile-hero { display: none !important; }
 
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content { padding: 20px; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro { background: var(--gray-200); margin: 0; padding: 22px 20px 20px; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro-back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #3f3f3f; font-size: 12px; text-transform: uppercase; letter-spacing: .2em; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro-title { margin: 14px 0 0; color: #141427; font-family: 'Playfair Display', serif !important; font-size: 50px; font-weight: 700; letter-spacing: .02em; line-height: .95; text-transform: uppercase; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content > .elementor { margin-top: 0 !important; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content [class*='elementor-motion-effects-layer'],
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content [class*='elementor-background-overlay'] { display: none !important; }

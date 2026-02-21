@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $plugin      = Loft1325_Mobile_Booking::instance();
 $booking_url = get_permalink();
+$home_url    = home_url( '/' );
 $content     = apply_filters( 'the_content', (string) get_post_field( 'post_content', get_the_ID() ) );
 ?>
 <!doctype html>
@@ -21,6 +22,13 @@ $content     = apply_filters( 'the_content', (string) get_post_field( 'post_cont
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <main id="loft1325-mobile-booking" class="loft1325-mobile-booking">
+	<section class="loft1325-mobile-booking__intro" aria-label="<?php echo esc_attr( $plugin->label( 'En-tête de réservation', 'Booking header' ) ); ?>">
+		<a class="loft1325-mobile-booking__intro-back" href="<?php echo esc_url( $home_url ); ?>">
+			&larr; <?php echo esc_html( $plugin->label( 'Retour accueil', 'Back home' ) ); ?>
+		</a>
+		<h1 class="loft1325-mobile-booking__intro-title"><?php echo esc_html( strtoupper( $plugin->label( 'Réservation', 'Reservation' ) ) ); ?></h1>
+	</section>
+
 	<section class="loft1325-mobile-booking__content">
 		<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</section>
