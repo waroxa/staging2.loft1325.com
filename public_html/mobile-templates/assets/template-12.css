@@ -1,3 +1,35 @@
-/* Template 12 intentionally reuses Template 11 assets.
-   Keep this file as compatibility shim. */
+/* Template 12 overrides: keep Template 11 visual system and proportions. */
 @import url('/mobile-templates/assets/template-11.css');
+
+.template-12-hero {
+  padding-bottom: 12px;
+}
+
+.template-12-hero h1 {
+  margin-bottom: 6px;
+}
+
+.template-12-list {
+  padding-top: 14px;
+}
+
+.template-12-list .room-card img {
+  height: auto;
+  max-height: 280px;
+  object-fit: cover;
+}
+
+.template-12-facts {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+.template-12-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
