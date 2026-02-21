@@ -1,87 +1,235 @@
-/* Align ND mobile room pages with the black/white homepage mobile aesthetic. */
-body.loft1325-mobile-lofts-active {
-  background: #ffffff;
-  color: #0b0b0b;
+/* Unified mobile grayscale system for room templates. */
+body.loft1325-mobile-lofts-active,
+body.loft1325-mobile-lofts-archive-active {
+  --loft-mobile-bg: #ffffff;
+  --loft-mobile-text: #0b0b0b;
+  --loft-mobile-muted: #6b6b6b;
+  --loft-mobile-border: #111111;
+  --loft-mobile-divider: #e9e9e9;
+  --loft-mobile-black: #000000;
+  --loft-mobile-white: #ffffff;
+  --primary: #0b0b0b;
+  --accent: #0b0b0b;
+  --link: #0b0b0b;
+  --brand: #0b0b0b;
+  --text: #0b0b0b;
+  --muted: #6b6b6b;
+  --bg: #ffffff;
+  --card: #ffffff;
+  --loft1325-brand: #0b0b0b;
+  --loft1325-brand-soft: rgba(11, 11, 11, 0.08);
+  --loft1325-surface: #ffffff;
+  --loft1325-border: #e9e9e9;
+  --loft1325-muted: #6b6b6b;
+  --loft1325-accent: #0b0b0b;
+  background: var(--loft-mobile-bg) !important;
+  color: var(--loft-mobile-text) !important;
 }
 
-body.loft1325-mobile-lofts-active #loft1325-mobile-loftpage,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
-  background: #ffffff;
+body.loft1325-mobile-lofts-active a,
+body.loft1325-mobile-lofts-active a:visited,
+body.loft1325-mobile-lofts-archive-active a,
+body.loft1325-mobile-lofts-archive-active a:visited {
+  color: var(--loft-mobile-text) !important;
 }
 
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__topbar,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__booking,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__card {
+body.loft1325-mobile-lofts-active *,
+body.loft1325-mobile-lofts-archive-active * {
   border-radius: 0 !important;
-  box-shadow: none !important;
-  border-color: #e5e5e5 !important;
-  background: #ffffff !important;
-}
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__cta,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__book,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft button[type="submit"],
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft .nd_booking_bg_orange {
-  background: #0b0b0b !important;
-  color: #ffffff !important;
-  border-color: #0b0b0b !important;
-}
-
-body.loft1325-mobile-lofts-active h1,
-body.loft1325-mobile-lofts-active h2,
-body.loft1325-mobile-lofts-active h3 {
-  letter-spacing: 0.04em;
-  text-transform: none;
-}
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__meta,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__muted {
-  color: #666666 !important;
-}
-
-/* Keep perk/highlight blocks readable after neutral homepage overrides. */
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks {
-  background: linear-gradient(180deg, #f7fbff 0%, #f1f7fc 100%) !important;
-  border: 1px solid #dbeaf3 !important;
-  box-shadow: none !important;
-}
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-header h2,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk p,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk small,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk .dashicons {
-  color: #0b0b0b !important;
-}
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__section-pill {
-  background: #eaf4fb !important;
-  border: 1px solid #d0e6f5 !important;
-}
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks .loft1325-mobile-loft__perk {
-  background: #ffffff !important;
-  border: 1px solid #dfe8f0 !important;
-  box-shadow: 0 8px 18px rgba(10, 20, 32, 0.06) !important;
-}
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__reviews {
-  background: #ffffff !important;
-  border-color: #dfe8f0 !important;
-}
-
-
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks,
-body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks * {
-  opacity: 1 !important;
-  filter: none !important;
   text-shadow: none !important;
 }
 
-@media (max-width: 767px) {
-  body.loft1325-mobile-lofts-active .loft1325-mobile-loft {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
+body.loft1325-mobile-lofts-active .header,
+body.loft1325-mobile-lofts-archive-active .header {
+  background: #fff !important;
+  border-bottom: 1px solid var(--loft-mobile-divider) !important;
+}
+
+body.loft1325-mobile-lofts-active .header-inner,
+body.loft1325-mobile-lofts-archive-active .header-inner {
+  padding: 16px 0 !important;
+}
+
+body.loft1325-mobile-lofts-active .icon-button,
+body.loft1325-mobile-lofts-archive-active .icon-button {
+  border: none !important;
+  background: transparent !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 28px;
+  color: var(--loft-mobile-text) !important;
+}
+
+body.loft1325-mobile-lofts-active .language-toggle,
+body.loft1325-mobile-lofts-archive-active .language-toggle {
+  min-width: 74px !important;
+  padding: 0 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+body.loft1325-mobile-lofts-active .language-toggle__label,
+body.loft1325-mobile-lofts-archive-active .language-toggle__label {
+  opacity: 0.45;
+}
+
+body.loft1325-mobile-lofts-active .language-toggle__label.is-active,
+body.loft1325-mobile-lofts-archive-active .language-toggle__label.is-active {
+  opacity: 1;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__booking,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__card,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__hero,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__card,
+body.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__hero,
+body.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__card {
+  background: #fff !important;
+  border: 1px solid var(--loft-mobile-divider) !important;
+  box-shadow: none !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__pill,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__microchip,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__pill,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__badge,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__crumb,
+body.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__pill,
+body.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__badge,
+body.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__crumb {
+  background: #fff !important;
+  border: 1px solid var(--loft-mobile-border) !important;
+  color: var(--loft-mobile-text) !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft input,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft select,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft textarea,
+body.loft1325-mobile-lofts-active .select2-selection,
+body.loft1325-mobile-lofts-archive-active input,
+body.loft1325-mobile-lofts-archive-active select,
+body.loft1325-mobile-lofts-archive-active textarea {
+  border: 2px solid var(--loft-mobile-border) !important;
+  background: #fff !important;
+  color: var(--loft-mobile-text) !important;
+  box-shadow: none !important;
+}
+
+body.loft1325-mobile-lofts-active button,
+body.loft1325-mobile-lofts-active .button,
+body.loft1325-mobile-lofts-active [type='submit'],
+body.loft1325-mobile-lofts-active .nd_booking_button,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__btn,
+body.loft1325-mobile-lofts-archive-active button,
+body.loft1325-mobile-lofts-archive-active .button,
+body.loft1325-mobile-lofts-archive-active [type='submit'] {
+  background: #0b0b0b !important;
+  border: 1px solid #0b0b0b !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em;
+  box-shadow: none !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__btn--ghost {
+  background: #fff !important;
+  color: #0b0b0b !important;
+  border: 1px solid #111 !important;
+}
+
+body.loft1325-mobile-lofts-active .dashicons,
+body.loft1325-mobile-lofts-archive-active .dashicons,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__stars,
+body.loft1325-mobile-lofts-archive-active .loft1325-mobile-lofts-archive__stars {
+  color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--perks,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__perk {
+  background: #fff !important;
+  border: 1px solid var(--loft-mobile-divider) !important;
+  box-shadow: none !important;
+}
+
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section-header h2,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__title,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__fact p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__about p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__about h2,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__lede,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__eyebrow,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__hero p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__content p {
+  color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__lede,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__about p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__hero p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__content p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__fact p,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip small {
+  color: #6b6b6b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip--glow,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__fact,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__perk,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__about,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__reviews,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__microchip {
+  background: #ffffff !important;
+  border: 1px solid #e9e9e9 !important;
+  box-shadow: none !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section-pill {
+  background: #f2f2f2 !important;
+  border: 1px solid #e9e9e9 !important;
+  color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__slider-badge,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__slider-pill,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__price,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__hero-card {
+  background: #ffffff !important;
+  color: #0b0b0b !important;
+  border: 1px solid #e9e9e9 !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__slider-btn,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__dot,
+body.loft1325-mobile-lofts-active .loft1325-mobile-lofts-archive__card-cta {
+  background: #ffffff !important;
+  border: 1px solid #111111 !important;
+  color: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__dot.is-active {
+  background: #0b0b0b !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__hero,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--cards,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--about,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__section--services {
+  background: #ffffff !important;
+  border: 1px solid #e9e9e9 !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip-list--accent .loft1325-mobile-loft__chip,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip-list--accent .loft1325-mobile-loft__chip--glow {
+  background: #ffffff !important;
+}
+
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip-icon,
+body.loft1325-mobile-lofts-active .loft1325-mobile-loft__chip .dashicons {
+  color: #0b0b0b !important;
 }

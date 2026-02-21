@@ -2,9 +2,29 @@
 	"use strict";
 
 	var openMenu = document.getElementById("openMenu");
-	var openMenuRight = document.getElementById("openMenuRight");
+	var headerLanguageToggle = document.getElementById("headerLanguageToggle");
 	var mobileMenu = document.getElementById("mobileMenu");
 	var closeMenu = document.getElementById("closeMenu");
+
+	function getLanguageUrl(targetLanguage) {
+		var switcherLinks = document.querySelectorAll("#trp-floater-ls-language-list a[href], .trp-language-switcher-container a[href]");
+		for (var i = 0; i < switcherLinks.length; i++) {
+			var href = switcherLinks[i].getAttribute("href");
+			if (!href || href === "#") continue;
+			try {
+				var url = new URL(href, window.location.origin);
+				var first = (url.pathname.replace(/^\/+/, "").split("/")[0] || "").toLowerCase();
+				if (targetLanguage === "en" && first === "en") return url.toString();
+				if (targetLanguage === "fr" && first !== "en") return url.toString();
+			} catch (error) {}
+		}
+		var fallback = new URL(window.location.href);
+		var seg = fallback.pathname.replace(/^\/+/, "").split("/").filter(Boolean);
+		if (targetLanguage === "en") { if (seg[0] !== "en") seg.unshift("en"); }
+		else if (seg[0] === "en") { seg.shift(); }
+		fallback.pathname = "/" + seg.join("/") + (seg.length ? "/" : "");
+		return fallback.toString();
+	}
 
 	function openMenuPanel() {
 		if (!mobileMenu) {
@@ -26,8 +46,11 @@
 		openMenu.addEventListener("click", openMenuPanel);
 	}
 
-	if (openMenuRight) {
-		openMenuRight.addEventListener("click", openMenuPanel);
+	if (headerLanguageToggle) {
+		headerLanguageToggle.addEventListener("click", function () {
+			var targetLanguage = document.documentElement.lang === "en" ? "fr" : "en";
+			window.location.href = getLanguageUrl(targetLanguage);
+		});
 	}
 
 	if (closeMenu) {
