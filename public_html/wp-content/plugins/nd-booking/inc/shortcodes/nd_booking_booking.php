@@ -254,6 +254,17 @@ function nd_booking_shortcode_booking() {
                 padding: 22px;
               }
 
+              .loft1325-booking-page .loft1325-booking-form-title {
+                font-size: clamp(28px, 7.5vw, 34px);
+                line-height: 1.12;
+                margin: 0;
+              }
+
+              .loft1325-booking-page .loft1325-booking-form-subtitle {
+                margin: 8px 0 0;
+                line-height: 1.5;
+              }
+
               .loft1325-booking-page .loft1325-booking-card--dark {
                 background: linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
                 color: #ffffff;
@@ -394,6 +405,10 @@ function nd_booking_shortcode_booking() {
 
                 .loft1325-booking-column--form {
                   flex: 1 1 auto;
+                }
+
+                .loft1325-booking-page .loft1325-booking-form-title {
+                  font-size: 34px;
                 }
               }
             </style>
