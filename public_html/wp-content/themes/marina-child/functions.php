@@ -94,6 +94,30 @@ function marina_child_enqueue_custom_assets() {
 add_action( 'wp_enqueue_scripts', 'marina_child_enqueue_custom_assets', 20 );
 
 /**
+ * Redirect front-page visitors from a blank homepage to the stable template-11 page.
+ */
+function marina_child_redirect_front_page_to_template_11() {
+    if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+        return;
+    }
+
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    $request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+    $request_path = strtolower( trim( (string) wp_parse_url( $request_uri, PHP_URL_PATH ), '/' ) );
+
+    if ( 'mobile-templates/template-11' === $request_path || 'fr/mobile-templates/template-11' === $request_path || 'en/mobile-templates/template-11' === $request_path ) {
+        return;
+    }
+
+    wp_safe_redirect( home_url( '/mobile-templates/template-11/' ), 302 );
+    exit;
+}
+add_action( 'template_redirect', 'marina_child_redirect_front_page_to_template_11', 1 );
+
+/**
  * Load the elevated search experience styles when needed.
  */
 function marina_child_enqueue_search_styles() {
