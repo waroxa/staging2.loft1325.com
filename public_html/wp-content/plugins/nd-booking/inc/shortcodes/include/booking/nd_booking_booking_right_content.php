@@ -26,12 +26,9 @@ $nd_booking_initial_base_price = $nd_booking_initial_breakdown['base'];
 $nd_booking_shortcode_right_content = '
 
 <div class="nd_booking_section loft1325-booking-card">
-  <div class="nd_booking_section nd_booking_height_2 nd_booking_bg_grey"></div>
-
-  <div class="nd_booking_section nd_booking_height_40"></div>
-  <h1>'.$nd_booking_heading.'</h1>
-  <p class="nd_booking_font_size_14">'.$nd_booking_heading_subtitle.'</p>
-  <div class="nd_booking_section nd_booking_height_30"></div>
+  <h1 class="loft1325-booking-form-title">'.$nd_booking_heading.'</h1>
+  <p class="nd_booking_font_size_14 loft1325-booking-form-subtitle">'.$nd_booking_heading_subtitle.'</p>
+  <div class="nd_booking_section nd_booking_height_20"></div>
 
   <div class="loft1325-booking-urgency">
     <div class="loft1325-booking-urgency__icon">⏳</div>
