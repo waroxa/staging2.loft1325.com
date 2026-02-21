@@ -29,10 +29,13 @@ body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-book
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content { padding: 20px; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro { background: var(--gray-200); margin: 0; padding: 22px 20px 20px; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro-back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #3f3f3f; font-size: 12px; text-transform: uppercase; letter-spacing: .2em; }
-body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro-title { margin: 14px 0 0; color: #141427; font-family: 'Playfair Display', serif !important; font-size: 50px; font-weight: 700; letter-spacing: .02em; line-height: .95; text-transform: uppercase; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__intro-title { margin: 12px 0 0; color: #141427; font-family: 'Playfair Display', serif !important; font-size: clamp(34px, 10.5vw, 42px); font-weight: 700; letter-spacing: .02em; line-height: 1.02; text-transform: uppercase; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content > .elementor { margin-top: 0 !important; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content [class*='elementor-motion-effects-layer'],
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content [class*='elementor-background-overlay'] { display: none !important; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .nd_booking_section.nd_booking_height_2.nd_booking_bg_grey,
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .nd_booking_single_cpt_1_divider { display: none !important; }
+body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__content .loft1325-mobile-booking__trimmed-spacer { display: none !important; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__reservation-summary { border: 1px solid var(--black) !important; background: var(--white) !important; margin: 0 0 18px !important; padding: 12px !important; }
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__reservation-summary [class*='title'],
 body.loft1325-mobile-active.loft1325-mobile-booking-active .loft1325-mobile-booking__reservation-summary h2,

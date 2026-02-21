@@ -10,6 +10,8 @@ defined( 'ABSPATH' ) || exit;
 $plugin      = Loft1325_Mobile_Booking::instance();
 $home_url    = home_url( '/' );
 $content     = apply_filters( 'the_content', (string) get_post_field( 'post_content', get_the_ID() ) );
+$content     = preg_replace( '/<div\s+class="nd_booking_section\s+nd_booking_height_2\s+nd_booking_bg_grey"\s*><\/div>/i', '', (string) $content );
+$content     = preg_replace( '/^\s*<div\s+class="nd_booking_section\s+nd_booking_height_(20|30|40)"\s*><\/div>/i', '', (string) $content );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
