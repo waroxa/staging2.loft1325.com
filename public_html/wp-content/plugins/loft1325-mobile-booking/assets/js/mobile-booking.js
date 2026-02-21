@@ -49,11 +49,41 @@
 		return false;
 	}
 
+	function cleanupSpacerArtifacts(content) {
+		if (!content) {
+			return;
+		}
+
+
+		var blocks = content.querySelectorAll('.nd_booking_section, .elementor-widget-container > div');
+		blocks.forEach(function (block) {
+			if (!block || block.children.length > 0) {
+				return;
+			}
+
+			var className = block.className || '';
+			var text = (block.textContent || '').replace(/\u00a0/g, ' ').trim();
+			var hasThinDivider = className.indexOf('nd_booking_height_2') !== -1 && className.indexOf('nd_booking_bg_grey') !== -1;
+			var isHeightSpacer = /nd_booking_height_(20|30|40)/.test(className);
+			if (text === '' && (hasThinDivider || isHeightSpacer)) {
+				block.classList.add('loft1325-mobile-booking__trimmed-spacer');
+			}
+		});
+
+		var firstChild = content.firstElementChild;
+		while (firstChild && firstChild.classList.contains('loft1325-mobile-booking__trimmed-spacer')) {
+			firstChild.remove();
+			firstChild = content.firstElementChild;
+		}
+	}
+
 	function refineBookingLayout() {
 		var content = document.querySelector('.loft1325-mobile-booking__content');
 		if (!content) {
 			return;
 		}
+
+		cleanupSpacerArtifacts(content);
 
 		var sections = content.querySelectorAll('.elementor-top-section');
 		sections.forEach(function (section) {
