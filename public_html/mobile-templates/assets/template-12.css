@@ -1,0 +1,3 @@
+/* Template 12 intentionally reuses Template 11 assets.
+   Keep this file as compatibility shim. */
+@import url('/mobile-templates/assets/template-11.css');
