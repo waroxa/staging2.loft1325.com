@@ -89,6 +89,7 @@ $menu_label   = $plugin->localize_label( 'Ouvrir le menu', 'Open menu' );
 $menu_close   = $plugin->localize_label( 'Fermer le menu', 'Close menu' );
 $menu_title   = $plugin->localize_label( 'Menu', 'Menu' );
 $profile_label  = $plugin->localize_label( 'Options', 'Options' );
+$change_language_label = $plugin->localize_label( 'Changer la langue', 'Change language' );
 
 $normal_services = $room_data['normal_services'] ?? array();
 $extra_services  = $room_data['extra_services'] ?? array();
@@ -145,7 +146,11 @@ $extra_services  = $normalize_services( $extra_services );
 				<div class="header-inner">
 					<button class="icon-button" type="button" id="openMenu" aria-label="<?php echo esc_attr( $menu_label ); ?>">≡</button>
 					<img class="logo" src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png" alt="Lofts 1325" />
-					<button class="icon-button" type="button" id="openMenuRight" aria-label="<?php echo esc_attr( $profile_label ); ?>">⋯</button>
+					<button class="icon-button language-toggle" type="button" id="headerLanguageToggle" aria-label="<?php echo esc_attr( $change_language_label ); ?>">
+						<span class="language-toggle__label<?php echo 'fr' === $language ? ' is-active' : ''; ?>">FR</span>
+						<span>·</span>
+						<span class="language-toggle__label<?php echo 'en' === $language ? ' is-active' : ''; ?>">EN</span>
+					</button>
 				</div>
 			</header>
 

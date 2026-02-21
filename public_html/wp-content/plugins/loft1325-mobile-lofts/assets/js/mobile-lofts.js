@@ -3,7 +3,7 @@
 
 	function setupMobileHeader() {
 		var openMenu = document.getElementById("openMenu");
-		var openMenuRight = document.getElementById("openMenuRight");
+		var headerLanguageToggle = document.getElementById("headerLanguageToggle");
 		var mobileMenu = document.getElementById("mobileMenu");
 		var closeMenu = document.getElementById("closeMenu");
 
@@ -69,8 +69,11 @@
 			openMenu.addEventListener("click", openMenuPanel);
 		}
 
-		if (openMenuRight) {
-			openMenuRight.addEventListener("click", openMenuPanel);
+		if (headerLanguageToggle) {
+			headerLanguageToggle.addEventListener("click", function () {
+				var targetLanguage = document.documentElement.lang === "en" ? "fr" : "en";
+				window.location.href = getLanguageUrl(targetLanguage);
+			});
 		}
 
 		if (closeMenu) {
