@@ -1,0 +1,163 @@
+/* Template-12 mobile room bridge: uses template-11 base asset, this file only applies scoped room/booking overrides. */
+@media (max-width: 767px) {
+  body.loft1325-mobile-unified-active {
+    --primary: #0b0b0b;
+    --accent: #0b0b0b;
+    --link: #0b0b0b;
+    --loft-mobile-bg: #ffffff;
+    --loft-mobile-text: #0b0b0b;
+    --loft-mobile-muted: #6b6b6b;
+    --loft-mobile-border: #111111;
+    --loft-mobile-divider: #e9e9e9;
+    background: #ffffff !important;
+    color: #0b0b0b !important;
+  }
+
+  body.loft1325-mobile-unified-active a,
+  body.loft1325-mobile-unified-active a:visited,
+  body.loft1325-mobile-unified-active .nd_booking_link,
+  body.loft1325-mobile-unified-active .woocommerce a {
+    color: #0b0b0b !important;
+  }
+
+  body.loft1325-mobile-unified-active *,
+  body.loft1325-mobile-unified-active *::before,
+  body.loft1325-mobile-unified-active *::after {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Mobile Base Header Template (template-11 structure) */
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    max-width: 430px;
+    margin: 0 auto;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header .logo img {
+    height: 26px;
+    width: auto;
+    display: block;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header .icon-button {
+    border: none;
+    background: transparent;
+    width: auto;
+    height: auto;
+    min-width: 28px;
+    color: #0b0b0b;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header .language-toggle {
+    width: auto;
+    min-width: 74px;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header .language-toggle a {
+    text-decoration: none;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header .language-toggle__label {
+    opacity: .45;
+  }
+
+  body.loft1325-mobile-unified-active .loft1325-mobile-base-header .language-toggle__label.is-active {
+    opacity: 1;
+  }
+
+  body.loft1325-mobile-unified-active #nd_options_navigation_2_container,
+  body.loft1325-mobile-unified-active #nd_options_navigation_3_container,
+  body.loft1325-mobile-unified-active #nd_options_navigation_4_container,
+  body.loft1325-mobile-unified-active #nd_options_navigation_5_container,
+  body.loft1325-mobile-unified-active #nd_options_navigation_6_container,
+  body.loft1325-mobile-unified-active #nd_options_footer_6,
+  body.loft1325-mobile-unified-active .elementor-location-header,
+  body.loft1325-mobile-unified-active .elementor-location-footer {
+    display: none !important;
+  }
+
+  body.loft1325-mobile-unified-active .nd_options_container.nd_options_clearfix {
+    width: 100% !important;
+    max-width: 430px;
+    margin: 0 auto !important;
+    float: none !important;
+    padding: 0 16px 28px;
+    box-sizing: border-box;
+  }
+
+  body.loft1325-mobile-unified-active input[type="text"],
+  body.loft1325-mobile-unified-active input[type="email"],
+  body.loft1325-mobile-unified-active input[type="tel"],
+  body.loft1325-mobile-unified-active input[type="number"],
+  body.loft1325-mobile-unified-active input[type="date"],
+  body.loft1325-mobile-unified-active input[type="password"],
+  body.loft1325-mobile-unified-active select,
+  body.loft1325-mobile-unified-active textarea,
+  body.loft1325-mobile-unified-active .select2-selection,
+  body.loft1325-mobile-unified-active .woocommerce form .form-row input.input-text,
+  body.loft1325-mobile-unified-active .woocommerce form .form-row textarea {
+    background: #fff !important;
+    color: #0b0b0b !important;
+    border: 2px solid #111 !important;
+  }
+
+  body.loft1325-mobile-unified-active .nd_booking_bg_yellow,
+  body.loft1325-mobile-unified-active .nd_booking_button,
+  body.loft1325-mobile-unified-active .nd_booking_bg_orange,
+  body.loft1325-mobile-unified-active .woocommerce a.button,
+  body.loft1325-mobile-unified-active .woocommerce button.button,
+  body.loft1325-mobile-unified-active .woocommerce input.button,
+  body.loft1325-mobile-unified-active #place_order,
+  body.loft1325-mobile-unified-active .button,
+  body.loft1325-mobile-unified-active button[type="submit"] {
+    background: #0b0b0b !important;
+    border: 1px solid #0b0b0b !important;
+    color: #fff !important;
+    text-transform: uppercase !important;
+    letter-spacing: .08em;
+    width: 100%;
+  }
+
+  body.loft1325-mobile-unified-active .nd_booking_border,
+  body.loft1325-mobile-unified-active .nd_booking_border_box,
+  body.loft1325-mobile-unified-active .nd_booking_border_1_solid_grey,
+  body.loft1325-mobile-unified-active .nd_booking_border_bottom_1_solid_grey,
+  body.loft1325-mobile-unified-active .nd_booking_border_top_1_solid_grey,
+  body.loft1325-mobile-unified-active .nd_booking_single_cpt_1_divider,
+  body.loft1325-mobile-unified-active .woocommerce table,
+  body.loft1325-mobile-unified-active .shop_table,
+  body.loft1325-mobile-unified-active .woocommerce-checkout-review-order {
+    border-color: #e9e9e9 !important;
+  }
+
+  body.loft1325-mobile-unified-active [class*="blue"],
+  body.loft1325-mobile-unified-active [style*="#003"],
+  body.loft1325-mobile-unified-active [style*="rgb(0, 59, 149)"] {
+    color: #0b0b0b !important;
+    background-color: #fff !important;
+    border-color: #111 !important;
+  }
+}

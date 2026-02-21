@@ -3,34 +3,30 @@
  * Plugin Name: Loft1325 Mobile Booking Page
  * Description: Forces a dedicated mobile-only layout for ND Booking room-selection pages.
  * Author: Loft1325 Automation
- * Version: 1.0.0
+ * Version: 1.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-/**
- * Determine whether the current request is the ND booking page that needs the custom mobile layout.
- *
- * @return bool
- */
-function loft1325_is_target_mobile_booking_page() {
-    if ( is_admin() || is_feed() || is_embed() ) {
+function loft1325_is_target_mobile_unified_page() {
+    if ( is_admin() || is_feed() || is_embed() || ! wp_is_mobile() ) {
         return false;
     }
 
-    if ( ! wp_is_mobile() ) {
-        return false;
-    }
-
-    $booking_page_id = (int) get_option( 'nd_booking_booking_page' );
-
-    if ( $booking_page_id > 0 && is_page( $booking_page_id ) ) {
+    if ( is_singular( 'nd_booking_cpt_1' ) ) {
         return true;
     }
 
-    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+    $booking_page_id  = (int) get_option( 'nd_booking_booking_page' );
+    $checkout_page_id = (int) get_option( 'nd_booking_checkout_page' );
+
+    if ( ( $booking_page_id > 0 && is_page( $booking_page_id ) ) || ( $checkout_page_id > 0 && is_page( $checkout_page_id ) ) ) {
+        return true;
+    }
+
+    $request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
     $request_path = trim( (string) wp_parse_url( $request_uri, PHP_URL_PATH ), '/' );
 
     if ( '' === $request_path ) {
@@ -39,150 +35,78 @@ function loft1325_is_target_mobile_booking_page() {
 
     $request_path = strtolower( $request_path );
 
-    return ( 0 === strpos( $request_path, 'nd-booking-pages/nd-booking-page' ) )
+    return ( 0 === strpos( $request_path, 'rooms/' ) )
+        || ( 0 === strpos( $request_path, 'fr/rooms/' ) )
+        || ( 0 === strpos( $request_path, 'en/rooms/' ) )
+        || ( 0 === strpos( $request_path, 'nd-booking-pages/nd-booking-page' ) )
         || ( 0 === strpos( $request_path, 'fr/nd-booking-pages/nd-booking-page' ) )
         || ( 0 === strpos( $request_path, 'en/nd-booking-pages/nd-booking-page' ) );
 }
 
-/**
- * Add a body class used by the mobile booking page stylesheet.
- *
- * @param array $classes Existing body classes.
- *
- * @return array
- */
-function loft1325_mobile_booking_body_class( array $classes ) {
-    if ( loft1325_is_target_mobile_booking_page() ) {
-        $classes[] = 'loft1325-mobile-booking-active';
+function loft1325_mobile_unified_body_class( array $classes ) {
+    if ( loft1325_is_target_mobile_unified_page() ) {
+        $classes[] = 'loft1325-mobile-unified-active';
     }
 
     return $classes;
 }
-add_filter( 'body_class', 'loft1325_mobile_booking_body_class', 30 );
+add_filter( 'body_class', 'loft1325_mobile_unified_body_class', 35 );
 
-/**
- * Enqueue mobile booking page overrides.
- */
-function loft1325_enqueue_mobile_booking_styles() {
-    if ( ! loft1325_is_target_mobile_booking_page() ) {
+function loft1325_mobile_unified_enqueue_styles() {
+    if ( ! loft1325_is_target_mobile_unified_page() ) {
         return;
     }
 
-    $css = <<<'CSS'
-@media (max-width: 767px) {
-    body.loft1325-mobile-booking-active {
-        --loft-mobile-bg: #ffffff;
-        --loft-mobile-text: #0b0b0b;
-        --loft-mobile-muted: #6b6b6b;
-        --loft-mobile-border: #111111;
-        --loft-mobile-divider: #e9e9e9;
-        --primary: #0b0b0b;
-        --accent: #0b0b0b;
-        --link: #0b0b0b;
-        background: #ffffff !important;
-        color: #0b0b0b !important;
+    $template_11_path = ABSPATH . 'mobile-templates/assets/template-11.css';
+    $template_11_url  = home_url( '/mobile-templates/assets/template-11.css' );
+    $template_11_ver  = file_exists( $template_11_path ) ? (string) filemtime( $template_11_path ) : '1.0.0';
+
+    wp_enqueue_style( 'loft1325-mobile-template-11-base', $template_11_url, array(), $template_11_ver );
+
+    $path = __DIR__ . '/assets/mobile-unified-template.css';
+    $url  = plugin_dir_url( __FILE__ ) . 'assets/mobile-unified-template.css';
+    $ver  = file_exists( $path ) ? (string) filemtime( $path ) : '1.3.0';
+
+    wp_enqueue_style( 'loft1325-mobile-unified-template', $url, array( 'loft1325-mobile-template-11-base' ), $ver );
+}
+add_action( 'wp_enqueue_scripts', 'loft1325_mobile_unified_enqueue_styles', 210 );
+
+function loft1325_mobile_get_language_code() {
+    $language = 'fr';
+
+    if ( function_exists( 'trp_get_current_language' ) ) {
+        $language = (string) trp_get_current_language();
+    } else {
+        $locale   = function_exists( 'determine_locale' ) ? (string) determine_locale() : (string) get_locale();
+        $language = substr( strtolower( $locale ), 0, 2 );
     }
 
-    body.loft1325-mobile-booking-active a,
-    body.loft1325-mobile-booking-active a:visited,
-    body.loft1325-mobile-booking-active .nd_booking_link,
-    body.loft1325-mobile-booking-active .woocommerce a {
-        color: #0b0b0b !important;
+    return ( 'en' === strtolower( substr( $language, 0, 2 ) ) ) ? 'en' : 'fr';
+}
+
+function loft1325_mobile_get_language_url( $language ) {
+    $current_url = home_url( add_query_arg( array(), $GLOBALS['wp']->request ?? '' ) );
+
+    if ( function_exists( 'trp_get_url_for_language' ) ) {
+        return trp_get_url_for_language( $current_url, $language );
     }
 
-    body.loft1325-mobile-booking-active *,
-    body.loft1325-mobile-booking-active *::before,
-    body.loft1325-mobile-booking-active *::after {
-        border-radius: 0 !important;
-        box-shadow: none !important;
+    return add_query_arg( 'lang', $language, $current_url );
+}
+
+function loft1325_mobile_unified_render_header() {
+    if ( ! loft1325_is_target_mobile_unified_page() ) {
+        return;
     }
 
-    body.loft1325-mobile-booking-active #nd_options_footer_6,
-    body.loft1325-mobile-booking-active .elementor-element.elementor-element-358214a,
-    body.loft1325-mobile-booking-active .elementor-element.elementor-element-4b80259c,
-    body.loft1325-mobile-booking-active .elementor-element.elementor-element-9841855,
-    body.loft1325-mobile-booking-active .elementor-element.elementor-element-68ddb8e {
-        display: none !important;
-    }
+    $language      = loft1325_mobile_get_language_code();
+    $fr_url        = loft1325_mobile_get_language_url( 'fr' );
+    $en_url        = loft1325_mobile_get_language_url( 'en' );
+    $header_tpl    = __DIR__ . '/templates/mobile-base-header.php';
 
-    body.loft1325-mobile-booking-active .nd_options_container.nd_options_clearfix {
-        width: 100% !important;
-        max-width: 430px;
-        margin: 0 auto !important;
-        float: none !important;
-        padding: 0 16px 28px;
-        box-sizing: border-box;
-    }
-
-    body.loft1325-mobile-booking-active .nd_booking_section,
-    body.loft1325-mobile-booking-active .woocommerce,
-    body.loft1325-mobile-booking-active .woocommerce-checkout,
-    body.loft1325-mobile-booking-active .woocommerce-cart {
-        background: #ffffff !important;
-        color: #0b0b0b !important;
-    }
-
-    body.loft1325-mobile-booking-active input[type="text"],
-    body.loft1325-mobile-booking-active input[type="email"],
-    body.loft1325-mobile-booking-active input[type="tel"],
-    body.loft1325-mobile-booking-active input[type="number"],
-    body.loft1325-mobile-booking-active input[type="date"],
-    body.loft1325-mobile-booking-active input[type="password"],
-    body.loft1325-mobile-booking-active select,
-    body.loft1325-mobile-booking-active textarea,
-    body.loft1325-mobile-booking-active .select2-selection,
-    body.loft1325-mobile-booking-active .woocommerce form .form-row input.input-text,
-    body.loft1325-mobile-booking-active .woocommerce form .form-row textarea {
-        background: #ffffff !important;
-        color: #0b0b0b !important;
-        border: 2px solid #111111 !important;
-    }
-
-    body.loft1325-mobile-booking-active .nd_booking_bg_yellow,
-    body.loft1325-mobile-booking-active .nd_booking_button,
-    body.loft1325-mobile-booking-active .woocommerce a.button,
-    body.loft1325-mobile-booking-active .woocommerce button.button,
-    body.loft1325-mobile-booking-active .woocommerce input.button,
-    body.loft1325-mobile-booking-active #place_order,
-    body.loft1325-mobile-booking-active .button,
-    body.loft1325-mobile-booking-active button[type="submit"] {
-        background: #0b0b0b !important;
-        border: 1px solid #0b0b0b !important;
-        color: #ffffff !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.08em;
-        width: 100%;
-    }
-
-    body.loft1325-mobile-booking-active .nd_booking_border,
-    body.loft1325-mobile-booking-active .nd_booking_border_box,
-    body.loft1325-mobile-booking-active .woocommerce table,
-    body.loft1325-mobile-booking-active .shop_table,
-    body.loft1325-mobile-booking-active .woocommerce-checkout-review-order {
-        border-color: #e9e9e9 !important;
-    }
-
-    body.loft1325-mobile-booking-active .nd_booking_bg_greydark,
-    body.loft1325-mobile-booking-active .nd_booking_bg_greydark_2 {
-        background: #0b0b0b !important;
-        border-color: #0b0b0b !important;
-    }
-
-    body.loft1325-mobile-booking-active .nd_booking_bg_greydark *,
-    body.loft1325-mobile-booking-active .nd_booking_bg_greydark_2 * {
-        color: #ffffff !important;
+    if ( file_exists( $header_tpl ) ) {
+        include $header_tpl;
+        return;
     }
 }
-CSS;
-
-    $target_handle = wp_style_is( 'nd_booking_mobile_flow', 'enqueued' ) ? 'nd_booking_mobile_flow' : 'marina-child-header-fixes';
-
-    if ( ! wp_style_is( $target_handle, 'enqueued' ) ) {
-        wp_register_style( 'loft1325-mobile-booking-inline', false, array(), '1.0.0' );
-        wp_enqueue_style( 'loft1325-mobile-booking-inline' );
-        $target_handle = 'loft1325-mobile-booking-inline';
-    }
-
-    wp_add_inline_style( $target_handle, $css );
-}
-add_action( 'wp_enqueue_scripts', 'loft1325_enqueue_mobile_booking_styles', 200 );
+add_action( 'wp_body_open', 'loft1325_mobile_unified_render_header', 3 );
