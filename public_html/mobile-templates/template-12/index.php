@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="/mobile-templates/assets/template-12.css" />
 </head>
 <body>
-  <main class="mobile-shell single-room-shell">
-    <header class="header">
-      <div class="header-inner">
-        <button class="icon-button" type="button" aria-label="Ouvrir le menu">☰</button>
+  <main class="mobile-shell">
+    <header class="header template-12-home-header">
+      <div class="header-inner template-12-home-header__inner">
+        <button class="template-12-home-header__menu" type="button" aria-label="Ouvrir le menu">☰</button>
         <img
           class="logo"
           src="https://loft1325.com/wp-content/uploads/2024/06/Asset-1.png"
@@ -22,7 +22,11 @@
           sizes="(max-width: 430px) 180px, 220px"
           alt="Lofts 1325"
         />
-        <button class="icon-button" type="button" aria-label="Langue">FR · EN</button>
+        <button class="template-12-home-header__lang" type="button" aria-label="Changer la langue">
+          <span class="is-active">FR</span>
+          <span>·</span>
+          <span>EN</span>
+        </button>
       </div>
     </header>
 
@@ -40,9 +44,9 @@
           </p>
 
           <ul class="template-12-facts" data-nd-facts>
-            <li><strong>Capacité:</strong> 2 personnes</li>
-            <li><strong>Surface:</strong> 82 m²</li>
-            <li><strong>Nuits minimales:</strong> 1</li>
+            <li><strong>Capacité</strong><span>2 personnes</span></li>
+            <li><strong>Surface</strong><span>82 m²</span></li>
+            <li><strong>Nuits minimales</strong><span>1</span></li>
           </ul>
 
           <div class="rate-block">
